@@ -1,0 +1,37 @@
+{
+  "preservesStandardMetadataWithWarningIfReaderMissing" : true,
+  "doesNotStoreTemporarySourcePath" : true,
+  "realRAWMetadataCases" : [
+    {
+      "subjectDistance" : "not-recorded",
+      "lensModel" : "EF-S17-85mm f\/4-5.6 IS USM",
+      "lensIDName" : "Canon EF-S 17-85mm f\/4-5.6 IS USM",
+      "makerNoteReaderUsed" : true,
+      "fixture" : "RAW_CANON_40D_SRAW_V103.CR2",
+      "standardEXIFLensNameAvailable" : false,
+      "focusDistance" : "not-recorded",
+      "fallbackWarningVerified" : false
+    },
+    {
+      "subjectDistance" : "not-recorded",
+      "lensModel" : "",
+      "lensIDName" : "AF-S DX Zoom-Nikkor 18-70mm f\/3.5-4.5G IF-ED",
+      "makerNoteReaderUsed" : true,
+      "fixture" : "RAW_NIKON_D70.NEF",
+      "standardEXIFLensNameAvailable" : false,
+      "focusDistance" : 2.3713737056616599,
+      "fallbackWarningVerified" : false
+    },
+    {
+      "subjectDistance" : "not-recorded",
+      "lensModel" : "RF-S14-30mm F4-6.3 IS STM PZ",
+      "lensIDName" : "Canon RF-S 14-30mm F4-6.3 IS STM PZ",
+      "makerNoteReaderUsed" : true,
+      "fixture" : "Original.CR3",
+      "standardEXIFLensNameAvailable" : true,
+      "focusDistance" : "not-recorded",
+      "fallbackWarningVerified" : true
+    }
+  ],
+  "readsMakerNotesEvenWithEXIFLensName" : true
+}

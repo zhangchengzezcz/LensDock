@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "vendorBundleIdentifier": "com.apple.pixelmator",
+  "version": "4.3",
+  "build": "3.0.75",
+  "executable": "Pixelmator Pro",
+  "minimumOS": "26.0",
+  "verifiedRuntimeOS": "27.2",
+  "architecture": "arm64",
+  "lensfunDatabaseCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
+  "fileSHA256": {
+    "Contents/MacOS/Pixelmator Pro": "85b83ad6463747721921bec0d6ef370852441961c43c8bfc1b94ed5feb30bf5b",
+    "Contents/Frameworks/PTFoundation.framework/Versions/A/PTFoundation": "19a89c0852b3eb962bdf7abdf6c900ea7287ce4da56a7dd4817c8aaaa29e4b90",
+    "Contents/Frameworks/PXMEngine.framework/Versions/A/PXMEngine": "a3b896fb9135e10df57eef6c0da6be2df8c5e546c7d7f2ccc3750217175877f5",
+    "Contents/Frameworks/PXMKit.framework/Versions/A/PXMKit": "9facaf1b05c101a47443e2b93053bb2560c87f788f2a5cc76fbbf5040b7e8eb2"
+  }
+}

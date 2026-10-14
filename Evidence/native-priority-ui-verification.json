@@ -1,0 +1,18 @@
+{
+  "testedAt": "2026-10-14",
+  "actualApplication": "isolated Pixelmator 4.3 build 3.0.75",
+  "actualRAW": "Canon EOS R50 V / RF-S14-30mm F4-6.3 IS STM PZ",
+  "nativeSupportObserved": true,
+  "nativeRAWCorrectionEnabledObserved": true,
+  "distortionDisabledAndAutomaticSkipObserved": true,
+  "tcaDisabledAndAutomaticSkipObserved": true,
+  "extraVignettingOptionPresent": true,
+  "vignettingOffAndZeroObserved": true,
+  "missingIndependentVignetteCalibrationExplained": true,
+  "noOpApplyDisabledObserved": true,
+  "noNewEffectApplied": true,
+  "savedNikonReopenFreshProbeAndSettingsRetainedObserved": true,
+  "fileChooserRetryAfterRestartSucceeded": true,
+  "compiledModuleSHA256": "6f818f28d0a84a0390a3a6d4198604d43abbbad664f83d4046d701d89eb5ed04",
+  "pixelLevelVisualAuditCompleted": false
+}

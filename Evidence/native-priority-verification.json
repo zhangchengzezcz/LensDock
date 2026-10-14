@@ -1,0 +1,49 @@
+{
+  "nativeSupported" : {
+    "defaultVignettingOffAndZero" : true,
+    "manualVignettingSettingsRoundtrip" : true,
+    "nativeOffSwitchPreserved" : true,
+    "noSupplementalGeometryMaps" : true,
+    "rejectEnabledSupplementalGeometry" : true
+  },
+  "unknownSupportFailsClosed" : true,
+  "nativeUnsupportedRetainsGeometry" : true,
+  "unknownLensNoInventedGain" : true,
+  "invalidDimensionsRejected" : true,
+  "actualRAWProbes" : [
+    {
+      "fixtureType" : "CR2",
+      "nativeSupport" : {
+        "lensCorrectionEnabledByDefault" : false,
+        "osVersion" : "Version 27.2 (Build 26B5101f)",
+        "decoderVersion" : "6",
+        "probeSucceeded" : true,
+        "lensCorrectionSupported" : false,
+        "probeSource" : "CIRAWFilter.isLensCorrectionSupported"
+      }
+    },
+    {
+      "fixtureType" : "NEF",
+      "nativeSupport" : {
+        "lensCorrectionEnabledByDefault" : false,
+        "osVersion" : "Version 27.2 (Build 26B5101f)",
+        "decoderVersion" : "8",
+        "probeSucceeded" : true,
+        "lensCorrectionSupported" : false,
+        "probeSource" : "CIRAWFilter.isLensCorrectionSupported"
+      }
+    },
+    {
+      "fixtureType" : "CR3",
+      "nativeSupport" : {
+        "lensCorrectionEnabledByDefault" : true,
+        "osVersion" : "Version 27.2 (Build 26B5101f)",
+        "decoderVersion" : "8",
+        "probeSucceeded" : true,
+        "lensCorrectionSupported" : true,
+        "probeSource" : "CIRAWFilter.isLensCorrectionSupported"
+      }
+    }
+  ],
+  "verifiedAt" : "2026-10-14 12:27:18 +0000"
+}

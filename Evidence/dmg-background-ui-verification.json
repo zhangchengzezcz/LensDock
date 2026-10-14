@@ -1,0 +1,18 @@
+{
+  "actualFinderWindowObserved": true,
+  "actualWindowTitle": "LensDock Retina Preview",
+  "backgroundFormat": "vector-PDF",
+  "textAndArrowSharpObserved": true,
+  "mainIconsAndArrowAlignedObserved": true,
+  "bottomInstructionsFullyVisibleObserved": true,
+  "noCropObserved": true,
+  "classicTiffOverscalingAvoided": true,
+  "windowSizePoints": [
+    760,
+    512
+  ],
+  "backgroundSizePoints": [
+    760,
+    480
+  ]
+}

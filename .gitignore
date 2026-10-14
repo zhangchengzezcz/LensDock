@@ -1,0 +1,15 @@
+.DS_Store
+Build/
+Distribution/
+Tests/PrivateRAW/
+__pycache__/
+*.pyc
+*.pxd
+*.CR2
+*.CR3
+*.NEF
+*.ARW
+*.RAF
+*.DNG
+*.dmg
+*.log

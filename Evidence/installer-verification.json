@@ -1,0 +1,15 @@
+{
+  "version": "0.1.0-preview",
+  "actualInstallThroughUI": true,
+  "installedHostLaunchThroughUI": true,
+  "lensCorrectionMenuPresentInInstalledHost": true,
+  "vendorCriticalFilesUnchanged": true,
+  "installedHostSignatureVerified": true,
+  "copiesVendorAppOnlyLocally": true,
+  "adminPrivilegesRequired": false,
+  "installerReadOnlyCompatibilityAndMalformedParserChecksPassed": true,
+  "installedModuleSHA256": "7befa93d35adef1adcf6b18f48604dc67b67cdcba4ab399da43353ae77db8a5e",
+  "notarized": false,
+  "otherMacInstallTested": false,
+  "testedOS": "27.2"
+}

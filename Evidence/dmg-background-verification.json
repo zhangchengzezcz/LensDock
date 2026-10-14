@@ -1,0 +1,18 @@
+{
+  "sourceArtworkTemporarilyAbsent": true,
+  "readonlyFinalImageMountedAtDifferentPath": true,
+  "finderBookmarkResolvedToInternalPicture": true,
+  "backgroundPath": ".background/installation.pdf",
+  "backgroundSHA256": "6b651f65d6d49edc02598023f1a6205138aec163385c891936bedeeb15cdd8f9",
+  "aliasAndBookmarkReferenceImageVolumeOnly": true,
+  "noUserHomePictureReference": true,
+  "iconLocationsVerified": true,
+  "applicationSignatureVerifiedAfterPackaging": true,
+  "vectorPDFVerified": true,
+  "backgroundLogicalPoints": [
+    760,
+    480
+  ],
+  "resolutionIndependent": true,
+  "testedOnSecondComputer": false
+}

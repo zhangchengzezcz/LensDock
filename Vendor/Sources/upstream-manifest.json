@@ -1,0 +1,26 @@
+[
+  {
+    "name": "glib-2.79.1.tar.xz",
+    "url": "https://download.gnome.org/sources/glib/2.79/glib-2.79.1.tar.xz",
+    "sha256": "b3764dd6e29b664085921dd4dd6ba2430fc19760ab6857ecfa3ebd4e8c1d114c",
+    "bytes": 5475296
+  },
+  {
+    "name": "gettext-0.22.4.tar.xz",
+    "url": "https://ftp.gnu.org/gnu/gettext/gettext-0.22.4.tar.xz",
+    "sha256": "29217f1816ee2e777fa9a01f9956a14139c0c23cc1b20368f06b2888e8a34116",
+    "bytes": 10255384
+  },
+  {
+    "name": "pcre2-10.47.tar.gz",
+    "url": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.47/pcre2-10.47.tar.gz",
+    "sha256": "c08ae2388ef333e8403e670ad70c0a11f1eed021fd88308d7e02f596fcd9dc16",
+    "bytes": 2792969
+  },
+  {
+    "name": "lensfun-0.3.4.tar.gz",
+    "url": "https://codeload.github.com/lensfun/lensfun/tar.gz/101c745e847a5de4a1e569a94368ce2027198598",
+    "sha256": "a11cbe6aeec657839540448b253217c25d20b7a45b6aebfef406f7239933c7a6",
+    "bytes": 1061730
+  }
+]

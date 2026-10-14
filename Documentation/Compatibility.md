@@ -1,0 +1,19 @@
+# 兼容接口与失效边界
+
+当前契约：Apple 芯片、Pixelmator Pro Creator Studio 4.3（3.0.75）、bundle ID `com.apple.pixelmator`。构建目标 macOS 26.0；仅 macOS 27.2 完成实机测试。安装时检查 `Compatibility/Pixelmator-4.3.json` 中原始主程序、PTFoundation、PXMEngine、PXMKit 哈希及应用签名；任何漂移都拒绝适配。
+
+## 公开接口
+
+ImageIO 读取 EXIF；CIRAWFilter 检查该原片的原生矫正能力；Core Image 渲染自定义校正。ExifTool 13.59 补充 MakerNotes。Lensfun 0.3.4 C API 进行唯一身份匹配、标定插值、浮点映射和增益生成。没有 Lightroom 运行依赖。
+
+## 版本限定的非公开桥接
+
+宿主由用户自己的应用本机复制后插入 LensPanel 加载命令；原应用不修改，未修改 DRM、许可校验或系统安全设置。分发包不含原厂代码。若加密或没有干净头部空间，安装停止。
+
+`LensLiveDocument.m`、`LensLiveSource.swift`、`LensNativeState.m` 通过已验证 Swift 符号、ObjC 类型和布局访问当前文档、原始 RAW 资源、显影缓冲、参数及效果。桥接检查主线程、4.3 版本、文档/RAW 类型、原始参数 value-witness 大小 0x118、资源类型、尺寸、变换和颜色空间；接口缺失时报告，不把普通图像当 RAW。完整 ABI 更新需要新契约和实机验证。
+
+效果采用 PTCustomCIEffect 包装；历史动态滤镜类名保留以兼容已保存效果。完整 RAW 与原有其他效果保留。几何映射使用原片方向映射和底向上坐标；紧凑网格仅在每一个全分辨率坐标误差不超过 0.001 px 时采用。
+
+应用前和提交前核对源 SHA256、字节数、RAW 参数、尺寸、比例、角度、颜色空间、当前图层和原有效果，避免匹配期间的编辑被覆盖。原生支持时禁止补充几何开关，渲染层也强制几何强度为零。原生是否支持与其 RAW 开关是否开启分开记录；不开启用户关掉的原生开关。
+
+原厂更新不自动覆盖旧宿主，现有安装也不会被覆盖。清理或升级前须保存文档并退出宿主。不能把非公开桥接当成 Apple 承诺的稳定插件 API。

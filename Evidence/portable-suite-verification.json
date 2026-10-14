@@ -1,0 +1,20 @@
+{
+  "executedOn": "2026-10-14",
+  "suite": "Scripts/test.py",
+  "suitesPassed": [
+    "matching-boundaries",
+    "calibration-evidence",
+    "corner-assessment",
+    "three-corrections-dense",
+    "three-corrections-grid",
+    "native-priority",
+    "source-binding"
+  ],
+  "nativeRenderCombinationsPassed": 96,
+  "privateRAWIncludedInRepository": false,
+  "privateRAWOptionalChecksRunInPortableSuite": false,
+  "realRAWSourceEvidence": "native-priority-verification.json and native-priority-ui-verification.json",
+  "installedHostSource": "installer-verification.json",
+  "compilationTarget": "arm64-apple-macos26.0",
+  "allSelectedTestsPassed": true
+}

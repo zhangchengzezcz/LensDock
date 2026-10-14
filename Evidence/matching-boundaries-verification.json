@@ -1,0 +1,45 @@
+{
+  "doesNotSubstituteRF_S_14_30" : true,
+  "invalidVignettingDoesNotDisableValidGeometry" : true,
+  "rejectsUnknownIdentityAndOutOfRangeFocal" : true,
+  "databaseAliasesProduceSameCalibration" : true,
+  "cases" : [
+    {
+      "method" : "unique-strict-token-match",
+      "requestedIdentity" : "EF-S17-85mm f\/4-5.6 IS USM",
+      "distortionAvailable" : true,
+      "matchedLens" : "Canon EF-S 17-85mm f\/4-5.6 IS USM",
+      "tcaAvailable" : true,
+      "vignettingAvailable" : true,
+      "vignettingWarning" : ""
+    },
+    {
+      "method" : "normalized-exact-database-alias",
+      "requestedIdentity" : "OLYMPUS M.40-150mm F2.8",
+      "distortionAvailable" : true,
+      "matchedLens" : "Olympus M.Zuiko Digital ED 40-150mm F2.8 Pro",
+      "tcaAvailable" : true,
+      "vignettingAvailable" : true,
+      "vignettingWarning" : ""
+    },
+    {
+      "method" : "normalized-exact-database-alias",
+      "requestedIdentity" : "Olympus M.Zuiko Digital ED 40-150mm F2.8 Pro",
+      "distortionAvailable" : true,
+      "matchedLens" : "Olympus M.Zuiko Digital ED 40-150mm F2.8 Pro",
+      "tcaAvailable" : true,
+      "vignettingAvailable" : true,
+      "vignettingWarning" : ""
+    },
+    {
+      "method" : "normalized-exact-database-alias",
+      "requestedIdentity" : "Canon RF 24-50mm F4.5-6.3 IS STM",
+      "distortionAvailable" : true,
+      "matchedLens" : "Canon RF 24-50mm F4.5-6.3 IS STM",
+      "tcaAvailable" : true,
+      "vignettingAvailable" : false,
+      "vignettingWarning" : "当前图像范围内的暗角增益无效，已关闭这项；有效畸变与色差可独立使用。"
+    }
+  ],
+  "invalidVignettingCreatesNoGainOrRecommendation" : true
+}

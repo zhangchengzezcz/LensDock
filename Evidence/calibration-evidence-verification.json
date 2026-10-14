@@ -1,0 +1,24 @@
+{
+  "amountStrengthRoundtrip" : true,
+  "realFixtures" : [
+    {
+      "focal" : 17,
+      "distortionPercentOfShortEdge" : 2.0031481687470509,
+      "lens" : "Canon EF-S 17-85mm f\/4-5.6 IS USM",
+      "tcaPixels" : 0.71440037803260781,
+      "profileOnly" : true,
+      "vignettingFullEV" : 1.5699707705588417
+    },
+    {
+      "focal" : 50,
+      "distortionPercentOfShortEdge" : 1.1546663186167285,
+      "lens" : "Nikkor AF-S 18-70mm f\/3.5-4.5G DX IF-ED",
+      "tcaPixels" : 0.18862598523100119,
+      "profileOnly" : true,
+      "vignettingFullEV" : 0.28076241761138021
+    }
+  ],
+  "identityCalibrationCreatesNoWarp" : true,
+  "missingAndUnsupportedCalibrationCreatesNoWarp" : true,
+  "identityRecommendationsAreZero" : true
+}

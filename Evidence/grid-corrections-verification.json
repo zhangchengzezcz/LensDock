@@ -1,0 +1,477 @@
+{
+  "profileReport" : {
+    "distance_source" : "infinity_fallback",
+    "distortionCorrectionNeeded" : true,
+    "geometryCalibrationInferredFromContent" : false,
+    "geometryMapEncoding" : "normalized-source-RGf-bottom-up-grid-v2",
+    "vignettingCalibrationUsable" : true,
+    "geometryMapHeight" : 256,
+    "cameraMaker" : "Canon",
+    "focus_distance_m" : 1000,
+    "focal_mm" : 17,
+    "tcaCorrectionNeeded" : true,
+    "camera" : "EOS 40D",
+    "matchingIdentityMethod" : "normalized-exact-database-alias",
+    "lensMaker" : "Canon",
+    "vignettingProfileAvailable" : true,
+    "matchedLensIdentityNames" : [
+      "Canon EF-S 17-85mm f\/4-5.6 IS USM"
+    ],
+    "gain_range" : [
+      1.0000073909759521,
+      2.9688138961791992
+    ],
+    "lens" : "Canon EF-S 17-85mm f\/4-5.6 IS USM",
+    "geometryMapVerifiedMaxErrorPixels" : 0.00034905973987520156,
+    "geometryMapWidth" : 257,
+    "tcaProfileAvailable" : true,
+    "databaseFiles" : 56,
+    "matchingIdentitySource" : "LensModel",
+    "vignettingCorrectionNeeded" : 1,
+    "distortionPeakShiftPixels" : 5.1083534583823296,
+    "height" : 256,
+    "vignettingCalibrationPresent" : true,
+    "geometryVerification" : "every-full-resolution-coordinate",
+    "workingTransfer" : "encoded_sRGB",
+    "distortionPeakShiftPercent" : 1.9954505696805975,
+    "interpolatedCalibration" : {
+      "vignetting" : {
+        "terms" : [
+          -0.98390001058578491,
+          0.79159998893737793,
+          -0.48219999670982361
+        ],
+        "focal" : 17,
+        "model" : 1,
+        "aperture" : 4,
+        "distance" : 1000
+      },
+      "lensProjection" : 1,
+      "cameraCropFactor" : 1.621999979019165,
+      "tca" : {
+        "model" : 2,
+        "focal" : 17,
+        "terms" : [
+          1.0007599592208862,
+          1.0000753402709961,
+          0,
+          0,
+          -4.529999932856299e-05,
+          -6.0000002122251317e-07
+        ]
+      },
+      "distortion" : {
+        "model" : 3,
+        "focal" : 17,
+        "terms" : [
+          0.021181000396609306,
+          -0.055580999702215195,
+          0
+        ]
+      },
+      "lensfunVersion" : "0.3.4",
+      "lensCenter" : [
+        0,
+        0
+      ],
+      "lensCropFactor" : 1.6109999418258667,
+      "lensAspectRatio" : 1.5
+    },
+    "geometryMapTolerancePixels" : 0.001,
+    "tcaPeakSeparationPixels" : 0.14144282240178291,
+    "geometryAmountAssessment" : "optical-profile-sampled-65x65",
+    "cameraMount" : "Canon EF-S",
+    "distortionProfileAvailable" : true,
+    "width" : 384,
+    "aperture" : 4
+  },
+  "replacesOnlyOwnEffect" : true,
+  "gridRenderTolerance" : 0.0001,
+  "preservesExistingEffectsAndContext" : true,
+  "renders" : [
+    {
+      "transfer" : "linear",
+      "maxError" : 0,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 0,
+      "mode" : 0,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 9.965896606567437e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 3.4238746804371813e-07,
+      "mode" : 1,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 7.6413154601051581e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.1595156529924513e-07,
+      "mode" : 2,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 9.965896606567437e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 3.4249675000964741e-07,
+      "mode" : 3,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 2.3581087582602578e-08,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.2826433175982544e-09,
+      "mode" : 4,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.0047191770168329e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 6.2854981975371234e-07,
+      "mode" : 5,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.0264482473931746e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 4.32810959767364e-07,
+      "mode" : 6,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.0047191770168329e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 6.2698492171669811e-07,
+      "mode" : 7,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 0,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 0,
+      "mode" : 0,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 9.3754827975960076e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 3.4146142204982424e-07,
+      "mode" : 1,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 7.5968503952805744e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.0185359833220352e-07,
+      "mode" : 2,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 9.5228362083366047e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 3.4178730943301761e-07,
+      "mode" : 3,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.8244981775383806e-08,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.4778030523037543e-09,
+      "mode" : 4,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 2.945685110222751e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 4.0148553206467655e-07,
+      "mode" : 5,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 2.5207563814910738e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.4128230378791798e-07,
+      "mode" : 6,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 2.8072997354244844e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 4.0143597785264268e-07,
+      "mode" : 7,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 0,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 0,
+      "mode" : 0,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.010560989389564e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 3.4429221533392369e-07,
+      "mode" : 1,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 7.644534110937129e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.3867289163213313e-07,
+      "mode" : 2,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.0154313444914187e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 3.4358913952435969e-07,
+      "mode" : 3,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 3.641322260383717e-08,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 3.007881293502039e-09,
+      "mode" : 4,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.197116188833558e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 6.9839743140151707e-07,
+      "mode" : 5,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.3656714209997478e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 5.4011935871072845e-07,
+      "mode" : 6,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "linear",
+      "maxError" : 1.3384934809235194e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 6.9685759810232336e-07,
+      "mode" : 7,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 0,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 0,
+      "mode" : 0,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.0794491653462468e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 9.6128753075829046e-07,
+      "mode" : 1,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 7.7990293502749886e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 5.8825956291573664e-07,
+      "mode" : 2,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.0794491653462468e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 9.6120359788218273e-07,
+      "mode" : 3,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.4629070388405552e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.3824215502053287e-08,
+      "mode" : 4,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.1580337857877709e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 1.2778863084178796e-06,
+      "mode" : 5,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.1485743010630767e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 8.2947050483481101e-07,
+      "mode" : 6,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.1580337857877709e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 1.2758590593672214e-06,
+      "mode" : 7,
+      "partialStrengths" : 0
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 0,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 0,
+      "mode" : 0,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 9.8099296556991566e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 9.6413235261257725e-07,
+      "mode" : 1,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 7.8401977121819733e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 5.5342377453933279e-07,
+      "mode" : 2,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 9.7486382803907423e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 9.6578452251256388e-07,
+      "mode" : 3,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.2337591404065762e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.2280116827924459e-08,
+      "mode" : 4,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.0301301911638805e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 1.0357155707275075e-06,
+      "mode" : 5,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 9.0972146740836424e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 5.9818289338765631e-07,
+      "mode" : 6,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.0229367630329445e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 1.0367135975796264e-06,
+      "mode" : 7,
+      "partialStrengths" : 1
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 0,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 0,
+      "mode" : 0,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.072478064168686e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 9.6321091571149713e-07,
+      "mode" : 1,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 7.8915658891232088e-06,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 6.4807996953458024e-07,
+      "mode" : 2,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.0626998258780884e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 9.6159392200040616e-07,
+      "mode" : 3,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.6681880077307198e-07,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 2.4289134849302257e-08,
+      "mode" : 4,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.2455102450889544e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 1.3462807917804799e-06,
+      "mode" : 5,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.1978923501132499e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 9.749013567273722e-07,
+      "mode" : 6,
+      "partialStrengths" : 2
+    },
+    {
+      "transfer" : "encoded_sRGB",
+      "maxError" : 1.2519729295418225e-05,
+      "savedIndependentSettingsAndMetadata" : true,
+      "meanError" : 1.3441397985312482e-06,
+      "mode" : 7,
+      "partialStrengths" : 2
+    }
+  ]
+}

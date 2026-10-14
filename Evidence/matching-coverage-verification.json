@@ -1,0 +1,77 @@
+{
+  "scope": "Database-derived identity aliases and interpolation witnesses in small native coordinates at each recorded aspect ratio; not real RAW or optical accuracy coverage",
+  "sourceCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
+  "cameraEntries": 1057,
+  "lensEntries": 1571,
+  "uniqueMakerModels": 1472,
+  "requests": 1566,
+  "matchedBeforeAliasFix": 1510,
+  "matchedAfterAliasFix": 1537,
+  "recoveredIdentityWitnesses": [
+    "6x6.xml:4",
+    "6x6.xml:5",
+    "6x6.xml:6",
+    "compact-canon.xml:42",
+    "compact-canon.xml:57",
+    "mil-olympus.xml:24",
+    "mil-panasonic.xml:16",
+    "mil-panasonic.xml:29",
+    "mil-panasonic.xml:30",
+    "mil-panasonic.xml:43",
+    "mil-tamron.xml:18",
+    "misc.xml:109",
+    "misc.xml:128",
+    "slr-canon.xml:104",
+    "slr-canon.xml:156",
+    "slr-canon.xml:162",
+    "slr-canon.xml:163",
+    "slr-canon.xml:43",
+    "slr-nikon.xml:14",
+    "slr-nikon.xml:148",
+    "slr-nikon.xml:38",
+    "slr-nikon.xml:74",
+    "slr-samyang.xml:2",
+    "slr-sigma.xml:59",
+    "slr-sigma.xml:62",
+    "slr-sigma.xml:84",
+    "slr-tokina.xml:1",
+    "slr-tokina.xml:16"
+  ],
+  "newlyRejectedAmbiguousWitnesses": [
+    "slr-tamron.xml:22"
+  ],
+  "remainingFailures": 29,
+  "skipped": [
+    {
+      "id": "generic.xml:0",
+      "reason": "no-optical-calibration-point",
+      "lens": "Rectilinear 10-1000mm f/1.0"
+    },
+    {
+      "id": "generic.xml:1",
+      "reason": "no-optical-calibration-point",
+      "lens": "Fisheye 8-20mm f/1.0"
+    },
+    {
+      "id": "generic.xml:2",
+      "reason": "no-optical-calibration-point",
+      "lens": "Panoramic 10-100mm f/1.0"
+    },
+    {
+      "id": "misc.xml:131",
+      "reason": "no-compatible-calibration-crop-camera",
+      "lens": "Pergear 7.5mm f/2.8"
+    },
+    {
+      "id": "misc.xml:132",
+      "reason": "no-compatible-calibration-crop-camera",
+      "lens": "Yongnuo 25mm f/1.7 II"
+    }
+  ],
+  "latestPublicDBCommitVerifiedAgainstGitHubAPI": true,
+  "RF_S_14_30SupportedByPublicDB": false,
+  "canonEmbeddedPacketNumericalMeaningVerified": false,
+  "moduleSHA256": "aa72c388dda8244a3a1b3eadb32b9c8ff55a95a4304f01f07fb62a0bd0949b7f",
+  "latestUIModuleSHA256": "0cadbaa31649b54fc62898ca3fc3717179b10eb21975985b76f2881e06ddffa4",
+  "nativeRematchWithNewMetadataPathObserved": true
+}

@@ -1,0 +1,26 @@
+{
+  "publicMenuTitle": "镜头矫正",
+  "publicCommands": [
+    "打开镜头矫正…"
+  ],
+  "observedThroughNativeAccessibility": true,
+  "diagnosticCommandsRemovedFromControllerAndMenu": true,
+  "emptyRAWStateObserved": true,
+  "emptyRAWStateMessage": "请先打开 RAW 照片，再在图层列表中选中 RAW 图层。",
+  "restoresExistingRAWSettings": true,
+  "explicitRematchFeedbackObserved": true,
+  "detailsRenameObserved": "详细设置…",
+  "temporary35mmRecalculationObserved": true,
+  "restoredOriginal50mmObserved": true,
+  "photoCorrectionAppliedDuringThisUITest": false,
+  "existingSavedEffectEnvelopeUnchanged": true,
+  "rawSHA256": "18e287009b15b20fc73fd2223ed1551231f3853398a38a7b0a4308b630e1f805",
+  "busySpinnerImplemented": true,
+  "busyRematchDisabledInCode": true,
+  "busySpinnerLiveFrameCaptured": false,
+  "panelScreenshotsInspectedInConversation": true,
+  "nativeMenuScreenshotUnavailable": true,
+  "scope": "菜单命令、空状态、已有 RAW 参数恢复和详情重算；并非完整辅助功能或慢任务视觉验收",
+  "moduleSHA256": "0cadbaa31649b54fc62898ca3fc3717179b10eb21975985b76f2881e06ddffa4",
+  "signedHostModuleSHA256": "50cc3369faa3d54f95a67a059034de8433e198b760350e597353d562f0ef433b"
+}
