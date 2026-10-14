@@ -21,6 +21,88 @@ static BOOL exactLensIdentity(const lfLens*lens,NSString*name){
  for(NSString*model in identityNames(lens->Model)){if([norm(model)isEqual:n])return YES;for(NSString*maker in identityNames(lens->Maker))if([norm([maker stringByAppendingString:model])isEqual:n])return YES;}
  return NO;
 }
+// Lensfun replaces earlier default model elements with the last one. Retain
+// those explicitly recorded names as private language aliases in memory.
+// The last default, display translations and every optical value stay intact;
+// the public database on disk is never rewritten.
+static lfError loadRecordedAliases(lfDatabase*db,NSURL*url,__typeof__(&lf_db_load_file)loadFile,__typeof__(&lf_db_load_data)loadData,NSUInteger*aliasCount){
+ NSData*data=[NSData dataWithContentsOfURL:url];if(!data)return LF_WRONG_FORMAT;
+ NSXMLDocument*xml=[[NSXMLDocument alloc]initWithData:data options:NSXMLNodeLoadExternalEntitiesNever error:nil];
+ if(!xml)return LF_WRONG_FORMAT;
+ NSArray*records=[xml nodesForXPath:@"/lensdatabase/lens[count(model[not(@lang)]) > 1]" error:nil];
+ if(!records.count)return loadFile(db,url.fileSystemRepresentation);
+ NSUInteger added=0;
+ for(NSXMLElement*record in records){
+  NSArray*defaults=[record nodesForXPath:@"model[not(@lang)]" error:nil];
+  for(NSUInteger i=0;i+1<defaults.count;i++){
+   NSXMLElement*model=defaults[i];NSUInteger suffix=i;NSString*language=nil;
+   do{language=[NSString stringWithFormat:@"x-lensdock-recorded-alias-%lu",(unsigned long)suffix++];}
+   while([[record nodesForXPath:[NSString stringWithFormat:@"model[@lang='%@']",language] error:nil]count]);
+   [model addAttribute:[NSXMLNode attributeWithName:@"lang" stringValue:language]];
+   // The C multi-string requires a default before any language/name pairs.
+   [model detach];[record addChild:model];added++;
+  }
+ }
+ NSData*normalized=xml.XMLData;lfError result=loadData(db,url.fileSystemRepresentation,normalized.bytes,normalized.length);
+ if(result==LF_NO_ERROR)*aliasCount+=added;return result;
+}
+// Select a calibration for the recorded lens identity and the known sensor
+// class. This does not search for similar focal lengths or nearby lens models.
+// Multiple calibrations in the same sensor class remain ambiguous.
+static const lfLens*selectExactLensVariant(const lfLens**candidates,const lfCamera*camera,NSString*name,NSUInteger*count,BOOL*sensorVariant){
+ const lfLens*first=NULL;*count=0;*sensorVariant=NO;
+ if(candidates)for(NSUInteger i=0;candidates[i];i++)if(exactLensIdentity(candidates[i],name)){if(!first)first=candidates[i];(*count)++;}
+ if(*count<=1)return first;
+ const lfLens*selected=NULL;NSUInteger near=0;
+ for(NSUInteger i=0;candidates[i];i++)if(exactLensIdentity(candidates[i],name)){
+  const lfLens*l=candidates[i];BOOL sameMaker=NO;
+  for(NSString*a in identityNames(first->Maker))for(NSString*b in identityNames(l->Maker))if([norm(a)isEqual:norm(b)])sameMaker=YES;
+  if(!sameMaker||l->Type!=first->Type||!isfinite(l->CropFactor)||l->CropFactor<=0||!isfinite(camera->CropFactor)||camera->CropFactor<=0)return NULL;
+  // 3% admits recorded 1.50/1.534 rounding, but does not collapse Canon 1.6,
+  // APS-C 1.5, Micro Four Thirds 2.0 or full-frame 1.0 calibration classes.
+  if(fabs(l->CropFactor/camera->CropFactor-1)<=.03){selected=l;near++;}
+ }
+ if(near!=1)return NULL;
+ *sensorVariant=YES;return selected;
+}
+// Camera marketing variants can be equivalent for lens correction. A shared
+// name alone is insufficient: require identical maker, mount and crop factor.
+static BOOL exactCameraIdentity(const lfCamera*camera,NSString*model){
+ NSString*n=norm(model);if(!n.length)return NO;
+ for(NSString*name in identityNames(camera->Model)){
+  if([norm(name)isEqual:n])return YES;
+  for(NSString*maker in identityNames(camera->Maker))if([norm([maker stringByAppendingString:name])isEqual:n])return YES;
+ }
+ return NO;
+}
+static BOOL sameCameraOptics(const lfCamera*a,const lfCamera*b){
+ if(!a||!b||!a->Mount||!b->Mount||!isfinite(a->CropFactor)||a->CropFactor<=0||a->CropFactor!=b->CropFactor||strcmp(a->Mount,b->Mount))return NO;
+ NSArray*names=identityNames(a->Maker);for(NSString*x in names)for(NSString*y in identityNames(b->Maker))if([norm(x)isEqual:norm(y)])return YES;
+ return NO;
+}
+static const lfCamera*selectCamera(const lfDatabase*db,const lfCamera**candidates,NSDictionary*metadata,__typeof__(&lf_db_find_lenses_hd)findLenses,__typeof__(&lf_free)releaseList,NSString**method,NSString**evidenceKey,NSUInteger*equivalentCount){
+ if(!candidates||!candidates[0])return NULL;
+ NSMutableArray<NSValue*>*exact=[NSMutableArray new];
+ for(NSUInteger i=0;candidates[i];i++)if(exactCameraIdentity(candidates[i],text(metadata[@"Model"]))) [exact addObject:[NSValue valueWithPointer:candidates[i]]];
+ if(!exact.count){if(!candidates[1]){*method=@"unique-camera-token-match";*equivalentCount=1;return candidates[0];}return NULL;}
+ const lfCamera*first=exact.firstObject.pointerValue;BOOL equivalent=YES;
+ for(NSValue*v in exact)if(!sameCameraOptics(first,v.pointerValue)){equivalent=NO;break;}
+ if(equivalent){*method=exact.count==1?@"exact-camera-database-alias":@"equivalent-camera-optics-aliases";*equivalentCount=exact.count;return first;}
+ // Joint evidence is accepted only from recorded exact lens identities, never
+ // focal similarity or a nearest lens. Distinct crop/mount contexts stay errors.
+ for(NSString*key in @[@"LensModel",@"LensIDName",@"Lens"]){
+  NSString*name=text(metadata[key]);if(!name.length)continue;
+  const lfCamera*selected=NULL;NSUInteger compatible=0;BOOL conflict=NO;
+  for(NSValue*v in exact){
+   const lfCamera*c=v.pointerValue;const lfLens**lenses=findLenses(db,c,NULL,NULL,0);NSUInteger matches=0;
+   NSUInteger identities=0;BOOL variant=NO;const lfLens*matching=selectExactLensVariant(lenses,c,name,&identities,&variant);matches=matching?1:identities;
+   if(lenses)releaseList((void*)lenses);
+   if(matches){if(matches!=1){conflict=YES;continue;}compatible++;if(!selected)selected=c;else if(!sameCameraOptics(selected,c))conflict=YES;}
+  }
+  if(selected&&!conflict){*method=@"joint-exact-camera-lens-optical-context";*evidenceKey=key;*equivalentCount=compatible;return selected;}
+ }
+ return NULL;
+}
 NSDictionary*LensReadNativeCorrectionSupport(NSURL*rawURL){
  CIRAWFilter*raw=[CIRAWFilter filterWithImageURL:rawURL];
  if(!raw)return @{@"probeSucceeded":@NO,@"probeSource":@"CIRAWFilter.isLensCorrectionSupported"};
@@ -71,35 +153,34 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
  if(!focal){fail(error,@"缺少拍摄焦距。");return nil;}
  void*handle=dlopen(libURL.fileSystemRepresentation,RTLD_NOW|RTLD_LOCAL);if(!handle){fail(error,@"无法载入独立镜头计算库。");return nil;}
  #define LOAD(n) __typeof__(&n) n##Fn=dlsym(handle,#n);if(!n##Fn){fail(error,@"镜头库接口版本不兼容。");dlclose(handle);return nil;}
- LOAD(lf_db_new);LOAD(lf_db_destroy);LOAD(lf_db_load_file);LOAD(lf_db_find_cameras);LOAD(lf_db_find_lenses_hd);LOAD(lf_free);LOAD(lf_mlstr_get);
+ LOAD(lf_db_new);LOAD(lf_db_destroy);LOAD(lf_db_load_file);LOAD(lf_db_load_data);LOAD(lf_db_find_cameras);LOAD(lf_db_find_lenses_hd);LOAD(lf_free);LOAD(lf_mlstr_get);
  LOAD(lf_modifier_apply_geometry_distortion);LOAD(lf_modifier_apply_subpixel_distortion);LOAD(lf_modifier_apply_subpixel_geometry_distortion);
  LOAD(lf_lens_interpolate_distortion);LOAD(lf_lens_interpolate_tca);LOAD(lf_lens_interpolate_vignetting);LOAD(lf_modifier_new);LOAD(lf_modifier_initialize);LOAD(lf_modifier_destroy);LOAD(lf_modifier_apply_color_modification);
- lfDatabase*db=lf_db_newFn();const lfCamera**cs=NULL;const lfLens**ls=NULL;lfModifier*mod=NULL;NSDictionary*result=nil;NSString*distanceSource=nil,*identitySource=nil,*identityMethod=nil;NSMutableDictionary*report=nil,*plan=nil,*snapshot=nil;
- NSArray*files=[NSFileManager.defaultManager contentsOfDirectoryAtURL:dbURL includingPropertiesForKeys:nil options:0 error:error];NSUInteger loaded=0;
+ lfDatabase*db=lf_db_newFn();const lfCamera**cs=NULL;const lfLens**ls=NULL;lfModifier*mod=NULL;NSDictionary*result=nil;NSString*distanceSource=nil,*identitySource=nil,*identityMethod=nil,*cameraMethod=nil,*cameraEvidenceKey=nil;NSUInteger equivalentCameras=0;NSMutableDictionary*report=nil,*plan=nil,*snapshot=nil;
+ NSArray*files=[NSFileManager.defaultManager contentsOfDirectoryAtURL:dbURL includingPropertiesForKeys:nil options:0 error:error];NSUInteger loaded=0,recordedAliases=0;
  for(NSURL*url in [files sortedArrayUsingComparator:^NSComparisonResult(NSURL*a,NSURL*b){return [a.path compare:b.path];}]){
-  if([url.pathExtension isEqual:@"xml"]){if(lf_db_load_fileFn(db,url.fileSystemRepresentation)!=LF_NO_ERROR){fail(error,@"镜头数据库读取失败。");goto cleanup;}loaded++;}
+  if([url.pathExtension isEqual:@"xml"]){if(loadRecordedAliases(db,url,lf_db_load_fileFn,lf_db_load_dataFn,&recordedAliases)!=LF_NO_ERROR){fail(error,@"镜头数据库读取失败。");goto cleanup;}loaded++;}
  }
  if(!loaded){fail(error,@"没有可用镜头数据库。");goto cleanup;}
  cs=lf_db_find_camerasFn(db,text(m[@"Make"]).UTF8String,text(m[@"Model"]).UTF8String);
- if(!cs||!cs[0]||cs[1]){fail(error,@"无法唯一匹配相机，请选择相机配置。");goto cleanup;}
- const lfCamera*camera=cs[0];const lfLens*lens=NULL;
+ const lfCamera*camera=selectCamera(db,cs,m,lf_db_find_lenses_hdFn,lf_freeFn,&cameraMethod,&cameraEvidenceKey,&equivalentCameras);const lfLens*lens=NULL;
+ if(!camera){fail(error,@"相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。");goto cleanup;}
  for(NSString*key in @[@"LensModel",@"LensIDName",@"Lens"]){
   NSString*name=text(m[key]);if(!name.length)continue;
   if(ls){lf_freeFn(ls);ls=NULL;}
+  // Keep every sensor calibration candidate; the library display-list
+  // uniquifier would hide alternative profiles before our identity checks.
   // Search identities among compatible camera mounts before parsing aperture
   // tokens from the name. This accepts recorded aliases, never nearby optics.
-  ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,LF_SEARCH_SORT_AND_UNIQUIFY);
-  const lfLens*exact=NULL;NSUInteger exactCount=0;
-  if(ls)for(NSUInteger i=0;ls[i];i++)if(exactLensIdentity(ls[i],name)){exact=ls[i];exactCount++;}
-  if(exactCount==1){lens=exact;identitySource=key;identityMethod=@"normalized-exact-database-alias";break;}
+  ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);
+  NSUInteger exactCount=0;BOOL sensorVariant=NO;const lfLens*exact=selectExactLensVariant(ls,camera,name,&exactCount,&sensorVariant);
+  if(exact){lens=exact;identitySource=key;identityMethod=sensorVariant?@"exact-lens-identity-sensor-calibration-variant":@"normalized-exact-database-alias";break;}
   if(exactCount>1)continue;
   if(ls){lf_freeFn(ls);ls=NULL;}
-  ls=lf_db_find_lenses_hdFn(db,camera,NULL,name.UTF8String,LF_SEARCH_SORT_AND_UNIQUIFY);
-  if(!ls)continue;exact=NULL;exactCount=0;NSUInteger count=0;
-  for(;ls[count];count++){
-   if(exactLensIdentity(ls[count],name)){exact=ls[count];exactCount++;}
-  }
-  if(exactCount==1){lens=exact;identitySource=key;identityMethod=@"normalized-exact";break;}if(exactCount==0&&count==1){lens=ls[0];identitySource=key;identityMethod=@"unique-strict-token-match";break;}
+  ls=lf_db_find_lenses_hdFn(db,camera,NULL,name.UTF8String,0);
+  if(!ls)continue;exact=selectExactLensVariant(ls,camera,name,&exactCount,&sensorVariant);NSUInteger count=0;
+  for(;ls[count];count++){}
+  if(exact){lens=exact;identitySource=key;identityMethod=sensorVariant?@"exact-lens-identity-sensor-calibration-variant":@"normalized-exact";break;}if(exactCount==0&&count==1){lens=ls[0];identitySource=key;identityMethod=@"unique-strict-token-match";break;}
  }
  if(!lens){fail(error,@"无法唯一匹配镜头，请选择镜头配置。");goto cleanup;}
  if(lens->MinFocal&&(focal<lens->MinFocal*.97||focal>lens->MaxFocal*1.03)){fail(error,@"实际焦距超出匹配镜头范围。");goto cleanup;}
@@ -107,8 +188,11 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
  lfLensCalibDistortion distortion={0};lfLensCalibTCA tca={0};lfLensCalibVignetting vig={0};
  BOOL hasD=lf_lens_interpolate_distortionFn(lens,focal,&distortion),hasT=lf_lens_interpolate_tcaFn(lens,focal,&tca),hasV=aperture&&lf_lens_interpolate_vignettingFn(lens,focal,aperture,distance,&vig);
  report=[@{@"camera":@(lf_mlstr_getFn(camera->Model)),@"lens":@(lf_mlstr_getFn(lens->Model)),@"focal_mm":@(focal),@"aperture":@(aperture),@"focus_distance_m":@(distance),@"distance_source":distanceSource,@"distortionProfileAvailable":@(hasD),@"tcaProfileAvailable":@(hasT),@"vignettingProfileAvailable":@(hasV),@"width":@(w),@"height":@(h),@"databaseFiles":@(loaded)} mutableCopy];
+ report[@"cameraIdentityMethod"]=cameraMethod;report[@"equivalentCameraCandidates"]=@(equivalentCameras);report[@"matchedCameraIdentityNames"]=identityNames(camera->Model);
+ if(cameraEvidenceKey)report[@"cameraIdentityLensEvidenceSource"]=cameraEvidenceKey;
  report[@"cameraMaker"]=@(lf_mlstr_getFn(camera->Maker));report[@"lensMaker"]=@(lf_mlstr_getFn(lens->Maker));report[@"matchingIdentitySource"]=identitySource;report[@"matchingIdentityMethod"]=identityMethod;
  report[@"matchedLensIdentityNames"]=identityNames(lens->Model);report[@"cameraMount"]=@(camera->Mount);
+ report[@"preservedRecordedDefaultAliases"]=@(recordedAliases);
  if(m[@"metadataReader"])report[@"metadataReader"]=m[@"metadataReader"];
  if(m[@"metadataWarning"])report[@"metadataWarning"]=m[@"metadataWarning"];
  snapshot=[@{@"lensfunVersion":@"0.3.4",@"cameraCropFactor":@(camera->CropFactor),@"lensCropFactor":@(lens->CropFactor),@"lensProjection":@(lens->Type),@"lensCenter":@[@(lens->CenterX),@(lens->CenterY)],@"lensAspectRatio":@(lens->AspectRatio)}mutableCopy];

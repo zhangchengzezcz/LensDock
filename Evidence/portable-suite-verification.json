@@ -1,7 +1,10 @@
 {
-  "executedOn": "2026-10-14",
+  "executedOn": "2026-10-15T06:50:19.745244+08:00",
   "suite": "Scripts/test.py",
   "suitesPassed": [
+    "recorded-aliases",
+    "sensor-variant",
+    "camera-context",
     "matching-boundaries",
     "calibration-evidence",
     "corner-assessment",
@@ -11,10 +14,21 @@
     "source-binding"
   ],
   "nativeRenderCombinationsPassed": 96,
+  "sourceEngineSHA256": "537915253967b0ac786b1e7251dc779fa64ab64663e8a4d505b7dd95b9d95617",
   "privateRAWIncludedInRepository": false,
-  "privateRAWOptionalChecksRunInPortableSuite": false,
-  "realRAWSourceEvidence": "native-priority-verification.json and native-priority-ui-verification.json",
-  "installedHostSource": "installer-verification.json",
+  "privateRAWOptionalChecksRunInPortableSuite": true,
+  "actualRAWProbeTypes": [
+    "CR2",
+    "NEF",
+    "CR3"
+  ],
+  "realRAWIdentityAndAmountTypes": [
+    "CR2",
+    "NEF"
+  ],
+  "realRAWSourceEvidence": "native-priority-verification.json and calibration-evidence-verification.json",
   "compilationTarget": "arm64-apple-macos26.0",
-  "allSelectedTestsPassed": true
+  "allSelectedTestsPassed": true,
+  "scope": "Development source tests; does not validate new module inside the running Pixelmator GUI or second Mac",
+  "releasedDMGIncludesDevelopmentChanges": false
 }

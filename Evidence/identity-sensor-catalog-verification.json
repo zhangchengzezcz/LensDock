@@ -1,0 +1,158 @@
+{
+  "verifiedAt": "2026-10-14T22:50:19.741675+00:00",
+  "baselineSourceCommit": "9675545de729daf61e7cf3394d8de9f937452115",
+  "sourceEngineSHA256": "537915253967b0ac786b1e7251dc779fa64ab64663e8a4d505b7dd95b9d95617",
+  "auditSourceSHA256": "8aa0fd0ac9d4b24e1a0ee557b982fd517041d645529ad8a6eeb3d1b862379e17",
+  "auditInputBuilderSHA256": "b773a0d330f3ae5fd1e16bdcfc2d7d20c1fe5532f46322b99edca1b940839c5a",
+  "databaseCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
+  "scope": "Database-derived identity aliases and interpolation witnesses in small native coordinates at each recorded aspect ratio; not real RAW or optical accuracy coverage",
+  "requests": 1566,
+  "matchedBefore": 1537,
+  "matchedAfter": 1561,
+  "recoveredWitnesses": [
+    "compact-olympus.xml:1",
+    "compact-olympus.xml:11",
+    "compact-olympus.xml:5",
+    "compact-sony.xml:10",
+    "compact-sony.xml:11",
+    "compact-sony.xml:12",
+    "compact-sony.xml:13",
+    "compact-sony.xml:14",
+    "compact-sony.xml:15",
+    "compact-sony.xml:16",
+    "compact-sony.xml:17",
+    "compact-sony.xml:18",
+    "compact-sony.xml:24",
+    "compact-sony.xml:25",
+    "compact-sony.xml:6",
+    "compact-sony.xml:7",
+    "compact-sony.xml:8",
+    "compact-sony.xml:9",
+    "mil-sigma.xml:1",
+    "mil-sigma.xml:4",
+    "slr-konica-minolta.xml:17",
+    "slr-nikon.xml:150",
+    "slr-pentax.xml:68",
+    "slr-sigma.xml:50",
+    "slr-tamron.xml:22",
+    "slr-tamron.xml:9"
+  ],
+  "newlyRejectedAmbiguities": [
+    "slr-nikon.xml:107",
+    "slr-sigma.xml:64"
+  ],
+  "baselineDifferentLensCropWitnesses": 21,
+  "currentDifferentLensCropWitnesses": 0,
+  "checksCameraCropAndMount": true,
+  "checksSelectedLensCrop": true,
+  "checksSelectedLensProjectionAndAspectRatio": true,
+  "currentCalibrationVariantDifferences": 0,
+  "remainingFailures": [
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 7.2,
+        "FNumber": 8,
+        "Make": "Fujifilm",
+        "Model": "FinePix F810",
+        "LensModel": "FinePix F810 & compatibles (Standard)"
+      },
+      "id": "compact-fujifilm.xml:5",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "FinePix F810 & compatibles (Standard)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 7.2,
+        "FNumber": 8,
+        "Make": "Fujifilm",
+        "Model": "FinePix F810",
+        "LensModel": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+      },
+      "id": "compact-fujifilm.xml:6",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 5.1,
+        "FNumber": 8,
+        "Make": "Panasonic",
+        "Model": "DMC-LX3",
+        "LensModel": "DMC-LX3 & compatibles (Standard)"
+      },
+      "id": "compact-panasonic.xml:1",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "DMC-LX3 & compatibles (Standard)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 10.5,
+        "FNumber": 8,
+        "Make": "Nikon Corporation",
+        "Model": "Nikon D40X",
+        "LensModel": "Nikon AF DX Fisheye-Nikkor 10.5mm f/2.8G ED"
+      },
+      "id": "slr-nikon.xml:107",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Nikon AF DX Fisheye-Nikkor 10.5mm f/2.8G ED"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 10,
+        "FNumber": 8,
+        "Make": "Canon",
+        "Model": "Canon EOS 1000D",
+        "LensModel": "Sigma 10mm f/2.8 EX DC Fisheye HSM"
+      },
+      "id": "slr-sigma.xml:64",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Sigma 10mm f/2.8 EX DC Fisheye HSM"
+    }
+  ],
+  "explicitSkips": [
+    {
+      "id": "generic.xml:0",
+      "reason": "no-optical-calibration-point",
+      "lens": "Rectilinear 10-1000mm f/1.0"
+    },
+    {
+      "id": "generic.xml:1",
+      "reason": "no-optical-calibration-point",
+      "lens": "Fisheye 8-20mm f/1.0"
+    },
+    {
+      "id": "generic.xml:2",
+      "reason": "no-optical-calibration-point",
+      "lens": "Panoramic 10-100mm f/1.0"
+    },
+    {
+      "id": "misc.xml:131",
+      "reason": "no-compatible-calibration-crop-camera",
+      "lens": "Pergear 7.5mm f/2.8"
+    },
+    {
+      "id": "misc.xml:132",
+      "reason": "no-compatible-calibration-crop-camera",
+      "lens": "Yongnuo 25mm f/1.7 II"
+    }
+  ],
+  "methodCounts": {
+    "normalized-exact-database-alias": 1457,
+    "exact-lens-identity-sensor-calibration-variant": 104
+  },
+  "developmentNativePanelSHA256": "80ecc0520c5972426cf90a98d8b96a553a2412316e1c79ef3e929040f76d07e0",
+  "developmentNativePanelCompiledAndSignatureVerified": true,
+  "installedPreviewUpdated": false,
+  "releasedDMGUpdated": false,
+  "doesNotProveRAWOrLightroomCoverage": true
+}

@@ -1,21 +1,41 @@
 {
   "profileReport" : {
-    "workingTransfer" : "encoded_sRGB",
+    "distance_source" : "infinity_fallback",
+    "geometryCalibrationInferredFromContent" : false,
+    "distortionCorrectionNeeded" : true,
+    "geometryMapEncoding" : "normalized-source-RGf-bottom-up-v1",
+    "vignettingCalibrationUsable" : true,
+    "cameraMaker" : "Canon",
+    "focus_distance_m" : 1000,
+    "tcaCorrectionNeeded" : true,
+    "focal_mm" : 17,
+    "camera" : "EOS 40D",
+    "equivalentCameraCandidates" : 1,
+    "matchingIdentityMethod" : "normalized-exact-database-alias",
+    "lensMaker" : "Canon",
     "vignettingProfileAvailable" : true,
+    "matchedLensIdentityNames" : [
+      "Canon EF-S 17-85mm f\/4-5.6 IS USM"
+    ],
     "gain_range" : [
       1.0000073909759521,
       2.9688138961791992
     ],
-    "cameraMount" : "Canon EF-S",
-    "databaseFiles" : 56,
-    "tcaPeakSeparationPixels" : 0.14144282240178291,
-    "vignettingCorrectionNeeded" : 1,
-    "distance_source" : "infinity_fallback",
-    "vignettingCalibrationUsable" : true,
+    "lens" : "Canon EF-S 17-85mm f\/4-5.6 IS USM",
     "tcaProfileAvailable" : true,
-    "matchingIdentityMethod" : "normalized-exact-database-alias",
+    "matchedCameraIdentityNames" : [
+      "Canon EOS 40D",
+      "EOS 40D"
+    ],
+    "databaseFiles" : 56,
+    "matchingIdentitySource" : "LensModel",
+    "cameraIdentityMethod" : "exact-camera-database-alias",
+    "vignettingCorrectionNeeded" : 1,
     "distortionPeakShiftPixels" : 5.1083534583823296,
-    "distortionProfileAvailable" : true,
+    "vignettingCalibrationPresent" : true,
+    "height" : 256,
+    "workingTransfer" : "encoded_sRGB",
+    "distortionPeakShiftPercent" : 1.9954505696805975,
     "interpolatedCalibration" : {
       "vignetting" : {
         "terms" : [
@@ -59,26 +79,13 @@
       "lensCropFactor" : 1.6109999418258667,
       "lensAspectRatio" : 1.5
     },
-    "matchedLensIdentityNames" : [
-      "Canon EF-S 17-85mm f\/4-5.6 IS USM"
-    ],
-    "cameraMaker" : "Canon",
-    "distortionCorrectionNeeded" : true,
-    "focus_distance_m" : 1000,
-    "lensMaker" : "Canon",
-    "camera" : "EOS 40D",
-    "height" : 256,
-    "lens" : "Canon EF-S 17-85mm f\/4-5.6 IS USM",
-    "focal_mm" : 17,
-    "width" : 384,
+    "tcaPeakSeparationPixels" : 0.14144282240178291,
     "geometryAmountAssessment" : "optical-profile-sampled-65x65",
-    "vignettingCalibrationPresent" : true,
-    "matchingIdentitySource" : "LensModel",
-    "aperture" : 4,
-    "tcaCorrectionNeeded" : true,
-    "geometryCalibrationInferredFromContent" : false,
-    "distortionPeakShiftPercent" : 1.9954505696805975,
-    "geometryMapEncoding" : "normalized-source-RGf-bottom-up-v1"
+    "cameraMount" : "Canon EF-S",
+    "preservedRecordedDefaultAliases" : 1,
+    "distortionProfileAvailable" : true,
+    "width" : 384,
+    "aperture" : 4
   },
   "replacesOnlyOwnEffect" : true,
   "gridRenderTolerance" : 0.0001,

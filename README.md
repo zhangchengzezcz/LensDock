@@ -36,6 +36,8 @@
 
 数据库来自 Lensfun 公共数据库提交 `43f9e001ab66c4fcdd4f400463f13b72f94b2288`，有 1057 个相机条目、1571 个镜头条目。数据库衍生的 1566 个身份/插值样本中 1537 个匹配成功，29 个因相机或镜头歧义拒绝；另有 5 个条目没有可测试标定/兼容相机。这些数字**不是实际 RAW 支持率，也不是光学准确率**。
 
+上述数量对应已发布的 `v0.1.0-preview`。当前开发源码还增加了相机地区名称、镜头与卡口联合证据、传感器校准版本选择及 XML 原始别名保留；保留所有同名候选，避免查询库的去重步骤隐藏不同校准。开发验证与发布包分开记录，详见 [匹配规则与目录核查](Documentation/Matching.md)。这些改进尚未包含在已发布 DMG 中。
+
 已验证真实 Canon 40D CR2、Nikon D70 NEF 的独立匹配，以及 Canon EOS R50 V / RF-S14–30mm CR3 的原生优先界面。96 组原生渲染组合覆盖三项开关、部分及超完整强度、线性与 sRGB 传递、密集和紧凑映射；另有边角内容、高光、零标定、不误替代镜头、源绑定与设置序列化测试。本机安装程序已实际完成安装、启动和菜单检查，原厂关键文件哈希不变。
 
 详见 [验收与限制](Documentation/Validation.md)、[兼容接口](Documentation/Compatibility.md) 和 `Evidence/`。历史证据记录对应当时构建，不要把旧 SHA256 当成当前包；当前包清单在 `Distribution/`。
@@ -55,6 +57,7 @@
 ```sh
 python3 Scripts/build.py
 python3 Scripts/test.py
+python3 Scripts/audit_catalog.py --run
 python3 -m pip install -r Scripts/dmg_requirements.txt
 python3 Scripts/package.py
 ```

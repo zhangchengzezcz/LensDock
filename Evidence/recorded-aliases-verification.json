@@ -1,0 +1,24 @@
+{
+  "sharedAliasAmbiguityRejected" : true,
+  "scope" : "Explicit XML identity preservation and calibration equivalence, not real RAW optical validation",
+  "existingLanguageAliasPreserved" : true,
+  "cases" : [
+    {
+      "matched" : "Nikkor AF-P 10-20mm f\/4.5-5.6G DX VR",
+      "requested" : "Nikon AF-P DX Nikkor 10-20mm f\/4.5-5.6G VR 168",
+      "method" : "normalized-exact-database-alias"
+    },
+    {
+      "matched" : "Nikkor AF-P 10-20mm f\/4.5-5.6G DX VR",
+      "requested" : "Nikon AF-P DX Nikkor 10-20mm f\/4.5-5.6G VR",
+      "method" : "normalized-exact-database-alias"
+    },
+    {
+      "matched" : "Nikkor AF-P 10-20mm f\/4.5-5.6G DX VR",
+      "requested" : "Nikkor AF-P 10-20mm f\/4.5-5.6G DX VR",
+      "method" : "normalized-exact-database-alias"
+    }
+  ],
+  "recordedDefaultAndTranslatedNamesProduceSameCalibration" : true,
+  "originalDatabaseBytesUnchanged" : true
+}

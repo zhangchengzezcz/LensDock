@@ -1,0 +1,34 @@
+{
+  "jointExactLensEvidenceCanResolveCameraMount" : true,
+  "differentCropAndMultiAspectModesRejected" : true,
+  "cases" : [
+    {
+      "requestedCamera" : "X-2,C-50Z",
+      "requestedLens" : "C-50Z & compatibles (Standard)",
+      "cameraMethod" : "equivalent-camera-optics-aliases",
+      "crop" : 4.9000000953674316,
+      "mount" : "olympusC50",
+      "equivalentCandidates" : 2
+    },
+    {
+      "requestedCamera" : "Cybershot",
+      "requestedLens" : "DSC-F707 & compatibles (Standard)",
+      "cameraMethod" : "joint-exact-camera-lens-optical-context",
+      "crop" : 3.9330000877380371,
+      "mount" : "sony707",
+      "equivalentCandidates" : 2
+    },
+    {
+      "requestedCamera" : "Cybershot",
+      "requestedLens" : "DSC-S85 & compatibles (Standard)",
+      "cameraMethod" : "joint-exact-camera-lens-optical-context",
+      "crop" : 4.8429999351501465,
+      "mount" : "sonyS85",
+      "equivalentCandidates" : 2
+    }
+  ],
+  "sameNameDistinctMountsRejected" : true,
+  "unknownLensNotUsedToResolveAmbiguity" : true,
+  "scope" : "identity and optical-context routing, not real RAW accuracy",
+  "recordedCameraAliasesWithSameOpticsAccepted" : true
+}

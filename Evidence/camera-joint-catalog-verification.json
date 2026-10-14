@@ -1,0 +1,192 @@
+{
+  "baselineSourceCommit": "9675545de729daf61e7cf3394d8de9f937452115",
+  "databaseCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
+  "scope": "Database-derived identity aliases and interpolation witnesses in small native coordinates at each recorded aspect ratio; not real RAW or optical accuracy coverage",
+  "checksCameraCropAndMount": true,
+  "requests": 1566,
+  "matchedBefore": 1537,
+  "matchedAfter": 1555,
+  "recoveredWitnesses": [
+    "compact-olympus.xml:1",
+    "compact-olympus.xml:11",
+    "compact-olympus.xml:5",
+    "compact-sony.xml:10",
+    "compact-sony.xml:11",
+    "compact-sony.xml:12",
+    "compact-sony.xml:13",
+    "compact-sony.xml:14",
+    "compact-sony.xml:15",
+    "compact-sony.xml:16",
+    "compact-sony.xml:17",
+    "compact-sony.xml:18",
+    "compact-sony.xml:24",
+    "compact-sony.xml:25",
+    "compact-sony.xml:6",
+    "compact-sony.xml:7",
+    "compact-sony.xml:8",
+    "compact-sony.xml:9"
+  ],
+  "regressedWitnesses": [],
+  "remainingFailures": [
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 7.2,
+        "FNumber": 8,
+        "Make": "Fujifilm",
+        "Model": "FinePix F810",
+        "LensModel": "FinePix F810 & compatibles (Standard)"
+      },
+      "id": "compact-fujifilm.xml:5",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "FinePix F810 & compatibles (Standard)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 7.2,
+        "FNumber": 8,
+        "Make": "Fujifilm",
+        "Model": "FinePix F810",
+        "LensModel": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+      },
+      "id": "compact-fujifilm.xml:6",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 5.1,
+        "FNumber": 8,
+        "Make": "Panasonic",
+        "Model": "DMC-LX3",
+        "LensModel": "DMC-LX3 & compatibles (Standard)"
+      },
+      "id": "compact-panasonic.xml:1",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "DMC-LX3 & compatibles (Standard)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 30,
+        "FNumber": 8,
+        "Make": "Generic",
+        "Model": "Crop-factor 2.0 (Four-Thirds)",
+        "LensModel": "Sigma 30mm f/2.8 EX DN"
+      },
+      "id": "mil-sigma.xml:1",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Sigma 30mm f/2.8 EX DN"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 56,
+        "FNumber": 8,
+        "Make": "Generic",
+        "Model": "Crop-factor 2.0 (Four-Thirds)",
+        "LensModel": "Sigma 56mm F1.4 DC DN | C 018"
+      },
+      "id": "mil-sigma.xml:4",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Sigma 56mm F1.4 DC DN | C 018"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 17,
+        "FNumber": 8,
+        "Make": "Sony",
+        "Model": "ILCA-68",
+        "LensModel": "Minolta AF 17-35mm F2.8-4 (D)"
+      },
+      "id": "slr-konica-minolta.xml:17",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Minolta AF 17-35mm F2.8-4 (D)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 10,
+        "FNumber": 8,
+        "Make": "Nikon Corporation",
+        "Model": "Nikon D5200",
+        "LensModel": "Nikon AF-P DX Nikkor 10-20mm f/4.5-5.6G VR 168"
+      },
+      "id": "slr-nikon.xml:150",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Nikon AF-P DX Nikkor 10-20mm f/4.5-5.6G VR 168"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 60,
+        "FNumber": 8,
+        "Make": "Pentax",
+        "Model": "Pentax K-500",
+        "LensModel": "smc Pentax DA* 60-250mm f/4 [IF] SDM"
+      },
+      "id": "slr-pentax.xml:68",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "smc Pentax DA* 60-250mm f/4 [IF] SDM"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 10,
+        "FocalLength": 24,
+        "FNumber": 1.4,
+        "Make": "Sony",
+        "Model": "NEX-3",
+        "LensModel": "Sigma 24mm F1.4 DG HSM | A"
+      },
+      "id": "slr-sigma.xml:50",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Sigma 24mm F1.4 DG HSM | A"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 18,
+        "FNumber": 8,
+        "Make": "Generic",
+        "Model": "Crop-factor 1.6 (APS-C)",
+        "LensModel": "Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro"
+      },
+      "id": "slr-tamron.xml:9",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 70,
+        "FNumber": 11,
+        "Make": "Generic",
+        "Model": "Crop-factor 1.5 (APS-C)",
+        "LensModel": "Tamron AF 70-300mm f/4-5.6 LD Macro 1:2"
+      },
+      "id": "slr-tamron.xml:22",
+      "matchedLens": "",
+      "reason": "无法唯一匹配镜头，请选择镜头配置。",
+      "expectedLens": "Tamron AF 70-300mm f/4-5.6 LD Macro 1:2"
+    }
+  ],
+  "methodCounts": {
+    "exact-camera-database-alias": 1537,
+    "equivalent-camera-optics-aliases": 3,
+    "joint-exact-camera-lens-optical-context": 15
+  },
+  "doesNotProveRAWOrLightroomCoverage": true
+}
