@@ -1,0 +1,14 @@
+{
+  "executedOn": "2026-10-15T15:23:10.110629+00:00",
+  "scope": "CUA AX and screenshot control in untouched original Pixelmator 4.3; selecting a known ordinary PNG shows disabled Open. No document imported, edited or saved. Does not identify root cause.",
+  "vendorControl": {
+    "bundleIdentifier": "com.apple.pixelmator",
+    "selectedFormat": "public.png",
+    "fileExists": true,
+    "openButtonDisabledInAX": true,
+    "openButtonVisuallyGrey": true,
+    "dialogCancelledThroughUI": true,
+    "vendorCriticalFilesUnchanged": true
+  },
+  "conclusion": "The file-panel limitation is reproducible outside the LensDock host; LensDock-only causation is not established."
+}

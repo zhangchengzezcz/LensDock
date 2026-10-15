@@ -1,0 +1,75 @@
+{
+  "apertureAutomaticallyRecorded": 821,
+  "automaticPlans": 821,
+  "executedOn": "2026-10-15T15:41:20Z",
+  "explicitFarDistanceFallback": 821,
+  "failures": [],
+  "focalAutomaticallyRecorded": 821,
+  "focusDistanceRecorded": 0,
+  "groups": [
+    {
+      "apertureMax": 18,
+      "apertureMin": 5.6,
+      "camera": "Canon EOS R50 V",
+      "files": 821,
+      "focalMaxMM": 400,
+      "focalMinMM": 100,
+      "lens": "Canon RF 100-400mm F5.6-8 IS USM"
+    }
+  ],
+  "independentCalibrationMatches": 821,
+  "independentCatalogParameterReferencesChecked": 821,
+  "inputFiles": 821,
+  "metadataRead": 821,
+  "nativeSupported": 821,
+  "optionalVignettingCalibrationAvailable": 821,
+  "scope": "Private local RAW metadata, automatic low-resolution profile-plan generation (96x64, no optical/render claim), native priority and zero default supplemental amounts; counts represent photos, not distinct camera/lens coverage or Lightroom equivalence",
+  "userPhotosOrPathsIncluded": false,
+  "provenance": {
+    "productionCodeSHA256": {
+      "Sources/Native/LensNativeProfileEngine.m": "dc12b12b18674151f3025f58801eb48073aae313878b07874b541486b8adec91",
+      "Sources/Native/LensRecommendationPolicy.m": "be4371f0cc1e42735403b8c535552b41748e850e672d7c92a0ecdb05ab76f8b2",
+      "Tests/audit-private-raw-corpus.m": "f2ac36fe77aa188d99c9ce605f7341f5e3529a037ea7f0dfff0c54d018996bb9",
+      "Tests/verify-capture-tag-precedence.m": "4d3d0a27f645facd3e1151d9f0f9c126732180d7b9aec82788c0090ca0c90836"
+    },
+    "auditExecutableSHA256": "fdde8ea5e7850d25a31a726229c4ed53ab42c7a835ad9f56c2d1673c5307dbd8",
+    "referenceSource": "Read-only local Lightroom catalog capture fields, not a runtime dependency; all referenced originals exist",
+    "distinctCatalogFocalAperturePairs": 27,
+    "catalogApertureEncoding": "APEX converted once as 2^(APEX/2)",
+    "comparisonTolerance": {
+      "focalMM": 0.001,
+      "apertureFNumber": 5e-05
+    },
+    "readOrChangedCatalog": {
+      "readOnly": true,
+      "catalogModified": false
+    },
+    "privatePhotosPathsGPSAndSerialsUploaded": false
+  },
+  "regression": {
+    "initial27PairAuditExitCode": 3,
+    "initialMismatchCount": 1,
+    "realConflictingFocalTagsMM": {
+      "standardEXIF": 104,
+      "makerNote": 100,
+      "previousAutomaticRead": 100,
+      "correctedAutomaticRead": 104
+    },
+    "oldImplementationBoundaryRegressionExitCode": 3,
+    "newBoundaryRegressionExitCode": 0,
+    "fullSuiteGroupsPassed": 16,
+    "denseAndGridRenderCombinationsPassed": 96,
+    "fullSuiteLogSHA256": "429b8ddd8fa99307d5c9496326490f7b23c518eb64eb752229ee06a99cf7ca94"
+  },
+  "hostCandidate": {
+    "moduleBuilt": true,
+    "researchHostStoppedBeforeReplacement": true,
+    "sandboxRetained": true,
+    "signatureVerified": true,
+    "signedModuleSHA256": "bf657ae667b331a86bb06405249b3de863bb86f24d0e8621f26362bc7fcc05bf",
+    "launchedThroughCUA": true,
+    "newBuildDocumentReopenVerified": false,
+    "limitation": "PXD selected but Open disabled in AX and full-resolution screenshot; cancelled without document changes",
+    "packagedInExistingRelease": false
+  }
+}

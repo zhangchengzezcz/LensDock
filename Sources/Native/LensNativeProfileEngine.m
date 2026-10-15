@@ -201,7 +201,20 @@ static NSArray*runExifArguments(NSURL*raw,NSURL*tool,NSArray*options,NSError**er
 }
 static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  NSMutableArray*args=[NSMutableArray arrayWithObject:@"-j"];if(numeric)[args addObject:@"-n"];
- [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];return runExifArguments(raw,tool,args,error);
+ // A CR3 can contain different values with the same tag name in EXIF,
+ // MakerNotes and a track. Keep their groups until capture fields are selected;
+ // ExifTool's unqualified duplicate winner is not necessarily standard EXIF.
+ if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a"]];
+ [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];
+ NSArray*rows=runExifArguments(raw,tool,args,error);if(!numeric||!rows.count)return rows;
+ NSDictionary*grouped=rows[0];NSMutableDictionary*values=[NSMutableDictionary new];
+ for(NSString*key in [grouped.allKeys sortedArrayUsingSelector:@selector(compare:)]){
+  NSRange separator=[key rangeOfString:@":" options:NSBackwardsSearch];NSString*name=separator.location==NSNotFound?key:[key substringFromIndex:separator.location+1];
+  if(!values[name])values[name]=grouped[key];
+ }
+ NSDictionary*standard=@{@"Make":@"IFD0:Make",@"Model":@"IFD0:Model",@"LensModel":@"ExifIFD:LensModel",@"FocalLength":@"ExifIFD:FocalLength",@"FNumber":@"ExifIFD:FNumber",@"SubjectDistance":@"ExifIFD:SubjectDistance",@"ApertureValue":@"ExifIFD:ApertureValue",@"Orientation":@"IFD0:Orientation"};
+ for(NSString*name in standard){id value=grouped[standard[name]];if(value)values[name]=value;}
+ return @[values];
 }
 NSDictionary*LensReadRawCaptureMetadata(NSURL*raw,NSURL*tool,NSError**error){
  NSArray*rows=runExifArguments(raw,tool,@[@"-j",@"-n",@"-G1",@"-a",@"-FileType",@"-IFD0:Make",@"-IFD0:Model",@"-IFD0:SensorWidth",@"-IFD0:SensorHeight",@"-IFD0:SensorTopBorder",@"-IFD0:SensorLeftBorder",@"-IFD0:SensorBottomBorder",@"-IFD0:SensorRightBorder",@"-IFD0:CropTop",@"-IFD0:CropLeft",@"-IFD0:CropBottom",@"-IFD0:CropRight",@"-ExifIFD:DigitalZoomRatio",@"-Panasonic:ConversionLens"],error);
@@ -224,6 +237,9 @@ NSDictionary*LensReadRawMetadata(NSURL*rawURL,NSURL*tool,NSError**error){
  NSError*makerError=nil;NSArray*a=runExif(rawURL,tool,YES,&makerError);
  if(a.count){
   [m addEntriesFromDictionary:a[0]];
+  // If a decoder supplies valid standard EXIF but ExifTool only exposes an
+  // alternate copy, retain the decoder's capture value rather than a MakerNote.
+  for(NSString*key in @[@"FocalLength",@"FNumber",@"SubjectDistance"]){if(positive(ex[key]))m[key]=ex[key];}
   NSArray*b=runExif(rawURL,tool,NO,&makerError);
   if(b.count)m[@"LensIDName"]=b[0][@"LensID"]?:b[0][@"LensType"]?:@"";
   m[@"metadataReader"]=@"ImageIO+ExifTool MakerNote";
