@@ -20,7 +20,14 @@ struct Compatibility: Codable {
 let hostID = "local.lensdock.pixelmator"
 let hostName = "Pixelmator LensDock Preview.app"
 let fm = FileManager.default
-func hash(_ data: Data) -> String { SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined() }
+let previewVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+func installedHostIsCurrent(_ info: [String: Any], version: String, expectedHash: String, actualHash: String) -> Bool {
+    info["CFBundleIdentifier"] as? String == hostID &&
+    info["LensDockPreviewVersion"] as? String == version &&
+    info["LensDockPayloadSHA256"] as? String == expectedHash &&
+    !expectedHash.isEmpty && !actualHash.isEmpty && info["LensDockNativeModuleSHA256"] as? String == actualHash
+}
+func lensDigest(_ data: Data) -> String { SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined() }
 func run(_ executable: String, _ arguments: [String]) throws -> Data {
     let task = Process(), pipe = Pipe()
     task.executableURL = URL(fileURLWithPath: executable); task.arguments = arguments
@@ -108,17 +115,17 @@ struct Installer {
               info["CFBundleExecutable"] as? String == compatibility.executable else { throw DockError("仅接受已验证的 Pixelmator Pro Creator Studio 4.3（3.0.75）。其他版本暂不能集成。") }
         for (path,expected) in compatibility.fileSHA256 {
             let data = try Data(contentsOf: source.appendingPathComponent(path), options: .mappedIfSafe)
-            guard hash(data) == expected else { throw DockError("兼容接口校验不通过：\(URL(fileURLWithPath:path).lastPathComponent)。应用可能已更新，请等待适配。") }
+            guard lensDigest(data) == expected else { throw DockError("兼容接口校验不通过：\(URL(fileURLWithPath:path).lastPathComponent)。应用可能已更新，请等待适配。") }
         }
         _ = try run("/usr/bin/codesign", ["--verify", "--deep", "--strict", source.path])
         _ = try patchedExecutable(Data(contentsOf: source.appendingPathComponent("Contents/MacOS/"+compatibility.executable)))
         return info
         #endif
     }
-    func install(_ source: URL, progress: @escaping (String)->Void) throws -> URL {
+    func install(_ source: URL, applicationsDirectory: URL? = nil, progress: @escaping (String)->Void) throws -> URL {
         progress("检查本机 Pixelmator 与兼容接口…")
         var info = try validate(source)
-        let applications = fm.homeDirectoryForCurrentUser.appendingPathComponent("Applications",isDirectory:true)
+        let applications = applicationsDirectory ?? fm.homeDirectoryForCurrentUser.appendingPathComponent("Applications",isDirectory:true)
         let destination = applications.appendingPathComponent(hostName,isDirectory:true)
         guard !fm.fileExists(atPath: destination.path) else { throw DockError("预览宿主已存在。可先打开；重新安装前请将旧宿主移到废纸篓。已有文件不会被覆盖。") }
         guard NSRunningApplication.runningApplications(withBundleIdentifier: hostID).isEmpty else { throw DockError("请先关闭 LensDock 的 Pixelmator 窗口。") }
@@ -129,7 +136,7 @@ struct Installer {
         _ = try run("/usr/bin/ditto",[source.path,staging.path])
         // Verify the copied critical bytes too; refuse source updates during copy.
         for (path,expected) in compatibility.fileSHA256 {
-            guard hash(try Data(contentsOf:staging.appendingPathComponent(path),options:.mappedIfSafe)) == expected else { throw DockError("复制期间应用内容变化，已停止安装。") }
+            guard lensDigest(try Data(contentsOf:staging.appendingPathComponent(path),options:.mappedIfSafe)) == expected else { throw DockError("复制期间应用内容变化，已停止安装。") }
         }
         let executable = staging.appendingPathComponent("Contents/MacOS/"+compatibility.executable)
         try patchedExecutable(Data(contentsOf:executable)).write(to:executable)
@@ -138,7 +145,7 @@ struct Installer {
             try fm.copyItem(at:payload.appendingPathComponent(from),to:staging.appendingPathComponent(to))
         }
         info["CFBundleIdentifier"] = hostID; info["CFBundleName"] = "Pixelmator LensDock Preview"; info["CFBundleDisplayName"] = "Pixelmator LensDock Preview"
-        info["LensDockPreviewVersion"] = "0.1.0"; info["LensDockNativeModuleSHA256"] = hash(try Data(contentsOf:payload.appendingPathComponent("LensPanel.dylib")))
+        info["LensDockPreviewVersion"] = previewVersion; info["LensDockPayloadSHA256"] = lensDigest(try Data(contentsOf:payload.appendingPathComponent("LensPanel.dylib")))
         let infoURL = staging.appendingPathComponent("Contents/Info.plist")
         try PropertyListSerialization.data(fromPropertyList:info,format:.xml,options:0).write(to:infoURL)
         var entitlements = try PropertyListSerialization.propertyList(from:run("/usr/bin/codesign",["-d","--entitlements","-","--xml",source.path]),format:nil) as? [String:Any] ?? [:]
@@ -149,6 +156,11 @@ struct Installer {
         try PropertyListSerialization.data(fromPropertyList:entitlements,format:.xml,options:0).write(to:entURL)
         progress("签名并验证预览宿主…")
         _ = try run("/usr/bin/codesign",["--force","--deep","--sign","-","--entitlements",entURL.path,staging.path])
+        // Deep signing can change the module signature bytes. Record the signed
+        // module separately from the release payload, then reseal only the host.
+        info["LensDockNativeModuleSHA256"] = lensDigest(try Data(contentsOf:staging.appendingPathComponent("Contents/Frameworks/LensPanel.dylib")))
+        try PropertyListSerialization.data(fromPropertyList:info,format:.xml,options:0).write(to:infoURL)
+        _ = try run("/usr/bin/codesign",["--force","--sign","-","--entitlements",entURL.path,staging.path])
         _ = try run("/usr/bin/codesign",["--verify","--deep","--strict",staging.path])
         try fm.moveItem(at:staging,to:destination)
         progress("安装完成。打开后选择 RAW 图层，再进入“镜头矫正”。")
@@ -179,7 +191,7 @@ final class DockApp: NSObject, NSApplicationDelegate {
         }
         _ = label("LensDock",NSRect(x:30,y:398,width:510,height:42),32,.semibold)
         let subtitle=label("镜头坞 · 保留 RAW 的 Pixelmator 镜头矫正",NSRect(x:32,y:366,width:510,height:25),15);subtitle.textColor = .secondaryLabelColor
-        _ = label("预览版 0.1",NSRect(x:32,y:322,width:480,height:24),13,.semibold)
+        _ = label("预览版 \(previewVersion)",NSRect(x:32,y:322,width:480,height:24),13,.semibold)
         let explanation=label("畸变、色差、去暗角分别调整。原生支持时自动跳过补充畸变与色差，额外去暗角默认关闭。",NSRect(x:32,y:264,width:510,height:52),14);explanation.textColor = .secondaryLabelColor
         _ = label("本机 Pixelmator",NSRect(x:32,y:230,width:390,height:22),13,.medium)
         sourceLabel=label(source.lastPathComponent,NSRect(x:32,y:200,width:385,height:24),12);sourceLabel.lineBreakMode = .byTruncatingMiddle;sourceLabel.setAccessibilityLabel("已选择的 Pixelmator 应用")
@@ -190,7 +202,13 @@ final class DockApp: NSObject, NSApplicationDelegate {
         installButton=NSButton(title:"安装预览宿主",target:self,action:#selector(install));installButton.frame=NSRect(x:32,y:30,width:190,height:34);installButton.bezelStyle = .rounded;root.addSubview(installButton)
         openButton=NSButton(title:"打开 Pixelmator",target:self,action:#selector(openHost));openButton.frame=NSRect(x:350,y:30,width:198,height:34);openButton.bezelStyle = .rounded;openButton.isEnabled=false;root.addSubview(openButton)
         let existing=fm.homeDirectoryForCurrentUser.appendingPathComponent("Applications/"+hostName)
-        if let info=try? plist(existing.appendingPathComponent("Contents/Info.plist")),info["CFBundleIdentifier"] as? String == hostID,info["LensDockPreviewVersion"] as? String == "0.1.0" { installed=existing;openButton.isEnabled=true;installButton.isEnabled=false;status.stringValue="已安装预览宿主，可直接打开。" }
+        if let info=try? plist(existing.appendingPathComponent("Contents/Info.plist")),info["CFBundleIdentifier"] as? String == hostID {
+            installed=existing;openButton.isEnabled=true;installButton.isEnabled=false
+            let expected=(try? Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Payload/LensPanel.dylib"))).map { lensDigest($0) } ?? ""
+            let actual=(try? Data(contentsOf:existing.appendingPathComponent("Contents/Frameworks/LensPanel.dylib"))).map { lensDigest($0) } ?? ""
+            let current=installedHostIsCurrent(info,version:previewVersion,expectedHash:expected,actualHash:actual)
+            status.stringValue=current ? "已安装当前预览宿主，可直接打开。" : "检测到旧版或不同构建。请先退出旧宿主并将它移到废纸篓，再重新打开 LensDock 安装新版；PXD 与原片会保留。"
+        }
         window.center();window.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true)
     }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender:NSApplication)->Bool { !busy }
@@ -227,6 +245,16 @@ if CommandLine.arguments.count == 3,CommandLine.arguments[1] == "--verify-source
         for invalid in [Data(),Data(repeating:0,count:64)] { do { _ = try patchedExecutable(invalid);throw DockError("无效格式被接受。") } catch let error as DockError { if error.message == "无效格式被接受。" {throw error} } }
         print("Version, ABI hashes, signature, arm64 parser and malformed-input rejection passed.")
     } catch { fputs(error.localizedDescription+"\n",stderr);exit(1) }
+} else if CommandLine.arguments == [CommandLine.arguments[0], "--verify-installation-state"] {
+    let info: [String: Any]=["CFBundleIdentifier":hostID,"LensDockPreviewVersion":"0.2.0","LensDockPayloadSHA256":"current-payload","LensDockNativeModuleSHA256":"signed-module"]
+    func accepts(_ value: [String: Any], _ actual: String = "signed-module", _ wanted: String = "current-payload") -> Bool { installedHostIsCurrent(value,version:"0.2.0",expectedHash:wanted,actualHash:actual) }
+    guard accepts(info) else {exit(1)}
+    for (key,value) in [("LensDockPreviewVersion","0.1.0"),("CFBundleIdentifier","com.apple.pixelmator"),("LensDockPayloadSHA256","old-payload"),("LensDockNativeModuleSHA256","wrong-signed-module")] {
+        var changed=info;changed[key]=value;guard !accepts(changed) else {exit(2)}
+    }
+    var missing=info;missing.removeValue(forKey:"LensDockNativeModuleSHA256")
+    guard !accepts(missing),!accepts(info,"changed-module"),!accepts(info,"","") else {exit(3)}
+    print("Current host accepted; old version, wrong identity, missing/stale stamp, changed module and missing payload rejected.")
 } else {
     let application=NSApplication.shared, delegate=DockApp(); application.delegate=delegate;application.run()
 }

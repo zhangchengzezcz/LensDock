@@ -6,7 +6,8 @@ from mac_alias import Alias
 from mac_alias.bookmark import kBookmarkPath,kBookmarkVolumePath,kBookmarkVolumeUUID
 ROOT=Path(__file__).resolve().parents[1]
 def verify():
- image=ROOT/'Distribution/LensDock-0.1.0-preview-Retina.dmg'
+ version=json.loads((ROOT/'Version.json').read_text());release=version['version']+'-'+version['channel']
+ image=ROOT/'Distribution'/release/f'LensDock-{release}-Retina.dmg'
  mount=ROOT/'Build/Relocated-Image';mount.mkdir(exist_ok=True)
  original=ROOT/'Resources/Artwork';hidden=ROOT/'Build/Artwork-offline'
  if hidden.exists():raise ValueError('Restore existing artwork backup before verification')

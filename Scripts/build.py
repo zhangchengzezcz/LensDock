@@ -2,6 +2,8 @@
 from pathlib import Path
 import subprocess,plistlib,shutil,hashlib,json
 ROOT=Path(__file__).resolve().parents[1]
+VERSION=json.loads((ROOT/'Version.json').read_text())
+RELEASE=VERSION['version']+'-'+VERSION['channel']
 SOURCES=('LensPanel.m','LensProfilePicker.m','LensVignettingFilter.m','LensNativeDocument.m','LensNativeProfileEngine.m','LensCornerAssessment.m','LensNativeState.m','LensCorrectionSettings.m','LensLiveDocument.m','LensRecommendationPolicy.m','LensHostDiagnostics.m')
 def call(*args):subprocess.run(list(args),check=True)
 def build():
@@ -17,10 +19,10 @@ def build():
  call(str(ROOT/'Build/render-assets'),str(artwork))
  call('tiffutil','-cathidpicheck',str(artwork/'DMG-background.png'),str(artwork/'DMG-background@2x.png'),'-out',str(artwork/'DMG-background.tiff'))
  call('iconutil','-c','icns',str(artwork/'LensDock.iconset'),'-o',str(resources/'LensDock.icns'))
- info={'CFBundleIconFile':'LensDock','CFBundleIdentifier':'local.lensdock.installer','CFBundleName':'LensDock','CFBundleDisplayName':'LensDock','CFBundleExecutable':'LensDock','CFBundlePackageType':'APPL','CFBundleShortVersionString':'0.1.0','CFBundleVersion':'1','LSMinimumSystemVersion':'26.0','NSHighResolutionCapable':True}
+ info={'CFBundleIconFile':'LensDock','CFBundleIdentifier':'local.lensdock.installer','CFBundleName':'LensDock','CFBundleDisplayName':'LensDock','CFBundleExecutable':'LensDock','CFBundlePackageType':'APPL','CFBundleShortVersionString':VERSION['version'],'CFBundleVersion':VERSION['build'],'LSMinimumSystemVersion':'26.0','NSHighResolutionCapable':True}
  (contents/'Info.plist').write_bytes(plistlib.dumps(info))
  for dylib in (resources/'Payload').rglob('*.dylib'):call('codesign','--force','--sign','-',str(dylib))
  call('codesign','--force','--deep','--sign','-',str(app));call('codesign','--verify','--deep','--strict',str(app))
- result={'version':'0.1.0-preview','deploymentTarget':'26.0','notarized':False,'redistributesVendorApp':False,'sha256':{str(p.relative_to(app)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [contents/'MacOS/LensDock',resources/'Payload/LensPanel.dylib',resources/'Payload/LensLiveSource.dylib']}}
+ result={'version':RELEASE,'deploymentTarget':'26.0','notarized':False,'redistributesVendorApp':False,'sha256':{str(p.relative_to(app)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [contents/'MacOS/LensDock',resources/'Payload/LensPanel.dylib',resources/'Payload/LensLiveSource.dylib']}}
  (ROOT/'Build/build-manifest.json').write_text(json.dumps(result,indent=2)+'\n');print(app)
 if __name__=='__main__':build()

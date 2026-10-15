@@ -1,15 +1,24 @@
 """Package only LensDock and independent dependencies; never include a local host."""
 from pathlib import Path
-import subprocess,shutil,hashlib,json,zipfile
+import subprocess,shutil,hashlib,json,zipfile,plistlib
 import dmgbuild
 from finalize_dmg_background import finalize
 ROOT=Path(__file__).resolve().parents[1]
+VERSION=json.loads((ROOT/'Version.json').read_text())
+RELEASE=VERSION['version']+'-'+VERSION['channel']
 def package():
- app=ROOT/'Build/LensDock.app';distribution=ROOT/'Distribution';distribution.mkdir(exist_ok=True)
+ app=ROOT/'Build/LensDock.app';distribution=ROOT/'Distribution'/RELEASE;distribution.mkdir(parents=True,exist_ok=True)
  subprocess.run(['codesign','--verify','--deep','--strict',str(app)],check=True)
- source=distribution/'LensDock-0.1.0-preview-source.zip'
+ info=plistlib.loads((app/'Contents/Info.plist').read_bytes())
+ build=json.loads((ROOT/'Build/build-manifest.json').read_text())
+ if info.get('CFBundleShortVersionString')!=VERSION['version'] or build.get('version')!=RELEASE:raise ValueError('Build the requested version before packaging')
+ for name,digest in build['sha256'].items():
+  if hashlib.sha256((app/name).read_bytes()).hexdigest()!=digest:raise ValueError('Built payload changed: '+name)
+ source=distribution/f'LensDock-{RELEASE}-source.zip'
+ dmg=distribution/f'LensDock-{RELEASE}-Retina.dmg'
+ if source.exists() or dmg.exists():raise FileExistsError('Versioned assets already exist; use a new version or explicitly archive the candidate first')
  dirs=['Sources','Scripts','Resources','Vendor','Compatibility','Evidence','Tests','Documentation']
- files=[ROOT/n for n in ['README.md','LICENSE','.gitignore']]
+ files=[ROOT/n for n in ['README.md','LICENSE','.gitignore','Version.json']]
  for name in dirs:
   files.extend(p for p in (ROOT/name).rglob('*') if p.is_file() and '__pycache__' not in p.parts and 'PrivateRAW' not in p.parts)
  with zipfile.ZipFile(source,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
@@ -31,11 +40,11 @@ def package():
   background=finalize(mount,volume_name)
   subprocess.run(['codesign','--verify','--deep','--strict',str(mount/'LensDock.app')],check=True)
  finally:subprocess.run(['hdiutil','detach',str(mount)],check=True,stdout=subprocess.DEVNULL)
- dmg=distribution/'LensDock-0.1.0-preview-Retina.dmg';dmg.unlink(missing_ok=True)
+ # Versioned paths were checked before producing either asset.
  subprocess.run(['hdiutil','convert',str(editable),'-format','UDZO','-imagekey','zlib-level=9','-o',str(dmg)],check=True,stdout=subprocess.DEVNULL)
  subprocess.run(['hdiutil','verify',str(dmg)],check=True,stdout=subprocess.DEVNULL)
  (distribution/'background-manifest.json').write_text(json.dumps(background,indent=2)+'\n')
- outputs=[dmg,source];manifest={'version':'0.1.0-preview','notarized':False,'sourceArchiveIncludesVendorPixelmator':False,'files':{p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in outputs}}
+ outputs=[dmg,source];manifest={'version':RELEASE,'notarized':False,'sourceArchiveIncludesVendorPixelmator':False,'files':{p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in outputs}}
  (distribution/'release-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
  shutil.copy2(ROOT/'Build/build-manifest.json',distribution/'build-manifest.json')
  (distribution/'SHA256SUMS.txt').write_text(''.join(manifest['files'][p.name]['sha256']+'  '+p.name+'\n' for p in outputs))

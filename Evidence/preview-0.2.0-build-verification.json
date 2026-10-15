@@ -1,0 +1,30 @@
+{
+  "executedOn": "2026-10-15T16:37:42.495660+00:00",
+  "version": "0.2.0-preview",
+  "scope": "Build and read-only installer checks; no installed application replaced; no new GUI save/reopen claim",
+  "installationStateChecks": {
+    "currentAccepted": true,
+    "oldVersionRejected": true,
+    "wrongBundleRejected": true,
+    "staleOrMissingStampRejected": true,
+    "changedActualModuleRejected": true,
+    "missingPayloadRejected": true
+  },
+  "vendorCompatibilityParserAndSignatureCheckPassed": true,
+  "buildManifest": {
+    "version": "0.2.0-preview",
+    "deploymentTarget": "26.0",
+    "notarized": false,
+    "redistributesVendorApp": false,
+    "sha256": {
+      "Contents/MacOS/LensDock": "b37129d8d9aa3ade3bba3b7d824981bd3b731f3db5ede527aa883985a2ffc0bf",
+      "Contents/Resources/Payload/LensPanel.dylib": "c4c36959141fb5a785d23c0a2085476f28423d6e4570f29c04e1a650e1e7f466",
+      "Contents/Resources/Payload/LensLiveSource.dylib": "1522e881d6ba53b317751362c45c8086d5acf1dc9ea504b3887f316128769e30"
+    }
+  },
+  "fullHostSaveReopenVerified": false,
+  "isolatedFullProductionInstallationPassed": true,
+  "signatureStampRetainsPayloadAndSignedModuleSeparately": true,
+  "installedHostWasReplaced": false,
+  "oldHostDetectionObservedThroughCUA": true
+}
