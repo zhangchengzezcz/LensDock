@@ -1,7 +1,8 @@
 {
-  "executedOn": "2026-10-15T09:12:39.958292+00:00",
+  "executedOn": "2026-10-15T09:32:50.558534+00:00",
   "suite": "Scripts/test.py",
   "suitesPassed": [
+    "capture-parameters",
     "capture-mode",
     "effect-replacement",
     "profile-selection",
@@ -32,7 +33,7 @@
   "realRAWSourceEvidence": "native-priority-verification.json and calibration-evidence-verification.json",
   "compilationTarget": "arm64-apple-macos26.0",
   "allSelectedTestsPassed": true,
-  "scope": "Development source tests; actual CR2/NEF/CR3 probes remain separate from the LX3 metadata-only container. Current fish-eye/capture-mode changes have no new host GUI optical verification.",
+  "scope": "Development source tests, including real local CR2/NEF/CR3 automatic capture metadata checks. The host UI check covers Nikon automatic fill; not full optical or persistence acceptance.",
   "releasedDMGIncludesDevelopmentChanges": false,
   "commitPathSourcesSHA256": {
     "LensNativeState.m": "60207a9462e2c378f8d675d1cb270a4231e26bf682cf37e68907e884198c6a29",
@@ -40,5 +41,12 @@
   },
   "identityHeaderSHA256": "934099dc04863892124e005b7fc3b13b8baa892932ecd2bc2b09c8dd43540f6c",
   "captureModeHeaderSHA256": "de4ad328d0999797baf7f336da26c4d4d43e6808233fcde51828f405e10cf895",
-  "upstreamLX3MetadataContainerRead": true
+  "upstreamLX3MetadataContainerRead": true,
+  "captureParametersHeaderSHA256": "3ff4dc44d3a998ad55c2007cd7fdea7991e6484c638dcd988cddd2ad79fb4602",
+  "sourcePanelSHA256": "1a95c6feff4f08eb4bca7bd3fdc3f5f416ac7e543c8f961324b410c52a6d655f",
+  "actualRAWAutomaticCaptureParameterTypes": [
+    "CR2",
+    "NEF",
+    "CR3"
+  ]
 }

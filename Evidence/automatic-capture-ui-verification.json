@@ -1,0 +1,17 @@
+{
+  "executedOn": "2026-10-15T09:32:50.558534+00:00",
+  "scope": "Isolated Pixelmator 4.3 host: untouched Nikon NEF automatically matched and details fields populated without manual input; not optical accuracy, saved/reopened PXD or other cameras GUI verification",
+  "automaticProfileMatchObserved": true,
+  "automaticallyPopulatedFields": {
+    "focalMM": 50,
+    "aperture": 7.1,
+    "focusDistanceMDisplayed": 2.3714
+  },
+  "EXIFAndMakerNoteSourceTooltipsObserved": true,
+  "manualInputPerformed": false,
+  "nativeDefaultVignettingOffObserved": true,
+  "moduleSHA256": "b349f96a65422bc0645928b43d3e7487bf3a8dd441c89e00d18d93c56d15b8c0",
+  "sourcePanelSHA256": "1a95c6feff4f08eb4bca7bd3fdc3f5f416ac7e543c8f961324b410c52a6d655f",
+  "captureParametersHeaderSHA256": "3ff4dc44d3a998ad55c2007cd7fdea7991e6484c638dcd988cddd2ad79fb4602",
+  "releasedDMGIncludesChanges": false
+}

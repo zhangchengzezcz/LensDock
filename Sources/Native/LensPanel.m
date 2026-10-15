@@ -12,6 +12,7 @@
 #import "LensHostDiagnostics.h"
 #import "LensCalibrationEvidence.h"
 #import "LensProfilePicker.h"
+#import "LensCaptureParameters.h"
 Class LensRegisterVignettingFilter(void);
 static id getter(id obj,NSString*name){SEL s=NSSelectorFromString(name);Method m=class_getInstanceMethod([obj class],s);if(!m||method_getNumberOfArguments(m)!=2)return nil;char*t=method_copyReturnType(m);BOOL object=t&&t[0]=='@';free(t);return object?((id(*)(id,SEL))objc_msgSend)(obj,s):nil;}
 static id rawLayer(id script){Ivar i=class_getInstanceVariable([script class],"layer");if(!i)return nil;void*p=NULL;memcpy(&p,(char*)(__bridge void*)script+ivar_getOffset(i),8);return (__bridge id)p;}
@@ -30,7 +31,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  if(!generated)return nil;NSMutableDictionary*p=[generated mutableCopy],*r=[generated[@"report"]mutableCopy];
  for(NSString*key in @[@"workingTransfer",@"assessmentPreviewSource",@"assessmentPreviewTransfer"])if(context[@"report"][key])r[key]=context[@"report"][key];
  for(NSString*key in @[@"baseMetadata",@"parameterOverrides",@"liveFingerprint",@"sourceBinding",@"assessmentPreviewData"])if(context[key])p[key]=context[key];
- if([context[@"parameterOverrides"]boolValue])r[@"distance_source"]=@"manual";
+ if([context[@"parameterOverrides"]boolValue]&&LensPositiveCaptureNumber(metadata[@"FocusDistance"]))r[@"distance_source"]=@"manual";
  p[@"report"]=r;p[@"metadata"]=metadata;
  if([p[@"assessmentPreviewData"]length]){NSDictionary*assessment=LensAssessCornerPreviewData(p[@"assessmentPreviewData"],p[@"linearGainFloat32BottomUp"],[r[@"width"]unsignedIntegerValue],[r[@"height"]unsignedIntegerValue],r[@"assessmentPreviewTransfer"]?:r[@"workingTransfer"],nil);if(assessment){NSMutableDictionary*a=[assessment mutableCopy];a[@"assessmentSource"]=r[@"assessmentPreviewSource"]?:@"saved_preview";p[@"cornerAssessment"]=a;}}
  return p;
@@ -73,6 +74,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 - (void)clearMatchWithMessage:(NSString*)message requiresRAW:(BOOL)requiresRAW;
 - (void)showProfiles:(id)sender;
 - (void)recalculateProfile:(NSDictionary*)selection;
+- (void)rememberPendingContext:(NSDictionary*)context metadata:(NSDictionary*)metadata message:(NSString*)message;
 @end
 @implementation LensPanelController
 - (NSDocument*)activeDocument{
@@ -145,7 +147,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   self.riskLabel.stringValue=[NSString stringWithFormat:@"%@。%@",nativeState,extra];return;
  }
  if([r[@"vignettingCalibrationWarning"]length]){self.riskLabel.stringValue=r[@"vignettingCalibrationWarning"];return;}
- if(![r[@"vignettingProfileAvailable"]boolValue]){self.riskLabel.stringValue=@"尚缺有效的镜头暗角标定，推荐保持关闭（0 EV）。当前原图亮度保留。";return;}
+ if(![r[@"vignettingProfileAvailable"]boolValue]){self.riskLabel.stringValue=LensPositiveCaptureNumber(r[@"aperture"])?@"尚缺有效的镜头暗角标定，推荐保持关闭（0 EV）。当前原图亮度保留。":@"光圈未知，未计算暗角补偿，保持关闭（0 EV）。畸变与色差按已读到的焦距匹配。";return;}
  if(![r[@"vignettingCorrectionNeeded"]boolValue]){self.riskLabel.stringValue=@"此镜头标定无需暗角补偿，推荐 0 EV。当前原图亮度保留。";return;}
  NSDictionary*policy=LensRecommendationPolicy(self.plan);
  if(![policy[@"vignettingMeasured"]boolValue]){self.riskLabel.stringValue=@"边角检测未完成，保守默认值 0 EV，保持关闭。重新匹配后会计算试用建议；目前无法估计高光风险。";return;}
@@ -179,7 +181,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   self.recommendMarkers[i].hidden=!ok;self.recommendMarkers[i].frame=NSMakeRect(49+448*suggested/self.sliders[i].maxValue,3,2,7);
  }
  BOOL active=NO;for(int i=0;i<3;i++)if(self.checks[i].state==NSControlStateValueOn&&self.sliders[i].doubleValue>0&&[available[i]boolValue])active=YES;
- self.applyButton.enabled=self.plan!=nil&&!self.busy&&(active||self.hasOwnEffect);self.autoButton.enabled=self.plan!=nil&&!self.busy;self.detailsButton.enabled=self.plan!=nil&&!self.busy;NSUndoManager*m=[self correctionUndoManager:self.document];self.undoButton.enabled=m.canUndo&&!self.busy;self.redoButton.enabled=m.canRedo&&!self.busy;[self updateRisk];
+ self.applyButton.enabled=self.plan!=nil&&!self.busy&&(active||self.hasOwnEffect);self.autoButton.enabled=self.plan!=nil&&!self.busy;self.detailsButton.enabled=(self.plan||self.matchContext)&&self.metadata!=nil&&!self.busy;NSUndoManager*m=[self correctionUndoManager:self.document];self.undoButton.enabled=m.canUndo&&!self.busy;self.redoButton.enabled=m.canRedo&&!self.busy;[self updateRisk];
 }
 - (void)useRecommendation:(NSButton*)sender{
  if(self.busy)return;NSInteger i=sender.tag;double strength=[[self recommendations][i]doubleValue];self.sliders[i].doubleValue=LensDisplayCorrectionAmount(self.plan[@"report"],i,strength);self.checks[i].state=strength>0?NSControlStateValueOn:NSControlStateValueOff;[self changed:sender];
@@ -194,13 +196,12 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  });
 }
 - (void)presentPlan:(NSDictionary*)plan document:(NSDocument*)doc identifier:(NSString*)uuid saved:(NSDictionary*)saved{
- NSMutableDictionary*livePlan=[plan mutableCopy];if(!livePlan[@"liveFingerprint"]){NSDictionary*f=LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"));if(f)livePlan[@"liveFingerprint"]=f;}plan=livePlan;self.plan=plan;self.document=doc;self.layerIdentifier=uuid;NSDictionary*r=plan[@"report"];self.cameraLabel.stringValue=[NSString stringWithFormat:@"相机  %@",r[@"camera"]?:@"—"];self.lensLabel.stringValue=r[@"lens"]?:@"未找到匹配配置";self.parameterLabel.stringValue=[NSString stringWithFormat:@"%@ mm   ·   f/%@   ·   %@",displayNumber(r[@"focal_mm"]),displayNumber(r[@"aperture"]),[r[@"distance_source"]isEqual:@"infinity_fallback"]?@"对焦距离未记录，采用远距离标定":[NSString stringWithFormat:@"对焦距离 %@ m",displayNumber(r[@"focus_distance_m"])]];self.parameterLabel.toolTip=[NSString stringWithFormat:@"标定使用完整精度：焦距 %@ mm，光圈 f/%@，距离 %@ m。",r[@"focal_mm"],r[@"aperture"],r[@"focus_distance_m"]];
+ NSMutableDictionary*livePlan=[plan mutableCopy];if(!livePlan[@"liveFingerprint"]){NSDictionary*f=LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"));if(f)livePlan[@"liveFingerprint"]=f;}plan=livePlan;self.plan=plan;self.document=doc;self.layerIdentifier=uuid;NSDictionary*r=plan[@"report"];self.cameraLabel.stringValue=[NSString stringWithFormat:@"相机  %@",r[@"camera"]?:@"—"];self.lensLabel.stringValue=r[@"lens"]?:@"未找到匹配配置";self.parameterLabel.stringValue=[NSString stringWithFormat:@"%@ mm   ·   f/%@   ·   %@",displayNumber(r[@"focal_mm"]),displayNumber(LensPositiveCaptureNumber(r[@"aperture"])),[r[@"distance_source"]isEqual:@"infinity_fallback"]?@"对焦距离未记录，采用远距离标定":[NSString stringWithFormat:@"对焦距离 %@ m",displayNumber(r[@"focus_distance_m"])]];self.parameterLabel.toolTip=[NSString stringWithFormat:@"标定使用完整精度：焦距 %@ mm，光圈 f/%@，距离 %@ m。",r[@"focal_mm"],LensPositiveCaptureNumber(r[@"aperture"])?:@"未记录",r[@"focus_distance_m"]];
  self.badge.stringValue=@"已匹配配置";self.badge.textColor=NSColor.systemGreenColor;
- NSArray*available=[self availabilityValues];for(int i=0;i<3;i++){BOOL ok=[available[i]boolValue],identity=[r[@[@"distortionProfileAvailable",@"tcaProfileAvailable",@"vignettingProfileAvailable"][i]]boolValue]&&!ok;self.checks[i].enabled=ok;self.availability[i].stringValue=ok?@"标定可用":i==2&&[r[@"vignettingCalibrationWarning"]length]?@"标定不可用":identity?@"建议保留原样":[r[@"supplementalVignettingOnly"]boolValue]&&i<2?@"原生支持":@"缺少标定";self.availability[i].textColor=ok?NSColor.systemGreenColor:NSColor.secondaryLabelColor;}
+ NSArray*available=[self availabilityValues];for(int i=0;i<3;i++){BOOL ok=[available[i]boolValue],identity=[r[@[@"distortionProfileAvailable",@"tcaProfileAvailable",@"vignettingProfileAvailable"][i]]boolValue]&&!ok;self.checks[i].enabled=ok;self.availability[i].stringValue=ok?@"标定可用":i==2&&[r[@"vignettingCalibrationWarning"]length]?@"标定不可用":identity?@"建议保留原样":i==2&&!LensPositiveCaptureNumber(r[@"aperture"])?@"光圈未知":[r[@"supplementalVignettingOnly"]boolValue]&&i<2?@"原生支持":@"缺少标定";self.availability[i].textColor=ok?NSColor.systemGreenColor:NSColor.secondaryLabelColor;}
  NSDictionary*assessment=plan[@"cornerAssessment"];
  self.riskLabel.stringValue=assessment?[NSString stringWithFormat:@"%@。全强度去暗角预计新增 %.2f%% 高光溢出。自动建议%@；手动选择保留。",[assessment[@"sceneContentAmbiguous"]boolValue]?@"边角内容复杂，亮度不足以认定暗角":@"检测到较一致的边角亮度下降",[assessment[@"predictedNewHighlightClippingFraction"]doubleValue]*100,[assessment[@"automaticFullStrengthSuitable"]boolValue]?@"可预览":@"关闭去暗角"]:@"没有可用的去暗角检测结果。校正依照镜头标定，不从阴影推测镜头配置。";
  if(saved[@"correctionSettings"])[self loadSettings:saved[@"correctionSettings"]];else [self automatic:nil];
- if(self.focalField){self.focalField.doubleValue=[r[@"focal_mm"]doubleValue];self.apertureField.doubleValue=[r[@"aperture"]doubleValue];self.distanceField.doubleValue=[r[@"focus_distance_m"]doubleValue];}
  LensWriteHostState(doc,@"after-present-plan");
  self.status.stringValue=saved?@"已读取文档内保存的配置，可继续调整。三项参数分别保存。":@"已载入本次建议量 · 三项独立开关，滑块可向上或向下调整。";[self syncControls];
 }
@@ -232,7 +233,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   NSError*error=nil;NSDictionary*metadata=nil,*baseMetadata=nil,*plan=nil;
   if(snapshot)metadata=LensReadRawMetadata(snapshot[@"rawURL"],[root URLByAppendingPathComponent:@"exiftool/exiftool"],&error);
   baseMetadata=metadata;
-  if(metadata&&retainedMetadata){NSMutableDictionary*m=[metadata mutableCopy];if(retainedParameters)for(NSString*key in @[@"FocalLength",@"FNumber",@"FocusDistance"])if(retainedMetadata[key])m[key]=retainedMetadata[key];if(retainedMetadata[@"LensDockProfileSelection"])m[@"LensDockProfileSelection"]=retainedMetadata[@"LensDockProfileSelection"];metadata=m;}
+  if(metadata&&retainedMetadata){NSMutableDictionary*m=[(retainedParameters?LensMetadataRestoringCaptureParameters(metadata,retainedMetadata):metadata)mutableCopy];if(retainedMetadata[@"LensDockProfileSelection"])m[@"LensDockProfileSelection"]=retainedMetadata[@"LensDockProfileSelection"];metadata=m;}
   NSMutableDictionary*context=metadata?[@{@"metadata":metadata,@"baseMetadata":baseMetadata,@"report":@{@"width":snapshot[@"width"],@"height":snapshot[@"height"],@"workingTransfer":snapshot[@"workingTransfer"],@"assessmentPreviewSource":snapshot[@"previewSource"],@"assessmentPreviewTransfer":snapshot[@"previewTransfer"]},@"liveFingerprint":snapshot[@"liveFingerprint"],@"sourceBinding":LensCorrectionSourceBinding(snapshot[@"liveFingerprint"]),@"assessmentPreviewData":[NSData dataWithContentsOfURL:snapshot[@"previewURL"]]?:NSData.data}mutableCopy]:nil;if(retainedParameters)context[@"parameterOverrides"]=@YES;
   if(metadata)plan=LensNativeProfilePlan(metadata,[root URLByAppendingPathComponent:@"db"],library,[snapshot[@"width"]unsignedIntegerValue],[snapshot[@"height"]unsignedIntegerValue],&error);
   if(plan)plan=pickerReboundPlan(plan,context,metadata);
@@ -247,6 +248,12 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  NSMutableDictionary*pickerMetadata=[context[@"metadata"]mutableCopy];if(!pickerMetadata[@"LensDockProfileSelection"]&&context[@"report"][@"matchedCameraProfileID"]&&context[@"report"][@"matchedLensProfileID"])pickerMetadata[@"LensDockProfileSelection"]=@{@"cameraID":context[@"report"][@"matchedCameraProfileID"],@"lensID":context[@"report"][@"matchedLensProfileID"]};
  self.profilePicker=[[LensProfilePicker alloc]initWithMetadata:pickerMetadata databaseURL:[root URLByAppendingPathComponent:@"db"] libraryURL:library completion:^(NSDictionary*selection){LensPanelController*target=weakSelf;target.profilePicker=nil;if(selection)[target recalculateProfile:selection];}];[self.profilePicker beginSheetForWindow:self.panel];
 }
+- (void)rememberPendingContext:(NSDictionary*)context metadata:(NSDictionary*)metadata message:(NSString*)message{
+ NSMutableDictionary*pending=[context mutableCopy];pending[@"metadata"]=metadata;self.metadata=metadata;self.matchContext=pending;
+ self.badge.stringValue=LensPositiveCaptureNumber(metadata[@"FocalLength"])?@"未匹配":@"待补参数";
+ self.parameterLabel.stringValue=@"已保留待确认的配置与参数；原片和已有效果保留。";
+ self.status.stringValue=[NSString stringWithFormat:@"%@ 点击“详细设置…”核对拍摄参数，或“选择配置…”核对标定。",message];[self syncControls];
+}
 - (void)recalculateProfile:(NSDictionary*)selection{
  NSDictionary*context=self.plan?:self.matchContext;if(!context||self.busy)return;NSDocument*doc=self.document;NSString*uuid=self.layerIdentifier;
  if(doc!=[self activeDocument]||![uuid isEqual:getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID")]||![context[@"liveFingerprint"]isEqual:LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"))]){self.status.stringValue=@"选择期间 RAW 状态已变化，请重新匹配。";return;}
@@ -254,7 +261,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  NSURL*root=[NSBundle.mainBundle.resourceURL URLByAppendingPathComponent:@"LensBridge"],*library=[NSBundle.mainBundle.privateFrameworksURL URLByAppendingPathComponent:@"LensBridge/liblensfun.0.3.4.dylib"];self.busy=YES;NSUInteger generation=++self.generation;[self syncControls];self.status.stringValue=@"正在核对所选配置并重新计算建议…";
  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{@autoreleasepool{
   NSError*error=nil;NSDictionary*generated=LensNativeProfilePlan(metadata,[root URLByAppendingPathComponent:@"db"],library,[context[@"report"][@"width"]unsignedIntegerValue],[context[@"report"][@"height"]unsignedIntegerValue],&error);NSDictionary*p=pickerReboundPlan(generated,context,metadata);
-  dispatch_async(dispatch_get_main_queue(),^{if(generation!=self.generation)return;self.busy=NO;[self syncControls];if(!p){self.status.stringValue=error.localizedDescription?:@"所选配置不可用，原有校正保留。";return;}if(doc!=[self activeDocument]||![uuid isEqual:getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID")]||![context[@"liveFingerprint"]isEqual:LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"))]){self.status.stringValue=@"配置计算期间 RAW 状态已变化，未更新校正。";return;}self.metadata=metadata;self.matchContext=p;[self presentPlan:p document:doc identifier:uuid saved:nil];self.status.stringValue=selection.count?@"已载入所选标定与最新建议，尚未应用。点击“应用到 RAW”后配置随效果保存。":@"已恢复自动匹配与最新建议，尚未应用。";});
+  dispatch_async(dispatch_get_main_queue(),^{if(generation!=self.generation)return;self.busy=NO;[self syncControls];if(doc!=[self activeDocument]||![uuid isEqual:getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID")]||![context[@"liveFingerprint"]isEqual:LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"))]){self.status.stringValue=@"配置计算期间 RAW 状态已变化，未更新校正。";return;}if(!p){NSString*message=error.localizedDescription?:@"所选配置不可用，原有校正保留。";if(!self.plan)[self rememberPendingContext:context metadata:metadata message:message];else self.status.stringValue=message;return;}self.metadata=metadata;self.matchContext=p;[self presentPlan:p document:doc identifier:uuid saved:nil];self.status.stringValue=selection.count?@"已载入所选标定与最新建议，尚未应用。点击“应用到 RAW”后配置随效果保存。":@"已恢复自动匹配与最新建议，尚未应用。";});
  }});
 }
 - (void)restore:(NSData*)json expected:(NSData*)expected document:(NSDocument*)doc identifier:(NSString*)uuid{
@@ -276,10 +283,10 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  BOOL needsMaps=([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue])&&![self.plan[@"normalizedGeometryMapsLZFSE"]count];
  if(!needsMaps){[self commitPlan:self.plan settings:settings document:doc uuid:uuid before:before];return;}
  NSDictionary*metadata=self.plan[@"metadata"]?:self.metadata;if(!metadata){self.status.stringValue=@"缺少原始匹配参数，请重新匹配。";return;}NSDictionary*previous=self.plan;NSURL*root=[NSBundle.mainBundle.resourceURL URLByAppendingPathComponent:@"LensBridge"],*library=[NSBundle.mainBundle.privateFrameworksURL URLByAppendingPathComponent:@"LensBridge/liblensfun.0.3.4.dylib"];self.busy=YES;[self syncControls];self.status.stringValue=@"正在生成原生畸变与通道映射，原始 RAW 保持不变…";
- dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{@autoreleasepool{NSError*error=nil;NSDictionary*generated=LensNativeProfilePlanIncludingGeometry(metadata,[root URLByAppendingPathComponent:@"db"],library,[previous[@"report"][@"width"]unsignedIntegerValue],[previous[@"report"][@"height"]unsignedIntegerValue],&error);NSMutableDictionary*p=generated?[generated mutableCopy]:nil;if(p){NSMutableDictionary*r=[generated[@"report"]mutableCopy];r[@"workingTransfer"]=previous[@"report"][@"workingTransfer"];for(NSString*key in @[@"assessmentPreviewSource",@"assessmentPreviewTransfer"])if(previous[@"report"][key])r[key]=previous[@"report"][key];p[@"report"]=r;p[@"metadata"]=metadata;for(NSString*key in @[@"baseMetadata",@"parameterOverrides",@"cornerAssessment",@"assessmentPreviewData",@"liveFingerprint",@"sourceBinding"])if(previous[key])p[key]=previous[key];}dispatch_async(dispatch_get_main_queue(),^{self.busy=NO;[self syncControls];if(!p){self.status.stringValue=error.localizedDescription?:@"映射生成失败，未应用。";return;}if(doc!=[self activeDocument]){self.status.stringValue=@"当前文档已切换，未应用。";return;}[self commitPlan:p settings:settings document:doc uuid:uuid before:before];});}});
+ dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{@autoreleasepool{NSError*error=nil;NSDictionary*generated=LensNativeProfilePlanIncludingGeometry(metadata,[root URLByAppendingPathComponent:@"db"],library,[previous[@"report"][@"width"]unsignedIntegerValue],[previous[@"report"][@"height"]unsignedIntegerValue],&error);NSMutableDictionary*p=generated?[generated mutableCopy]:nil;if(p){NSMutableDictionary*r=[generated[@"report"]mutableCopy];r[@"workingTransfer"]=previous[@"report"][@"workingTransfer"];for(NSString*key in @[@"assessmentPreviewSource",@"assessmentPreviewTransfer"])if(previous[@"report"][key])r[key]=previous[@"report"][key];if([previous[@"parameterOverrides"]boolValue]&&LensPositiveCaptureNumber(metadata[@"FocusDistance"]))r[@"distance_source"]=@"manual";p[@"report"]=r;p[@"metadata"]=metadata;for(NSString*key in @[@"baseMetadata",@"parameterOverrides",@"cornerAssessment",@"assessmentPreviewData",@"liveFingerprint",@"sourceBinding"])if(previous[key])p[key]=previous[key];}dispatch_async(dispatch_get_main_queue(),^{self.busy=NO;[self syncControls];if(!p){self.status.stringValue=error.localizedDescription?:@"映射生成失败，未应用。";return;}if(doc!=[self activeDocument]){self.status.stringValue=@"当前文档已切换，未应用。";return;}[self commitPlan:p settings:settings document:doc uuid:uuid before:before];});}});
 }
 - (void)showDetails:(id)sender{
- if(!self.plan||self.busy)return;
+ if(!(self.plan?:self.matchContext)||!self.metadata||self.busy)return;
  if(!self.details){
   self.details=[NSPopover new];self.details.behavior=NSPopoverBehaviorTransient;
   NSViewController*c=[NSViewController new];c.view=[[NSView alloc]initWithFrame:NSMakeRect(0,0,440,500)];
@@ -289,7 +296,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   for(int i=0;i<3;i++){
    [c.view addSubview:label(names[i],NSMakeRect(20,414-i*39,260,24),12,NSFontWeightRegular)];
    NSTextField*f=[[NSTextField alloc]initWithFrame:NSMakeRect(294,414-i*39,122,25)];
-   NSNumberFormatter*format=[NSNumberFormatter new];format.numberStyle=NSNumberFormatterDecimalStyle;format.usesGroupingSeparator=NO;format.maximumFractionDigits=4;f.formatter=format;f.accessibilityLabel=names[i];f.font=[NSFont monospacedDigitSystemFontOfSize:12 weight:NSFontWeightRegular];
+   NSNumberFormatter*format=[NSNumberFormatter new];format.numberStyle=NSNumberFormatterDecimalStyle;format.usesGroupingSeparator=NO;format.maximumFractionDigits=4;f.formatter=format;f.accessibilityLabel=names[i];f.placeholderString=i==0?@"填写实际焦距":@"未知可留空";f.font=[NSFont monospacedDigitSystemFontOfSize:12 weight:NSFontWeightRegular];
    [c.view addSubview:f];[fields addObject:f];
   }
   self.focalField=fields[0];self.apertureField=fields[1];self.distanceField=fields[2];
@@ -301,34 +308,36 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   NSButton*update=[NSButton buttonWithTitle:@"重新计算配置" target:self action:@selector(updateParameters:)];update.frame=NSMakeRect(255,18,161,30);[c.view addSubview:update];
   self.details.contentViewController=c;
  }
- NSDictionary*r=self.plan[@"report"],*current=[self settings];NSArray*keys=@[@"distortionStrength",@"tcaStrength",@"vignettingStrength"],*available=[self availabilityValues];for(int i=0;i<3;i++){self.relativeFields[i].doubleValue=[current[keys[i]]doubleValue];self.relativeFields[i].enabled=[available[i]boolValue];}self.focalField.doubleValue=[r[@"focal_mm"]doubleValue];self.apertureField.doubleValue=[r[@"aperture"]doubleValue];self.distanceField.doubleValue=[r[@"focus_distance_m"]doubleValue];
- self.detailsNote.stringValue=[NSString stringWithFormat:@"来源：Lensfun 标定库，已加载 %@ 个配置文件。\n%@ · %@\n%@\n修改参数用于标定插值，不改写 RAW 元数据。重新计算后仍需点击“应用到 RAW”。",r[@"databaseFiles"]?:@0,[r[@"matchingIdentityMethod"]hasPrefix:@"normalized-exact"]?@"按数据库记录名称匹配":@"按唯一候选匹配",(@{@"LensModel":@"镜头名称",@"LensIDName":@"镜头 ID",@"Lens":@"镜头描述"}[r[@"matchingIdentitySource"]?:@""]?:@"已保存配置"),[r[@"metadataWarning"]length]?@"MakerNote 读取受限，当前使用标准 EXIF；未记录距离时采用远距离回退。":[r[@"distance_source"]isEqual:@"infinity_fallback"]?@"原片未记录距离；1000 m 表示远距离回退。":@"当前使用记录或手动指定的对焦距离。"];
+ NSDictionary*context=self.plan?:self.matchContext,*r=self.plan[@"report"],*current=self.plan?[self settings]:nil;NSArray*keys=@[@"distortionStrength",@"tcaStrength",@"vignettingStrength"],*available=[self availabilityValues];for(int i=0;i<3;i++){self.relativeFields[i].doubleValue=current?[current[keys[i]]doubleValue]:0;self.relativeFields[i].enabled=self.plan&&[available[i]boolValue];}
+ NSArray*values=LensCaptureParameterDisplayValues(context[@"metadata"]?:self.metadata),*fields=@[self.focalField,self.apertureField,self.distanceField];for(NSUInteger i=0;i<3;i++)[fields[i]setObjectValue:values[i]==NSNull.null?@"":values[i]];
+ NSDictionary*effective=context[@"metadata"]?:self.metadata;for(NSUInteger i=0;i<3;i++){NSTextField*field=fields[i];BOOL fallback=i==2&&!LensPositiveCaptureNumber(effective[@"FocusDistance"])&&!LensPositiveCaptureNumber(effective[@"SubjectDistance"]);field.toolTip=fallback?@"原片未记录对焦距离；1000 m 表示远距离标定回退，并非实测距离。":values[i]==NSNull.null?@"原片未记录有效值；可填写已知的实际拍摄参数。未记录光圈时不会启用去暗角。":[context[@"parameterOverrides"]boolValue]?@"使用本次或文档内保存的参数覆盖；“恢复拍摄参数”重新采用原片记录。":@"自动读取自原片 EXIF 或相机 MakerNotes；无需手动输入。";}
+ self.detailsNote.stringValue=[NSString stringWithFormat:@"来源：Lensfun 标定库，已加载 %@ 个配置文件。\n%@ · %@\n%@\n拍摄参数默认自动读取，可补全缺失信息或手动调整。\n不改写 RAW 元数据；重新计算后仍需点击“应用到 RAW”。",r[@"databaseFiles"]?:@0,[r[@"matchingIdentityMethod"]hasPrefix:@"normalized-exact"]?@"按数据库记录名称匹配":@"按唯一候选匹配",(@{@"LensModel":@"镜头名称",@"LensIDName":@"镜头 ID",@"Lens":@"镜头描述"}[r[@"matchingIdentitySource"]?:@""]?:@"已保存配置"),[r[@"metadataWarning"]length]?@"MakerNote 读取受限，当前使用标准 EXIF；未记录距离时采用远距离回退。":[r[@"distance_source"]isEqual:@"infinity_fallback"]?@"原片未记录距离；1000 m 表示远距离回退。":@"当前使用记录或手动指定的对焦距离。"];
+ if(!self.plan)self.detailsNote.stringValue=@"已有拍摄参数已自动读取。只需补全缺失信息，必要时确认镜头配置。\n光圈未知可留空：畸变与色差仍可匹配，去暗角不启用。\n距离留空采用远距离标定；默认 1000 m 表示远距离回退。\n重新计算只更新建议，不改写原片 EXIF 或已保存效果。";
  [self.details showRelativeToRect:self.detailsButton.bounds ofView:self.detailsButton preferredEdge:NSRectEdgeMaxY];
 }
 - (void)updateParameters:(id)sender{
- if(self.busy||!self.plan)return;
- NSDictionary*original=self.plan[@"baseMetadata"]?:self.plan[@"metadata"]?:self.metadata;
- if(!original){self.status.stringValue=@"此旧配置未保存拍摄参数，请使用原始 RAW 重新匹配。";return;}
- NSMutableDictionary*metadata=[original mutableCopy];BOOL reset=[sender tag]==1;
- if(self.plan[@"metadata"][@"LensDockProfileSelection"])metadata[@"LensDockProfileSelection"]=self.plan[@"metadata"][@"LensDockProfileSelection"];
- if(!reset){
-  double f=self.focalField.doubleValue,a=self.apertureField.doubleValue,d=self.distanceField.doubleValue;
-  if(!isfinite(f)||!isfinite(a)||!isfinite(d)||f<=0||a<.5||a>128||d<=0||d>100000){self.detailsNote.stringValue=@"请输入有效焦距、光圈（0.5–128）与距离（大于 0、至多 100000 m）。尚未改变任何校正。";return;}
-  metadata[@"FocalLength"]=@(f);metadata[@"FNumber"]=@(a);metadata[@"FocusDistance"]=@(d);
- }
- NSDictionary*previous=self.plan;NSMutableDictionary*settings=[[self settings]mutableCopy];if(!reset){NSArray*keys=@[@"distortionStrength",@"tcaStrength",@"vignettingStrength"];for(int i=0;i<3;i++){double value=self.relativeFields[i].doubleValue;if(!isfinite(value)||value<0||value>200){self.detailsNote.stringValue=@"标定倍率需在 0–200% 范围内。";return;}settings[keys[i]]=@(value);}}NSDocument*doc=self.document;NSString*uuid=self.layerIdentifier;
+ NSDictionary*previous=self.plan?:self.matchContext;if(self.busy||!previous)return;
+ NSDocument*doc=self.document;NSString*uuid=self.layerIdentifier;
+ if(doc!=[self activeDocument]||![uuid isEqual:getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID")]||![previous[@"liveFingerprint"]isEqual:LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"))]){self.detailsNote.stringValue=@"RAW 状态已变化，请关闭详细设置并重新匹配当前照片。";return;}
+ if(![self.details.contentViewController.view.window makeFirstResponder:nil])return;
+ NSDictionary*original=previous[@"baseMetadata"]?:previous[@"metadata"]?:self.metadata;
+ if(!original){self.detailsNote.stringValue=@"此旧配置未保存拍摄参数，请使用原始 RAW 重新匹配。";return;}
+ BOOL reset=[sender tag]==1;NSError*inputError=nil;
+ NSDictionary*metadata=LensMetadataWithCaptureParameterText(original,previous[@"metadata"]?:self.metadata,@[self.focalField.stringValue,self.apertureField.stringValue,self.distanceField.stringValue],NSLocale.currentLocale,reset,&inputError);
+ if(!metadata){self.detailsNote.stringValue=inputError.localizedDescription?:@"拍摄参数不可用，未改变校正。";return;}
+ NSMutableDictionary*settings=self.plan?[[self settings]mutableCopy]:nil;if(!reset&&settings){NSArray*keys=@[@"distortionStrength",@"tcaStrength",@"vignettingStrength"];for(int i=0;i<3;i++){double value=self.relativeFields[i].doubleValue;if(!isfinite(value)||value<0||value>200){self.detailsNote.stringValue=@"标定倍率需在 0–200% 范围内。";return;}settings[keys[i]]=@(value);}}
+ NSMutableDictionary*context=[previous mutableCopy];context[@"baseMetadata"]=original;if(reset)[context removeObjectForKey:@"parameterOverrides"];else context[@"parameterOverrides"]=@YES;
  NSURL*root=[NSBundle.mainBundle.resourceURL URLByAppendingPathComponent:@"LensBridge"],*library=[NSBundle.mainBundle.privateFrameworksURL URLByAppendingPathComponent:@"LensBridge/liblensfun.0.3.4.dylib"];
- self.busy=YES;[self syncControls];[self.details close];self.status.stringValue=@"正在按指定拍摄参数重新计算标定…";
+ self.busy=YES;NSUInteger generation=++self.generation;[self syncControls];[self.details close];self.status.stringValue=@"正在按指定拍摄参数重新计算标定…";
  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{@autoreleasepool{
-  NSError*error=nil;NSDictionary*generated=LensNativeProfilePlan(metadata,[root URLByAppendingPathComponent:@"db"],library,[previous[@"report"][@"width"]unsignedIntegerValue],[previous[@"report"][@"height"]unsignedIntegerValue],&error);
-  NSMutableDictionary*p=generated?[generated mutableCopy]:nil;
-  if(p){NSMutableDictionary*r=[generated[@"report"]mutableCopy];r[@"workingTransfer"]=previous[@"report"][@"workingTransfer"];for(NSString*key in @[@"assessmentPreviewSource",@"assessmentPreviewTransfer"])if(previous[@"report"][key])r[key]=previous[@"report"][key];if(previous[@"liveFingerprint"])p[@"liveFingerprint"]=previous[@"liveFingerprint"];if(previous[@"sourceBinding"])p[@"sourceBinding"]=previous[@"sourceBinding"];if(!reset)r[@"distance_source"]=@"manual";p[@"report"]=r;p[@"metadata"]=metadata;p[@"baseMetadata"]=original;if(!reset)p[@"parameterOverrides"]=@YES;if(previous[@"assessmentPreviewData"]){p[@"assessmentPreviewData"]=previous[@"assessmentPreviewData"];NSDictionary*assessment=LensAssessCornerPreviewData(previous[@"assessmentPreviewData"],p[@"linearGainFloat32BottomUp"],[r[@"width"]unsignedIntegerValue],[r[@"height"]unsignedIntegerValue],r[@"assessmentPreviewTransfer"]?:r[@"workingTransfer"],nil);if(assessment){NSMutableDictionary*a=[assessment mutableCopy];a[@"assessmentSource"]=r[@"assessmentPreviewSource"]?:@"saved_preview";p[@"cornerAssessment"]=a;}}}
+  NSError*error=nil;NSDictionary*generated=LensNativeProfilePlan(metadata,[root URLByAppendingPathComponent:@"db"],library,[context[@"report"][@"width"]unsignedIntegerValue],[context[@"report"][@"height"]unsignedIntegerValue],&error);
+  NSDictionary*p=pickerReboundPlan(generated,context,metadata);
   dispatch_async(dispatch_get_main_queue(),^{
-   self.busy=NO;[self syncControls];if(!p){self.status.stringValue=error.localizedDescription?:@"指定参数没有有效标定，原配置保留。";return;}
-   if(doc!=[self activeDocument]||![uuid isEqual:getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID")]){self.status.stringValue=@"当前文档或图层已切换，未更新配置。";return;}
-   self.metadata=metadata;[self presentPlan:p document:doc identifier:uuid saved:@{@"correctionSettings":settings}];
-   [self updateRisk];
-   self.status.stringValue=reset?@"已恢复拍摄参数，尚未应用。三项开关与强度保留。":@"已重新计算，尚未应用。手动参数会随效果保存，原始 RAW 元数据保留。";
+   if(generation!=self.generation)return;self.busy=NO;[self syncControls];
+   if(doc!=[self activeDocument]||![uuid isEqual:getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID")]||![previous[@"liveFingerprint"]isEqual:LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"))]){self.status.stringValue=@"计算期间 RAW 状态已变化，未更新配置。";return;}
+   if(!p){NSString*message=error.localizedDescription?:@"指定参数没有有效标定，原配置保留。";if(!self.plan)[self rememberPendingContext:context metadata:metadata message:message];else self.status.stringValue=message;return;}
+   self.metadata=metadata;self.matchContext=p;[self presentPlan:p document:doc identifier:uuid saved:settings?@{@"correctionSettings":settings}:nil];
+   self.status.stringValue=reset?@"已恢复拍摄参数，尚未应用。三项选择保留。":@"已按指定参数重新计算，尚未应用。原始 RAW 元数据保留；未知光圈不启用去暗角。";
   });
  }});
 }
