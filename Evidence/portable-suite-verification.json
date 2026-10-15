@@ -1,7 +1,9 @@
 {
-  "executedOn": "2026-10-15T06:50:19.745244+08:00",
+  "executedOn": "2026-10-15T08:14:11.059362+08:00",
   "suite": "Scripts/test.py",
   "suitesPassed": [
+    "effect-replacement",
+    "profile-selection",
     "recorded-aliases",
     "sensor-variant",
     "camera-context",
@@ -14,7 +16,7 @@
     "source-binding"
   ],
   "nativeRenderCombinationsPassed": 96,
-  "sourceEngineSHA256": "537915253967b0ac786b1e7251dc779fa64ab64663e8a4d505b7dd95b9d95617",
+  "sourceEngineSHA256": "ca3ac3b710867b0686b589a7845b56b3107c1f34edda9f485d3286cc0bd5852d",
   "privateRAWIncludedInRepository": false,
   "privateRAWOptionalChecksRunInPortableSuite": true,
   "actualRAWProbeTypes": [
@@ -29,6 +31,11 @@
   "realRAWSourceEvidence": "native-priority-verification.json and calibration-evidence-verification.json",
   "compilationTarget": "arm64-apple-macos26.0",
   "allSelectedTestsPassed": true,
-  "scope": "Development source tests; does not validate new module inside the running Pixelmator GUI or second Mac",
-  "releasedDMGIncludesDevelopmentChanges": false
+  "scope": "Development source tests, including the real PTFoundation native value comparator with a test-only layer setter; actual research-host named-PXD GUI persistence is separately scoped in profile-picker-ui-verification.json",
+  "releasedDMGIncludesDevelopmentChanges": false,
+  "commitPathSourcesSHA256": {
+    "LensNativeState.m": "60207a9462e2c378f8d675d1cb270a4231e26bf682cf37e68907e884198c6a29",
+    "LensCorrectionSettings.m": "ac4d28939c70506046b98993cb9ccf4daded4435ada0712bb046b2fa6162a4dc"
+  },
+  "identityHeaderSHA256": "934099dc04863892124e005b7fc3b13b8baa892932ecd2bc2b09c8dd43540f6c"
 }

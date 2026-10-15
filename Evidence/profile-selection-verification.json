@@ -1,0 +1,15 @@
+{
+  "allProjectionCandidatesRetained": true,
+  "ambiguousAutomaticContextStillRejected": true,
+  "changedCalibrationInvalidatesSavedSelection": true,
+  "effectRoundtripPreservesSelectionAndOriginalMetadata": true,
+  "explicitCameraAndLensSelectionWorks": true,
+  "explicitLX3ModeAccepted": true,
+  "identitiesStableAcrossCalibrationPointOrder": true,
+  "nativePriorityAndOffSwitchPreserved": true,
+  "nativeSupportDoesNotMaskInvalidManualSelection": true,
+  "rejectsIncompatibleMountAndMalformedSelection": true,
+  "scope": "Content-addressed manual profile routing and effect serialization, not GUI or real RAW optical accuracy",
+  "mixedModelPriorityChangeInvalidatesIdentity": true,
+  "identityHeaderSHA256": "934099dc04863892124e005b7fc3b13b8baa892932ecd2bc2b09c8dd43540f6c"
+}

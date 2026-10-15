@@ -1,0 +1,8 @@
+{
+  "directSetterDoesNotReportFalseSuccess" : true,
+  "failedReplacementRestoresOriginalEffects" : true,
+  "nativeIgnoredOpaqueMetadataReproduced" : true,
+  "otherEffectRetained" : true,
+  "replacementWritesChangedMetadata" : true,
+  "scope" : "Real PTFoundation native value equality with a test-only layer setter, not a GUI persistence claim"
+}

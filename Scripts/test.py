@@ -8,6 +8,8 @@ for name,target in [('lib',ROOT/'Vendor/Lib'),('resources',ROOT/'Resources/LensB
 shutil.copy2(ROOT/'Resources/native-effects-template.json',out/'native-effects-template.json')
 native=ROOT/'Sources/Native'
 groups={
+ 'verify-effect-replacement':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
+ 'verify-profile-selection':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-recorded-aliases':['LensNativeProfileEngine.m'],
  'verify-sensor-variant':['LensNativeProfileEngine.m'],
  'verify-camera-context':['LensNativeProfileEngine.m'],
@@ -19,7 +21,7 @@ groups={
  'verify-source-binding':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
 }
 for name,sources in groups.items():
- subprocess.run(['xcrun','clang','-arch','arm64','-mmacosx-version-min=26.0','-O2','-fobjc-arc','-Wno-deprecated-declarations','-I',str(native),'-framework','Cocoa','-framework','CoreImage','-framework','ImageIO',str(ROOT/'Tests'/(name+'.m')),*[str(native/s) for s in sources],'-o',str(out/name)],check=True,cwd=ROOT)
+ subprocess.run(['xcrun','clang','-arch','arm64','-mmacosx-version-min=26.0','-O2','-fobjc-arc','-Wno-deprecated-declarations',*(['-Wl,-export_dynamic'] if name=='verify-effect-replacement' else []),'-I',str(native),'-framework','Cocoa','-framework','CoreImage','-framework','ImageIO',str(ROOT/'Tests'/(name+'.m')),*[str(native/s) for s in sources],'-o',str(out/name)],check=True,cwd=ROOT)
  subprocess.run([str(out/name)],check=True,cwd=ROOT)
  if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_GRID_TEST':'1'})
 print('All selected tests passed. RAW-specific checks run only when Tests/PrivateRAW is supplied.')

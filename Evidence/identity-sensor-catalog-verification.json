@@ -1,7 +1,7 @@
 {
-  "verifiedAt": "2026-10-14T22:50:19.741675+00:00",
+  "verifiedAt": "2026-10-14T23:43:52.174727+00:00",
   "baselineSourceCommit": "9675545de729daf61e7cf3394d8de9f937452115",
-  "sourceEngineSHA256": "537915253967b0ac786b1e7251dc779fa64ab64663e8a4d505b7dd95b9d95617",
+  "sourceEngineSHA256": "ca3ac3b710867b0686b589a7845b56b3107c1f34edda9f485d3286cc0bd5852d",
   "auditSourceSHA256": "8aa0fd0ac9d4b24e1a0ee557b982fd517041d645529ad8a6eeb3d1b862379e17",
   "auditInputBuilderSHA256": "b773a0d330f3ae5fd1e16bdcfc2d7d20c1fe5532f46322b99edca1b940839c5a",
   "databaseCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
@@ -150,9 +150,10 @@
     "normalized-exact-database-alias": 1457,
     "exact-lens-identity-sensor-calibration-variant": 104
   },
-  "developmentNativePanelSHA256": "80ecc0520c5972426cf90a98d8b96a553a2412316e1c79ef3e929040f76d07e0",
+  "developmentNativePanelSHA256": "b050377b73b674ab9fad19369dd7f031ff6e662a9e5d2af54706b2f236ea5c5b",
   "developmentNativePanelCompiledAndSignatureVerified": true,
   "installedPreviewUpdated": false,
   "releasedDMGUpdated": false,
-  "doesNotProveRAWOrLightroomCoverage": true
+  "doesNotProveRAWOrLightroomCoverage": true,
+  "automaticMatchingUnchangedAfterManualPickerImplementation": true
 }

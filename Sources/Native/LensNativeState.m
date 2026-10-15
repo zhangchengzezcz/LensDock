@@ -27,7 +27,10 @@ BOOL LensSetLayerEffects(id layer,id effects){
  NativeEffects value=get((__bridge void*)effects);set(value,NO,(__bridge void*)layer);
  // Layer.setEffects borrows the value (its owned property setter releases it
  // after this call in the verified arm64 binary); release our getter results.
- releaseEffects(value);return YES;
+ releaseEffects(value);
+ // The native value comparator ignores opaque custom-filter profile data and
+ // may skip the setter. Verify the actual layer instead of reporting success.
+ return LensEffectsEquivalent(LensEffectsJSON(LensCopyLayerEffects(layer),nil),LensEffectsJSON(effects,nil));
 }
 @interface LensStateCoder:NSCoder
 @property NSData*data;

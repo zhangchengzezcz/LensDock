@@ -24,6 +24,25 @@ NSDictionary*LensSavedCorrectionProfile(id effects){
  for(NSDictionary*wrapper in data[1][@"w"])for(NSDictionary*item in wrapper[@"versionSpecifiContainer"][@"effectUnkeyedContainer"]){CIFilter*f=filterFromItem(item);if([f isKindOfClass:LensRegisterVignettingFilter()])return ((id(*)(id,SEL))objc_msgSend)(f,NSSelectorFromString(@"lensProfile"));}
  return nil;
 }
+static NSData*effectsWithoutCorrection(NSData*existing,NSError**error){
+ NSMutableArray*data=[NSJSONSerialization JSONObjectWithData:existing options:NSJSONReadingMutableContainers error:error];if(![data isKindOfClass:NSArray.class]||data.count!=2)return nil;
+ NSMutableArray*keep=[NSMutableArray new];for(NSDictionary*wrapper in data[1][@"w"]){NSMutableArray*retained=[NSMutableArray new];for(NSDictionary*item in wrapper[@"versionSpecifiContainer"][@"effectUnkeyedContainer"]){CIFilter*q=filterFromItem(item);if(![q isKindOfClass:LensRegisterVignettingFilter()])[retained addObject:item];}
+  if(retained.count){NSMutableDictionary*copy=[wrapper mutableCopy],*box=[wrapper[@"versionSpecifiContainer"]mutableCopy];box[@"effectUnkeyedContainer"]=retained;copy[@"versionSpecifiContainer"]=box;[keep addObject:copy];}}
+ data[1][@"w"]=keep;return [NSJSONSerialization dataWithJSONObject:data options:0 error:error];
+}
+BOOL LensReplaceLayerCorrection(id layer,id effects,NSError**error){
+ if(!NSThread.isMainThread)return NO;id original=LensCopyLayerEffects(layer);NSData*before=LensEffectsJSON(original,error);if(!original||!before||!effects)return NO;
+ if(LensSetLayerEffects(layer,effects))return YES;
+ // Same class and visible CI inputs can compare equal despite a changed
+ // archived calibration. Replace only our effect inside one main-thread turn;
+ // register history after the final verified state in the caller.
+ NSData*without=LensSavedCorrectionProfile(original)?effectsWithoutCorrection(before,error):nil;id intermediate=without?LensEffectsFromJSON(without):nil;
+ if(intermediate&&LensSetLayerEffects(layer,intermediate)&&LensSetLayerEffects(layer,effects))return YES;
+ BOOL restored=LensSetLayerEffects(layer,original);
+ if(!restored&&intermediate)restored=LensSetLayerEffects(layer,intermediate)&&LensSetLayerEffects(layer,original);
+ if(error)*error=[NSError errorWithDomain:@"LensBridgeCommit" code:restored?1:2 userInfo:@{NSLocalizedDescriptionKey:restored?@"配置未能完整写入，已恢复原有图层效果。":@"效果回读不一致，未确认应用成功；请保留文档并重新打开核对。"}];
+ return NO;
+}
 id LensEffectsForCorrectionPlan(NSDictionary*plan,NSData*envelope,NSDictionary*settings,NSData*existing,NSError**error){
  NSDictionary*r=plan[@"report"];NSUInteger w=[r[@"width"]unsignedIntegerValue],h=[r[@"height"]unsignedIntegerValue];NSString*transfer=r[@"workingTransfer"];
  if(!w||!h||w>16000||h>16000||(![transfer isEqual:@"linear"]&&![transfer isEqual:@"encoded_sRGB"]))return nil;
@@ -45,8 +64,7 @@ id LensEffectsForCorrectionPlan(NSDictionary*plan,NSData*envelope,NSDictionary*s
  NSMutableArray*template=[NSJSONSerialization JSONObjectWithData:envelope options:NSJSONReadingMutableContainers error:error],*data=existing?[NSJSONSerialization JSONObjectWithData:existing options:NSJSONReadingMutableContainers error:error]:nil;
  if(![template isKindOfClass:NSArray.class]||template.count!=2)return nil;NSDictionary*baseWrapper=template[1][@"w"][0];if(!data)data=[NSJSONSerialization JSONObjectWithData:envelope options:NSJSONReadingMutableContainers error:error];
  NSMutableArray*wrappers=data[1][@"w"];
- if(existing){NSMutableArray*keep=[NSMutableArray new];for(NSDictionary*wrapper in wrappers){NSMutableArray*retained=[NSMutableArray new];for(NSDictionary*item in wrapper[@"versionSpecifiContainer"][@"effectUnkeyedContainer"]){CIFilter*q=filterFromItem(item);if(![q isKindOfClass:LensRegisterVignettingFilter()])[retained addObject:item];}
- if(retained.count){NSMutableDictionary*copy=[wrapper mutableCopy],*box=[wrapper[@"versionSpecifiContainer"]mutableCopy];box[@"effectUnkeyedContainer"]=retained;copy[@"versionSpecifiContainer"]=box;[keep addObject:copy];}}data[1][@"w"]=keep;wrappers=keep;}else{data[1][@"w"]=[NSMutableArray new];wrappers=data[1][@"w"];}
+ if(existing){NSData*stripped=effectsWithoutCorrection(existing,error);if(!stripped)return nil;data=[NSJSONSerialization JSONObjectWithData:stripped options:NSJSONReadingMutableContainers error:error];wrappers=data[1][@"w"];}else{data[1][@"w"]=[NSMutableArray new];wrappers=data[1][@"w"];}
  NSMutableDictionary*wrapper=[baseWrapper mutableCopy];NSMutableDictionary*container=[wrapper[@"versionSpecifiContainer"]mutableCopy];container[@"type"]=@"PTCustomCIEffect";NSMutableArray*items=[container[@"effectUnkeyedContainer"]mutableCopy];NSMutableDictionary*item=[items[0]mutableCopy],*spec=[item[@"versionSpecifiContainer"]mutableCopy];
  spec[@"CIFilterNSCodingData"]=[archive base64EncodedStringWithOptions:0];spec[@"identifier"]=NSUUID.UUID.UUIDString;spec[@"controlSetCommons"][@"versionSpecifiContainer"][@"isEnabled"]=@YES;item[@"versionSpecifiContainer"]=spec;items[0]=item;container[@"effectUnkeyedContainer"]=items;wrapper[@"versionSpecifiContainer"]=container;[wrappers insertObject:wrapper atIndex:0];
  NSData*json=[NSJSONSerialization dataWithJSONObject:data options:0 error:error];return LensEffectsFromJSON(json);
