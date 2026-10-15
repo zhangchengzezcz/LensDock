@@ -1,0 +1,25 @@
+{
+  "executedOn": "2026-10-15T10:19:18.527689+00:00",
+  "scope": "Native-only plan reporting when independent calibration is absent; automated metadata routing regression, not host GUI or optical accuracy",
+  "previousImplementationFailedRegression": {
+    "exitCode": 11,
+    "recordedSubjectDistanceM": 2.5,
+    "reportedDistanceM": 1000
+  },
+  "nativeOnlyDistanceMetadata": {
+    "invalidMakerNoteFallsBackToStandard": true,
+    "missingDistanceExplicitFarFallback": true,
+    "standardSubjectDistanceRetained": true,
+    "validMakerNoteDistanceHasPriority": true
+  },
+  "fullSuiteGroupsPassed": 14,
+  "nativeRenderCombinationsPassed": 96,
+  "newModuleCompiledAndAdhocSignatureVerified": true,
+  "runningHostModuleReplaced": false,
+  "releasedDMGIncludesChanges": false,
+  "sourceSHA256": {
+    "Sources/Native/LensNativeProfileEngine.m": "87fa6c329e60818a4847edaaa20f071d3ae0acb0699c8d9d2edc79d6ec0cc8c4",
+    "Tests/verify-native-priority.m": "d6c94cf716af90a30c3be6d5fea075606a63e64899f7f17b761bd8dd21ffc097"
+  },
+  "developmentModuleSHA256": "ec605c4532b824875decb1969125213086e8b28ecb1b662303d88b47a1c5d400"
+}

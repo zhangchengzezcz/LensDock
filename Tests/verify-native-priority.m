@@ -19,9 +19,24 @@ int main(){@autoreleasepool{
  id effects=LensEffectsForCorrectionPlan(mutable,envelope,settings,nil,&e);if(!effects||![LensSavedCorrectionProfile(LensEffectsFromJSON(LensEffectsJSON(effects,nil)))[@"correctionSettings"]isEqual:settings])return 4;
  NSMutableDictionary*illegal=[settings mutableCopy];illegal[@"distortionEnabled"]=@YES;if(LensEffectsForCorrectionPlan(mutable,envelope,illegal,nil,nil))return 5;
  m[@"LensModel"]=@"Unknown 12345";NSDictionary*unknown=LensNativeProfilePlan(m,db,lib,192,128,&e);if(!unknown||unknown[@"linearGainFloat32BottomUp"]||[unknown[@"report"][@"vignettingProfileAvailable"]boolValue])return 6;
+ // Native correction can remain available without an independent profile.
+ // Its report must still retain a recorded standard EXIF SubjectDistance.
+ m[@"SubjectDistance"]=@2.5;
+ NSDictionary*standardDistance=LensNativeProfilePlan(m,db,lib,192,128,&e);
+ if(fabs([standardDistance[@"report"][@"focus_distance_m"]doubleValue]-2.5)>1e-9||![standardDistance[@"report"][@"distance_source"]isEqual:@"metadata"])return 11;
+ m[@"FocusDistance"]=@4;
+ NSDictionary*makerDistance=LensNativeProfilePlan(m,db,lib,192,128,&e);
+ if(fabs([makerDistance[@"report"][@"focus_distance_m"]doubleValue]-4)>1e-9)return 12;
+ m[@"FocusDistance"]=@(-1);
+ NSDictionary*invalidMakerDistance=LensNativeProfilePlan(m,db,lib,192,128,&e);
+ if(fabs([invalidMakerDistance[@"report"][@"focus_distance_m"]doubleValue]-2.5)>1e-9)return 13;
+ [m removeObjectForKey:@"SubjectDistance"];
+ NSDictionary*missingDistance=LensNativeProfilePlan(m,db,lib,192,128,&e);
+ if([missingDistance[@"report"][@"focus_distance_m"]doubleValue]!=1000||![missingDistance[@"report"][@"distance_source"]isEqual:@"infinity_fallback"])return 14;
+ [m removeObjectForKey:@"FocusDistance"];
  m[@"nativeCorrectionSupport"]=@{@"probeSucceeded":@NO};if(LensNativeProfilePlan(m,db,lib,192,128,nil))return 7;
  m[@"LensModel"]=@"Canon EF-S 17-85mm f/4-5.6 IS USM";m[@"nativeCorrectionSupport"]=@{@"probeSucceeded":@YES,@"lensCorrectionSupported":@NO};NSDictionary*unsupported=LensNativeProfilePlanFullGeometry(m,db,lib,192,128,&e);if(!unsupported[@"normalizedGeometryMapsLZFSE"]||LensPlanAllowsLiveNativeCorrection(unsupported,on)||!LensPlanAllowsLiveNativeCorrection(unsupported,off))return 8;
  NSMutableArray*probes=[NSMutableArray new];for(NSString*file in @[@"Tests/PrivateRAW/Canon40D.CR2",@"Tests/PrivateRAW/NikonD70.NEF",@"Tests/PrivateRAW/CanonR50V.CR3"]){if(![NSFileManager.defaultManager fileExistsAtPath:file])continue;NSDictionary*n=LensReadNativeCorrectionSupport([NSURL fileURLWithPath:file]);if(![n[@"probeSucceeded"]boolValue])return 9;BOOL expected=[file.pathExtension isEqual:@"CR3"];if([n[@"lensCorrectionSupported"]boolValue]!=expected)return 10;[probes addObject:@{@"fixtureType":file.pathExtension,@"nativeSupport":n}];}
- NSDictionary*result=@{@"verifiedAt":NSDate.date.description,@"nativeSupported":@{@"noSupplementalGeometryMaps":@YES,@"defaultVignettingOffAndZero":@YES,@"manualVignettingSettingsRoundtrip":@YES,@"rejectEnabledSupplementalGeometry":@YES,@"nativeOffSwitchPreserved":@YES},@"unknownLensNoInventedGain":@YES,@"unknownSupportFailsClosed":@YES,@"nativeUnsupportedRetainsGeometry":@YES,@"invalidDimensionsRejected":@YES,@"actualRAWProbes":probes};
+ NSDictionary*result=@{@"verifiedAt":NSDate.date.description,@"nativeSupported":@{@"noSupplementalGeometryMaps":@YES,@"defaultVignettingOffAndZero":@YES,@"manualVignettingSettingsRoundtrip":@YES,@"rejectEnabledSupplementalGeometry":@YES,@"nativeOffSwitchPreserved":@YES},@"unknownLensNoInventedGain":@YES,@"unknownSupportFailsClosed":@YES,@"nativeUnsupportedRetainsGeometry":@YES,@"invalidDimensionsRejected":@YES,@"nativeOnlyDistanceMetadata":@{@"standardSubjectDistanceRetained":@YES,@"validMakerNoteDistanceHasPriority":@YES,@"invalidMakerNoteFallsBackToStandard":@YES,@"missingDistanceExplicitFarFallback":@YES},@"actualRAWProbes":probes};
  [[NSJSONSerialization dataWithJSONObject:result options:NSJSONWritingPrettyPrinted error:nil]writeToURL:[here URLByAppendingPathComponent:@"native-priority-verification.json"] atomically:YES];puts("Native priority, optional vignette, bounds and settings passed. See actualRAWProbes for optional RAW checks.");
 }}
