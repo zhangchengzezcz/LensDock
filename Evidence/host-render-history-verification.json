@@ -1,7 +1,6 @@
 {
   "executedOn": "2026-10-15T15:06:45.505188+00:00",
   "scope": "One local Nikon D70 NEF, full-size 2000x3008 PXD rendered previews, manual profile and panel correction undo/redo in isolated Pixelmator 4.3 host; not general native Edit-menu history or optical correction accuracy",
-  "hostModuleSHA256DuringHistoryTest": "14b81cf715e95a2bf28fc21398860604a6156ee692dfda2c5643b2bac9245c37",
   "distortionRelativeStrengths": {
     "baseline": 100,
     "half": 50,
@@ -81,5 +80,6 @@
   "secondPNGExportBlockedByDisabledSavePanelButton": true,
   "saveAndReadbackPassed": true,
   "reopenNewHostGUIPassed": false,
-  "releasedDMGIncludesChanges": false
+  "releasedDMGIncludesChanges": false,
+  "developmentModuleSHA256CorrespondingToHistoryTest": "14b81cf715e95a2bf28fc21398860604a6156ee692dfda2c5643b2bac9245c37"
 }

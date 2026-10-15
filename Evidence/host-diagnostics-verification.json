@@ -15,5 +15,14 @@
     "Sources/Native/LensHostDiagnostics.m": "63aaacb82b748fbfeab2a477658f7b4e69dc6615be816edbac0f2bb837e387af",
     "Tests/verify-host-diagnostics.m": "afcd02c022d0e50bd73acd4ca9b7905cae1023ca1b5185cf3f7306803a0ed8d4"
   },
-  "releasedDMGIncludesChanges": false
+  "releasedDMGIncludesChanges": false,
+  "newHostOpenPanelChecks": {
+    "PXDAndOrdinaryPNGSelectedButOpenDisabled": true,
+    "canChooseFiles": true,
+    "canChooseDirectories": false,
+    "allowsOtherFileTypes": false,
+    "selectedURLs": 1,
+    "PXDAndPNGTypesIncludedInAllowedContentTypes": true,
+    "inspection": "Explicit public property getters only; no setters, validation actions or document-opening calls"
+  }
 }
