@@ -1,0 +1,228 @@
+{
+  "version": "0.2.2-preview",
+  "scope": "Local 24 MP A6000 map/archive/render regression and code-level compatibility, not Lightroom optical/coverage equivalence or all-device performance acceptance",
+  "build": {
+    "version": "0.2.2-preview",
+    "deploymentTarget": "26.0",
+    "notarized": false,
+    "redistributesVendorApp": false,
+    "sha256": {
+      "Contents/MacOS/LensDock": "be0334caeda859f4574de1629b7550451da69ec00614a02c66d8cbb5aa7ea84f",
+      "Contents/Resources/Payload/LensPanel.dylib": "d52d0fc1760fdf00db22299425237fc55f029e0abf1b1b2683da6f0a33eb24ce",
+      "Contents/Resources/Payload/LensLiveSource.dylib": "1522e881d6ba53b317751362c45c8086d5acf1dc9ea504b3887f316128769e30"
+    }
+  },
+  "sourceSHA256": {
+    "Sources/Native/LensNativeProfileEngine.m": "0c81c555dce852f3dc67cad57b47dbf34d347dd47f4d13a503b4ceaa27cf79b2",
+    "Sources/Native/LensCorrectionSettings.m": "16eaf9c430bb8aef294987099f883c38ad227f534a03cc04c2d19412b7267903",
+    "Sources/Native/LensVignettingFilter.m": "b9ee47b0be7202e11afd4d8047719f5037cff1dfe941461e4a3040e900d2ccc6",
+    "Sources/Native/LensPanel.m": "75c60e374109ab3511c32219938af47d73778dc88ea5f1938accb5ada928a7a5",
+    "Sources/Native/LensGainMap.h": "51465031b57e50d0cb34de98d90ce84bf54de41f1538a0cca4ee3f516bff6934",
+    "Tests/verify-compact-maps.m": "56ce96b3399ec8ffc3374b2919e48579bdf2f0013e16cbe1a7103d2d0452922b",
+    "Tests/verify-three-corrections.m": "68f4d8dbbbba4617908469dec9a2bc5d1043938812a81c20431041392c10c616",
+    "Tests/compare-rendered-images-16.m": "c2724f2a8380b6fece0d737b814c1a16742633ce0fc1978b26c132a349468d07",
+    "Scripts/test.py": "a80043911c43a5f450bbfa316fc09eb0220a476bc23c33078a844717b1537d42"
+  },
+  "syntheticChecks": {
+    "malformedCodecRejected": true,
+    "gainLosslessBitwiseRoundtrip": true,
+    "scope": "Synthetic compact-map byte decoding and all eight oriented Lensfun working-map versus dense-path comparisons, not real RAW or optical accuracy",
+    "geometry": [
+      {
+        "encoding": "pixel-displacement-RGf-bottom-up-grid-v3",
+        "noiseFixture": false,
+        "independentEveryCoordinateMaxErrorPixels": 1.9373532694544338e-05
+      },
+      {
+        "encoding": "pixel-displacement-residual-RG8-bottom-up-grid-v4",
+        "noiseFixture": true,
+        "independentEveryCoordinateMaxErrorPixels": 0
+      }
+    ],
+    "arbitraryIEEEBitPatternsRoundtrip": true,
+    "orientedWorkingPath": [
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003442565081286375,
+        "orientation": 1
+      },
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003463932490603838,
+        "orientation": 2
+      },
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003463932490603838,
+        "orientation": 3
+      },
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003442565081286375,
+        "orientation": 4
+      },
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003424372436597878,
+        "orientation": 5
+      },
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003463932490603838,
+        "orientation": 6
+      },
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003463932490603838,
+        "orientation": 7
+      },
+      {
+        "geometryPlanes": 7,
+        "independentGainMaxError": 0,
+        "independentEveryCoordinateMaxErrorPixels": 0.0003424372436597878,
+        "orientation": 8
+      }
+    ],
+    "independentGainMaxError": 1.5093984506719949e-07
+  },
+  "suite": {
+    "groups": 21,
+    "distinctNativeRenderCombinations": 192,
+    "layouts": [
+      "dense",
+      "geometry-grid",
+      "gain-grid",
+      "residual-grid"
+    ],
+    "additionalPairedDenseReferencesForResidualLayout": 48,
+    "allPassed": true,
+    "orientationGroupExpandedAndRerunAfterFullSuite": true,
+    "suiteLogSHA256": "be8c30bc53c4755432b18b27e5c265934b632ef3be9375d90b507af303ada709"
+  },
+  "residualNegativeControl": {
+    "mutation": "Replace residual shader contribution with zero in an owned test renderer copy",
+    "exitCode": 7,
+    "pairedMaximumError": 0.0117188,
+    "derivedBudget": 0.000954556,
+    "detected": true,
+    "testSourceSHA256": "68f4d8dbbbba4617908469dec9a2bc5d1043938812a81c20431041392c10c616",
+    "mutatedRendererSHA256": "39ffe777bf048965e5ae773c94ceb1dc20eecaa981d4c595b8f62293e12d6d3d"
+  },
+  "mapGenerationBenchmark": {
+    "dimensions": [
+      6000,
+      4000
+    ],
+    "seconds": 10.101067066192627,
+    "peakResidentBytes": 2267906048,
+    "scope": "Standalone plan generation only; excludes GUI commit, migration of the old archive, history, saving and exporting",
+    "compressedGeometryPlanesSummedBytes": 186289,
+    "compressedResidualPlanesSummedBytes": 54165404,
+    "summedPlanesMayCountSharedDataMoreThanOnce": true,
+    "gainGridBytes": 16793604,
+    "losslessEncodedGainBytes": 3011458,
+    "geometryMaxErrorPixels": 0.000749999988329364,
+    "gainMaxError": 5.508139933274592e-06,
+    "workingMapsRemoved": true
+  },
+  "savedDocument": {
+    "oldDensePXDBenchmarkBytes": 1374741605,
+    "newPXDBenchmarkBytes": 97602164,
+    "newPXDSHA256": "1df519739c9d180136da484bbd1510937e4a1868a3ccb2c3e22f279994398e8d",
+    "effectsJSONBytes": 67935159,
+    "filterArchiveBytes": 50239210,
+    "embeddedRAW": {
+      "bytes": 25624576,
+      "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+    },
+    "rawUnchanged": true,
+    "settings": {
+      "distortionStrength": 100.0,
+      "distortionEnabled": 1,
+      "tcaStrength": 100.0,
+      "vignettingEnabled": 0,
+      "vignettingStrength": 50.0,
+      "tcaEnabled": 1
+    },
+    "format": {
+      "profileFormatVersion": 4,
+      "workingTransfer": "lensdock-compact-v4",
+      "compactWorkingTransfer": "encoded_sRGB",
+      "gainGridLosslessEncoding": "float32-delta-byteplanes-LZFSE-v1",
+      "gainGridLosslessData": {
+        "omittedDataBytes": 3011458
+      }
+    },
+    "temporaryWorkingMapsAbsent": true,
+    "persistedRAWFieldsEqualBoundFields": true,
+    "archiveOnlyExtraRAWField": "ctx=[1,{cs:[1,{map:{}}]}] serialization context; persisted capture/development fields otherwise exact",
+    "closedAndReopenedViaNormalUI": true,
+    "RAWLayerAndCorrectionEffectVisible": true,
+    "automaticFocalMM": 39,
+    "automaticFNumber": 5,
+    "focusDistance": "not recorded; explicitly labeled 1000 m calibration fallback",
+    "reopenPanelBehavior": "Rereads source to calculate suggestions, preserves saved three choices and leaves existing effect applied; a newly generated plan is unapplied until user applies",
+    "oldOwnedTestPXDUpdatedByHostAutosaveDuringMigration": true,
+    "oldDenseBaselinePNGExportedBeforeMigrationAndRetained": true
+  },
+  "actual16BitExportComparison": {
+    "baselinePixelSHA256": "c03b352e487be72830ef1ff8cb3692c0b23a8505466418c9221020c8ae6cb453",
+    "iccSHA256": "0ff6958f98684c61f6bbdce1368ddeaf3873baf84545baba482e920d92a914c0",
+    "candidatePixelSHA256": "117a89739585399df9225f63d2dd706b39c43a5cb7930286da230969e6b20987",
+    "p99RGBDelta16Bit": 15,
+    "width": 6000,
+    "meanAbsoluteRGBDelta16Bit": 0.7201099444444444,
+    "scope": "Read-only 16-bit PNG comparison in the identical embedded RGB color space; no 8-bit conversion, no optical accuracy claim",
+    "changedRGBPixelFraction": 0.22323783333333333,
+    "bitsPerChannel": 16,
+    "rmsRGBDelta16Bit": 3.1640002633796773,
+    "height": 4000,
+    "p999RGBDelta16Bit": 32,
+    "changedAlphaPixels": 0,
+    "identicalEmbeddedICC": true,
+    "maximumRGBDelta16Bit": 209
+  },
+  "frozen021Renderer": {
+    "sourceCommit": "c70976c0264f23561136a8e86b54ace46de41908",
+    "exitCode": 0,
+    "newMarkerReturnsSameInputImage": true,
+    "opaqueProfileCodingRoundtripPreserved": true,
+    "fullLegacyHostGUIVerified": false
+  },
+  "hostModuleUpdate": {
+    "scope": "Inactive owned research host module update only; original vendor and installed user host preserved; sandbox entitlements unchanged.",
+    "version": "0.2.2-preview",
+    "hostWasNotRunning": true,
+    "beforeSHA256": "70790184e54d0ba8655e3cf568885822fafd0b59f585b37c779eebfbd3e49154",
+    "payloadSHA256": "50702424d28b721a15e165ec660cde855a9e454f6bc139d51037b95654dcb015",
+    "signedModuleSHA256": "d52d0fc1760fdf00db22299425237fc55f029e0abf1b1b2683da6f0a33eb24ce",
+    "strictSignatureVerified": true
+  },
+  "limitations": [
+    "Not pixel-identical rendering; coordinates and scalar fields use bounded approximation, gain storage codec alone is bitwise lossless",
+    "No optical reference target validation or Lightroom equivalent coverage",
+    "No 8 GB Mac, second computer, macOS 26 or long-term performance qualification",
+    "No complete crop/layer-transform/history/color-space matrix; geometry generation currently limited to 48 MP",
+    "No Developer ID signing or notarization"
+  ],
+  "isolatedInstaller": {
+    "fullInstallationPassed": true,
+    "signedModuleRecognitionPassed": true,
+    "strictSignaturePassed": true,
+    "vendorCriticalFilesUnchanged": true,
+    "userInstalledHostReplaced": false,
+    "logSHA256": "fc5f29b4f1763959afde856220517b213b29c4ac1bdca4376a6ae4d2659365ad"
+  },
+  "vendorVerification": {
+    "passed": true,
+    "scope": "Original application version, ABI hashes, signature, arm64 parser and malformed input rejection; no original mutation",
+    "logSHA256": "8296e62dd83cfa32fe9ed53dd2e575ee08cf7ddf3362328ae146e1f3dd9abc06"
+  }
+}

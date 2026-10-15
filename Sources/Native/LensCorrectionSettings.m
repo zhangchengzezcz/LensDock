@@ -5,6 +5,7 @@
 #import <math.h>
 #import <float.h>
 #import "LensCalibrationEvidence.h"
+#import "LensGainMap.h"
 Class LensRegisterVignettingFilter(void);
 NSDictionary *LensCorrectionSourceBinding(NSDictionary *live){
  if(![live isKindOfClass:NSDictionary.class])return nil;
@@ -69,15 +70,29 @@ id LensEffectsForCorrectionPlan(NSDictionary*plan,NSData*envelope,NSDictionary*s
  NSDictionary*r=plan[@"report"];NSUInteger w=[r[@"width"]unsignedIntegerValue],h=[r[@"height"]unsignedIntegerValue];NSString*transfer=r[@"workingTransfer"];
  if(!w||!h||w>16000||h>16000||(![transfer isEqual:@"linear"]&&![transfer isEqual:@"encoded_sRGB"]))return nil;
  NSDictionary*maps=plan[@"normalizedGeometryMapsLZFSE"];
+ BOOL residual=[r[@"geometryMapEncoding"]isEqual:@"pixel-displacement-residual-RG8-bottom-up-grid-v4"];
+ if(residual){double step=[r[@"geometryResidualStepPixels"]doubleValue];if(!isfinite(step)||step<=0||step>1)return nil;for(NSString*key in maps)if(![plan[@"geometryResidualMapsLZFSE"][key]isKindOfClass:NSData.class]||![plan[@"geometryResidualMapsLZFSE"][key]length])return nil;}
  if([r[@"supplementalVignettingOnly"]boolValue]&&([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue]))return nil;
  for(NSString*key in @[@"distortion",@"tca",@"vignetting"]){double strength=[settings[[key stringByAppendingString:@"Strength"]]doubleValue];if(!isfinite(strength)||strength<0||strength>200)return nil;}
  if([settings[@"distortionEnabled"]boolValue]&&!maps[@"D"])return nil;
  if([settings[@"distortionEnabled"]boolValue]&&!LensGeometryCalibrationNeeded(r,@"distortion"))return nil;
  if([settings[@"tcaEnabled"]boolValue]&&(!maps[@"T0"]||!maps[@"T1"]||!maps[@"T2"]))return nil;
  if([settings[@"tcaEnabled"]boolValue]&&!LensGeometryCalibrationNeeded(r,@"tca"))return nil;
- if([settings[@"vignettingEnabled"]boolValue]&&(![r[@"vignettingCorrectionNeeded"]boolValue]||[plan[@"linearGainFloat32BottomUp"]length]!=w*h*4))return nil;
+ NSUInteger gainWidth=0,gainHeight=0;
+ if([settings[@"vignettingEnabled"]boolValue]&&(![r[@"vignettingCorrectionNeeded"]boolValue]||!LensGainMapDimensions(r,w,h,&gainWidth,&gainHeight)||[plan[@"linearGainFloat32BottomUp"]length]!=gainWidth*gainHeight*4))return nil;
  NSMutableDictionary*profile=[@{@"width":@(w),@"height":@(h),@"workingTransfer":transfer,@"matchedProfile":r,@"gainModeVersion":@3,@"correctionSettings":settings,@"normalizedGeometryMapsLZFSE":maps?:@{}}mutableCopy];
- if(plan[@"linearGainFloat32BottomUp"])profile[@"linearGainFloat32BottomUp"]=plan[@"linearGainFloat32BottomUp"];
+ if(residual||r[@"gainMapEncoding"]||[r[@"geometryMapEncoding"]isEqual:@"pixel-displacement-RGf-bottom-up-grid-v3"]){
+  // An older renderer accepts only linear/encoded_sRGB. It therefore leaves
+  // the original visible instead of interpreting pixel offsets as coordinates.
+  profile[@"workingTransfer"]=@"lensdock-compact-v4";profile[@"compactWorkingTransfer"]=transfer;profile[@"profileFormatVersion"]=@4;
+ }
+ if(plan[@"linearGainFloat32BottomUp"]){
+  NSData*gain=plan[@"linearGainFloat32BottomUp"],*encoded=r[@"gainMapEncoding"]?LensEncodeGainGrid(gain,error):nil;
+  if(r[@"gainMapEncoding"]&&!encoded)return nil;
+  if(encoded.length&&encoded.length<gain.length){profile[@"gainGridLosslessData"]=encoded;profile[@"gainGridLosslessEncoding"]=@"float32-delta-byteplanes-LZFSE-v1";}
+  else profile[@"linearGainFloat32BottomUp"]=gain;
+ }
+ if(residual)profile[@"geometryResidualMapsLZFSE"]=plan[@"geometryResidualMapsLZFSE"];
  for(NSString*key in @[@"metadata",@"baseMetadata",@"parameterOverrides",@"cornerAssessment",@"assessmentPreviewData"])if(plan[key])profile[key]=plan[key];
  NSDictionary *binding=plan[@"sourceBinding"]?:LensCorrectionSourceBinding(plan[@"liveFingerprint"]);
  if(binding)profile[@"sourceBinding"]=binding;

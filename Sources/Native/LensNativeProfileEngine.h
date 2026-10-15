@@ -15,3 +15,4 @@ NSDictionary *LensNativeProfilePlan(NSDictionary *metadata, NSURL *databaseURL, 
 NSDictionary *LensNativeProfilePlanIncludingGeometry(NSDictionary *metadata, NSURL *databaseURL, NSURL *libraryURL, NSUInteger width, NSUInteger height, NSError **error);
 NSDictionary *LensNativeProfilePlanFullGeometry(NSDictionary *metadata, NSURL *databaseURL, NSURL *libraryURL, NSUInteger width, NSUInteger height, NSError **error);
 NSDictionary *LensCompactGeometryPlan(NSDictionary *fullPlan, double tolerancePixels, NSError **error);
+NSDictionary *LensCompactGainPlan(NSDictionary *fullPlan, double toleranceGain, NSError **error);

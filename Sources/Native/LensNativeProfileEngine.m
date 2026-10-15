@@ -272,7 +272,8 @@ NSDictionary*LensReadRawMetadata(NSURL*rawURL,NSURL*tool,NSError**error){
  [m removeObjectForKey:@"SourceFile"];return m;
 }
 
-static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUInteger w,NSUInteger h,BOOL geometry,NSError**error){
+typedef NS_ENUM(NSUInteger,LensGeometryStorage){LensGeometryNone,LensGeometryCompressed,LensGeometryWorking};
+static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUInteger w,NSUInteger h,LensGeometryStorage geometry,NSError**error){
  if(!w||!h||w>16000||h>16000||w*h>120000000){fail(error,@"图像尺寸不在已验证范围。");return nil;}
  double focal=positive(m[@"FocalLength"]),aperture=positive(m[@"FNumber"]);
  if(!focal){fail(error,@"缺少拍摄焦距。");return nil;}
@@ -367,7 +368,7 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
  // Each RG plane is losslessly compressed and tagged with its map encoding.
  if(geometry&&(needsD||needsT)&&w*h<=48000000){
   NSMutableDictionary*maps=[NSMutableDictionary new];
-  for(int pass=0;pass<3;pass++){
+  for(int pass=0;pass<3;pass++){@autoreleasepool{
    BOOL multi=pass!=0;if((pass==0&&!needsD)||(pass==1&&!needsT)||(pass==2&&(!needsD||!needsT)))continue;
    if(mod){lf_modifier_destroyFn(mod);mod=NULL;}
    mod=lf_modifier_newFn(lens,camera->CropFactor,(int)w,(int)h);
@@ -384,11 +385,11 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
      target[to]=(xy[from]+.5f)/w;target[to+1]=1.f-(xy[from+1]+.5f)/h;
      if(!isfinite(target[to])||!isfinite(target[to+1])){fail(error,@"镜头坐标映射无效。");goto cleanup;}
     }
-    NSData*compressed=[rg compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(!compressed)goto cleanup;
+    NSData*compressed=geometry==LensGeometryWorking?rg:[rg compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(!compressed)goto cleanup;
     NSString*key=pass==0?@"D":[NSString stringWithFormat:@"%c%d",pass==1?'T':'C',channel];maps[key]=compressed;
    }}
-  }
-  plan[@"normalizedGeometryMapsLZFSE"]=maps;report[@"geometryMapEncoding"]=@"normalized-source-RGf-bottom-up-v1";
+  }}
+  plan[geometry==LensGeometryWorking?@"workingGeometryMapsFloat32":@"normalizedGeometryMapsLZFSE"]=maps;report[@"geometryMapEncoding"]=@"normalized-source-RGf-bottom-up-v1";
  }
  result=plan;
 cleanup:
@@ -401,7 +402,7 @@ static CGPoint originalPoint(CGPoint p,NSUInteger orientation,NSUInteger width,N
 static CGPoint orientedPoint(CGPoint p,NSUInteger orientation,NSUInteger width,NSUInteger height){
  switch(orientation){case 2:return CGPointMake(width-1-p.x,p.y);case 3:return CGPointMake(width-1-p.x,height-1-p.y);case 4:return CGPointMake(p.x,height-1-p.y);case 5:return CGPointMake(p.y,p.x);case 6:return CGPointMake(height-1-p.y,p.x);case 7:return CGPointMake(height-1-p.y,width-1-p.x);case 8:return CGPointMake(p.y,width-1-p.x);default:return p;}
 }
-static NSDictionary*makeOrientedPlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUInteger w,NSUInteger h,BOOL geometry,NSError**error){
+static NSDictionary*makeOrientedPlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUInteger w,NSUInteger h,LensGeometryStorage geometry,NSError**error){
  NSDictionary*requestedSelection=profileSelection(m,error);if(!requestedSelection)return nil;
  if(!w||!h||w>16000||h>16000||w*h>120000000){fail(error,@"图像尺寸不在已验证范围。");return nil;}
  NSUInteger orientation=m[@"Orientation"]?[m[@"Orientation"]unsignedIntegerValue]:1;
@@ -415,7 +416,7 @@ static NSDictionary*makeOrientedPlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUIntege
  if(native&&![native[@"probeSucceeded"]boolValue]){fail(error,@"暂时无法确认原生镜头矫正支持，未添加补充校正。");return nil;}
  BOOL official=[native[@"lensCorrectionSupported"]boolValue];NSError* __autoreleasing nativeProfileError=nil;
  if(!captureAligned){fail(official?&nativeProfileError:error,@"原始 RAW 的拍摄比例与当前显影尺寸不一致，暂不添加补充校正。");if(!official)return nil;}
- NSDictionary*base=captureAligned?makeNativePlan(m,db,lib,ow,oh,geometry&&!official,official?&nativeProfileError:error):nil;
+ NSDictionary*base=captureAligned?makeNativePlan(m,db,lib,ow,oh,official?LensGeometryNone:geometry,official?&nativeProfileError:error):nil;
  if(!base&&requestedSelection.count){if(official&&error)*error=nativeProfileError;return nil;}
  if(official){
   double recordedDistance=positive(m[@"FocusDistance"])?:positive(m[@"SubjectDistance"]);
@@ -433,11 +434,12 @@ static NSDictionary*makeOrientedPlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUIntege
  if(gain){if(gain.length!=ow*oh*4)return nil;const float*source=gain.bytes;NSMutableData*out=[NSMutableData dataWithLength:w*h*4];float*target=out.mutableBytes;
   for(NSUInteger y=0;y<h;y++)for(NSUInteger x=0;x<w;x++){CGPoint p=originalPoint(CGPointMake(x,y),orientation,ow,oh);target[((h-1-y)*w+x)]=source[((oh-1-(NSUInteger)p.y)*ow+(NSUInteger)p.x)];}plan[@"linearGainFloat32BottomUp"]=out;
  }
- if(base[@"normalizedGeometryMapsLZFSE"]){NSMutableDictionary*maps=[NSMutableDictionary new];for(NSString*key in base[@"normalizedGeometryMapsLZFSE"]){@autoreleasepool{
-  NSData*data=[base[@"normalizedGeometryMapsLZFSE"][key]decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(data.length!=ow*oh*8)return nil;const float*source=data.bytes;NSMutableData*out=[NSMutableData dataWithLength:w*h*8];float*target=out.mutableBytes;
+ NSString*mapKey=base[@"workingGeometryMapsFloat32"]?@"workingGeometryMapsFloat32":@"normalizedGeometryMapsLZFSE";
+ if(base[mapKey]){NSMutableDictionary*maps=[NSMutableDictionary new];for(NSString*key in base[mapKey]){@autoreleasepool{
+  NSData*data=geometry==LensGeometryWorking?base[mapKey][key]:[base[mapKey][key]decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(data.length!=ow*oh*8)return nil;const float*source=data.bytes;NSMutableData*out=[NSMutableData dataWithLength:w*h*8];float*target=out.mutableBytes;
   for(NSUInteger y=0;y<h;y++)for(NSUInteger x=0;x<w;x++){CGPoint p=originalPoint(CGPointMake(x,y),orientation,ow,oh);NSUInteger pos=((oh-1-(NSUInteger)p.y)*ow+(NSUInteger)p.x)*2;CGPoint q=orientedPoint(CGPointMake(source[pos]*ow-.5,(1-source[pos+1])*oh-.5),orientation,ow,oh);NSUInteger to=((h-1-y)*w+x)*2;target[to]=(q.x+.5)/w;target[to+1]=1-(q.y+.5)/h;}
-  NSData*encoded=[out compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(!encoded)return nil;maps[key]=encoded;
- }}plan[@"normalizedGeometryMapsLZFSE"]=maps;}
+  NSData*encoded=geometry==LensGeometryWorking?out:[out compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(!encoded)return nil;maps[key]=encoded;
+ }}plan[mapKey]=maps;}
  return plan;
 }
 NSDictionary*LensNativeProfilePlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUInteger w,NSUInteger h,NSError**error){return makeOrientedPlan(m,db,lib,w,h,NO,error);}
@@ -449,26 +451,92 @@ static double mapValue(const float*data,NSUInteger w,NSUInteger h,double x,doubl
  NSUInteger ix=MIN(w-2,(NSUInteger)floor(x)),iy=MIN(h-2,(NSUInteger)floor(y));double fx=x-ix,fy=y-iy;
  return (1-fy)*((1-fx)*data[(iy*w+ix)*2+channel]+fx*data[(iy*w+ix+1)*2+channel])+fy*((1-fx)*data[((iy+1)*w+ix)*2+channel]+fx*data[((iy+1)*w+ix+1)*2+channel]);
 }
-NSDictionary*LensCompactGeometryPlan(NSDictionary*full,double tolerance,NSError**error){
- NSDictionary*r=full[@"report"],*maps=full[@"normalizedGeometryMapsLZFSE"];NSUInteger w=[r[@"width"]unsignedIntegerValue],h=[r[@"height"]unsignedIntegerValue];
- if(!maps.count||w<2||h<2)return full;if(!isfinite(tolerance)||tolerance<=0)return nil;
+// A smooth grid cannot reproduce all float rounding noise of a dense optical
+// table. Retain small byte-coded pixel residuals instead of loosening the error
+// gate or persisting seven dense float tables. Every coordinate is rechecked.
+static NSDictionary*residualGeometryPlan(NSDictionary*full,NSDictionary*maps,BOOL working,double tolerance,NSError**error){
+ NSDictionary*r=full[@"report"];NSUInteger w=[r[@"width"]unsignedIntegerValue],h=[r[@"height"]unsignedIntegerValue];double step=tolerance;
  for(NSUInteger nodes=65;nodes<=2049;nodes=2*(nodes-1)+1){@autoreleasepool{
-  NSUInteger mw=MIN(w,nodes),mh=MIN(h,nodes);NSMutableDictionary*compressed=[NSMutableDictionary new];double worst=0;BOOL accepted=YES;
-  for(NSString*key in maps){@autoreleasepool{
-   NSData*data=[maps[key]decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(data.length!=w*h*8)return nil;const float*source=data.bytes;
-   NSMutableData*grid=[NSMutableData dataWithLength:mw*mh*8];float*g=grid.mutableBytes;
-   for(NSUInteger y=0;y<mh;y++)for(NSUInteger x=0;x<mw;x++)for(int c=0;c<2;c++)g[(y*mw+x)*2+c]=mapValue(source,w,h,(double)x*(w-1)/(mw-1),(double)y*(h-1)/(mh-1),c);
+  NSUInteger mw=MIN(w,nodes),mh=MIN(h,nodes);NSMutableDictionary*grids=[NSMutableDictionary new],*residuals=[NSMutableDictionary new];BOOL accepted=YES;double worst=0;NSUInteger nonzero=0;
+  for(NSString*key in [maps.allKeys sortedArrayUsingSelector:@selector(compare:)]){@autoreleasepool{
+   NSData*data=working?maps[key]:[maps[key]decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(data.length!=w*h*8)return nil;const float*source=data.bytes;
+   NSMutableData*grid=[NSMutableData dataWithLength:mw*mh*8],*residual=[NSMutableData dataWithLength:w*h*2];float*g=grid.mutableBytes;unsigned char*bytes=residual.mutableBytes;
+   for(NSUInteger y=0;y<mh;y++)for(NSUInteger x=0;x<mw;x++)for(int c=0;c<2;c++){
+    double sx=(double)x*(w-1)/(mw-1),sy=(double)y*(h-1)/(mh-1);g[(y*mw+x)*2+c]=mapValue(source,w,h,sx,sy,c)*(c==0?w:h)-(c==0?sx:sy)-.5;
+   }
    for(NSUInteger y=0;y<h&&accepted;y++)for(NSUInteger x=0;x<w&&accepted;x++)for(int c=0;c<2;c++){
-    double value=mapValue(g,mw,mh,(double)x*(mw-1)/(w-1),(double)y*(mh-1)/(h-1),c);
-    double e=fabs(value-source[(y*w+x)*2+c])*(c==0?w:h);worst=fmax(worst,e);if(e>tolerance){accepted=NO;break;}
+    NSUInteger i=(y*w+x)*2+c;double actual=(double)source[i]*(c==0?w:h),value=mapValue(g,mw,mh,(double)x*(mw-1)/(w-1),(double)y*(mh-1)/(h-1),c)+(c==0?x:y)+.5,difference=actual-value;
+    double code=fabs(difference)<=step*.5?0:round(difference/step);
+    // Reuse an adjacent code only within the same verified error bound. This
+    // suppresses quantization chatter without changing the optical mapping.
+    if(x>0){int previous=(int)bytes[i-2]-128;if(fabs(value+previous*step-actual)<=tolerance*.75)code=previous;}
+    else if(y>0){int previous=(int)bytes[i-w*2]-128;if(fabs(value+previous*step-actual)<=tolerance*.75)code=previous;}
+    if(!isfinite(code)||code<-127||code>127){accepted=NO;break;}
+    bytes[i]=(unsigned char)((int)code+128);nonzero+=code!=0;
+    double e=fabs(value+code*step-actual);worst=fmax(worst,e);if(!isfinite(e)||e>tolerance){accepted=NO;break;}
+   }
+   if(!accepted)break;
+   NSData*cg=[grid compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error],*cr=[residual compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(!cg||!cr)return nil;
+   // Identical optical planes share one NSData archive object (e.g. D/C1).
+   for(NSData*existing in grids.allValues)if([cg isEqual:existing]){cg=existing;break;}
+   for(NSData*existing in residuals.allValues)if([cr isEqual:existing]){cr=existing;break;}
+   grids[key]=cg;residuals[key]=cr;
+  }}
+  if(accepted){NSMutableDictionary*plan=[full mutableCopy],*report=[r mutableCopy];report[@"geometryMapWidth"]=@(mw);report[@"geometryMapHeight"]=@(mh);report[@"geometryMapEncoding"]=@"pixel-displacement-residual-RG8-bottom-up-grid-v4";report[@"geometryResidualStepPixels"]=@(step);report[@"geometryResidualNonzeroComponents"]=@(nonzero);report[@"geometryMapVerifiedMaxErrorPixels"]=@(worst);report[@"geometryMapTolerancePixels"]=@(tolerance);report[@"geometryVerification"]=@"every-full-resolution-coordinate";plan[@"report"]=report;plan[@"normalizedGeometryMapsLZFSE"]=grids;plan[@"geometryResidualMapsLZFSE"]=residuals;[plan removeObjectForKey:@"workingGeometryMapsFloat32"];return plan;}
+ }}
+ return nil;
+}
+NSDictionary*LensCompactGeometryPlan(NSDictionary*full,double tolerance,NSError**error){
+ NSDictionary*r=full[@"report"],*working=full[@"workingGeometryMapsFloat32"],*maps=working?:full[@"normalizedGeometryMapsLZFSE"];NSUInteger w=[r[@"width"]unsignedIntegerValue],h=[r[@"height"]unsignedIntegerValue];
+ if(!maps.count||w<2||h<2)return full;if(!isfinite(tolerance)||tolerance<=0)return nil;
+ for(NSUInteger nodes=65;nodes<=257;nodes=2*(nodes-1)+1){@autoreleasepool{
+  NSUInteger mw=MIN(w,nodes),mh=MIN(h,nodes);NSMutableDictionary*compressed=[NSMutableDictionary new];double worst=0;BOOL accepted=YES;
+  for(NSString*key in [maps.allKeys sortedArrayUsingSelector:@selector(compare:)]){@autoreleasepool{
+   NSData*data=working?maps[key]:[maps[key]decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(data.length!=w*h*8)return nil;const float*source=data.bytes;
+   NSMutableData*grid=[NSMutableData dataWithLength:mw*mh*8];float*g=grid.mutableBytes;
+   // Small pixel displacements retain float precision near image edges. An
+   // absolute normalized coordinate near 1 loses subpixel bits at large sizes.
+   for(NSUInteger y=0;y<mh;y++)for(NSUInteger x=0;x<mw;x++)for(int c=0;c<2;c++){
+    double sx=(double)x*(w-1)/(mw-1),sy=(double)y*(h-1)/(mh-1);
+    g[(y*mw+x)*2+c]=mapValue(source,w,h,sx,sy,c)*(c==0?w:h)-(c==0?sx:sy)-.5;
+   }
+   for(NSUInteger y=0;y<h&&accepted;y++)for(NSUInteger x=0;x<w&&accepted;x++)for(int c=0;c<2;c++){
+    double value=mapValue(g,mw,mh,(double)x*(mw-1)/(w-1),(double)y*(mh-1)/(h-1),c)+(c==0?x:y)+.5;
+    double e=fabs(value-(double)source[(y*w+x)*2+c]*(c==0?w:h));worst=fmax(worst,e);if(!isfinite(e)||e>tolerance){accepted=NO;break;}
    }
    if(!accepted)break;NSData*encoded=[grid compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(!encoded)return nil;compressed[key]=encoded;
   }}
-  if(accepted){NSMutableDictionary*plan=[full mutableCopy],*report=[r mutableCopy];report[@"geometryMapWidth"]=@(mw);report[@"geometryMapHeight"]=@(mh);report[@"geometryMapEncoding"]=@"normalized-source-RGf-bottom-up-grid-v2";report[@"geometryMapVerifiedMaxErrorPixels"]=@(worst);report[@"geometryMapTolerancePixels"]=@(tolerance);report[@"geometryVerification"]=@"every-full-resolution-coordinate";plan[@"report"]=report;plan[@"normalizedGeometryMapsLZFSE"]=compressed;return plan;}
+  if(accepted){NSMutableDictionary*plan=[full mutableCopy],*report=[r mutableCopy];report[@"geometryMapWidth"]=@(mw);report[@"geometryMapHeight"]=@(mh);report[@"geometryMapEncoding"]=@"pixel-displacement-RGf-bottom-up-grid-v3";report[@"geometryMapVerifiedMaxErrorPixels"]=@(worst);report[@"geometryMapTolerancePixels"]=@(tolerance);report[@"geometryVerification"]=@"every-full-resolution-coordinate";plan[@"report"]=report;plan[@"normalizedGeometryMapsLZFSE"]=compressed;[plan removeObjectForKey:@"workingGeometryMapsFloat32"];return plan;}
   if(mw==w&&mh==h)break;
  }}
+ NSDictionary*residual=residualGeometryPlan(full,maps,working!=nil,tolerance,error);if(residual)return residual;if(error&&*error)return nil;
  // A profile that cannot meet the tolerance retains its full-resolution maps.
- return full;
+ if(!working)return full;
+ NSMutableDictionary*plan=[full mutableCopy],*compressed=[NSMutableDictionary new];
+ for(NSString*key in working){NSData*data=[working[key]compressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:error];if(!data)return nil;compressed[key]=data;}
+ [plan removeObjectForKey:@"workingGeometryMapsFloat32"];plan[@"normalizedGeometryMapsLZFSE"]=compressed;return plan;
 }
 NSDictionary*LensNativeProfilePlanFullGeometry(NSDictionary*m,NSURL*db,NSURL*lib,NSUInteger w,NSUInteger h,NSError**error){return makeOrientedPlan(m,db,lib,w,h,YES,error);}
-NSDictionary*LensNativeProfilePlanIncludingGeometry(NSDictionary*m,NSURL*db,NSURL*lib,NSUInteger w,NSUInteger h,NSError**error){NSDictionary*full=makeOrientedPlan(m,db,lib,w,h,YES,error);return full?LensCompactGeometryPlan(full,.001,error):nil;}
+static double gainValue(const float*data,NSUInteger w,NSUInteger h,double x,double y){
+ NSUInteger ix=MIN(w-2,(NSUInteger)floor(x)),iy=MIN(h-2,(NSUInteger)floor(y));double fx=x-ix,fy=y-iy;
+ return (1-fy)*((1-fx)*data[iy*w+ix]+fx*data[iy*w+ix+1])+fy*((1-fx)*data[(iy+1)*w+ix]+fx*data[(iy+1)*w+ix+1]);
+}
+NSDictionary*LensCompactGainPlan(NSDictionary*full,double tolerance,NSError**error){
+ NSDictionary*r=full[@"report"];NSData*data=full[@"linearGainFloat32BottomUp"];NSUInteger w=[r[@"width"]unsignedIntegerValue],h=[r[@"height"]unsignedIntegerValue];
+ if(!data||r[@"gainMapEncoding"]||w<2||h<2)return full;
+ if(data.length!=w*h*4||!isfinite(tolerance)||tolerance<=0){fail(error,@"暗角增益数据或精度无效。");return nil;}
+ const float*source=data.bytes;
+ for(NSUInteger nodes=65;nodes<=2049;nodes=2*(nodes-1)+1){@autoreleasepool{
+  NSUInteger mw=MIN(w,nodes),mh=MIN(h,nodes);if(mw*mh>=w*h)return full;
+  NSMutableData*grid=[NSMutableData dataWithLength:mw*mh*4];float*g=grid.mutableBytes;
+  for(NSUInteger y=0;y<mh;y++)for(NSUInteger x=0;x<mw;x++)g[y*mw+x]=gainValue(source,w,h,(double)x*(w-1)/(mw-1),(double)y*(h-1)/(mh-1));
+  BOOL accepted=YES;double worst=0;
+  for(NSUInteger y=0;y<h&&accepted;y++)for(NSUInteger x=0;x<w&&accepted;x++){
+   double original=source[y*w+x],approx=gainValue(g,mw,mh,(double)x*(mw-1)/(w-1),(double)y*(mh-1)/(h-1));
+   double e=fabs(approx-original);worst=fmax(worst,e);if(!isfinite(original)||original<=0||!isfinite(approx)||approx<=0||!isfinite(e)||e>tolerance)accepted=NO;
+  }
+  if(accepted){NSMutableDictionary*plan=[full mutableCopy],*report=[r mutableCopy];report[@"gainMapEncoding"]=@"linear-gain-Rf-bottom-up-grid-v1";report[@"gainMapWidth"]=@(mw);report[@"gainMapHeight"]=@(mh);report[@"gainMapVerifiedMaxError"]=@(worst);report[@"gainMapTolerance"]=@(tolerance);report[@"gainMapVerification"]=@"every-full-resolution-gain";plan[@"report"]=report;plan[@"linearGainFloat32BottomUp"]=grid;return plan;}
+ }}
+ return full;
+}
+NSDictionary*LensNativeProfilePlanIncludingGeometry(NSDictionary*m,NSURL*db,NSURL*lib,NSUInteger w,NSUInteger h,NSError**error){NSDictionary*full=makeOrientedPlan(m,db,lib,w,h,LensGeometryWorking,error);NSDictionary*geometry=full?LensCompactGeometryPlan(full,.001,error):nil;return geometry?LensCompactGainPlan(geometry,.00001,error):nil;}

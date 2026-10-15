@@ -1,0 +1,25 @@
+{
+  "version": "0.2.2-preview",
+  "build": {
+    "version": "0.2.2-preview",
+    "deploymentTarget": "26.0",
+    "notarized": false,
+    "redistributesVendorApp": false,
+    "sha256": {
+      "Contents/MacOS/LensDock": "be0334caeda859f4574de1629b7550451da69ec00614a02c66d8cbb5aa7ea84f",
+      "Contents/Resources/Payload/LensPanel.dylib": "d52d0fc1760fdf00db22299425237fc55f029e0abf1b1b2683da6f0a33eb24ce",
+      "Contents/Resources/Payload/LensLiveSource.dylib": "1522e881d6ba53b317751362c45c8086d5acf1dc9ea504b3887f316128769e30"
+    }
+  },
+  "nativeModuleMatchesResearchHost": true,
+  "nativeModuleStrictSignaturePassed": true,
+  "installerStrictDeepSignaturePassed": true,
+  "isolatedInstallationPassed": true,
+  "vendorReverificationPassed": true,
+  "fullSuiteGroups": 21,
+  "nativeRenderCombinations": 192,
+  "sourcePhotosPXDAndHostExcludedFromDistribution": true,
+  "notarized": false,
+  "secondComputerTested": false,
+  "evidence": "compact-map-verification.json"
+}

@@ -4,16 +4,18 @@
 #import <objc/message.h>
 #import <dlfcn.h>
 #import "LensCalibrationEvidence.h"
+#import "LensGainMap.h"
 
 // Prototype native effect. The full calibration gain map is archived with the
 // effect, independently of any rendered RAW. Map samples are linear-light gains.
 // This filter must be present on reopening; it is not an official vendor plugin.
 static const char *LensGainClassName="LensBridgeProfileVignettingFilter";
-static char LensProfileKey,LensMapCacheKey;
+static char LensProfileKey,LensMapCacheKey,LensGainCacheKey;
 static NSDictionary *profile(id self) { return objc_getAssociatedObject(self,&LensProfileKey); }
 static void setProfile(id self,SEL cmd,NSDictionary *value) {
  objc_setAssociatedObject(self,&LensProfileKey,[value copy],OBJC_ASSOCIATION_RETAIN_NONATOMIC);
  objc_setAssociatedObject(self,&LensMapCacheKey,nil,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+ objc_setAssociatedObject(self,&LensGainCacheKey,nil,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
  [self setName:@"镜头矫正"];
 }
 static id getProfile(id self,SEL cmd) {return profile(self);}
@@ -42,7 +44,7 @@ static id copyProfile(id self,SEL cmd,NSZone*zone) {
 }
 static id gainOutput(id self,SEL cmd) {
  CIImage*input=[self valueForKey:kCIInputImageKey];NSDictionary*p=profile(self);if(!input||!p)return input;
- NSString*transfer=p[@"workingTransfer"];if(![transfer isEqual:@"linear"]&&![transfer isEqual:@"encoded_sRGB"])return input;
+ NSString*transfer=p[@"workingTransfer"];if([transfer isEqual:@"lensdock-compact-v4"]&&[p[@"profileFormatVersion"]isEqual:@4])transfer=p[@"compactWorkingTransfer"];if(![transfer isEqual:@"linear"]&&![transfer isEqual:@"encoded_sRGB"])return input;
  NSUInteger w=[p[@"width"]unsignedIntegerValue],h=[p[@"height"]unsignedIntegerValue];if(!w||!h||w>16000||h>16000)return input;
  CGRect rect=input.extent;if(CGRectIsInfinite(rect)||CGRectIsEmpty(rect))return input;
  NSDictionary*config=p[@"correctionSettings"];double vs,ds=0,ts=0;
@@ -54,22 +56,30 @@ static id gainOutput(id self,SEL cmd) {
  vs=fmax(0,fmin(2,vs));ds=fmax(0,fmin(2,ds));ts=fmax(0,fmin(2,ts));if(!vs&&!ds&&!ts)return input;
  CIImage*source=[transfer isEqual:@"encoded_sRGB"]?[input imageByApplyingFilter:@"CISRGBToneCurveToLinear"]:input;
  if(vs){
-  NSData*d=p[@"linearGainFloat32BottomUp"];if(d.length!=w*h*4)return input;
+  NSData*d=objc_getAssociatedObject(self,&LensGainCacheKey);if(!d){d=LensDecodedGainData(p,nil);if(d)objc_setAssociatedObject(self,&LensGainCacheKey,d,OBJC_ASSOCIATION_RETAIN_NONATOMIC);}NSUInteger gw=0,gh=0;if(!LensGainMapDimensions(p[@"matchedProfile"],w,h,&gw,&gh)||d.length!=gw*gh*4)return input;
+  if(p[@"matchedProfile"][@"gainMapEncoding"]){
+   CIImage*map=[CIImage imageWithBitmapData:d bytesPerRow:gw*4 size:CGSizeMake(gw,gh) format:kCIFormatRf colorSpace:nil];
+   static CIKernel*gridGain;static dispatch_once_t once;dispatch_once(&once,^{gridGain=[CIKernel kernelWithString:@"kernel vec4 compactGain(sampler src, sampler field, float strength, vec4 extent, vec4 dimensions) { vec2 p=(destCoord()-extent.xy)/extent.zw; vec2 q=(p*dimensions.xy-vec2(0.5))*(dimensions.zw-vec2(1.0))/(dimensions.xy-vec2(1.0)); q=clamp(q,vec2(0.0),dimensions.zw-vec2(1.0)); vec2 i=floor(q)+vec2(0.5); vec2 f=fract(q); float g=mix(mix(sample(field,i).r,sample(field,i+vec2(1.0,0.0)).r,f.x),mix(sample(field,i+vec2(0.0,1.0)).r,sample(field,i+vec2(1.0,1.0)).r,f.x),f.y); vec4 s=sample(src,samplerCoord(src)); return vec4(s.rgb*(1.0+strength*(g-1.0)),s.a); }"];});
+   source=[gridGain applyWithExtent:rect roiCallback:^CGRect(int index,CGRect request){return index==0?request:CGRectMake(0,0,gw,gh);} arguments:@[source,map,@(vs),[CIVector vectorWithCGRect:rect],[CIVector vectorWithX:w Y:h Z:gw W:gh]]];if(!source)return input;
+  }else{
   CIImage*map=[CIImage imageWithBitmapData:d bytesPerRow:w*4 size:CGSizeMake(w,h) format:kCIFormatRf colorSpace:nil];map=[map imageByApplyingTransform:CGAffineTransformMake(1,0,0,-1,0,h)];map=[map imageByApplyingTransform:CGAffineTransformMake(rect.size.width/w,0,0,rect.size.height/h,rect.origin.x,rect.origin.y)];
   static CIColorKernel*gainKernel;static dispatch_once_t once;dispatch_once(&once,^{gainKernel=[CIColorKernel kernelWithString:@"kernel vec4 profileGain(__sample source, __sample gain, float strength) { return vec4(source.rgb * (1.0 + strength * (gain.r - 1.0)), source.a); }"];});
   source=[gainKernel applyWithExtent:rect arguments:@[source,map,@(vs)]];
+  }
  }
  if(ds||ts){
   NSUInteger mw=[p[@"matchedProfile"][@"geometryMapWidth"]unsignedIntegerValue]?:w,mh=[p[@"matchedProfile"][@"geometryMapHeight"]unsignedIntegerValue]?:h;if(mw<2||mh<2||mw>16000||mh>16000)return input;
+  BOOL residual=[p[@"matchedProfile"][@"geometryMapEncoding"]isEqual:@"pixel-displacement-residual-RG8-bottom-up-grid-v4"];double residualStep=residual?[p[@"matchedProfile"][@"geometryResidualStepPixels"]doubleValue]:0;if(residual&&(!isfinite(residualStep)||residualStep<=0||residualStep>1))return input;
   NSDictionary*maps=objc_getAssociatedObject(self,&LensMapCacheKey);
-  if(!maps){NSMutableDictionary*decoded=[NSMutableDictionary new];for(NSString*key in p[@"normalizedGeometryMapsLZFSE"]){NSData*data=[p[@"normalizedGeometryMapsLZFSE"][key] decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:nil];if(data.length!=mw*mh*8)return input;decoded[key]=[CIImage imageWithBitmapData:data bytesPerRow:mw*8 size:CGSizeMake(mw,mh) format:kCIFormatRGf colorSpace:nil];}maps=decoded;objc_setAssociatedObject(self,&LensMapCacheKey,maps,OBJC_ASSOCIATION_RETAIN_NONATOMIC);}
+  if(!maps){NSMutableDictionary*decoded=[NSMutableDictionary new];for(NSString*key in p[@"normalizedGeometryMapsLZFSE"]){NSData*data=[p[@"normalizedGeometryMapsLZFSE"][key] decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:nil];if(data.length!=mw*mh*8)return input;decoded[key]=[CIImage imageWithBitmapData:data bytesPerRow:mw*8 size:CGSizeMake(mw,mh) format:kCIFormatRGf colorSpace:nil];if(residual){NSData*bytes=[p[@"geometryResidualMapsLZFSE"][key]decompressedDataUsingAlgorithm:NSDataCompressionAlgorithmLZFSE error:nil];if(bytes.length!=w*h*2)return input;decoded[[@"R" stringByAppendingString:key]]=[CIImage imageWithBitmapData:bytes bytesPerRow:w*2 size:CGSizeMake(w,h) format:kCIFormatRG8 colorSpace:nil];}}maps=decoded;objc_setAssociatedObject(self,&LensMapCacheKey,maps,OBJC_ASSOCIATION_RETAIN_NONATOMIC);}
   // Unused map arguments use D (or T0); strengths make them algebraically inert.
   CIImage*fallback=maps[@"D"]?:maps[@"T0"];if(!fallback)return input;
   NSMutableArray*args=[NSMutableArray arrayWithObject:source];
   for(NSString*key in @[@"D",@"T0",@"T1",@"T2",@"C0",@"C1",@"C2"])[args addObject:maps[key]?:fallback];
-  [args addObjectsFromArray:@[@(ds),@(ts),[CIVector vectorWithCGRect:rect],[CIVector vectorWithX:w Y:h Z:mw W:mh]]];
-  static CIKernel*warp;static dispatch_once_t once;dispatch_once(&once,^{warp=[CIKernel kernelWithString:@"vec2 profileCoordinate(sampler m, vec2 p, vec4 dimensions) { vec2 q=(p*dimensions.xy-vec2(0.5))*(dimensions.zw-vec2(1.0))/(dimensions.xy-vec2(1.0)); q=clamp(q,vec2(0.0),dimensions.zw-vec2(1.0)); vec2 i=floor(q)+vec2(0.5); vec2 f=fract(q); return mix(mix(sample(m,i).rg,sample(m,i+vec2(1.0,0.0)).rg,f.x),mix(sample(m,i+vec2(0.0,1.0)).rg,sample(m,i+vec2(1.0,1.0)).rg,f.x),f.y); } kernel vec4 profileGeometry(sampler src, sampler d, sampler tr, sampler tg, sampler tb, sampler cr, sampler cg, sampler cb, float ds, float ts, vec4 extent, vec4 dimensions) { vec2 p=(destCoord()-extent.xy)/extent.zw; vec2 pd=profileCoordinate(d,p,dimensions); vec2 pr=mix(mix(p,pd,ds),mix(profileCoordinate(tr,p,dimensions),profileCoordinate(cr,p,dimensions),ds),ts); vec2 pg=mix(mix(p,pd,ds),mix(profileCoordinate(tg,p,dimensions),profileCoordinate(cg,p,dimensions),ds),ts); vec2 pb=mix(mix(p,pd,ds),mix(profileCoordinate(tb,p,dimensions),profileCoordinate(cb,p,dimensions),ds),ts); vec4 r=sample(src,samplerTransform(src,extent.xy+pr*extent.zw)); vec4 g=sample(src,samplerTransform(src,extent.xy+pg*extent.zw)); vec4 b=sample(src,samplerTransform(src,extent.xy+pb*extent.zw)); return vec4(r.r,g.g,b.b,g.a); }"];});
-  source=[warp applyWithExtent:rect roiCallback:^CGRect(int index,CGRect request){return index==0?rect:CGRectMake(0,0,mw,mh);} arguments:args];if(!source)return input;
+  for(NSString*key in @[@"D",@"T0",@"T1",@"T2",@"C0",@"C1",@"C2"])[args addObject:maps[[@"R" stringByAppendingString:key]]?:fallback];
+  [args addObjectsFromArray:@[@(ds),@(ts),@(residual||[p[@"matchedProfile"][@"geometryMapEncoding"]isEqual:@"pixel-displacement-RGf-bottom-up-grid-v3"]),@(residualStep),[CIVector vectorWithCGRect:rect],[CIVector vectorWithX:w Y:h Z:mw W:mh]]];
+  static CIKernel*warp;static dispatch_once_t once;dispatch_once(&once,^{warp=[CIKernel kernelWithString:@"vec2 profileCoordinate(sampler m, sampler residual, vec2 p, vec4 dimensions, float offsets, float step) { vec2 q=(p*dimensions.xy-vec2(0.5))*(dimensions.zw-vec2(1.0))/(dimensions.xy-vec2(1.0)); q=clamp(q,vec2(0.0),dimensions.zw-vec2(1.0)); vec2 i=floor(q)+vec2(0.5); vec2 f=fract(q); vec2 value=mix(mix(sample(m,i).rg,sample(m,i+vec2(1.0,0.0)).rg,f.x),mix(sample(m,i+vec2(0.0,1.0)).rg,sample(m,i+vec2(1.0,1.0)).rg,f.x),f.y); if(offsets<0.5)return value; if(step>0.0){ vec2 rq=clamp(p*dimensions.xy-vec2(0.5),vec2(0.0),dimensions.xy-vec2(1.0)); vec2 ri=floor(rq)+vec2(0.5); vec2 rf=fract(rq); vec2 correction=mix(mix(sample(residual,ri).rg,sample(residual,ri+vec2(1.0,0.0)).rg,rf.x),mix(sample(residual,ri+vec2(0.0,1.0)).rg,sample(residual,ri+vec2(1.0,1.0)).rg,rf.x),rf.y); value+=(correction*255.0-vec2(128.0))*step; } return p+value/dimensions.xy; } kernel vec4 profileGeometry(sampler src, sampler d, sampler tr, sampler tg, sampler tb, sampler cr, sampler cg, sampler cb, sampler rd, sampler rtr, sampler rtg, sampler rtb, sampler rcr, sampler rcg, sampler rcb, float ds, float ts, float offsets, float step, vec4 extent, vec4 dimensions) { vec2 p=(destCoord()-extent.xy)/extent.zw; vec2 pd=profileCoordinate(d,rd,p,dimensions,offsets,step); vec2 pr=mix(mix(p,pd,ds),mix(profileCoordinate(tr,rtr,p,dimensions,offsets,step),profileCoordinate(cr,rcr,p,dimensions,offsets,step),ds),ts); vec2 pg=mix(mix(p,pd,ds),mix(profileCoordinate(tg,rtg,p,dimensions,offsets,step),profileCoordinate(cg,rcg,p,dimensions,offsets,step),ds),ts); vec2 pb=mix(mix(p,pd,ds),mix(profileCoordinate(tb,rtb,p,dimensions,offsets,step),profileCoordinate(cb,rcb,p,dimensions,offsets,step),ds),ts); vec4 r=sample(src,samplerTransform(src,extent.xy+pr*extent.zw)); vec4 g=sample(src,samplerTransform(src,extent.xy+pg*extent.zw)); vec4 b=sample(src,samplerTransform(src,extent.xy+pb*extent.zw)); return vec4(r.r,g.g,b.b,g.a); }"];});
+  source=[warp applyWithExtent:rect roiCallback:^CGRect(int index,CGRect request){return index==0?rect:(index>7?CGRectMake(0,0,w,h):CGRectMake(0,0,mw,mh));} arguments:args];if(!source)return input;
  }
  return [transfer isEqual:@"encoded_sRGB"]?[source imageByApplyingFilter:@"CILinearToSRGBToneCurve"]:source;
 }
