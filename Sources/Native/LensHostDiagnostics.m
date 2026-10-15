@@ -19,8 +19,10 @@ static NSDictionary *state(id object){
    SEL selector=method_getName(list[i]);NSString *name=NSStringFromSelector(selector);
    if(!relevant(name)||[seen containsObject:name])continue;
    [seen addObject:name];[methods addObject:@{@"name":name,@"encoding":@(method_getTypeEncoding(list[i]))}];
-   // Only zero-argument, explicitly named Boolean queries. Never invoke actions.
-   if(method_getNumberOfArguments(list[i])!=2||!([name hasPrefix:@"is"]||[name hasPrefix:@"can"]||[name hasPrefix:@"has"]))continue;
+   // A Boolean-looking name does not imply a pure query. In this host,
+   // canCloseDocument enters the close/save-confirmation flow. Invoke only
+   // known state getters; retain all other relevant methods as metadata.
+   if(method_getNumberOfArguments(list[i])!=2||![@[@"isDocumentEdited",@"isEntireFileLoaded",@"isLocked",@"isClosed",@"hasUndoManager",@"hasUnautosavedChanges"] containsObject:name])continue;
    char *type=method_copyReturnType(list[i]);BOOL boolean=type&&(strcmp(type,"B")==0||strcmp(type,"c")==0);free(type);
    if(boolean)@try{values[name]=@(((BOOL(*)(id,SEL))objc_msgSend)(object,selector));}@catch(NSException *e){values[name]=@"query-exception";}
   }

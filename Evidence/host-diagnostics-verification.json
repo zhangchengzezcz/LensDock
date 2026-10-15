@@ -1,0 +1,19 @@
+{
+  "executedOn": "2026-10-15T15:06:45.505458+00:00",
+  "scope": "Diagnostic getter invocation regression and updated isolated module; close-dialog causality remains to be rechecked in actual host",
+  "previousImplementationFailedRegression": {
+    "exitCode": 3,
+    "reason": "Invoked canCloseDocument and a canSave test trap"
+  },
+  "newImplementationOnlyInvokesExplicitlyAllowedGetters": true,
+  "actionLikeMethodsRetainedAsMetadataOnly": true,
+  "fullSuiteGroupsPassed": 15,
+  "newIsolatedHostModuleInstalledWhileStoppedAndSignatureVerified": true,
+  "newHostReopenTestBlocked": "Open panel selects known PXD but Open remains disabled; no root cause established",
+  "originalVendorFilesUnchanged": true,
+  "sourceSHA256": {
+    "Sources/Native/LensHostDiagnostics.m": "63aaacb82b748fbfeab2a477658f7b4e69dc6615be816edbac0f2bb837e387af",
+    "Tests/verify-host-diagnostics.m": "afcd02c022d0e50bd73acd4ca9b7905cae1023ca1b5185cf3f7306803a0ed8d4"
+  },
+  "releasedDMGIncludesChanges": false
+}
