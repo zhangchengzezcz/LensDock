@@ -1,0 +1,127 @@
+{
+  "missingFiles": [],
+  "photosIncluded": false,
+  "scope": "Optional complete public LX3 RAW: original checksum, capture mode, automatic profile identity, actual Core Image preview decoding and native priority; not Pixelmator GUI/save/reopen or optical accuracy verification",
+  "verifiedFiles": [
+    {
+      "automaticFNumber": 2.8,
+      "automaticFocalMM": 7.4,
+      "cameraCropFactor": 5.320000171661377,
+      "cameraProfileID": "camera-v1-8ed8bee83a8d3ffdc600ca55d23afe4175c673c5b9cd40b2fdd408309a6ca9aa",
+      "captureMode": {
+        "activeHeight": 2736,
+        "activeWidth": 2736,
+        "aspectRatio": 1,
+        "cameraModel": "DMC-LX3",
+        "source": "RW2 IFD0 Sensor*Border",
+        "variant": "1:1"
+      },
+      "decodedFullExtent": [
+        2736,
+        2736
+      ],
+      "extraGeometrySkipped": true,
+      "fixture": {
+        "activeSize": [
+          2736,
+          2736
+        ],
+        "cameraCropFactor": 5.32,
+        "file": "LX3-square.RW2",
+        "fNumber": 2.8,
+        "focalMM": 7.4,
+        "license": "CC0-1.0",
+        "mode": "1:1",
+        "repositoryEntry": 1395,
+        "sha256": "6663d5b6539de15640ded2b0f422c8affb8cf1bec93e27b3548e970226c063a5",
+        "source": "https://raw.pixls.us/getfile.php/1395/nice/Panasonic%20-%20DMC-LX3%20-%201%3A1.RW2"
+      },
+      "lensProfileID": "lens-v1-25a1b0c67313747f84d5cfa36690e9519294a31ad5509c30b803fec035ff5a71",
+      "nativeSupport": {
+        "decoderVersion": "7",
+        "lensCorrectionEnabledByDefault": true,
+        "lensCorrectionSupported": true,
+        "osVersion": "Version 27.2 (Build 26B5101f)",
+        "probeSource": "CIRAWFilter.isLensCorrectionSupported",
+        "probeSucceeded": true
+      },
+      "originalUnchanged": true,
+      "renderedPreviewPixelSHA256": "c202549b8bd7d36edaa420f4de8c3b3b7a3dece65d07230125da8776b1183e4f",
+      "renderedPreviewSize": [
+        192,
+        192
+      ],
+      "renderedRGBSumRange": [
+        46,
+        765
+      ]
+    },
+    {
+      "automaticFNumber": 4.5,
+      "automaticFocalMM": 5.1,
+      "cameraCropFactor": 4.699999809265137,
+      "cameraProfileID": "camera-v1-8248bed356c28dfad9b9b0aab690134dee22ab384965654f5e0fab3c64d12ee2",
+      "captureMode": {
+        "activeHeight": 2736,
+        "activeWidth": 3648,
+        "aspectRatio": 1.3333333333333333,
+        "cameraModel": "DMC-LX3",
+        "source": "RW2 IFD0 Sensor*Border",
+        "variant": "4:3"
+      },
+      "decodedFullExtent": [
+        3648,
+        2736
+      ],
+      "extraGeometrySkipped": true,
+      "fixture": {
+        "activeSize": [
+          3648,
+          2736
+        ],
+        "cameraCropFactor": 4.7,
+        "file": "LX3-4x3.RW2",
+        "fNumber": 4.5,
+        "focalMM": 5.1,
+        "license": "CC0-1.0",
+        "mode": "4:3",
+        "repositoryEntry": 1808,
+        "sha256": "f2aeaa1cf9a1922a6b9bbe5d0bf1ba19d4c8988fefa320377a5e7461a31ffc23",
+        "source": "https://raw.pixls.us/getfile.php/1808/nice/Panasonic%20-%20DMC-LX3%20-%204%3A3.RW2"
+      },
+      "lensProfileID": "lens-v1-25a1b0c67313747f84d5cfa36690e9519294a31ad5509c30b803fec035ff5a71",
+      "nativeSupport": {
+        "decoderVersion": "7",
+        "lensCorrectionEnabledByDefault": true,
+        "lensCorrectionSupported": true,
+        "osVersion": "Version 27.2 (Build 26B5101f)",
+        "probeSource": "CIRAWFilter.isLensCorrectionSupported",
+        "probeSucceeded": true
+      },
+      "originalUnchanged": true,
+      "renderedPreviewPixelSHA256": "770e075cdedb2275662f6ef756870610bfed76b8f23735b70d7c5cd37988bf33",
+      "renderedPreviewSize": [
+        192,
+        144
+      ],
+      "renderedRGBSumRange": [
+        54,
+        630
+      ]
+    }
+  ],
+  "executedOn": "2026-10-15T17:00:29.476473+00:00",
+  "sourceSHA256": {
+    "Tests/verify-public-lx3.m": "2e85ae147fa245165dc422280d81dbbac659cd9bd1d8ef233423513929eb0a0b",
+    "Tests/Fixtures/LX3-public-raw.json": "05f2cc9c0f57a7999ab5bc0b9f62adf441c6b2b7875ab5e71625316a13b06276",
+    "Sources/Native/LensNativeProfileEngine.m": "4a45e91d45730d68e94d97823a1da7f5fb4b7896798171a01ae5b6cbdd4c22f8",
+    "Sources/Native/LensCaptureModeEvidence.h": "de4ad328d0999797baf7f336da26c4d4d43e6808233fcde51828f405e10cf895",
+    "Sources/Native/LensRecommendationPolicy.m": "be4371f0cc1e42735403b8c535552b41748e850e672d7c92a0ecdb05ab76f8b2",
+    "Scripts/test.py": "fd4103701adc55cace89ec9bd8109336abdcc90fc771289ef15455cd880d1ad8"
+  },
+  "latestSuite": {
+    "groupsPassed": 18,
+    "nativeRenderCombinationsPassed": 96,
+    "logEndsWithSuccess": true
+  }
+}

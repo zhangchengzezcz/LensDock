@@ -1,0 +1,18 @@
+{
+  "executedOn": "2026-10-15T16:58:58.051377+00:00",
+  "scope": "CUA AX control: small blank image creation and native save sheet, outside RAW matching. No user document edited, no save, no validation override.",
+  "hostBundle": "local.lensbridge.pixelmator-research",
+  "hostModuleSHA256": "c4c36959141fb5a785d23c0a2085476f28423d6e4570f29c04e1a650e1e7f466",
+  "newBlankDocumentSize": [
+    512,
+    512
+  ],
+  "blankDocumentDisplayedWithoutLoadingIndicator": true,
+  "documentSaveMenuEnabled": true,
+  "saveSheetConfirmButtonDisabled": true,
+  "validFilenameSetAndTypedThenFocusMoved": true,
+  "saveSheetButtonRemainedDisabled": true,
+  "saveSheetCancelledThroughUI": true,
+  "blankDocumentClosedNormallyWithoutSaving": true,
+  "conclusion": "The native file-panel limitation also occurs after ordinary blank document creation. It is not restricted to RAW correction or one saved PXD. Root cause remains unproven."
+}

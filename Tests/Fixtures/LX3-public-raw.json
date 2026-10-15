@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "scope": "Optional complete camera RAW files. No photos included; provenance and expected original sensor mode only. Not optical calibration ground truth.",
+  "repository": "https://raw.pixls.us/",
+  "files": [
+    {
+      "file": "LX3-square.RW2",
+      "source": "https://raw.pixls.us/getfile.php/1395/nice/Panasonic%20-%20DMC-LX3%20-%201%3A1.RW2",
+      "sha256": "6663d5b6539de15640ded2b0f422c8affb8cf1bec93e27b3548e970226c063a5",
+      "license": "CC0-1.0",
+      "repositoryEntry": 1395,
+      "mode": "1:1",
+      "activeSize": [
+        2736,
+        2736
+      ],
+      "cameraCropFactor": 5.32,
+      "focalMM": 7.4,
+      "fNumber": 2.8
+    },
+    {
+      "file": "LX3-4x3.RW2",
+      "source": "https://raw.pixls.us/getfile.php/1808/nice/Panasonic%20-%20DMC-LX3%20-%204%3A3.RW2",
+      "sha256": "f2aeaa1cf9a1922a6b9bbe5d0bf1ba19d4c8988fefa320377a5e7461a31ffc23",
+      "license": "CC0-1.0",
+      "repositoryEntry": 1808,
+      "mode": "4:3",
+      "activeSize": [
+        3648,
+        2736
+      ],
+      "cameraCropFactor": 4.7,
+      "focalMM": 5.1,
+      "fNumber": 4.5
+    }
+  ]
+}
