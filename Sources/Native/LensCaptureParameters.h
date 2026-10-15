@@ -1,11 +1,17 @@
 #import <Foundation/Foundation.h>
 #import <math.h>
+#import "LensFocusDistanceEvidence.h"
+
+static inline NSNumber *LensPositiveCaptureNumber(id value) {
+ if(![value respondsToSelector:@selector(doubleValue)])return nil;
+ double n=[value doubleValue];return isfinite(n)&&n>0?@(n):nil;
+}
 
 // Absence is meaningful: clearing an unknown aperture/distance must not revive
 // the original value when a saved effect is reopened.
 static inline NSDictionary *LensMetadataRestoringCaptureParameters(NSDictionary *original, NSDictionary *saved) {
  NSMutableDictionary *metadata=[original mutableCopy];
- for(NSString *key in @[@"FocalLength",@"FNumber",@"FocusDistance",@"SubjectDistance"]){
+ for(NSString *key in @[@"FocalLength",@"FNumber",@"FocusDistance",@"SubjectDistance",@"FocusDistanceRangeMeters"]){
   [metadata removeObjectForKey:key];if(saved[key])metadata[key]=saved[key];
  }
  return metadata;
@@ -36,15 +42,17 @@ static inline NSDictionary *LensMetadataWithCaptureParameterText(NSDictionary *o
  }
  if(!message&&values[0]==NSNull.null)message=@"原片未记录焦距。请填写实际拍摄焦距，不会从镜头范围猜测。";
  if(message){if(error)*error=[NSError errorWithDomain:@"LensDockCaptureParameters" code:1 userInfo:@{NSLocalizedDescriptionKey:message}];return nil;}
- for(NSString *key in @[@"FocalLength",@"FNumber",@"FocusDistance",@"SubjectDistance"])[metadata removeObjectForKey:key];
+ for(NSString *key in @[@"FocalLength",@"FNumber",@"FocusDistance",@"SubjectDistance",@"FocusDistanceRangeMeters"])[metadata removeObjectForKey:key];
  NSArray *keys=@[@"FocalLength",@"FNumber",@"FocusDistance"];
  for(NSUInteger i=0;i<3;i++)if(values[i]!=NSNull.null)metadata[keys[i]]=values[i];
+ // Leaving the auto-filled far-distance fallback unchanged while adjusting
+ // another field must not manufacture a manually measured 1000 m distance.
+ NSDictionary *effective=current?:original;
+ if(values[2]!=NSNull.null&&[values[2]doubleValue]==1000&&!LensPositiveCaptureNumber(effective[@"FocusDistance"])&&!LensPositiveCaptureNumber(effective[@"SubjectDistance"])){
+  [metadata removeObjectForKey:@"FocusDistance"];
+  NSDictionary *range=LensRecordedFocusDistanceRange(effective);if(range)metadata[@"FocusDistanceRangeMeters"]=range;
+ }
  return metadata;
-}
-
-static inline NSNumber *LensPositiveCaptureNumber(id value) {
- if(![value respondsToSelector:@selector(doubleValue)])return nil;
- double n=[value doubleValue];return isfinite(n)&&n>0?@(n):nil;
 }
 
 static inline NSArray *LensCaptureParameterDisplayValues(NSDictionary *metadata) {

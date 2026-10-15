@@ -11,6 +11,7 @@ groups={
  'verify-host-diagnostics':['LensHostDiagnostics.m'],
  'verify-recorded-aperture':['LensNativeProfileEngine.m'],
  'verify-capture-tag-precedence':['LensNativeProfileEngine.m'],
+ 'verify-focus-distance-range':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m','LensRecommendationPolicy.m'],
  'verify-capture-parameters':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-capture-mode':['LensNativeProfileEngine.m'],
  'verify-effect-replacement':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],

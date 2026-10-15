@@ -7,6 +7,7 @@
 #import "LensCalibrationEvidence.h"
 #import "LensProfileIdentity.h"
 #import "LensCaptureModeEvidence.h"
+#import "LensFocusDistanceEvidence.h"
 static void fail(NSError**error,NSString*message){if(error)*error=[NSError errorWithDomain:@"LensBridgeProfile" code:1 userInfo:@{NSLocalizedDescriptionKey:message}];}
 static double positive(id n){if(![n respondsToSelector:@selector(doubleValue)])return 0;double v=[n doubleValue];return isfinite(v)&&v>0?v:0;}
 static NSString*text(id v){return [v isKindOfClass:NSString.class]?v:@"";}
@@ -204,7 +205,7 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  // A CR3 can contain different values with the same tag name in EXIF,
  // MakerNotes and a track. Keep their groups until capture fields are selected;
  // ExifTool's unqualified duplicate winner is not necessarily standard EXIF.
- if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a"]];
+ if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower"]];
  [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];
  NSArray*rows=runExifArguments(raw,tool,args,error);if(!numeric||!rows.count)return rows;
  NSDictionary*grouped=rows[0];NSMutableDictionary*values=[NSMutableDictionary new];
@@ -214,6 +215,7 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  }
  NSDictionary*standard=@{@"Make":@"IFD0:Make",@"Model":@"IFD0:Model",@"LensModel":@"ExifIFD:LensModel",@"FocalLength":@"ExifIFD:FocalLength",@"FNumber":@"ExifIFD:FNumber",@"SubjectDistance":@"ExifIFD:SubjectDistance",@"ApertureValue":@"ExifIFD:ApertureValue",@"Orientation":@"IFD0:Orientation"};
  for(NSString*name in standard){id value=grouped[standard[name]];if(value)values[name]=value;}
+ NSDictionary*range=LensCanonFocusDistanceRange(grouped);if(range)values[@"FocusDistanceRangeMeters"]=range;
  return @[values];
 }
 NSDictionary*LensReadRawCaptureMetadata(NSURL*raw,NSURL*tool,NSError**error){
@@ -420,6 +422,7 @@ static NSDictionary*makeOrientedPlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUIntege
   if(nativeProfileError)r[@"independentCalibrationNote"]=[NSString stringWithFormat:@"%@ 原生矫正保留，额外暗角补偿不可用。",nativeProfileError.localizedDescription];
   [p removeObjectForKey:@"normalizedGeometryMapsLZFSE"];p[@"report"]=r;base=p;
  }else if(base&&native){NSMutableDictionary*p=[base mutableCopy],*r=[base[@"report"]mutableCopy];r[@"nativeCorrectionSupport"]=native;r[@"geometryHandledByNative"]=@NO;r[@"supplementalVignettingOnly"]=@NO;p[@"report"]=r;base=p;}
+ if(base&&LensRecordedFocusDistanceRange(m)){NSMutableDictionary*p=[base mutableCopy],*r=[base[@"report"]mutableCopy];r[@"FocusDistanceRangeMeters"]=LensRecordedFocusDistanceRange(m);p[@"report"]=r;base=p;}
  if(!base||orientation==1)return base;
  NSMutableDictionary*plan=[base mutableCopy],*report=[base[@"report"]mutableCopy];report[@"width"]=@(w);report[@"height"]=@(h);report[@"sourceOrientation"]=@(orientation);report[@"calibrationWidth"]=@(ow);report[@"calibrationHeight"]=@(oh);plan[@"report"]=report;
  NSData*gain=base[@"linearGainFloat32BottomUp"];

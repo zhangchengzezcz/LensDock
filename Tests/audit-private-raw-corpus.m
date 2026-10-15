@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "LensNativeProfileEngine.h"
 #import "LensRecommendationPolicy.h"
+#import "LensFocusDistanceEvidence.h"
 #import <math.h>
 
 // Optional local audit. Input is a private JSON array of original RAW paths
@@ -18,7 +19,7 @@ int main(int argc,char **argv) { @autoreleasepool {
  for(id entry in paths){NSString *path=[entry isKindOfClass:NSString.class]?entry:[entry isKindOfClass:NSDictionary.class]?entry[@"path"]:nil;if(![path isKindOfClass:NSString.class]||!path.length||[uniquePaths containsObject:path])return 2;[uniquePaths addObject:path];}
  NSURL *root=[NSURL fileURLWithPath:NSFileManager.defaultManager.currentDirectoryPath isDirectory:YES];
  NSURL *tool=[root URLByAppendingPathComponent:@"Resources/LensBridge/exiftool/exiftool"],*db=[root URLByAppendingPathComponent:@"Resources/LensBridge/db"],*lib=[root URLByAppendingPathComponent:@"Vendor/Lib/liblensfun.0.3.4.dylib"];
- NSUInteger read=0,focal=0,aperture=0,distance=0,planned=0,calibrated=0,native=0,vignette=0,far=0,references=0;
+ NSUInteger read=0,focal=0,aperture=0,distance=0,planned=0,calibrated=0,native=0,vignette=0,far=0,references=0,ranges=0,unboundedRanges=0,rangeReferences=0;
  NSMutableArray *failures=[NSMutableArray new];NSMutableDictionary *groups=[NSMutableDictionary new];
  for(NSUInteger index=0;index<paths.count;index++){@autoreleasepool{
   id entry=paths[index];NSDictionary *reference=[entry isKindOfClass:NSDictionary.class]?entry:nil;NSString *path=reference?reference[@"path"]:entry;
@@ -26,6 +27,14 @@ int main(int argc,char **argv) { @autoreleasepool {
   if(!metadata){[failures addObject:@{@"inputIndex":@(index),@"category":@"metadata-read-failed"}];continue;}
   read++;BOOL hasFocal=validNumber(metadata[@"FocalLength"]),hasAperture=validNumber(metadata[@"FNumber"]);
   focal+=hasFocal;aperture+=hasAperture;distance+=validNumber(metadata[@"FocusDistance"])||validNumber(metadata[@"SubjectDistance"]);
+  NSDictionary *range=LensRecordedFocusDistanceRange(metadata);ranges+=range!=nil;unboundedRanges+=[range[@"upperUnbounded"]boolValue];
+  if(reference[@"expectedCanonRange"]){
+   rangeReferences++;id expected=reference[@"expectedCanonRange"];
+   BOOL matches=expected==NSNull.null?!range:[expected isKindOfClass:NSDictionary.class]&&range&&fabs([expected[@"lower"]doubleValue]-[range[@"lower"]doubleValue])<1e-6&&([expected[@"upper"]doubleValue]>655.345?[range[@"upperUnbounded"]boolValue]:![range[@"upperUnbounded"]boolValue]&&fabs([expected[@"upper"]doubleValue]-[range[@"upper"]doubleValue])<1e-6);
+   if(!matches)[failures addObject:@{@"inputIndex":@(index),@"category":@"recorded-canon-range-reference-mismatch"}];
+   if(reference[@"expectedSingleDistanceRecorded"]&&[reference[@"expectedSingleDistanceRecorded"]boolValue]!=(validNumber(metadata[@"FocusDistance"])||validNumber(metadata[@"SubjectDistance"])))
+    [failures addObject:@{@"inputIndex":@(index),@"category":@"range-invented-as-scalar-distance"}];
+  }
   if(reference){
    if(!validNumber(reference[@"expectedFocalMM"])||![reference[@"expectedApertureAPEX"]isKindOfClass:NSNumber.class])return 2;
    double expectedAperture=exp2([reference[@"expectedApertureAPEX"]doubleValue]/2);
@@ -37,6 +46,7 @@ int main(int argc,char **argv) { @autoreleasepool {
   NSDictionary *plan=LensNativeProfilePlan(metadata,db,lib,96,64,&error),*report=plan[@"report"];
   if(!plan){[failures addObject:@{@"inputIndex":@(index),@"category":@"automatic-plan-unavailable"}];continue;}
   planned++;BOOL official=[metadata[@"nativeCorrectionSupport"][@"lensCorrectionSupported"]boolValue];native+=official;
+  if(range&&![report[@"FocusDistanceRangeMeters"]isEqual:range])[failures addObject:@{@"inputIndex":@(index),@"category":@"recorded-range-lost-from-plan"}];
   calibrated+=[report[@"matchedCameraProfileID"]length]>0&&[report[@"matchedLensProfileID"]length]>0;
   vignette+=[report[@"vignettingProfileAvailable"]boolValue];far+=[report[@"distance_source"]isEqual:@"infinity_fallback"];
   if(metadata[@"LensDockProfileSelection"]||[plan[@"parameterOverrides"]boolValue]){[failures addObject:@{@"inputIndex":@(index),@"category":@"unexpected-manual-override"}];}
@@ -54,7 +64,7 @@ int main(int argc,char **argv) { @autoreleasepool {
   if((index+1)%20==0||index+1==paths.count){printf("Audited %lu/%lu RAW files; failures %lu.\n",(unsigned long)index+1,(unsigned long)paths.count,(unsigned long)failures.count);fflush(stdout);}
  }}
  for(NSMutableDictionary *group in groups.allValues){if([group[@"focalMinMM"]doubleValue]==DBL_MAX)group[@"focalMinMM"]=NSNull.null;if([group[@"apertureMin"]doubleValue]==DBL_MAX)group[@"apertureMin"]=NSNull.null;}
- NSDictionary *result=@{@"executedOn":[NSISO8601DateFormatter.new stringFromDate:NSDate.date],@"scope":@"Private local RAW metadata, automatic low-resolution profile-plan generation (96x64, no optical/render claim), native priority and zero default supplemental amounts; counts represent photos, not distinct camera/lens coverage or Lightroom equivalence",@"inputFiles":@(paths.count),@"metadataRead":@(read),@"focalAutomaticallyRecorded":@(focal),@"apertureAutomaticallyRecorded":@(aperture),@"focusDistanceRecorded":@(distance),@"independentCatalogParameterReferencesChecked":@(references),@"explicitFarDistanceFallback":@(far),@"automaticPlans":@(planned),@"independentCalibrationMatches":@(calibrated),@"nativeSupported":@(native),@"optionalVignettingCalibrationAvailable":@(vignette),@"groups":groups.allValues,@"failures":failures,@"userPhotosOrPathsIncluded":@NO};
+ NSDictionary *result=@{@"executedOn":[NSISO8601DateFormatter.new stringFromDate:NSDate.date],@"scope":@"Private local RAW metadata, automatic low-resolution profile-plan generation (96x64, no optical/render claim), native priority and zero default supplemental amounts; counts represent photos, not distinct camera/lens coverage or Lightroom equivalence",@"inputFiles":@(paths.count),@"metadataRead":@(read),@"focalAutomaticallyRecorded":@(focal),@"apertureAutomaticallyRecorded":@(aperture),@"focusDistanceRecorded":@(distance),@"focusDistanceRangesRecorded":@(ranges),@"focusDistanceRangesUnbounded":@(unboundedRanges),@"focusDistanceRangeReferencesChecked":@(rangeReferences),@"independentCatalogParameterReferencesChecked":@(references),@"explicitFarDistanceFallback":@(far),@"automaticPlans":@(planned),@"independentCalibrationMatches":@(calibrated),@"nativeSupported":@(native),@"optionalVignettingCalibrationAvailable":@(vignette),@"groups":groups.allValues,@"failures":failures,@"userPhotosOrPathsIncluded":@NO};
  NSData *json=[NSJSONSerialization dataWithJSONObject:result options:NSJSONWritingPrettyPrinted|NSJSONWritingSortedKeys error:nil];
  if(![json writeToFile:@(argv[2]) options:NSDataWritingAtomic error:nil])return 4;
  return failures.count?3:0;

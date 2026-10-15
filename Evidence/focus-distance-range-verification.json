@@ -1,0 +1,95 @@
+{
+  "executedOn": "2026-10-15T15:58:54.721132+00:00",
+  "scope": "Recorded Canon focus-distance intervals, not scalar measured distances, new lens coverage, optical accuracy or host GUI proof",
+  "directGroupedTagBatchRead": {
+    "inputFiles": 821,
+    "canonRangesUsable": 821,
+    "unboundedRanges": 169,
+    "conflictingTrackCopies": 821,
+    "distinctRangeTestCases": 25,
+    "source": "Direct bundled ExifTool grouped numeric Canon fields; raw paths excluded from aggregate"
+  },
+  "productionMetadataAndProfileRoutingRepresentatives": {
+    "apertureAutomaticallyRecorded": 25,
+    "automaticPlans": 25,
+    "executedOn": "2026-10-15T15:54:06Z",
+    "explicitFarDistanceFallback": 25,
+    "failures": [],
+    "focalAutomaticallyRecorded": 25,
+    "focusDistanceRangeReferencesChecked": 25,
+    "focusDistanceRangesRecorded": 25,
+    "focusDistanceRangesUnbounded": 2,
+    "focusDistanceRecorded": 0,
+    "groups": [
+      {
+        "apertureMax": 8,
+        "apertureMin": 5.6,
+        "camera": "Canon EOS R50 V",
+        "files": 25,
+        "focalMaxMM": 400,
+        "focalMinMM": 100,
+        "lens": "Canon RF 100-400mm F5.6-8 IS USM"
+      }
+    ],
+    "independentCalibrationMatches": 25,
+    "independentCatalogParameterReferencesChecked": 25,
+    "inputFiles": 25,
+    "metadataRead": 25,
+    "nativeSupported": 25,
+    "optionalVignettingCalibrationAvailable": 25,
+    "scope": "Private local RAW metadata, automatic low-resolution profile-plan generation (96x64, no optical/render claim), native priority and zero default supplemental amounts; counts represent photos, not distinct camera/lens coverage or Lightroom equivalence",
+    "userPhotosOrPathsIncluded": false
+  },
+  "regression": {
+    "canonGroupWinsOverReversedTrackCopy": true,
+    "effectSerializationRetainsRecordedRange": true,
+    "malformedAndReversedCanonBoundsRejected": true,
+    "manualClearPersistsAndResetRestoresRange": true,
+    "nativeDefaultSupplementalAmountsRemainZero": true,
+    "nativeOnlyReportRetainsRange": true,
+    "rangeNeverConvertedToMeasuredScalar": true,
+    "scope": "Canon distance range validation, native/independent plan routing, display and actual effect serialization; no new optical calibration or host GUI proof",
+    "unboundedSentinelNotFiniteDistance": true
+  },
+  "unchangedAutoFilledFarFallbackNotPromotedToManualDistance": true,
+  "oldEngineRegressionExitCode": 5,
+  "newRegressionExitCode": 0,
+  "fullSuiteGroupsPassed": 17,
+  "denseAndGridRenderCombinationsPassed": 96,
+  "currentNativeModuleCompiled": true,
+  "currentModuleInstalledInHost": true,
+  "currentHostReopenOrRangeUIVisuallyVerified": false,
+  "packagedInExistingRelease": false,
+  "sourceSHA256": {
+    "Sources/Native/LensFocusDistanceEvidence.h": "48598402823bc58351233bef644bca6fcb001fede1a1a18136e24d5d6853f577",
+    "Sources/Native/LensCaptureParameters.h": "b1a16f07de37f44ce8ffdade7370fe2f046fb7900d51b77d156fecd2315e124a",
+    "Sources/Native/LensNativeProfileEngine.m": "4a45e91d45730d68e94d97823a1da7f5fb4b7896798171a01ae5b6cbdd4c22f8",
+    "Sources/Native/LensPanel.m": "ece8c8569ea19a42a05b8ab7f2962ba073dbd09a88b5ea6e35c359ee552c67c6",
+    "Tests/verify-focus-distance-range.m": "866acce56513f68c3cb9342806f590b487826642abe03b9a953b8e36feca5ec2",
+    "Tests/audit-private-raw-corpus.m": "dd74230c28ed77d578f21cd22fba965d11890fa3c327b1e0e238e5d91119f816"
+  },
+  "auditExecutableSHA256": "794ecd2e973cee6fbdf911ab4e446852713307b9dfe7f0cbe92e24f9039cd2db",
+  "panelModuleSHA256": "5b4f475bc7a5a4a393a1360e9b5979286b798598813c9b6569f9c9b007cd7e13",
+  "fullSuiteLogSHA256": "c8ff7e96d95d14e4d758822e387f9dae780c0617e5984654128098df0bcddaf8",
+  "numericDefinitionSource": {
+    "path": "Resources/LensBridge/exiftool/lib/Image/ExifTool/Canon.pm",
+    "sha256": "d22b110e7b2e1af2d6e59bb97db97a04ffc2bfd1ba7d078d380ae60fbc70bbba",
+    "infinitySentinelMetres": 655.35
+  },
+  "photosPrivatePathsGPSAndSerialsIncluded": false,
+  "hostUpdate": {
+    "moduleSHA256": "c4c36959141fb5a785d23c0a2085476f28423d6e4570f29c04e1a650e1e7f466",
+    "hostStoppedBeforeUpdate": true,
+    "existingSandboxEntitlementsRetained": true,
+    "signatureVerified": true
+  },
+  "hostLaunchedThroughCUA": true,
+  "lastUpdatedOn": "2026-10-15T16:03:48.597993+00:00",
+  "fileOpenLocationControl": {
+    "ownExportedPNGCopiedUnchanged": true,
+    "selectedFromNewTemporaryDirectory": true,
+    "openButtonStillDisabledInAX": true,
+    "dialogCancelledThroughUI": true,
+    "conclusion": "Limitation also occurs outside the previous Desktop project directory; no root cause identified"
+  }
+}
