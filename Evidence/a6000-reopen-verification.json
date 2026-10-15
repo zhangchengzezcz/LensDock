@@ -1,0 +1,80 @@
+{
+  "executedOn": "2026-10-15T22:41:44.135773+00:00",
+  "scope": "CUA in owned research host: public A6000 RAW automatic fields, independent choices, actual correction apply, first PXD save, close, reopen; pre-fix false binding mismatch reproduced and new module restores panel without clicking rematch. Not lossless export, optical accuracy, all RAW or full installer GUI verification.",
+  "version": "0.2.1-preview",
+  "hostUpdate": {
+    "scope": "Update inactive, owned research host only; no installed host or vendor application replacement. Existing sandbox entitlements retained.",
+    "beforeModuleSHA256": "c4c36959141fb5a785d23c0a2085476f28423d6e4570f29c04e1a650e1e7f466",
+    "payloadModuleSHA256": "6e604f1c7acc0a23e28fe3b02ecc374ecbfbde03c54557e1d222d9a92fffc1ec",
+    "signedHostModuleSHA256": "70790184e54d0ba8655e3cf568885822fafd0b59f585b37c779eebfbd3e49154",
+    "version": "0.2.1-preview",
+    "hostWasNotRunning": true,
+    "strictSignatureVerified": true
+  },
+  "raws": [
+    {
+      "member": "data/CA337143-F43C-4F51-9C38-55531223F1E3-OriginalContentSource",
+      "bytes": 25624576,
+      "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+    }
+  ],
+  "pxdBytes": 1374741605,
+  "pxdSHA256": "f273c585f1cb313b4b464ea09b0f5bbdb68fd0a3ccadafa277c6dab63ba64163",
+  "automaticFieldsBeforeAndAfterReopen": {
+    "focalMM": 39,
+    "fNumber": 5,
+    "distanceM": 1000,
+    "distanceIsFallbackNotRecorded": true
+  },
+  "savedAndRestoredSettings": {
+    "distortionEnabled": true,
+    "tcaEnabled": true,
+    "vignettingEnabled": false,
+    "distortionStrength": 100,
+    "tcaStrength": 100,
+    "vignettingStrength": 50
+  },
+  "panelAmounts": {
+    "distortionPercent": 2.751909394777316,
+    "tcaPixels": 2.363198427596656,
+    "disabledVignetteTrialEV": 0.4809438118171166
+  },
+  "oldFalseMismatchReproduced": true,
+  "fixedModuleReopenPanelRestored": true,
+  "manuallyClickedRematchAfterReopen": false,
+  "oldRegressionExitCode": 11,
+  "fixedRegressionExitCode": 0,
+  "observedDerivedWBDeltas": {
+    "cx": {
+      "saved": 0.35062968730926514,
+      "reopened": 0.3506294786930084,
+      "absoluteDelta": 2.086162567138672e-07
+    },
+    "cy": {
+      "saved": 0.35027411580085754,
+      "reopened": 0.3502739369869232,
+      "absoluteDelta": 1.7881393432617188e-07
+    }
+  },
+  "allOtherBindingFieldsMatch": true,
+  "primaryWBTemperatureTintModeUnchanged": true,
+  "rejectsChangedPrimaryWBAndControls": true,
+  "knownPerformanceLimit": "24 MP test PXD is 1.37 GB; dense map compression dominates CPU sample. No performance acceptance claim.",
+  "filePanelControl": {
+    "userReportsManualVendorOpenEditSaveNormal": true,
+    "vendorKeyboardSelectionEnabledOpenAndRawLoaded": true,
+    "researchOpenSaveAndRecentReopenCompleted": true,
+    "underlyingAutomationFilePanelRootCauseProven": false
+  },
+  "readOnlyDebuggerDetached": true,
+  "suite": {
+    "groups": 19,
+    "renderCombinations": 96,
+    "passed": true
+  },
+  "sourceSHA256": {
+    "Sources/Native/LensCorrectionSettings.m": "d69211469730cdec2477e74f51d9e2c43d5d379e05df0b734aacd896f65711f1",
+    "Tests/verify-source-binding.m": "e526586725d36bc56270001434f267d5c7bc776c4fe3cee48fa889e0434ce81f",
+    "Tests/Fixtures/A6000-reopen-binding.json": "dce2d951c1c98dff180617cbe7face59f4774fbc28d69425ff1017c940a7a95b"
+  }
+}

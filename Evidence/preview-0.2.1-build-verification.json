@@ -1,0 +1,43 @@
+{
+  "executedOn": "2026-10-15T22:42:43.650213+00:00",
+  "version": "0.2.1-preview",
+  "build": {
+    "version": "0.2.1-preview",
+    "deploymentTarget": "26.0",
+    "notarized": false,
+    "redistributesVendorApp": false,
+    "sha256": {
+      "Contents/MacOS/LensDock": "28b291a950f234b2828b845667c87592d4fb6cc0cd71caca0630db202edd1a9d",
+      "Contents/Resources/Payload/LensPanel.dylib": "70790184e54d0ba8655e3cf568885822fafd0b59f585b37c779eebfbd3e49154",
+      "Contents/Resources/Payload/LensLiveSource.dylib": "1522e881d6ba53b317751362c45c8086d5acf1dc9ea504b3887f316128769e30"
+    }
+  },
+  "suite": {
+    "groups": 19,
+    "nativeRenderCombinations": 96,
+    "passed": true,
+    "logSHA256": "578a1eb2406ef445a8f5d1e4f65d82ee2171c78401f7d512bf237b2fd0c4c22a"
+  },
+  "installationStateRegressionPassed": true,
+  "isolatedProductionInstallationAndStrictSignaturePassed": true,
+  "vendorVersionABIAndHashesUnchangedVerified": true,
+  "installerGUIFullInstallationThisVersionVerified": false,
+  "researchHostA6000ReopenVerified": true,
+  "newHostDidNotResaveTestDocument": true,
+  "sourceSHA256": {
+    "Version.json": "89b7c83fc4cb40920767449b7e3ed8b6b602f5486a4fa5bb7f9f730146adf3b2",
+    "Sources/Native/LensNativeProfileEngine.m": "7c68f3bbff4481fd037ca54f1290862aa05d85a9a81debeeb02c2da41de8bcfe",
+    "Sources/Native/LensCorrectionSettings.m": "d69211469730cdec2477e74f51d9e2c43d5d379e05df0b734aacd896f65711f1",
+    "Sources/Installer/LensDock.swift": "7847a8a13a41bc02ab7bf21a2032e5bb1a0c6d650e05d67705eccf9f277ac9a2",
+    "Tests/verify-public-capture-metadata.m": "0420d6b4bf5d25e15674533dbab27df3a37859fd44ab71c9c350528dacd3522c",
+    "Tests/verify-capture-tag-precedence.m": "b2775781238e2c10800f1e8e256db1dc772128e802a4d16eac4ada071c406442",
+    "Tests/verify-source-binding.m": "e526586725d36bc56270001434f267d5c7bc776c4fe3cee48fa889e0434ce81f"
+  },
+  "remaining": [
+    "24 MP document size and map generation performance",
+    "Lightroom-equivalent coverage and optical accuracy",
+    "lossless export and full history/multilayer/color-space matrix",
+    "another Mac and macOS 26",
+    "Developer ID signing and notarization"
+  ]
+}

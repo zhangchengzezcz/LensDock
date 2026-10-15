@@ -2,6 +2,8 @@
 
 本文件记录 2026-10-16 的开发核查。GitHub `v0.1.0-preview` 资产保持原样；桌面的 0.2.0 候选包及 GitHub 发布草稿对应 `19c256b`，包含此前自动匹配和拍摄参数改进。本节新增完整 LX3 RAW 核查，测试源码与证据在当前主分支；没有替换既有宿主或重写候选资产。
 
+新增的 Sony/Olympus 元数据、距离来源与重开白平衡舍入修复进入 0.2.1 候选版；现有 0.2.0 候选包未替换。真实照片参数核查与宿主界面核查分别记录，不能将自动填值通过算成所有镜头均能自动校准。
+
 ## 身份与校准选择
 
 - 保留 Lensfun 查询返回的所有兼容候选。库的 `LF_SEARCH_SORT_AND_UNIQUIFY` 是显示列表去重，会隐藏同名镜头的另一套传感器校准，不能用于唯一身份判定。
@@ -36,7 +38,7 @@ python3 Scripts/audit_catalog.py --run
 
 剩余 3 个自动目录样本是 Fujifilm F810 两条、Panasonic LX3 一条，原目录输入没有记录拍摄模式。LX3 有原始 RW2 传感器边界字段时已可识别模式，但不把另一个有模式字段的测试样本加到原目录通过数中。F810 的模式自动解析仍待验证，手动候选入口保留。
 
-最新十八项开发测试组全部通过（渲染组另跑密集与网格两种布局，共 96 个组合），并实际运行本地 CR2、NEF、CR3 及两份完整 LX3 RW2 检查。开发原生面板整体编译、ad-hoc 签名验证通过。另在之前的隔离研究宿主构建完成 Nikon 已命名 PXD 的选择、应用、保存、关闭和重新打开；对应构建哈希见界面证据，不代表本次新匹配在所有 RAW、首保存或另一台 Mac 的验收。
+最新十九项开发测试组全部通过（渲染组另跑密集与网格两种布局，共 96 个组合），并实际运行本地 CR2、NEF、CR3、两份完整 LX3 RW2 和三份 Sony/Olympus RAW 参数检查。开发原生面板整体编译、ad-hoc 签名验证通过。另在之前的隔离研究宿主构建完成 Nikon 已命名 PXD 的选择、应用、保存、关闭和重新打开；对应构建哈希见界面证据，不代表本次新匹配在所有 RAW、首保存或另一台 Mac 的验收。
 
 ## 原始拍摄模式证据
 
@@ -100,3 +102,9 @@ ExifTool 上游测试容器 `t/images/Panasonic.rw2` 的有效区域为 3648×27
 ExifTool 的 `-n -ExifIFD:ApertureValue` 已做 ValueConv，输出为 f 值；ImageIO 的 EXIF 字典仍是 APEX，按 `2^(APEX/2)` 转换一次。APEX 0 按标准为 f/1，不能因为数值为零而视为缺失。不会将 ExifTool 的结果再次做指数换算。
 
 `Tests/verify-recorded-aperture.m` 现场生成只含测试 EXIF 的小型 TIFF 容器，验证两种真实读取路径、优先级、最大光圈拒绝、零 APEX、溢出及零 `FNumber` 的恢复，并验证可自动生成配置。此容器仅用于元数据回归，与产品 RAW 编辑流程无关。旧提交 `55bf94e` 在 APEX-only 案例中复现缺失，新实现通过六种案例的十二个读取组合；十四组完整回归通过，本地 CR2/NEF/CR3 读取仍通过。精简证据在 `Evidence/recorded-aperture-verification.json`。这不增加已确认的真实镜头数量，也不是新字段的宿主 GUI、完整 RAW 或光学准确性验证。
+
+### 更多真实拍摄参数与距离来源
+
+`Tests/verify-public-capture-metadata.m` 使用完整 CC0 RAW 和公开存档 Exiv2 文本的焦距/光圈参考；Olympus 距离按参考的两位小数精度比较。生产元数据读取与详细配置默认值均通过：A6000 为 39 mm、f/5，E-M5 为 38 mm、f/8、1.115 m（参考约 1.12 m），A200 为 80 mm、f/4.5。前两份自动生成对应镜头配置；A200 镜头不能唯一匹配，明确拒绝，不算自动校准覆盖。原片校验和前后不变。照片与完整元数据文本均不进入仓库或源码包。
+
+ExifTool 的 `Composite:FocusDistance` 对部分 Sony 是 `FocusPosition × FocalLength / 1000` 推算值。读取时在保留分组的阶段排除该字段；直接 MakerNote 距离和标准 SubjectDistance 继续使用，缺少有限距离时详细设置明确标出 1000 m 远距离回退。有限推算值的受控回归在旧实现退出 6、修复后通过；公开 A200 样本本身是 infinity，不冒充已验证有限推算值的真实照片。证据与源码哈希见 `Evidence/public-capture-metadata-verification.json`。

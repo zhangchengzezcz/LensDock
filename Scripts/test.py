@@ -8,6 +8,7 @@ for name,target in [('lib',ROOT/'Vendor/Lib'),('resources',ROOT/'Resources/LensB
 shutil.copy2(ROOT/'Resources/native-effects-template.json',out/'native-effects-template.json')
 native=ROOT/'Sources/Native'
 groups={
+ 'verify-public-capture-metadata':['LensNativeProfileEngine.m','LensRecommendationPolicy.m'],
  'verify-public-lx3':['LensNativeProfileEngine.m','LensRecommendationPolicy.m'],
  'verify-host-diagnostics':['LensHostDiagnostics.m'],
  'verify-recorded-aperture':['LensNativeProfileEngine.m'],

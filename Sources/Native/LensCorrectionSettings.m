@@ -3,6 +3,7 @@
 #import <CoreImage/CoreImage.h>
 #import <objc/message.h>
 #import <math.h>
+#import <float.h>
 #import "LensCalibrationEvidence.h"
 Class LensRegisterVignettingFilter(void);
 NSDictionary *LensCorrectionSourceBinding(NSDictionary *live){
@@ -16,7 +17,28 @@ NSDictionary *LensCorrectionSourceBinding(NSDictionary *live){
 }
 BOOL LensCorrectionSourceMatches(NSDictionary *binding,NSDictionary *live){
  NSDictionary *current=LensCorrectionSourceBinding(live);
- return [binding isKindOfClass:NSDictionary.class]&&current&&[binding isEqual:current];
+ if(![binding isKindOfClass:NSDictionary.class]||!current)return NO;
+ if([binding isEqual:current])return YES;
+ // The verified host recomputes the derived white-balance chromaticities on
+ // reopen (observed 6-7 float ULPs for an unchanged A6000 RAW). Keep source,
+ // geometry, color space and every other RAW parameter exact. Only permit
+ // float roundoff in cx/cy when temperature, tint and WB mode are present and
+ // unchanged; do not broadly round or ignore RAW development parameters.
+ NSMutableDictionary *before=[binding mutableCopy],*after=[current mutableCopy];
+ id a=before[@"rawParameters"],b=after[@"rawParameters"];
+ [before removeObjectForKey:@"rawParameters"];[after removeObjectForKey:@"rawParameters"];
+ if(![before isEqual:after]||![a isKindOfClass:NSArray.class]||![b isKindOfClass:NSArray.class]||[a count]!=2||[b count]!=2||![a[0]isEqual:@1]||![b[0]isEqual:@1]||![a[1]isKindOfClass:NSDictionary.class]||![b[1]isKindOfClass:NSDictionary.class])return NO;
+ NSMutableDictionary *av=[a[1]mutableCopy],*bv=[b[1]mutableCopy];
+ for(NSString *key in @[@"nt",@"nT",@"b"]){
+  if(![av[key]isKindOfClass:NSNumber.class]||![bv[key]isKindOfClass:NSNumber.class]||!isfinite([av[key]doubleValue])||![av[key]isEqual:bv[key]])return NO;
+ }
+ for(NSString *key in @[@"cx",@"cy"]){
+  if(![av[key]isKindOfClass:NSNumber.class]||![bv[key]isKindOfClass:NSNumber.class])return NO;
+  double x=[av[key]doubleValue],y=[bv[key]doubleValue];
+  if(!isfinite(x)||!isfinite(y)||x<=0||x>=1||y<=0||y>=1||fabs(x-y)>8*FLT_EPSILON*fmax(fabs(x),fabs(y)))return NO;
+  [av removeObjectForKey:key];[bv removeObjectForKey:key];
+ }
+ return [av isEqual:bv];
 }
 static CIFilter*filterFromItem(NSDictionary*item){NSString*s=item[@"versionSpecifiContainer"][@"CIFilterNSCodingData"];if(![s isKindOfClass:NSString.class])return nil;return [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:[[NSData alloc]initWithBase64EncodedString:s options:0] error:nil];}
 NSDictionary*LensSavedCorrectionProfile(id effects){

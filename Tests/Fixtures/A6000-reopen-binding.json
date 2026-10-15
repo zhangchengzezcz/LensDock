@@ -1,0 +1,105 @@
+{
+  "scope": "Observed unchanged public A6000 RAW saved and reopened in the version-verified research host. No image or map data.",
+  "savedBinding": {
+    "height": 4000.0,
+    "angle": 0.0,
+    "width": 6000.0,
+    "sourceInformation": {
+      "typeIdentifier": "com.sony.arw-raw-image",
+      "rawSHA256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+      "byteCount": 25624576
+    },
+    "rawParameters": [
+      1,
+      {
+        "lnr": 0,
+        "cx": 0.35062968730926514,
+        "x": 0,
+        "B": 0,
+        "bx": 0.3499999940395355,
+        "b": 3,
+        "dG": false,
+        "BS": 0.8999999761581421,
+        "lc": false,
+        "cy": 0.35027411580085754,
+        "tm": 0,
+        "s": true,
+        "edr": 1,
+        "ctx": [
+          1,
+          {
+            "cs": [
+              1,
+              {
+                "map": {}
+              }
+            ]
+          }
+        ],
+        "cnr": 0.800000011920929,
+        "ctl": false,
+        "nt": 4784.17236328125,
+        "nT": -8.344468116760254,
+        "v": "8"
+      }
+    ],
+    "version": 1,
+    "workingTransfer": "encoded_sRGB",
+    "colorSpaceName": "kCGColorSpaceDisplayP3",
+    "scale": [
+      1.0,
+      1.0
+    ]
+  },
+  "reopenedFingerprint": {
+    "height": 4000,
+    "angle": 0,
+    "width": 6000,
+    "rawParameters": [
+      1,
+      {
+        "lnr": 0,
+        "B": 0,
+        "x": 0,
+        "cx": 0.3506294786930084,
+        "bx": 0.3499999940395355,
+        "b": 3,
+        "cy": 0.3502739369869232,
+        "BS": 0.8999999761581421,
+        "dG": false,
+        "ctx": [
+          1,
+          {
+            "cs": [
+              1,
+              {
+                "map": {}
+              }
+            ]
+          }
+        ],
+        "tm": 0,
+        "s": true,
+        "edr": 1,
+        "lc": false,
+        "cnr": 0.800000011920929,
+        "ctl": false,
+        "nt": 4784.17236328125,
+        "nT": -8.344468116760254,
+        "v": "8"
+      }
+    ],
+    "sourceInformation": {
+      "byteCount": 25624576,
+      "rawSHA256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+      "typeIdentifier": "com.sony.arw-raw-image"
+    },
+    "identifier": "CA337143-F43C-4F51-9C38-55531223F1E3",
+    "workingTransfer": "encoded_sRGB",
+    "colorSpaceName": "kCGColorSpaceDisplayP3",
+    "scale": [
+      1,
+      1
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "scope": "Optional complete CC0 RAW metadata and automatic parameter/profile routes; no photos included, no optical or host GUI claim. Expected focal/aperture and rounded Olympus focus distance transcribed from archived Exiv2 references.",
+  "files": [
+    {
+      "file": "ILCE-6000.ARW",
+      "source": "https://raw.pixls.us/getfile.php/1971/nice/Sony%20-%20ILCE-6000%20-%2012bit%2012bit%20compressed%20%283:2%29.ARW",
+      "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+      "repositoryEntry": 1971,
+      "license": "CC0-1.0",
+      "referenceSource": "https://raw.pixls.us/getfile.php/1971/exif/DSC01542.ARW.exif.txt",
+      "model": "ILCE-6000",
+      "focalMM": 39,
+      "fNumber": 5,
+      "focusDistanceM": null,
+      "matchedLens": "E 18-55mm f/3.5-5.6 OSS",
+      "referenceFields": {
+        "Exif.Photo.FocalLength": "39.0 mm",
+        "Exif.Photo.FNumber": "F5"
+      },
+      "referenceSHA256": "5513af45a310d601df080e43e34ee0c6642cba5ba277052fb9410ab32e32b00e",
+      "referenceReader": "raw.pixls.us archived Exiv2 text; focus distance rounded to 2 decimal places",
+      "automaticPlanExpected": true
+    },
+    {
+      "file": "E-M5.ORF",
+      "source": "https://raw.pixls.us/getfile.php/1084/nice/Olympus%20-%20E-M5%20-%2016bit%20%284:3%29.ORF",
+      "sha256": "b2221977cbc6eba0d3b363351072092e5647eaa0d02a5d8432b5d985b29f669f",
+      "repositoryEntry": 1084,
+      "license": "CC0-1.0",
+      "referenceSource": "https://raw.pixls.us/getfile.php/1084/exif/P2082705.ORF.exif.txt",
+      "model": "E-M5",
+      "focalMM": 38,
+      "fNumber": 8,
+      "focusDistanceM": 1.12,
+      "focusToleranceM": 0.0051,
+      "matchedLens": "Olympus M.Zuiko Digital ED 12-50mm f/3.5-6.3 EZ",
+      "referenceFields": {
+        "Exif.Photo.FocalLength": "38.0 mm",
+        "Exif.Photo.FNumber": "F8",
+        "Exif.OlympusFi.FocusDistance": "1.12 m"
+      },
+      "referenceSHA256": "8075a0d34fece7cba53e346f47fa3d9028b42ee71cee90e7d6a7ae5ca0ee2821",
+      "referenceReader": "raw.pixls.us archived Exiv2 text; focus distance rounded to 2 decimal places",
+      "automaticPlanExpected": true
+    },
+    {
+      "file": "DSLR-A200.ARW",
+      "source": "https://raw.pixls.us/getfile.php/2271/nice/Sony%20-%20DSLR-A200%20-%2012bit%2012bit%20compressed%20%283:2%29.ARW",
+      "sha256": "04eacd403d92e0c90da9d91b87615af8eda1afc963350d3ab774557c36763eef",
+      "repositoryEntry": 2271,
+      "license": "CC0-1.0",
+      "referenceSource": "https://raw.pixls.us/getfile.php/2271/exif/DSC00108.ARW.exif.txt",
+      "model": "DSLR-A200",
+      "focalMM": 80,
+      "fNumber": 4.5,
+      "focusDistanceM": null,
+      "automaticPlanExpected": false,
+      "expectedPlanError": "无法唯一匹配镜头，请选择镜头配置。",
+      "referenceSHA256": "23203c646f411ac833a46d08ebe96bc436c77e1211aa29b36f106c9f2a470e29",
+      "referenceReader": "raw.pixls.us archived Exiv2 text",
+      "referenceFields": {
+        "Exif.Photo.FocalLength": "80.0 mm",
+        "Exif.Photo.FNumber": "F4.5"
+      },
+      "scopeNote": "Camera records infinity FocusPosition; no finite measured distance. Lens remains unmatched: never counted as added automatic calibration coverage."
+    }
+  ]
+}

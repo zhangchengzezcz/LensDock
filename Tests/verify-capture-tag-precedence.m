@@ -1,4 +1,5 @@
 #import "LensNativeProfileEngine.h"
+#import "LensCaptureParameters.h"
 #import <ImageIO/ImageIO.h>
 
 // Generated ImageIO containers and a controlled duplicate-tag reader model the
@@ -24,6 +25,22 @@ int main(){@autoreleasepool{
  NSString *legacy=@"print '[{\"FocalLength\":100,\"FNumber\":8,\"SubjectDistance\":3,\"FocusDistance\":2.5}]';\n";[legacy writeToURL:reader atomically:YES encoding:NSUTF8StringEncoding error:nil];
  NSDictionary *metadata=LensReadRawMetadata([directory URLByAppendingPathComponent:@"with-exif.tiff"],reader,nil);
  if(fabs([metadata[@"FocalLength"]doubleValue]-104)>1e-8||fabs([metadata[@"FNumber"]doubleValue]-5.6)>1e-8||fabs([metadata[@"SubjectDistance"]doubleValue]-7)>1e-8||fabs([metadata[@"FocusDistance"]doubleValue]-2.5)>1e-8)return 4;
+ // Sony's Composite:FocusDistance is computed from FocusPosition and focal
+ // length. It is not a recorded distance and must not win over a direct tag
+ // or appear as an automatically measured scalar in the parameter fields.
+ NSArray *distanceCases=@[
+  @{@"grouped":@{@"Composite:FocusDistance":@1.95},@"expectedDisplay":@1000},
+  @{@"grouped":@{@"Composite:FocusDistance":@1.95,@"Nikon:FocusDistance":@2.5},@"expectedDistance":@2.5,@"expectedDisplay":@2.5},
+  @{@"grouped":@{@"Composite:FocusDistance":@1.95,@"ExifIFD:SubjectDistance":@7},@"expectedDisplay":@7}
+ ];
+ for(NSDictionary *test in distanceCases){
+  NSData *json=[NSJSONSerialization dataWithJSONObject:@[test[@"grouped"]] options:0 error:nil];
+  NSString *payload=[[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding];
+  NSString *derivedReader=[NSString stringWithFormat:@"print '%@';\n",payload];
+  if(![derivedReader writeToURL:reader atomically:YES encoding:NSUTF8StringEncoding error:nil])return 5;
+  NSDictionary *actual=LensReadRawMetadata([directory URLByAppendingPathComponent:@"without-capture-exif.tiff"],reader,nil);
+  if(!actual||(test[@"expectedDistance"]?![actual[@"FocusDistance"]isEqual:test[@"expectedDistance"]]:actual[@"FocusDistance"]!=nil)||fabs([LensCaptureParameterDisplayValues(actual)[2]doubleValue]-[test[@"expectedDisplay"]doubleValue])>1e-8)return 6;
+ }
  [NSFileManager.defaultManager removeItemAtURL:directory error:nil];
  puts("Standard exposure EXIF survives conflicting MakerNote/track copies; optional MakerNote distance remains available.");
 }}

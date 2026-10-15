@@ -21,6 +21,16 @@ int main(){@autoreleasepool{
  id effects=LensEffectsForCorrectionPlan(plan,envelope,settings,nil,nil);if(!effects)return 9;
  id restored=LensEffectsFromJSON(LensEffectsJSON(effects,nil));NSDictionary *profile=LensSavedCorrectionProfile(restored);
  if(![profile[@"sourceBinding"]isEqual:binding]||profile[@"liveFingerprint"]||!LensCorrectionSourceMatches(profile[@"sourceBinding"],live))return 10;
+ NSDictionary *sony=[NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:@"Tests/Fixtures/A6000-reopen-binding.json"] options:0 error:nil];
+ if(!sony||!LensCorrectionSourceMatches(sony[@"savedBinding"],sony[@"reopenedFingerprint"]))return 11;
+ // Reopening can recompute derived white-balance chromaticities by a few
+ // float ULPs. Actual temperature, tint, controls and source must stay strict.
+ for(NSString *key in @[@"nt",@"nT",@"b",@"lc",@"BS",@"cx",@"cy"]){
+  NSMutableDictionary *changed=[sony[@"reopenedFingerprint"]mutableCopy];
+  NSMutableArray *raw=[changed[@"rawParameters"]mutableCopy];NSMutableDictionary *fields=[raw[1]mutableCopy];
+  fields[key]=@([fields[key]doubleValue]+([key isEqual:@"cx"]||[key isEqual:@"cy"]?.00001:1));raw[1]=fields;changed[@"rawParameters"]=raw;
+  if(LensCorrectionSourceMatches(sony[@"savedBinding"],changed))return 12;
+ }
  NSDictionary *report=@{@"usesVerifiedRAWIdentityAndParameters":@YES,@"roundtripPreservesBinding":@YES,@"layerIdentifierExcluded":@YES,@"rejectsReplacedSource":@YES,@"rejectsChangedRAWParameters":@YES,@"rejectsChangedScale":@YES,@"rejectsMissingBinding":@YES,@"rawSHA256":record[@"rawSHA256"]};
  [[NSJSONSerialization dataWithJSONObject:report options:NSJSONWritingPrettyPrinted error:nil]writeToFile:@"Build/Tests/source-binding-verification.json" atomically:YES];puts("Persistent source binding roundtrip and state guards passed.");
 }}

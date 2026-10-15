@@ -211,6 +211,10 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  NSDictionary*grouped=rows[0];NSMutableDictionary*values=[NSMutableDictionary new];
  for(NSString*key in [grouped.allKeys sortedArrayUsingSelector:@selector(compare:)]){
   NSRange separator=[key rangeOfString:@":" options:NSBackwardsSearch];NSString*name=separator.location==NSNotFound?key:[key substringFromIndex:separator.location+1];
+  // Sony's Composite:FocusDistance is a FocusPosition * FocalLength estimate,
+  // not a directly recorded focus distance. It sorts before MakerNote groups
+  // and must neither override them nor masquerade as a measured distance.
+  if([name isEqual:@"FocusDistance"]&&[key hasPrefix:@"Composite:"])continue;
   if(!values[name])values[name]=grouped[key];
  }
  NSDictionary*standard=@{@"Make":@"IFD0:Make",@"Model":@"IFD0:Model",@"LensModel":@"ExifIFD:LensModel",@"FocalLength":@"ExifIFD:FocalLength",@"FNumber":@"ExifIFD:FNumber",@"SubjectDistance":@"ExifIFD:SubjectDistance",@"ApertureValue":@"ExifIFD:ApertureValue",@"Orientation":@"IFD0:Orientation"};
