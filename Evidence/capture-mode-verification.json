@@ -1,0 +1,38 @@
+{
+  "fixedLensWithoutLensNameResolvedWithExplicitOffSetting" : true,
+  "missingModeRemainsAmbiguous" : true,
+  "scope" : "LX3 original RW2 metadata parsing and camera-mode routing; synthetic ratio cases, optional upstream metadata-test container, not developable RAW optical validation",
+  "mismatchedRAWBufferAspectRejected" : true,
+  "previewDimensionsNotUsedAsModeEvidence" : true,
+  "rawSensorBordersResolveLX3Mode" : true,
+  "nativeSupportedMismatchPreservesNativeWithoutExtraGain" : true,
+  "digitalZoomCropAndInvalidBoundsRejected" : true,
+  "upstreamMetadataContainerRead" : true,
+  "fixtureProvenance" : {
+    "path" : "t\/images\/Panasonic.rw2",
+    "commit" : "2200871d9cef988051d2a99d67df3bda6cbb30a8",
+    "repository" : "https:\/\/github.com\/exiftool\/exiftool",
+    "containerBytes" : 12344,
+    "scope" : "Selected numeric metadata facts from an upstream metadata-test container; no RAW pixels distributed and no optical validation claim",
+    "containerSHA256" : "431a1239713ce1bca8f0b422b9a094372246669432060e2a0a21d1fd2f761678"
+  },
+  "cases" : [
+    {
+      "captureMode" : "4:3",
+      "cameraCrop" : 4.6999998092651367
+    },
+    {
+      "captureMode" : "3:2",
+      "cameraCrop" : 5.0999999046325684
+    },
+    {
+      "captureMode" : "16:9",
+      "cameraCrop" : 5.7527999877929688
+    },
+    {
+      "captureMode" : "1:1",
+      "cameraCrop" : 5.320000171661377
+    }
+  ],
+  "fixedLensNotAssumedWithUnknownConversionSetting" : true
+}

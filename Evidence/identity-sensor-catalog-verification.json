@@ -1,14 +1,14 @@
 {
-  "verifiedAt": "2026-10-14T23:43:52.174727+00:00",
+  "verifiedAt": "2026-10-15T09:12:39.958292+00:00",
   "baselineSourceCommit": "9675545de729daf61e7cf3394d8de9f937452115",
-  "sourceEngineSHA256": "ca3ac3b710867b0686b589a7845b56b3107c1f34edda9f485d3286cc0bd5852d",
+  "sourceEngineSHA256": "209b46dfb1d9b3f9412d59cd491a4e334f4d2708c19ca735b2f8e8f53e572153",
   "auditSourceSHA256": "8aa0fd0ac9d4b24e1a0ee557b982fd517041d645529ad8a6eeb3d1b862379e17",
   "auditInputBuilderSHA256": "b773a0d330f3ae5fd1e16bdcfc2d7d20c1fe5532f46322b99edca1b940839c5a",
   "databaseCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
   "scope": "Database-derived identity aliases and interpolation witnesses in small native coordinates at each recorded aspect ratio; not real RAW or optical accuracy coverage",
   "requests": 1566,
   "matchedBefore": 1537,
-  "matchedAfter": 1561,
+  "matchedAfter": 1563,
   "recoveredWitnesses": [
     "compact-olympus.xml:1",
     "compact-olympus.xml:11",
@@ -37,10 +37,7 @@
     "slr-tamron.xml:22",
     "slr-tamron.xml:9"
   ],
-  "newlyRejectedAmbiguities": [
-    "slr-nikon.xml:107",
-    "slr-sigma.xml:64"
-  ],
+  "newlyRejectedAmbiguities": [],
   "baselineDifferentLensCropWitnesses": 21,
   "currentDifferentLensCropWitnesses": 0,
   "checksCameraCropAndMount": true,
@@ -89,34 +86,6 @@
       "matchedLens": "",
       "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
       "expectedLens": "DMC-LX3 & compatibles (Standard)"
-    },
-    {
-      "metadata": {
-        "FocusDistance": 1000,
-        "FocalLength": 10.5,
-        "FNumber": 8,
-        "Make": "Nikon Corporation",
-        "Model": "Nikon D40X",
-        "LensModel": "Nikon AF DX Fisheye-Nikkor 10.5mm f/2.8G ED"
-      },
-      "id": "slr-nikon.xml:107",
-      "matchedLens": "",
-      "reason": "无法唯一匹配镜头，请选择镜头配置。",
-      "expectedLens": "Nikon AF DX Fisheye-Nikkor 10.5mm f/2.8G ED"
-    },
-    {
-      "metadata": {
-        "FocusDistance": 1000,
-        "FocalLength": 10,
-        "FNumber": 8,
-        "Make": "Canon",
-        "Model": "Canon EOS 1000D",
-        "LensModel": "Sigma 10mm f/2.8 EX DC Fisheye HSM"
-      },
-      "id": "slr-sigma.xml:64",
-      "matchedLens": "",
-      "reason": "无法唯一匹配镜头，请选择镜头配置。",
-      "expectedLens": "Sigma 10mm f/2.8 EX DC Fisheye HSM"
     }
   ],
   "explicitSkips": [
@@ -148,12 +117,13 @@
   ],
   "methodCounts": {
     "normalized-exact-database-alias": 1457,
-    "exact-lens-identity-sensor-calibration-variant": 104
+    "exact-lens-identity-sensor-calibration-variant": 106
   },
-  "developmentNativePanelSHA256": "b050377b73b674ab9fad19369dd7f031ff6e662a9e5d2af54706b2f236ea5c5b",
+  "developmentNativePanelSHA256": "3327907ce4a6a6b0dade5119e20ec4e762c40e76f8289e48ef282f120b317cda",
   "developmentNativePanelCompiledAndSignatureVerified": true,
   "installedPreviewUpdated": false,
   "releasedDMGUpdated": false,
   "doesNotProveRAWOrLightroomCoverage": true,
-  "automaticMatchingUnchangedAfterManualPickerImplementation": true
+  "captureModeHeaderSHA256": "de4ad328d0999797baf7f336da26c4d4d43e6808233fcde51828f405e10cf895",
+  "checksRecordedFisheyeIdentityAndUniqueSensorContext": true
 }

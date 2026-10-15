@@ -1,11 +1,8 @@
 {
-  "noSuitableSensorClassRejected" : true,
-  "scope" : "Database-based exact identity and sensor calibration routing, not real RAW optical accuracy",
   "matchingSensorVariantsSelected" : true,
-  "twoNearSensorVariantsRejected" : true,
-  "differentProjectionConflictRejected" : true,
   "cases" : [
     {
+      "projection" : 1,
       "method" : "exact-lens-identity-sensor-calibration-variant",
       "camera" : "E-M5",
       "lens" : "Sigma 30mm f\/2.8 EX DN",
@@ -13,6 +10,7 @@
       "cameraCrop" : 2
     },
     {
+      "projection" : 1,
       "method" : "normalized-exact-database-alias",
       "camera" : "NEX-3",
       "lens" : "Sigma 30mm f\/2.8 EX DN",
@@ -20,6 +18,7 @@
       "cameraCrop" : 1.534000039100647
     },
     {
+      "projection" : 1,
       "method" : "exact-lens-identity-sensor-calibration-variant",
       "camera" : "Pentax K-500",
       "lens" : "smc Pentax DA* 60-250mm f\/4 [IF] SDM",
@@ -27,6 +26,7 @@
       "cameraCrop" : 1.534000039100647
     },
     {
+      "projection" : 1,
       "method" : "normalized-exact-database-alias",
       "camera" : "Crop-factor 1.0 (Full Frame)",
       "lens" : "smc Pentax DA* 60-250mm f\/4 [IF] SDM",
@@ -34,6 +34,7 @@
       "cameraCrop" : 1
     },
     {
+      "projection" : 1,
       "method" : "exact-lens-identity-sensor-calibration-variant",
       "camera" : "Nikon D5200",
       "lens" : "Tamron AF 70-300mm f\/4-5.6 LD Macro 1:2",
@@ -41,11 +42,51 @@
       "cameraCrop" : 1.534000039100647
     },
     {
+      "projection" : 1,
       "method" : "exact-lens-identity-sensor-calibration-variant",
       "camera" : "Canon EOS 40D",
       "lens" : "Tamron AF 18-200mm f\/3.5-6.3 XR Di II LD Aspherical (IF) Macro",
       "lensCrop" : 1.6109999418258667,
       "cameraCrop" : 1.621999979019165
+    },
+    {
+      "projection" : 7,
+      "method" : "exact-lens-identity-sensor-calibration-variant",
+      "camera" : "Nikon D40X",
+      "lens" : "Nikon AF DX Fisheye-Nikkor 10.5mm f\/2.8G ED",
+      "lensCrop" : 1.5230000019073486,
+      "cameraCrop" : 1.5230000019073486
+    },
+    {
+      "projection" : 2,
+      "method" : "normalized-exact-database-alias",
+      "camera" : "Crop-factor 1.0 (Full Frame)",
+      "lens" : "Nikon AF DX Fisheye-Nikkor 10.5mm f\/2.8G ED",
+      "lensCrop" : 1,
+      "cameraCrop" : 1
+    },
+    {
+      "projection" : 7,
+      "method" : "exact-lens-identity-sensor-calibration-variant",
+      "camera" : "Canon EOS 1000D",
+      "lens" : "Sigma 10mm f\/2.8 EX DC Fisheye HSM",
+      "lensCrop" : 1.621999979019165,
+      "cameraCrop" : 1.621999979019165
+    },
+    {
+      "projection" : 2,
+      "method" : "normalized-exact-database-alias",
+      "camera" : "Nikon D40X",
+      "lens" : "Sigma 10mm f\/2.8 EX DC Fisheye HSM",
+      "lensCrop" : 1.5230000019073486,
+      "cameraCrop" : 1.5230000019073486
     }
-  ]
+  ],
+  "scope" : "Database-based exact identity and sensor calibration routing, not real RAW optical accuracy",
+  "noSuitableSensorClassRejected" : true,
+  "sharedTranslationDifferentRawIdentityRejected" : true,
+  "twoNearSensorVariantsRejected" : true,
+  "sameSensorProjectionConflictRejected" : true,
+  "rectilinearFisheyeConflictRejected" : true,
+  "sameRecordedFisheyeSensorFitSelected" : true
 }

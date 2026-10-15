@@ -1,7 +1,8 @@
 {
-  "executedOn": "2026-10-15T08:14:11.059362+08:00",
+  "executedOn": "2026-10-15T09:12:39.958292+00:00",
   "suite": "Scripts/test.py",
   "suitesPassed": [
+    "capture-mode",
     "effect-replacement",
     "profile-selection",
     "recorded-aliases",
@@ -16,7 +17,7 @@
     "source-binding"
   ],
   "nativeRenderCombinationsPassed": 96,
-  "sourceEngineSHA256": "ca3ac3b710867b0686b589a7845b56b3107c1f34edda9f485d3286cc0bd5852d",
+  "sourceEngineSHA256": "209b46dfb1d9b3f9412d59cd491a4e334f4d2708c19ca735b2f8e8f53e572153",
   "privateRAWIncludedInRepository": false,
   "privateRAWOptionalChecksRunInPortableSuite": true,
   "actualRAWProbeTypes": [
@@ -31,11 +32,13 @@
   "realRAWSourceEvidence": "native-priority-verification.json and calibration-evidence-verification.json",
   "compilationTarget": "arm64-apple-macos26.0",
   "allSelectedTestsPassed": true,
-  "scope": "Development source tests, including the real PTFoundation native value comparator with a test-only layer setter; actual research-host named-PXD GUI persistence is separately scoped in profile-picker-ui-verification.json",
+  "scope": "Development source tests; actual CR2/NEF/CR3 probes remain separate from the LX3 metadata-only container. Current fish-eye/capture-mode changes have no new host GUI optical verification.",
   "releasedDMGIncludesDevelopmentChanges": false,
   "commitPathSourcesSHA256": {
     "LensNativeState.m": "60207a9462e2c378f8d675d1cb270a4231e26bf682cf37e68907e884198c6a29",
     "LensCorrectionSettings.m": "ac4d28939c70506046b98993cb9ccf4daded4435ada0712bb046b2fa6162a4dc"
   },
-  "identityHeaderSHA256": "934099dc04863892124e005b7fc3b13b8baa892932ecd2bc2b09c8dd43540f6c"
+  "identityHeaderSHA256": "934099dc04863892124e005b7fc3b13b8baa892932ecd2bc2b09c8dd43540f6c",
+  "captureModeHeaderSHA256": "de4ad328d0999797baf7f336da26c4d4d43e6808233fcde51828f405e10cf895",
+  "upstreamLX3MetadataContainerRead": true
 }

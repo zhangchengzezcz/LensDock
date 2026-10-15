@@ -1,0 +1,29 @@
+{
+  "provenance": {
+    "repository": "https://github.com/exiftool/exiftool",
+    "commit": "2200871d9cef988051d2a99d67df3bda6cbb30a8",
+    "path": "t/images/Panasonic.rw2",
+    "containerBytes": 12344,
+    "containerSHA256": "431a1239713ce1bca8f0b422b9a094372246669432060e2a0a21d1fd2f761678",
+    "scope": "Selected numeric metadata facts from an upstream metadata-test container; no RAW pixels distributed and no optical validation claim"
+  },
+  "tags": {
+    "File:FileType": "RW2",
+    "IFD0:Make": "Panasonic",
+    "IFD0:Model": "DMC-LX3",
+    "IFD0:SensorWidth": 3724,
+    "IFD0:SensorHeight": 2754,
+    "IFD0:SensorTopBorder": 6,
+    "IFD0:SensorLeftBorder": 8,
+    "IFD0:SensorBottomBorder": 2742,
+    "IFD0:SensorRightBorder": 3656,
+    "ExifIFD:DigitalZoomRatio": 0,
+    "Panasonic:ConversionLens": 1
+  },
+  "shootingMetadata": {
+    "Make": "Panasonic",
+    "Model": "DMC-LX3",
+    "FocalLength": 5.1,
+    "FNumber": 4
+  }
+}

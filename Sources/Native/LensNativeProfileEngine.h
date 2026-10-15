@@ -3,6 +3,8 @@
 NSDictionary *LensReadRawMetadata(NSURL *rawURL, NSURL *exiftoolURL, NSError **error);
 // Public Apple RAW correction capability for this image; never renders pixels.
 NSDictionary *LensReadNativeCorrectionSupport(NSURL *rawURL);
+// Reads only original, grouped RW2 metadata fields for capture-mode evidence.
+NSDictionary *LensReadRawCaptureMetadata(NSURL *rawURL, NSURL *exiftoolURL, NSError **error);
 // Enumerates content-addressed camera modes and compatible calibrations. A
 // manual selection in metadata["LensDockProfileSelection"] is revalidated on
 // every plan generation; names, array order and saved indices are insufficient.
