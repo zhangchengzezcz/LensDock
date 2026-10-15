@@ -1,7 +1,8 @@
 {
-  "executedOn": "2026-10-15T09:32:50.558534+00:00",
+  "executedOn": "2026-10-15T09:39:55.057306+00:00",
   "suite": "Scripts/test.py",
   "suitesPassed": [
+    "recorded-aperture",
     "capture-parameters",
     "capture-mode",
     "effect-replacement",
@@ -18,7 +19,7 @@
     "source-binding"
   ],
   "nativeRenderCombinationsPassed": 96,
-  "sourceEngineSHA256": "209b46dfb1d9b3f9412d59cd491a4e334f4d2708c19ca735b2f8e8f53e572153",
+  "sourceEngineSHA256": "e7f915e601a7a2e79df9b1691c5ae7fc1eb3c8baa0214254c7aa9bcb46a6820e",
   "privateRAWIncludedInRepository": false,
   "privateRAWOptionalChecksRunInPortableSuite": true,
   "actualRAWProbeTypes": [
@@ -33,7 +34,7 @@
   "realRAWSourceEvidence": "native-priority-verification.json and calibration-evidence-verification.json",
   "compilationTarget": "arm64-apple-macos26.0",
   "allSelectedTestsPassed": true,
-  "scope": "Development source tests, including real local CR2/NEF/CR3 automatic capture metadata checks. The host UI check covers Nikon automatic fill; not full optical or persistence acceptance.",
+  "scope": "Development source tests, including real local CR2/NEF/CR3 automatic capture reads and generated TIFF EXIF-only aperture fallback containers. Prior Nikon host UI evidence is scoped to its earlier module hash; new aperture fallback is not host GUI or RAW optical proof.",
   "releasedDMGIncludesDevelopmentChanges": false,
   "commitPathSourcesSHA256": {
     "LensNativeState.m": "60207a9462e2c378f8d675d1cb270a4231e26bf682cf37e68907e884198c6a29",

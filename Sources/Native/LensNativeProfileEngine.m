@@ -201,7 +201,7 @@ static NSArray*runExifArguments(NSURL*raw,NSURL*tool,NSArray*options,NSError**er
 }
 static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  NSMutableArray*args=[NSMutableArray arrayWithObject:@"-j"];if(numeric)[args addObject:@"-n"];
- [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];return runExifArguments(raw,tool,args,error);
+ [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];return runExifArguments(raw,tool,args,error);
 }
 NSDictionary*LensReadRawCaptureMetadata(NSURL*raw,NSURL*tool,NSError**error){
  NSArray*rows=runExifArguments(raw,tool,@[@"-j",@"-n",@"-G1",@"-a",@"-FileType",@"-IFD0:Make",@"-IFD0:Model",@"-IFD0:SensorWidth",@"-IFD0:SensorHeight",@"-IFD0:SensorTopBorder",@"-IFD0:SensorLeftBorder",@"-IFD0:SensorBottomBorder",@"-IFD0:SensorRightBorder",@"-IFD0:CropTop",@"-IFD0:CropLeft",@"-IFD0:CropBottom",@"-IFD0:CropRight",@"-ExifIFD:DigitalZoomRatio",@"-Panasonic:ConversionLens"],error);
@@ -228,6 +228,20 @@ NSDictionary*LensReadRawMetadata(NSURL*rawURL,NSURL*tool,NSError**error){
   if(b.count)m[@"LensIDName"]=b[0][@"LensID"]?:b[0][@"LensType"]?:@"";
   m[@"metadataReader"]=@"ImageIO+ExifTool MakerNote";
  }
+ // ApertureValue records the exposure aperture, unlike MaxApertureValue or
+ // lens specifications. ExifTool's numeric output already applies ValueConv
+ // and is an f-number; ImageIO exposes the original APEX value. Never convert
+ // the former a second time, and never replace a valid recorded FNumber.
+ if(!positive(m[@"FNumber"])){
+  double aperture=a.count?positive(a[0][@"ApertureValue"]):0;
+  if(!aperture&&[ex[@"ApertureValue"]isKindOfClass:NSNumber.class]){
+   double apex=[ex[@"ApertureValue"]doubleValue];double converted=isfinite(apex)?exp2(apex/2):0;
+   if(isfinite(converted)&&converted>0)aperture=converted;
+  }
+  if(aperture)m[@"FNumber"]=@(aperture);
+ }
+ // Do not retain two incompatible encodings under the same EXIF key.
+ [m removeObjectForKey:@"ApertureValue"];
  if([norm(text(m[@"Model"]))isEqual:@"dmclx3"]){NSError*captureError=nil;NSDictionary*tags=LensReadRawCaptureMetadata(rawURL,tool,&captureError);if(tags)m[@"rawCaptureMetadata"]=tags;if(captureError)m[@"captureMetadataWarning"]=captureError.localizedDescription;}
  if(makerError){
   if(!text(m[@"LensModel"]).length&&![m[@"nativeCorrectionSupport"][@"lensCorrectionSupported"]boolValue]){if(error)*error=makerError;return nil;}

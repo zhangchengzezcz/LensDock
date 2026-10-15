@@ -1,0 +1,118 @@
+{
+  "checks": [
+    {
+      "readers": [
+        {
+          "reader": "ImageIO+bundled-ExifTool",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 5.65685424949238
+        },
+        {
+          "reader": "ImageIO-fallback",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 5.656854249492381
+        }
+      ],
+      "case": "apex-only"
+    },
+    {
+      "readers": [
+        {
+          "reader": "ImageIO+bundled-ExifTool",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 4
+        },
+        {
+          "reader": "ImageIO-fallback",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 4
+        }
+      ],
+      "case": "f-number-priority"
+    },
+    {
+      "readers": [
+        {
+          "reader": "ImageIO+bundled-ExifTool",
+          "automaticPlanGenerated": true,
+          "actualFNumber": null
+        },
+        {
+          "reader": "ImageIO-fallback",
+          "automaticPlanGenerated": true,
+          "actualFNumber": null
+        }
+      ],
+      "case": "maximum-only"
+    },
+    {
+      "readers": [
+        {
+          "reader": "ImageIO+bundled-ExifTool",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 1
+        },
+        {
+          "reader": "ImageIO-fallback",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 1
+        }
+      ],
+      "case": "apex-zero"
+    },
+    {
+      "readers": [
+        {
+          "reader": "ImageIO+bundled-ExifTool",
+          "automaticPlanGenerated": true,
+          "actualFNumber": null
+        },
+        {
+          "reader": "ImageIO-fallback",
+          "automaticPlanGenerated": true,
+          "actualFNumber": null
+        }
+      ],
+      "case": "apex-overflow"
+    },
+    {
+      "readers": [
+        {
+          "reader": "ImageIO+bundled-ExifTool",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 5.65685424949238
+        },
+        {
+          "reader": "ImageIO-fallback",
+          "automaticPlanGenerated": true,
+          "actualFNumber": 5.656854249492381
+        }
+      ],
+      "case": "zero-f-number-with-apex"
+    }
+  ],
+  "ExifToolFNumberNotConvertedTwice": true,
+  "validFNumberHasPriority": true,
+  "scope": "Generated TIFF EXIF containers through actual metadata readers and native matching; not RAW decoder/optical accuracy or host GUI proof",
+  "ImageIOAPEXConvertedOnce": true,
+  "maximumApertureAndLensNameNeverUsedAsCaptureAperture": true,
+  "unknownApertureStaysMissingAndVignettingOff": true,
+  "zeroAPEXMeansF1": true,
+  "recordedApertureValueRecoveredAutomatically": true,
+  "executedOn": "2026-10-15T09:39:55.057306+00:00",
+  "previousCommit": "55bf94e",
+  "previousImplementationFailedRegression": {
+    "case": "apex-only",
+    "reader": "bundled-ExifTool",
+    "expectedFNumber": 5.65685424949238,
+    "actual": "missing",
+    "exitCode": 3
+  },
+  "sourceSHA256": {
+    "Sources/Native/LensNativeProfileEngine.m": "e7f915e601a7a2e79df9b1691c5ae7fc1eb3c8baa0214254c7aa9bcb46a6820e",
+    "Tests/verify-recorded-aperture.m": "74d3e7722d8d5aa3f9ccf10776de67f65007c65a8c0ce331991d235abfe7f203"
+  },
+  "developmentModuleSHA256": "14b81cf715e95a2bf28fc21398860604a6156ee692dfda2c5643b2bac9245c37",
+  "releasedDMGIncludesChanges": false,
+  "testedInsideHostGUI": false
+}

@@ -33,11 +33,11 @@
   "manualSelectionSurvivesMissingFocal": true,
   "resetRestoresOriginalCaptureWithoutDroppingProfileChoice": true,
   "partialAndNonFiniteInputsRejected": true,
-  "executedOn": "2026-10-15T09:32:50.558534+00:00",
+  "executedOn": "2026-10-15T09:39:55.057306+00:00",
   "sourceSHA256": {
     "Sources/Native/LensCaptureParameters.h": "3ff4dc44d3a998ad55c2007cd7fdea7991e6484c638dcd988cddd2ad79fb4602",
     "Tests/verify-capture-parameters.m": "84aad587b0df65c6a56a1e62c326cb8fc82fe6ea4f1de1c137ac0d697cd6d4c6",
-    "Sources/Native/LensNativeProfileEngine.m": "209b46dfb1d9b3f9412d59cd491a4e334f4d2708c19ca735b2f8e8f53e572153"
+    "Sources/Native/LensNativeProfileEngine.m": "e7f915e601a7a2e79df9b1691c5ae7fc1eb3c8baa0214254c7aa9bcb46a6820e"
   },
   "releasedDMGIncludesChanges": false
 }
