@@ -4,6 +4,8 @@
 #import "LensNativeProfileEngine.h"
 #import "LensNativeState.h"
 #import "LensCorrectionSettings.h"
+#import "LensConstrainedCrop.h"
+Class LensRegisterVignettingFilter(void);
 typedef struct {double v[8];} BoundaryTransform;
 @interface NSObject(BoundaryEffect)
 - (CIImage*)applyFor:(CIImage*)input scale:(CGPoint)scale extent:(CGRect)extent bounds:(CGRect)bounds layerOriginalSizeInBacking:(CGSize)size layerCombinedTransformInBacking:(BoundaryTransform)transform;
@@ -20,7 +22,7 @@ int main(){@autoreleasepool{
  NSMutableData*source=[NSMutableData dataWithLength:w*h*16],*output=[NSMutableData dataWithLength:w*h*16];float*s=source.mutableBytes,*o=output.mutableBytes;
  for(NSUInteger y=0;y<h;y++)for(NSUInteger x=0;x<w;x++){NSUInteger i=(y*w+x)*4;s[i]=.1+.2*(x+.5)/w;s[i+1]=.1+.2*(y+.5)/h;s[i+2]=.1+.1*(x+.5)/w+.1*(y+.5)/h;s[i+3]=1;}
  CIImage*input=[CIImage imageWithBitmapData:source bytesPerRow:w*16 size:CGSizeMake(w,h) format:kCIFormatRGBAf colorSpace:nil];CIContext*context=[CIContext contextWithOptions:@{kCIContextWorkingColorSpace:NSNull.null,kCIContextOutputColorSpace:NSNull.null,kCIContextWorkingFormat:@(kCIFormatRGBAf)}];
- NSMutableArray*checks=[NSMutableArray new];
+ NSMutableArray*checks=[NSMutableArray new],*constrainedChecks=[NSMutableArray new];NSUInteger croppedChecks=0,scaledCropChecks=0;double croppedWorst=0;
  for(NSString*layout in @[@"dense",@"grid",@"residual"])for(NSArray*shift in @[@[@-12,@0],@[@12,@0],@[@0,@-12],@[@0,@12]]){@autoreleasepool{
   double dx=[shift[0]doubleValue],dy=[shift[1]doubleValue];BOOL noisy=[layout isEqual:@"residual"];
   NSMutableDictionary*maps=[NSMutableDictionary new];
@@ -53,7 +55,36 @@ int main(){@autoreleasepool{
    if(inside){valid++;double before=maxInterior;maxInterior=fmax(maxInterior,fabs(o[i]-(.1+.2*(sx[0]+.5)/w)));maxInterior=fmax(maxInterior,fabs(o[i+1]-(.1+.2*(sy[1]+.5)/h)));maxInterior=fmax(maxInterior,fabs(o[i+2]-(.1+.1*(sx[2]+.5)/w+.1*(sy[2]+.5)/h)));maxInterior=fmax(maxInterior,fabs(o[i+3]-1));if(maxInterior>before){bx=x;by=y;}}
   }
   if(opaqueInvalid||maxInterior>.001){fprintf(stderr,"Out-of-source samples: %lu, fabricated opaque/color samples: %lu, interior error: %.9g at %lu,%lu rgba %.9g %.9g %.9g %.9g (shift %.0f %.0f, strength %.0f, mode %d, encoded %d, layout %s)\n",invalid,opaqueInvalid,maxInterior,bx,by,o[(by*w+bx)*4],o[(by*w+bx)*4+1],o[(by*w+bx)*4+2],o[(by*w+bx)*4+3],dx,dy,strength.doubleValue,mode,encoded,layout.UTF8String);return 7;}
+  if(!encoded&&strength.intValue==100){
+   const NSUInteger tx=31,ty=23,tw=197,th=113,top=h-ty-th;NSMutableData*part=[NSMutableData dataWithLength:tw*th*16];float*q=part.mutableBytes;
+   [context render:image toBitmap:q rowBytes:tw*16 bounds:CGRectMake(tx,ty,tw,th) format:kCIFormatRGBAf colorSpace:nil];
+   for(NSUInteger y=0;y<th;y++)for(NSUInteger x=0;x<tw;x++)for(int c=0;c<4;c++)croppedWorst=fmax(croppedWorst,fabs(q[(y*tw+x)*4+c]-o[((top+y)*w+tx+x)*4+c]));
+   if(croppedWorst>.0001)return 15;croppedChecks++;
+  }
   [checks addObject:@{@"layout":layout,@"encoded":@(encoded),@"mode":@(mode),@"shift":shift,@"strength":strength,@"checkedOutsideSamples":@(invalid),@"checkedInteriorSamples":@(valid),@"maxInteriorError":@(maxInterior)}];
+  NSMutableDictionary*constrainedSettings=[settings mutableCopy];constrainedSettings[@"constrainCropEnabled"]=@YES;
+  id constrained=LensEffectsForCorrectionPlan(plan,envelope,constrainedSettings,nil,nil);if(!constrained)return 16;
+  constrained=LensEffectsFromJSON(LensEffectsJSON(constrained,nil));NSDictionary*saved=LensSavedCorrectionProfile(constrained);
+  if(![saved[@"correctionSettings"]isEqual:constrainedSettings]||![saved[@"profileFormatVersion"]isEqual:@5])return 17;
+  double cropScale=[saved[@"constrainedCrop"][@"scale"]doubleValue];if(mode?!(cropScale>0&&cropScale<1):cropScale!=1)return 18;
+  CIImage*filled=[constrained applyFor:input scale:CGPointMake(1,1) extent:input.extent bounds:input.extent layerOriginalSizeInBacking:input.extent.size layerCombinedTransformInBacking:*identity];
+  if(!CGRectEqualToRect(filled.extent,input.extent))return 19;
+  [context render:filled toBitmap:o rowBytes:w*16 bounds:input.extent format:kCIFormatRGBAf colorSpace:nil];
+  double alphaError=0,rgbError=0;
+  for(NSUInteger y=0;y<h;y++)for(NSUInteger x=0;x<w;x++){
+   NSUInteger i=(y*w+x)*4;alphaError=fmax(alphaError,fabs(o[i+3]-1));
+   if(!noisy){double qx=((x+.5)-w*.5)*cropScale+w*.5, qy=((y+.5)-h*.5)*cropScale+h*.5;
+    double expected[3]={.1+.2*(qx+ds*dx-7*ts)/w,.1+.2*(qy-ds*dy)/h,.1+.1*(qx+ds*dx)/w+.1*(qy-ds*dy-7*ts)/h};
+    for(int c=0;c<3;c++)rgbError=fmax(rgbError,fabs(o[i+c]-expected[c]));
+   }
+  }
+  if(alphaError>1e-5||rgbError>.001){fprintf(stderr,"Constrained crop failed: alpha %.9g RGB %.9g scale %.9g layout %s mode %d strength %.0f\n",alphaError,rgbError,cropScale,layout.UTF8String,mode,strength.doubleValue);return 20;}
+  [constrainedChecks addObject:@{@"layout":layout,@"encoded":@(encoded),@"mode":@(mode),@"strength":strength,@"scale":@(cropScale),@"maxAlphaError":@(alphaError),@"maxAnalyticRGBError":@(rgbError),@"analyticRGBChecked":@(!noisy)}];
+  if(!encoded&&strength.intValue==100){
+   CIImage*scaled=[input imageByApplyingTransform:CGAffineTransformMake(.25,0,0,.25,17,29)];CIFilter*f=[[LensRegisterVignettingFilter()alloc]init];[f setValue:saved forKey:@"lensProfile"];[f setValue:scaled forKey:kCIInputImageKey];CIImage*preview=[f valueForKey:kCIOutputImageKey];
+   if(!CGRectEqualToRect(preview.extent,scaled.extent))return 23;
+   NSMutableData*small=[NSMutableData dataWithLength:(w/4)*(h/4)];[context render:preview toBitmap:small.mutableBytes rowBytes:w/4 bounds:preview.extent format:kCIFormatA8 colorSpace:nil];const unsigned char*a=small.bytes;for(NSUInteger i=0;i<small.length;i++)if(a[i]!=255)return 24;scaledCropChecks++;
+  }
   }}
  }}
  // The same calibration padding is used for gain. Check every edge/corner,
@@ -73,5 +104,11 @@ int main(){@autoreleasepool{
   if(worst>.001){fprintf(stderr,"Gain full-canvas error %.9g, encoded %d, strength %.0f\n",worst,encoded,strength.doubleValue);return 14;}
   [gainChecks addObject:@{@"encoded":@(encoded),@"strength":strength,@"allPixelsIncludingCorners":@(w*h),@"maxError":@(worst)}];
  }}
- NSDictionary*result=@{@"scope":@"Synthetic translation and asymmetric gain full-canvas boundary regression through native effect wrapper; not measured optical calibration or full GUI",@"checks":checks,@"gainChecks":gainChecks,@"outOfSourceSamplesTransparent":@YES};[[NSJSONSerialization dataWithJSONObject:result options:NSJSONWritingPrettyPrinted error:nil]writeToFile:@"Build/Tests/geometry-boundaries-verification.json" atomically:YES];puts("Out-of-source geometry samples remain transparent; valid interior and gain edge/corner samples retain the expected mapping.");
+ // No geometry means no crop, even when the user retains the crop preference.
+ NSMutableDictionary*identityPlan=[base mutableCopy],*identityReport=[base[@"report"]mutableCopy];identityReport[@"distortionCorrectionNeeded"]=@NO;identityReport[@"tcaCorrectionNeeded"]=@NO;identityPlan[@"report"]=identityReport;
+ NSDictionary*identitySettings=@{@"distortionEnabled":@YES,@"distortionStrength":@200,@"tcaEnabled":@YES,@"tcaStrength":@200,@"constrainCropEnabled":@YES};
+ if([LensConstrainedCrop(identityPlan,identitySettings,nil)[@"scale"]doubleValue]!=1)return 21;
+ NSMutableDictionary*broken=[base mutableCopy];broken[@"normalizedGeometryMapsLZFSE"]=@{};
+ if(LensConstrainedCrop(broken,identitySettings,nil))return 22;
+ NSDictionary*result=@{@"scope":@"Synthetic translation and asymmetric gain full-canvas boundary regression through native effect wrapper; not measured optical calibration or full GUI",@"checks":checks,@"gainChecks":gainChecks,@"constrainedCropChecks":constrainedChecks,@"scaledTranslatedCropChecks":@(scaledCropChecks),@"identityCalibrationNotCropped":@YES,@"missingActiveMapRejected":@YES,@"croppedRegionComparisons":@(croppedChecks),@"maxCroppedRegionVersusFullImageError":@(croppedWorst),@"outOfSourceSamplesTransparent":@YES};[[NSJSONSerialization dataWithJSONObject:result options:NSJSONWritingPrettyPrinted error:nil]writeToFile:@"Build/Tests/geometry-boundaries-verification.json" atomically:YES];puts("Out-of-source geometry samples remain transparent; optional constrained crop fills the canvas while preserving settings, source and analytic mapping.");
 }}

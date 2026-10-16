@@ -1,0 +1,118 @@
+{
+  "dimensions": [
+    6000,
+    4000
+  ],
+  "rawSHA256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+  "automaticFNumber": 5,
+  "geometryEncoding": "pixel-displacement-residual-RG8-bottom-up-grid-v4",
+  "planGenerationSeconds": 12.11555004119873,
+  "peakResidentBytes": 2363998208,
+  "nearBoundaryExclusionPixels": 0.05,
+  "scope": "Full 6000x4000 production maps from pinned real A6000 RAW and effect coding roundtrip. Three uncropped GPU alpha checks use an independent persisted-field decoder; the constrained-crop check verifies every pixel is opaque. All use a constant opaque source, not a decoded photo, GUI save/reopen/export or optical accuracy validation.",
+  "checks": [
+    {
+      "constrainedCrop": false,
+      "constrainedCropScale": 1,
+      "clearInsidePixels": 23329362,
+      "clearOutsidePixels": 668696,
+      "nonopaqueInsidePixels": 0,
+      "renderSeconds": 16.789098024368286,
+      "excludedNearBoundaryPixels": 1942,
+      "CPUAlphaOrIndependentFieldCheckSeconds": 0.20419204235076904,
+      "distortionPercent": 100,
+      "tcaPercent": 100,
+      "nontransparentOutsidePixels": 0
+    },
+    {
+      "constrainedCrop": false,
+      "constrainedCropScale": 1,
+      "clearInsidePixels": 23725187,
+      "clearOutsidePixels": 273133,
+      "nonopaqueInsidePixels": 0,
+      "renderSeconds": 6.837309002876282,
+      "excludedNearBoundaryPixels": 1680,
+      "CPUAlphaOrIndependentFieldCheckSeconds": 0.5339570045471191,
+      "distortionPercent": 37,
+      "tcaPercent": 61,
+      "nontransparentOutsidePixels": 0
+    },
+    {
+      "constrainedCrop": false,
+      "constrainedCropScale": 1,
+      "clearInsidePixels": 23109559,
+      "clearOutsidePixels": 888556,
+      "nonopaqueInsidePixels": 0,
+      "renderSeconds": 6.7606940269470215,
+      "excludedNearBoundaryPixels": 1885,
+      "CPUAlphaOrIndependentFieldCheckSeconds": 0.5198479890823364,
+      "distortionPercent": 137,
+      "tcaPercent": 161,
+      "nontransparentOutsidePixels": 0
+    },
+    {
+      "constrainedCrop": true,
+      "constrainedCropScale": 0.9677280847167968,
+      "clearInsidePixels": 24000000,
+      "clearOutsidePixels": 0,
+      "nonopaqueInsidePixels": 0,
+      "renderSeconds": 8.10323190689087,
+      "excludedNearBoundaryPixels": 0,
+      "CPUAlphaOrIndependentFieldCheckSeconds": 0.003042936325073242,
+      "distortionPercent": 100,
+      "tcaPercent": 100,
+      "nontransparentOutsidePixels": 0
+    }
+  ],
+  "passed": true,
+  "originalUnchanged": true,
+  "automaticFocalMM": 39,
+  "explicitOptIn": "LENS_FULL_RENDER_TEST=1",
+  "defaultSuiteDoesNotExecuteThisProbe": true,
+  "priorUnadoptedExperiments": [
+    {
+      "kind": "eager padded maps",
+      "exitCode": 137,
+      "observedRSSApproxGiB": 5.6
+    },
+    {
+      "kind": "temporary pool drained before render, eager maps",
+      "exitCode": 137,
+      "observedRSSApproxGiB": 8
+    },
+    {
+      "kind": "fixed provider tiles and manual composite graph",
+      "exitCode": 134
+    },
+    {
+      "kind": "unbounded provider tile and manual composite graph",
+      "exitCode": 134
+    }
+  ],
+  "failureInterpretation": "High RSS preceded exit 137; the termination root cause was not conclusively established. Manual composite approaches failed during Metal rendering and were not adopted.",
+  "adoptedApproach": "CIImageProvider with immutable original fields, bounded calibration ROI, samplerTransform and public macOS 26 tiled intermediate; decode only algebraically active geometry planes. Constrained crop is composed into the geometry sampling coordinates with corresponding ROI.",
+  "notValidated": [
+    "decoded-photo RGB",
+    "GUI save/reopen/export",
+    "optical accuracy or Lightroom equivalence",
+    "8GB Mac",
+    "second computer",
+    "macOS 26 real device",
+    "all source ROI/transform combinations"
+  ],
+  "version": "0.2.3-preview-build7",
+  "priorBuild6PeakResidentBytes": 2452668416,
+  "priorBuild6BoundaryChecksPassed": true,
+  "resultSHA256": "a1206fae17015b6c7f862bb46d1bb18a23d28c6c93682ab98fbaff4cada0770b",
+  "logSHA256": "4ad91ec774bff91c77ebf25b53ff578f26310f37243b59881b431efc941c8da5",
+  "sourceSHA256": {
+    "Sources/Native/LensVignettingFilter.m": "5734dcff1f803544ec744b0655e49c05f3303c2dbf240950cfa44a8e0a70c421",
+    "Sources/Native/LensCalibrationImage.h": "6d845d5be00b4a2c9335e6cfebf7b48132a31517df2d7b958319a26add20246c",
+    "Sources/Native/LensCalibrationImage.m": "3e44847bad0db219cbc280df6e4c1089205361183907bc8bea277fafc0d53804",
+    "Sources/Native/LensConstrainedCrop.h": "bcbc6db3201967a6b0d24c813b0923e0afc57a6830aaeaaf98e4899e296f77ac",
+    "Sources/Native/LensConstrainedCrop.m": "d70bf88c99824306e1f9d8208f6dab34a30fa03bd02eb5851291c4c15de12f37",
+    "Sources/Native/LensCorrectionSettings.m": "292466f8f31ad8bfcaf58497275a8b37794b26edc2b7df1483d9fc4f4f5a4067",
+    "Sources/Native/LensPanel.m": "e423634c2fcb05d8631e7fcb69d53c070ebebeda63d8dde340d4b9f05f8637a9",
+    "Tests/verify-full-resolution-boundaries.m": "a4b941d0a44ef2c26e7a3d6754e20b9bb44730c69ffc2b44935bcc667ab64410"
+  }
+}

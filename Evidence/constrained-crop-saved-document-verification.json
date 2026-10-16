@@ -1,0 +1,152 @@
+{
+  "version": "0.2.3-preview-build7",
+  "scope": "Read-only saved test PXD audit; does not establish GUI export or optical accuracy",
+  "documentBasename": "A6000BoundaryPerfTest-build6-preserved.pxd",
+  "pxdBytes": 97612186,
+  "pxdSHA256": "618bdb4b8a176bc4611f4498c220cbad3af36a15a71b29880d4fdbe2f31ad704",
+  "embeddedRAW": [
+    {
+      "bytes": 25624576,
+      "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+    }
+  ],
+  "settings": {
+    "distortionEnabled": 1,
+    "vignettingEnabled": 0,
+    "tcaStrength": 100.0,
+    "distortionStrength": 100.0,
+    "vignettingStrength": 50.0,
+    "tcaEnabled": 1,
+    "constrainCropEnabled": 1
+  },
+  "format": {
+    "profileFormatVersion": 5,
+    "workingTransfer": "lensdock-compact-v5",
+    "compactWorkingTransfer": "encoded_sRGB"
+  },
+  "automaticCapture": {
+    "focal_mm": 39.0,
+    "aperture": 5.0,
+    "focus_distance_m": 1000.0,
+    "distance_source": "infinity_fallback"
+  },
+  "constrainedCrop": {
+    "version": 1,
+    "safetyMarginPixels": 2,
+    "maximumDisplacementPixels": [
+      93.85404309082031,
+      62.54383056640625
+    ],
+    "method": "conservative-all-field-extrema-centred-uniform-scale-v1",
+    "scale": 0.9677280847167968
+  },
+  "savedRAWParametersExactlyEqualPriorUncroppedDocument": true,
+  "bindingFieldsEqualExceptSerializationContext": true,
+  "bindingOnlySerializationContext": [
+    1,
+    {
+      "cs": [
+        1,
+        {
+          "map": {}
+        }
+      ]
+    }
+  ],
+  "temporaryWorkingMapsAbsent": true,
+  "manualUserReport": {
+    "emptyBorderRemoved": true,
+    "framingNormal": true,
+    "saved": true
+  },
+  "savedPreview": {
+    "bitsPerComponent": 8,
+    "colorSpace": "kCGColorSpaceDisplayP3",
+    "firstNonopaqueRows": [
+      {
+        "count": 4096,
+        "row": 0
+      }
+    ],
+    "heicSHA256": "9fb68113ffb2a3f1b5fb53b8e232f506982b3345f1e82c690c1f8e9af0c2526b",
+    "height": 2731,
+    "minimumAlpha8Bit": 191,
+    "nonopaquePixels": 4096,
+    "nonopaqueRowsCount": 1,
+    "outer32PixelBandNonopaquePixels": 4096,
+    "RGBA8SHA256": "14fca83caa052317c5b9e2f3f21e6e815365a4a34f4f59b7c1cdb92eaec4c451",
+    "scope": "ImageIO audit of the actual host-generated saved PXD preview; 8-bit HEIC preview, not a full-resolution 16-bit PNG export or optical validation",
+    "transparentPixels": 0,
+    "width": 4096
+  },
+  "beforeCropPreview": {
+    "bitsPerComponent": 8,
+    "colorSpace": "kCGColorSpaceDisplayP3",
+    "firstNonopaqueRows": [
+      {
+        "count": 4096,
+        "row": 0
+      },
+      {
+        "count": 3866,
+        "row": 1
+      },
+      {
+        "count": 3354,
+        "row": 2
+      },
+      {
+        "count": 3175,
+        "row": 3
+      },
+      {
+        "count": 2852,
+        "row": 4
+      },
+      {
+        "count": 2728,
+        "row": 5
+      },
+      {
+        "count": 2562,
+        "row": 6
+      },
+      {
+        "count": 2418,
+        "row": 7
+      }
+    ],
+    "heicSHA256": "bdec1f2abd6dd6381f9f6a4e459eefe34383e3513e4f46a4efc49eeac1d50d99",
+    "height": 2731,
+    "minimumAlpha8Bit": 0,
+    "nonopaquePixels": 322806,
+    "nonopaqueRowsCount": 2731,
+    "outer32PixelBandNonopaquePixels": 278506,
+    "RGBA8SHA256": "0b32974595afd00457d18e00daf1e6a97acf57dbb675fea60356c6c0278487f4",
+    "scope": "ImageIO audit of the actual host-generated saved PXD preview; 8-bit HEIC preview, not a full-resolution 16-bit PNG export or optical validation",
+    "transparentPixels": 303303,
+    "width": 4096
+  },
+  "older022PreviewControl": {
+    "bitsPerComponent": 8,
+    "colorSpace": "kCGColorSpaceDisplayP3",
+    "firstNonopaqueRows": [],
+    "heicSHA256": "d2ea044c0326fd6bd4a395475cb2fbf74c194d579c6c877e0dfe5579aece37da",
+    "height": 2731,
+    "minimumAlpha8Bit": 255,
+    "nonopaquePixels": 0,
+    "nonopaqueRowsCount": 0,
+    "outer32PixelBandNonopaquePixels": 0,
+    "RGBA8SHA256": "637e565f008fdcd25158417c144d0f82eb781e669d12ea3401938bdba485d3c0",
+    "scope": "ImageIO audit of the actual host-generated saved PXD preview; 8-bit HEIC preview, not a full-resolution 16-bit PNG export or optical validation",
+    "transparentPixels": 0,
+    "width": 4096
+  },
+  "savedPreviewVisuallyInspectedAt1600Pixels": true,
+  "previewLimitation": "New preview has no fully transparent pixels, but 4096 partially transparent pixels remain in its first bitmap row (minimum alpha 191/255). Root cause and full-resolution 16-bit export remain unverified. Old 0.2.2 preview control is fully opaque.",
+  "newIndependentGUIReopenVerified": false,
+  "newFullResolution16BitPNGExportVerified": false,
+  "savedDocumentAuditToolSHA256": "4e0f17e7f3d72bf481dc6290dda593e70e5cb11d4c2560cc85d3c90edf27bf0e",
+  "savedPreviewAuditToolSHA256": "15c487b76974605bd2a7ea84625c3442273bc58fde11826239ffc61fbb100043",
+  "photosOrPXDRedistributed": false
+}

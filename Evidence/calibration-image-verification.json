@@ -1,0 +1,57 @@
+{
+  "dimensionsIncludingPadding": [
+    2052,
+    1032
+  ],
+  "scope": "Signed asymmetric numeric provider, bitmap reference, sampler coordinate negative controls, system tiled intermediate and A8 output",
+  "a8OutputVerified": true,
+  "checks": [
+    {
+      "mode": 0,
+      "negativeControl": false,
+      "maxError": 0
+    },
+    {
+      "mode": 1,
+      "negativeControl": true,
+      "maxError": 0.699320375919342
+    },
+    {
+      "mode": 2,
+      "negativeControl": false,
+      "maxError": 0
+    },
+    {
+      "mode": 3,
+      "negativeControl": false,
+      "maxError": 0
+    },
+    {
+      "mode": 4,
+      "negativeControl": true,
+      "maxError": 0.699320375919342
+    },
+    {
+      "mode": 5,
+      "negativeControl": false,
+      "maxError": 0
+    },
+    {
+      "mode": 6,
+      "negativeControl": false,
+      "maxError": 0
+    },
+    {
+      "mode": 7,
+      "negativeControl": false,
+      "maxError": 0
+    }
+  ],
+  "version": "0.2.3-preview-build7",
+  "resultSHA256": "dc3add3d83d06087dd58aee26a759a397d9a12b90090924cc17660a55d394ce6",
+  "sourceSHA256": {
+    "Sources/Native/LensCalibrationImage.h": "6d845d5be00b4a2c9335e6cfebf7b48132a31517df2d7b958319a26add20246c",
+    "Sources/Native/LensCalibrationImage.m": "3e44847bad0db219cbc280df6e4c1089205361183907bc8bea277fafc0d53804",
+    "Tests/verify-calibration-image.m": "14f9e63d42fa381fa6e39da704a35d9de863f08e13cf59e476272ff3cd099972"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "version": "0.2.3-development-candidate",
+  "version": "0.2.3-preview-build7-development-candidate",
   "scope": "Synthetic translation and asymmetric gain full-canvas boundary regression through native effect wrapper; not measured optical calibration or full GUI",
   "syntheticGeometryCombinations": 288,
   "layouts": [
@@ -43,11 +43,14 @@
     "negativeLogSHA256": "b32151ae48ff3dd3c60b203c37e7d25f4e7e0109762b091511b9d951ea0995f8"
   },
   "fullSuite": {
-    "groups": 22,
+    "selectedGroups": 24,
+    "regularGroupsPassed": 23,
+    "fullResolutionGroupSkippedByDefault": true,
+    "fullResolutionGroupExplicitRunPassed": true,
     "existingNativeRenderCombinations": 192,
     "passed": true,
-    "boundaryGainTestExpandedAndRerunAfterSuite": true,
-    "logSHA256": "a6ee29e857f1785c6636a68f6fc08238e7554302afc435659d2c4b1963200f27"
+    "croppedRegionAndConstrainedChecksIncludedInSuite": true,
+    "logSHA256": "60f43f342ade15b232521124df6e12706e168178ea24ee7ce38f097a7c370763"
   },
   "build": {
     "version": "0.2.3-preview",
@@ -55,22 +58,65 @@
     "notarized": false,
     "redistributesVendorApp": false,
     "sha256": {
-      "Contents/MacOS/LensDock": "de80d3975098d9660d0f577b88f56a4090a187f23ddc1a4f44dd94dfcb938b8f",
-      "Contents/Resources/Payload/LensPanel.dylib": "2aee11e038eeb53a4af586b708b9f671ecff7a1b70a71ee9c91359b5307ab940",
+      "Contents/MacOS/LensDock": "6ee5db642f59cca94cac2c851ec1744cab4cadbcaac8b07dfb9fc495ec1c434b",
+      "Contents/Resources/Payload/LensPanel.dylib": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
       "Contents/Resources/Payload/LensLiveSource.dylib": "1522e881d6ba53b317751362c45c8086d5acf1dc9ea504b3887f316128769e30"
     }
   },
   "sourceSHA256": {
-    "Sources/Native/LensVignettingFilter.m": "5da8a9cbb5fa9a1a6a14a147b68b0a88aece58032b90f48665021158f8af7587",
-    "Tests/verify-geometry-boundaries.m": "5dae16f86e22d7946386ca095f6331ace310ae496a03f894f2b5cb06edf6c6c4",
-    "Scripts/test.py": "6759b893cdd9964af047ea7bf3319f64d619edc5002c49f51adaae6bef276f23"
+    "Sources/Native/LensVignettingFilter.m": "5734dcff1f803544ec744b0655e49c05f3303c2dbf240950cfa44a8e0a70c421",
+    "Sources/Native/LensCalibrationImage.h": "6d845d5be00b4a2c9335e6cfebf7b48132a31517df2d7b958319a26add20246c",
+    "Sources/Native/LensCalibrationImage.m": "3e44847bad0db219cbc280df6e4c1089205361183907bc8bea277fafc0d53804",
+    "Sources/Native/LensConstrainedCrop.h": "bcbc6db3201967a6b0d24c813b0923e0afc57a6830aaeaaf98e4899e296f77ac",
+    "Sources/Native/LensConstrainedCrop.m": "d70bf88c99824306e1f9d8208f6dab34a30fa03bd02eb5851291c4c15de12f37",
+    "Sources/Native/LensCorrectionSettings.m": "292466f8f31ad8bfcaf58497275a8b37794b26edc2b7df1483d9fc4f4f5a4067",
+    "Sources/Native/LensPanel.m": "e423634c2fcb05d8631e7fcb69d53c070ebebeda63d8dde340d4b9f05f8637a9",
+    "Tests/verify-geometry-boundaries.m": "09d03932eb8827a1e68b9af3437872e8c4907bb367cdf520c10080ff2e334317",
+    "Tests/verify-calibration-image.m": "14f9e63d42fa381fa6e39da704a35d9de863f08e13cf59e476272ff3cd099972",
+    "Tests/verify-full-resolution-boundaries.m": "a4b941d0a44ef2c26e7a3d6754e20b9bb44730c69ffc2b44935bcc667ab64410",
+    "Scripts/build.py": "47c18209b2a0e9066f8032f7cb20a8c02177d2eaf8fbe479a75e0297aaf8251e",
+    "Scripts/test.py": "837432f36e544b507242f16bbec3bb0cb22153ef7ae6593a19d6687279cfb9d7"
   },
-  "detailedTestResultSHA256": "1b026316589bfa424b37faa285e58a848ad9faccd71a4ee886eda9432d1a7382",
-  "researchHostModuleUnchangedSHA256": "d52d0fc1760fdf00db22299425237fc55f029e0abf1b1b2683da6f0a33eb24ce",
-  "researchHostUpdated": false,
+  "detailedTestResultSHA256": "3a4cfa1acaaf59bc78b981b088901c2c45030c84721843211a37949f37e90c5f",
+  "researchHostUpdated": true,
   "guiSaveReopenOrExportVerified": false,
-  "automaticConstrainCropImplemented": false,
-  "newDMGPackaged": false,
-  "screenCaptureError": "ScreenCaptureKit -3812 / -3811 despite resetting CUA; no forced host termination or state mutation",
-  "opticalCalibrationOrLightroomEquivalenceVerified": false
+  "automaticConstrainCropImplemented": true,
+  "screenCaptureError": "ScreenCaptureKit -3811 / -3812 or timeout. GUI view reported by user; saved PXD metadata, RAW hashes and saved preview inspected independently. No automated new-build GUI reopen/export observation.",
+  "opticalCalibrationOrLightroomEquivalenceVerified": false,
+  "croppedRegionComparisons": 48,
+  "maxCroppedRegionVersusFullImageError": 0,
+  "researchHostUpdate": {
+    "hostWasNormallyExited": true,
+    "userConfirmedNormalExit": true,
+    "noRemainingHostProcessesBeforeUpdate": true,
+    "oldModuleSHA256": "e724f6e6ab8a85c8663769ee14860596cacf69b2259dc40b8685f6d0669e2948",
+    "payloadModuleSHA256": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
+    "signedHostModuleSHA256": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
+    "sandboxEntitlementsPreserved": true,
+    "strictSignaturePassed": true,
+    "sourceVersion": "0.2.3-preview-build7",
+    "hostProcessObservedAfterUpdate": true
+  },
+  "manualGUIReport": {
+    "source": "user report in current chat",
+    "openPhotoDisplayed": true,
+    "constrainedCropRemovedEmptyBorder": true,
+    "framingNormal": true,
+    "saveReported": true,
+    "independentReopenConfirmed": false,
+    "fullResolutionPNGExportConfirmed": false
+  },
+  "constrainedCrop": {
+    "combinations": 288,
+    "maxAlphaError": 0,
+    "analyticRGBCombinations": 192,
+    "maxAnalyticRGBChannelError": 2.104103565214732e-06,
+    "scaledTranslatedChecks": 48,
+    "identityCalibrationNotCropped": true,
+    "missingActiveMapRejected": true,
+    "settingsAndFormat5RoundtripPassed": true
+  },
+  "actualSavedDocumentVerified": true,
+  "savedPreviewReadAndVisuallyInspected": true,
+  "packageVerificationRecordedSeparately": "Distribution/0.2.3-preview/release-manifest.json and background-manifest.json"
 }

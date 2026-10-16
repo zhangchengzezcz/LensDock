@@ -14,6 +14,7 @@
 #import "LensCalibrationEvidence.h"
 #import "LensProfilePicker.h"
 #import "LensCaptureParameters.h"
+#import "LensConstrainedCrop.h"
 Class LensRegisterVignettingFilter(void);
 static id getter(id obj,NSString*name){SEL s=NSSelectorFromString(name);Method m=class_getInstanceMethod([obj class],s);if(!m||method_getNumberOfArguments(m)!=2)return nil;char*t=method_copyReturnType(m);BOOL object=t&&t[0]=='@';free(t);return object?((id(*)(id,SEL))objc_msgSend)(obj,s):nil;}
 static id rawLayer(id script){Ivar i=class_getInstanceVariable([script class],"layer");if(!i)return nil;void*p=NULL;memcpy(&p,(char*)(__bridge void*)script+ivar_getOffset(i),8);return (__bridge id)p;}
@@ -47,7 +48,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 @property NSArray<NSSlider*>*sliders;
 @property NSArray<NSTextField*>*percents,*availability,*hints,*unitLabels,*relativeFields;
 @property NSTextField*focalField,*apertureField,*distanceField,*detailsNote;
-@property NSButton*applyButton,*autoButton,*detailsButton;
+@property NSButton*applyButton,*autoButton,*detailsButton,*cropButton;
 @property NSButton*rematchButton;
 @property NSButton*profileButton;
 @property LensProfilePicker*profilePicker;
@@ -107,7 +108,8 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   NSTextField*v=[[NSTextField alloc]initWithFrame:NSMakeRect(529,7,82,24)];v.stringValue=@"0";v.alignment=NSTextAlignmentRight;v.font=[NSFont monospacedDigitSystemFontOfSize:12 weight:NSFontWeightRegular];v.target=self;v.action=@selector(changed:);v.enabled=NO;v.accessibilityLabel=[titles[i]stringByAppendingString:i==0?@"短边位移百分比":i==1?@"通道位移像素":@"最大边角补偿 EV"];s.toolTip=v.toolTip=@"0% 为关闭补偿，100% 为完整镜头标定，200% 为两倍补偿。可在推荐位置上下调整。";NSNumberFormatter*f=[NSNumberFormatter new];f.minimum=@0;f.maximum=@200;f.maximumFractionDigits=3;v.formatter=f;[row addSubview:v];[values addObject:v];NSTextField*unit=label(i==0?@"%":i==1?@"px":@"EV",NSMakeRect(617,9,30,20),11,NSFontWeightRegular);[row addSubview:unit];[units addObject:unit];
  }
  self.checks=checks;self.sliders=sliders;self.percents=values;self.availability=availability;self.recommendButtons=recommendButtons;self.recommendMarkers=markers;self.hints=hints;self.unitLabels=units;
- NSView*risks=card(NSMakeRect(24,131,652,87));[root addSubview:risks];[risks addSubview:label(@"边角与高光",NSMakeRect(18,55,600,20),12,NSFontWeightMedium)];self.riskLabel=label(@"匹配后检测边角内容和补偿风险。三项校正可分别选择。",NSMakeRect(18,11,613,42),11,NSFontWeightRegular);self.riskLabel.textColor=NSColor.secondaryLabelColor;[risks addSubview:self.riskLabel];
+ NSView*risks=card(NSMakeRect(24,131,652,87));[root addSubview:risks];[risks addSubview:label(@"边角与高光",NSMakeRect(18,55,200,20),12,NSFontWeightMedium)];self.riskLabel=label(@"匹配后检测边角内容和补偿风险。三项校正可分别选择。",NSMakeRect(18,11,613,42),11,NSFontWeightRegular);self.riskLabel.textColor=NSColor.secondaryLabelColor;[risks addSubview:self.riskLabel];
+ self.cropButton=[NSButton checkboxWithTitle:@"约束边缘 · 自动裁切" target:self action:@selector(changed:)];self.cropButton.frame=NSMakeRect(400,52,232,25);self.cropButton.font=[NSFont systemFontOfSize:12 weight:NSFontWeightRegular];self.cropButton.enabled=NO;self.cropButton.toolTip=@"依据当前标定与强度，居中裁去透明边缘并等比放大至原画布大小，视角会缩小。只改变可编辑效果，保留完整 RAW；关闭可恢复完整视角。";[risks addSubview:self.cropButton];
  self.detailsButton=[NSButton buttonWithTitle:@"详细设置…" target:self action:@selector(showDetails:)];self.detailsButton.frame=NSMakeRect(24,87,110,30);[root addSubview:self.detailsButton];self.rematchButton=[NSButton buttonWithTitle:@"重新匹配" target:self action:@selector(match:)];self.rematchButton.frame=NSMakeRect(140,87,110,30);self.rematchButton.toolTip=@"重新读取当前 RAW，载入最新建议。处理完成后可再次匹配。";[root addSubview:self.rematchButton];
  self.autoButton=[NSButton buttonWithTitle:@"采用自动建议" target:self action:@selector(automatic:)];self.autoButton.frame=NSMakeRect(367,87,140,30);self.autoButton.enabled=NO;[root addSubview:self.autoButton];
  self.applyButton=[NSButton buttonWithTitle:@"应用到 RAW" target:self action:@selector(apply:)];self.applyButton.frame=NSMakeRect(520,87,156,30);self.applyButton.bezelStyle=NSBezelStyleRounded;self.applyButton.bezelColor=NSColor.controlAccentColor;self.applyButton.enabled=NO;[root addSubview:self.applyButton];
@@ -128,9 +130,10 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 - (void)redoCorrection:(id)sender{if(!self.busy){[[self correctionUndoManager:self.document]redo];[self syncControls];}}
 - (NSDictionary*)settings{
  NSArray*keys=@[@"distortion",@"tca",@"vignetting"];NSMutableDictionary*s=[NSMutableDictionary new];
- for(int i=0;i<3;i++){s[[keys[i]stringByAppendingString:@"Enabled"]]=@(self.checks[i].state==NSControlStateValueOn);s[[keys[i]stringByAppendingString:@"Strength"]]=@(round(LensCorrectionStrengthFromAmount(self.plan[@"report"],i,self.sliders[i].doubleValue)*1e9)/1e9);}return s;
+ for(int i=0;i<3;i++){s[[keys[i]stringByAppendingString:@"Enabled"]]=@(self.checks[i].state==NSControlStateValueOn);s[[keys[i]stringByAppendingString:@"Strength"]]=@(round(LensCorrectionStrengthFromAmount(self.plan[@"report"],i,self.sliders[i].doubleValue)*1e9)/1e9);}s[@"constrainCropEnabled"]=@(self.cropButton.state==NSControlStateValueOn);return s;
 }
 - (void)loadSettings:(NSDictionary*)settings{
+ self.cropButton.state=[settings[@"constrainCropEnabled"]boolValue]?NSControlStateValueOn:NSControlStateValueOff;
  NSArray*keys=@[@"distortion",@"tca",@"vignetting"],*available=[self availabilityValues],*recommended=[self recommendations];
  [self syncControls];
  for(int i=0;i<3;i++){BOOL ok=[available[i]boolValue];self.checks[i].state=ok&&[settings[[keys[i]stringByAppendingString:@"Enabled"]]boolValue]?NSControlStateValueOn:NSControlStateValueOff;NSNumber*n=settings[[keys[i]stringByAppendingString:@"Strength"]];self.sliders[i].maxValue=MAX(1e-8,LensDisplayCorrectionAmount(self.plan[@"report"],i,200));self.sliders[i].doubleValue=ok?LensDisplayCorrectionAmount(self.plan[@"report"],i,n?n.doubleValue:[recommended[i]doubleValue]):0;self.percents[i].doubleValue=self.sliders[i].doubleValue;}[self syncControls];
@@ -182,6 +185,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   self.recommendMarkers[i].hidden=!ok;self.recommendMarkers[i].frame=NSMakeRect(49+448*suggested/self.sliders[i].maxValue,3,2,7);
  }
  BOOL active=NO;for(int i=0;i<3;i++)if(self.checks[i].state==NSControlStateValueOn&&self.sliders[i].doubleValue>0&&[available[i]boolValue])active=YES;
+ self.cropButton.enabled=!self.busy&&self.plan&&((self.checks[0].state==NSControlStateValueOn&&self.sliders[0].doubleValue>0)||(self.checks[1].state==NSControlStateValueOn&&self.sliders[1].doubleValue>0));
  self.applyButton.enabled=self.plan!=nil&&!self.busy&&(active||self.hasOwnEffect);self.autoButton.enabled=self.plan!=nil&&!self.busy;self.detailsButton.enabled=(self.plan||self.matchContext)&&self.metadata!=nil&&!self.busy;NSUndoManager*m=[self correctionUndoManager:self.document];self.undoButton.enabled=m.canUndo&&!self.busy;self.redoButton.enabled=m.canRedo&&!self.busy;[self updateRisk];
 }
 - (void)useRecommendation:(NSButton*)sender{
@@ -209,7 +213,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 - (void)automatic:(id)sender{
  NSDictionary*r=self.plan[@"report"];NSArray*recommended=[self recommendations];
  BOOL automatic=[LensRecommendationPolicy(self.plan)[@"vignettingAutomatic"]boolValue];
- [self loadSettings:@{@"distortionEnabled":@([r[@"distortionProfileAvailable"]boolValue]),@"tcaEnabled":@([r[@"tcaProfileAvailable"]boolValue]),@"vignettingEnabled":@(automatic),@"distortionStrength":recommended[0],@"tcaStrength":recommended[1],@"vignettingStrength":recommended[2]}];
+ [self loadSettings:@{@"distortionEnabled":@([r[@"distortionProfileAvailable"]boolValue]),@"tcaEnabled":@([r[@"tcaProfileAvailable"]boolValue]),@"vignettingEnabled":@(automatic),@"distortionStrength":recommended[0],@"tcaStrength":recommended[1],@"vignettingStrength":recommended[2],@"constrainCropEnabled":@YES}];
  self.userTouched=NO;if(sender)self.status.stringValue=@"已载入最新建议量，尚未应用；滑块与建议标记已同步。";
 }
 - (void)clearMatchWithMessage:(NSString*)message requiresRAW:(BOOL)requiresRAW{
@@ -275,16 +279,29 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  id script=findLayer(doc,uuid,0),layer=rawLayer(script);NSDictionary*live=LensLiveRAWFingerprint(doc,script);if(!LensPlanAllowsLiveNativeCorrection(plan,live)||(plan[@"liveFingerprint"]&&![plan[@"liveFingerprint"]isEqual:live])||(plan[@"sourceBinding"]&&!LensCorrectionSourceMatches(plan[@"sourceBinding"],live))){self.status.stringValue=@"RAW 状态已变化，请重新匹配后应用。";return;}NSData*current=LensEffectsJSON(LensCopyLayerEffects(layer),nil);if(!sameJSON(before,current)){self.status.stringValue=@"生成映射期间图层效果发生变化，未覆盖现有编辑。";return;}
  NSError*error=nil;NSData*envelope=[NSData dataWithContentsOfURL:[NSBundle.mainBundle URLForResource:@"native-effects-template" withExtension:@"json"]];id effects=LensEffectsForCorrectionPlan(plan,envelope,settings,current,&error);if(!effects||!LensReplaceLayerCorrection(layer,effects,&error)){self.status.stringValue=error.localizedDescription?:@"配置不可用，未应用。";return;}
  LensRegisterLiveHistory(doc,script);
- [self registerRestore:before expected:LensEffectsJSON(effects,nil) document:doc uuid:uuid];[doc updateChangeCount:NSChangeDone];LensWriteHostState(doc,@"after-effect-commit");self.plan=plan;self.hasOwnEffect=YES;[self syncControls];self.status.stringValue=@"已应用，可用面板“撤销校正”恢复。三项参数与原始 RAW 均保留。";
+ [self registerRestore:before expected:LensEffectsJSON(effects,nil) document:doc uuid:uuid];[doc updateChangeCount:NSChangeDone];LensWriteHostState(doc,@"after-effect-commit");self.plan=plan;self.hasOwnEffect=YES;[self syncControls];double cropScale=[plan[@"constrainedCrop"][@"scale"]doubleValue];self.status.stringValue=[settings[@"constrainCropEnabled"]boolValue]&&cropScale>0&&cropScale<1?[NSString stringWithFormat:@"已应用，约束边缘等比放大 %.2f%%；完整 RAW 保留，可关闭裁切或撤销。",(1/cropScale-1)*100]:@"已应用，可用面板“撤销校正”恢复。三项参数与原始 RAW 均保留。";
 }
 - (void)apply:(id)sender{
  if(self.busy||!self.applyButton.enabled)return;[self.panel makeFirstResponder:nil];
  NSDocument*doc=[self activeDocument];NSString*uuid=getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID");if(!self.plan||doc!=self.document||![uuid isEqual:self.layerIdentifier]){self.status.stringValue=@"请先匹配当前 RAW 图层。";return;}
  NSDictionary*live=LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"));if(!LensPlanAllowsLiveNativeCorrection(self.plan,live)||![live[@"width"]isEqual:self.plan[@"report"][@"width"]]||![live[@"height"]isEqual:self.plan[@"report"][@"height"]]||![live[@"workingTransfer"]isEqual:self.plan[@"report"][@"workingTransfer"]]||(self.plan[@"liveFingerprint"]&&![self.plan[@"liveFingerprint"]isEqual:live])||(self.plan[@"sourceBinding"]&&!LensCorrectionSourceMatches(self.plan[@"sourceBinding"],live))){self.status.stringValue=@"RAW 参数、尺寸或颜色空间已变化，请重新匹配。";return;}NSDictionary*settings=[self settings];NSData*before=LensEffectsJSON(LensCopyLayerEffects(rawLayer(getter(doc,@"scriptingCurrentLayer"))),nil);if(!before){self.status.stringValue=@"无法保留当前图层效果，未应用。";return;}
  BOOL needsMaps=([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue])&&![self.plan[@"normalizedGeometryMapsLZFSE"]count];
- if(!needsMaps){[self commitPlan:self.plan settings:settings document:doc uuid:uuid before:before];return;}
- NSDictionary*metadata=self.plan[@"metadata"]?:self.metadata;if(!metadata){self.status.stringValue=@"缺少原始匹配参数，请重新匹配。";return;}NSDictionary*previous=self.plan;NSURL*root=[NSBundle.mainBundle.resourceURL URLByAppendingPathComponent:@"LensBridge"],*library=[NSBundle.mainBundle.privateFrameworksURL URLByAppendingPathComponent:@"LensBridge/liblensfun.0.3.4.dylib"];self.busy=YES;[self syncControls];self.status.stringValue=@"正在生成原生畸变与通道映射，原始 RAW 保持不变…";
- dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{@autoreleasepool{NSError*error=nil;NSDictionary*generated=LensNativeProfilePlanIncludingGeometry(metadata,[root URLByAppendingPathComponent:@"db"],library,[previous[@"report"][@"width"]unsignedIntegerValue],[previous[@"report"][@"height"]unsignedIntegerValue],&error);NSMutableDictionary*p=generated?[generated mutableCopy]:nil;if(p){NSMutableDictionary*r=[generated[@"report"]mutableCopy];r[@"workingTransfer"]=previous[@"report"][@"workingTransfer"];for(NSString*key in @[@"assessmentPreviewSource",@"assessmentPreviewTransfer"])if(previous[@"report"][key])r[key]=previous[@"report"][key];if([previous[@"parameterOverrides"]boolValue]&&LensPositiveCaptureNumber(metadata[@"FocusDistance"]))r[@"distance_source"]=@"manual";p[@"report"]=r;p[@"metadata"]=metadata;for(NSString*key in @[@"baseMetadata",@"parameterOverrides",@"cornerAssessment",@"assessmentPreviewData",@"liveFingerprint",@"sourceBinding"])if(previous[key])p[key]=previous[key];}dispatch_async(dispatch_get_main_queue(),^{self.busy=NO;[self syncControls];if(!p){self.status.stringValue=error.localizedDescription?:@"映射生成失败，未应用。";return;}if(doc!=[self activeDocument]){self.status.stringValue=@"当前文档已切换，未应用。";return;}[self commitPlan:p settings:settings document:doc uuid:uuid before:before];});}});
+ BOOL needsCrop=[settings[@"constrainCropEnabled"]boolValue]&&([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue]);
+ if(!needsMaps&&!needsCrop){[self commitPlan:self.plan settings:settings document:doc uuid:uuid before:before];return;}
+ NSDictionary*metadata=self.plan[@"metadata"]?:self.metadata;
+ if(needsMaps&&!metadata){self.status.stringValue=@"缺少原始匹配参数，请重新匹配。";return;}
+ NSDictionary*previous=self.plan;NSURL*root=[NSBundle.mainBundle.resourceURL URLByAppendingPathComponent:@"LensBridge"],*library=[NSBundle.mainBundle.privateFrameworksURL URLByAppendingPathComponent:@"LensBridge/liblensfun.0.3.4.dylib"];
+ self.busy=YES;[self syncControls];self.status.stringValue=needsMaps?@"正在生成畸变与通道映射，原始 RAW 保持不变…":@"正在按当前校正量核对安全裁切范围…";
+ dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{@autoreleasepool{
+  NSError*error=nil;NSMutableDictionary*p=nil;
+  if(needsMaps){
+   NSDictionary*generated=LensNativeProfilePlanIncludingGeometry(metadata,[root URLByAppendingPathComponent:@"db"],library,[previous[@"report"][@"width"]unsignedIntegerValue],[previous[@"report"][@"height"]unsignedIntegerValue],&error);
+   p=generated?[generated mutableCopy]:nil;
+   if(p){NSMutableDictionary*r=[generated[@"report"]mutableCopy];r[@"workingTransfer"]=previous[@"report"][@"workingTransfer"];for(NSString*key in @[@"assessmentPreviewSource",@"assessmentPreviewTransfer"])if(previous[@"report"][key])r[key]=previous[@"report"][key];if([previous[@"parameterOverrides"]boolValue]&&LensPositiveCaptureNumber(metadata[@"FocusDistance"]))r[@"distance_source"]=@"manual";p[@"report"]=r;p[@"metadata"]=metadata;for(NSString*key in @[@"baseMetadata",@"parameterOverrides",@"cornerAssessment",@"assessmentPreviewData",@"liveFingerprint",@"sourceBinding"])if(previous[key])p[key]=previous[key];}
+  }else p=[previous mutableCopy];
+  if(p&&needsCrop){NSDictionary*crop=LensConstrainedCrop(p,settings,&error);if(crop){p[@"constrainedCrop"]=crop;p[@"constrainedCropSettings"]=settings;}else p=nil;}
+  dispatch_async(dispatch_get_main_queue(),^{self.busy=NO;[self syncControls];if(!p){self.status.stringValue=error.localizedDescription?:@"映射或裁切范围不可用，未应用。";return;}if(doc!=[self activeDocument]){self.status.stringValue=@"当前文档已切换，未应用。";return;}[self commitPlan:p settings:settings document:doc uuid:uuid before:before];});
+ }});
 }
 - (void)showDetails:(id)sender{
  if(!(self.plan?:self.matchContext)||!self.metadata||self.busy)return;

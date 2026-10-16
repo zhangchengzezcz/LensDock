@@ -6,6 +6,7 @@
 #import <float.h>
 #import "LensCalibrationEvidence.h"
 #import "LensGainMap.h"
+#import "LensConstrainedCrop.h"
 Class LensRegisterVignettingFilter(void);
 NSDictionary *LensCorrectionSourceBinding(NSDictionary *live){
  if(![live isKindOfClass:NSDictionary.class])return nil;
@@ -85,6 +86,13 @@ id LensEffectsForCorrectionPlan(NSDictionary*plan,NSData*envelope,NSDictionary*s
   // An older renderer accepts only linear/encoded_sRGB. It therefore leaves
   // the original visible instead of interpreting pixel offsets as coordinates.
   profile[@"workingTransfer"]=@"lensdock-compact-v4";profile[@"compactWorkingTransfer"]=transfer;profile[@"profileFormatVersion"]=@4;
+ }
+ if([settings[@"constrainCropEnabled"]boolValue]){
+  NSDictionary*crop=[plan[@"constrainedCropSettings"]isEqual:settings]?plan[@"constrainedCrop"]:LensConstrainedCrop(plan,settings,error);
+  double scale=[crop[@"scale"]doubleValue];if(!crop||!isfinite(scale)||scale<=0||scale>1)return nil;
+  profile[@"constrainedCrop"]=crop;
+  // Older readers must not silently show a different framing.
+  profile[@"workingTransfer"]=@"lensdock-compact-v5";profile[@"compactWorkingTransfer"]=transfer;profile[@"profileFormatVersion"]=@5;
  }
  if(plan[@"linearGainFloat32BottomUp"]){
   NSData*gain=plan[@"linearGainFloat32BottomUp"],*encoded=r[@"gainMapEncoding"]?LensEncodeGainGrid(gain,error):nil;

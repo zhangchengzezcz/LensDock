@@ -1,0 +1,56 @@
+{
+  "version": "0.2.3-preview",
+  "buildNumber": "7",
+  "build": {
+    "version": "0.2.3-preview",
+    "deploymentTarget": "26.0",
+    "notarized": false,
+    "redistributesVendorApp": false,
+    "sha256": {
+      "Contents/MacOS/LensDock": "6ee5db642f59cca94cac2c851ec1744cab4cadbcaac8b07dfb9fc495ec1c434b",
+      "Contents/Resources/Payload/LensPanel.dylib": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
+      "Contents/Resources/Payload/LensLiveSource.dylib": "1522e881d6ba53b317751362c45c8086d5acf1dc9ea504b3887f316128769e30"
+    }
+  },
+  "nativeModuleMatchesResearchHost": true,
+  "nativeModuleStrictSignaturePassed": true,
+  "installerStrictDeepSignaturePassed": true,
+  "isolatedInstallationPassed": true,
+  "vendorReverificationPassed": true,
+  "regularSuiteGroupsPassed": 23,
+  "selectedGroups": 24,
+  "fullResolutionGroupSkippedByDefault": true,
+  "fullResolutionGroupExplicitRunPassed": true,
+  "nativeRenderCombinations": 192,
+  "guiManualOpenUserReported": true,
+  "guiSaveReopenOrExportVerified": false,
+  "notarized": false,
+  "secondComputerTested": false,
+  "evidence": [
+    "geometry-boundaries-verification.json",
+    "calibration-image-verification.json",
+    "full-resolution-boundaries-verification.json",
+    "constrained-crop-saved-document-verification.json"
+  ],
+  "logsSHA256": {
+    "Build/Development/build-0.2.3-build7.log": "539a0f9c9bba235bc146941757f6c30bcc3168f8cff6861b6b6b82a02f1709aa",
+    "Build/Development/installer-0.2.3-build7.log": "fc5f29b4f1763959afde856220517b213b29c4ac1bdca4376a6ae4d2659365ad",
+    "Build/Tests/latest-suite-0.2.3-build7.log": "60f43f342ade15b232521124df6e12706e168178ea24ee7ce38f097a7c370763"
+  },
+  "guiCropResultUserReported": true,
+  "actualSavedDocumentVerified": true,
+  "savedPreviewVisuallyInspected": true,
+  "researchHostUpdate": {
+    "hostWasNormallyExited": true,
+    "userConfirmedNormalExit": true,
+    "noRemainingHostProcessesBeforeUpdate": true,
+    "oldModuleSHA256": "e724f6e6ab8a85c8663769ee14860596cacf69b2259dc40b8685f6d0669e2948",
+    "payloadModuleSHA256": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
+    "signedHostModuleSHA256": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
+    "sandboxEntitlementsPreserved": true,
+    "strictSignaturePassed": true,
+    "sourceVersion": "0.2.3-preview-build7",
+    "hostProcessObservedAfterUpdate": true
+  },
+  "packageVerificationRecordedSeparately": "Distribution/0.2.3-preview/release-manifest.json and background-manifest.json"
+}
