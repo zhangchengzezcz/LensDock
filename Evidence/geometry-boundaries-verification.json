@@ -1,0 +1,76 @@
+{
+  "version": "0.2.3-development-candidate",
+  "scope": "Synthetic translation and asymmetric gain full-canvas boundary regression through native effect wrapper; not measured optical calibration or full GUI",
+  "syntheticGeometryCombinations": 288,
+  "layouts": [
+    "dense",
+    "pixel-displacement-grid",
+    "residual-grid"
+  ],
+  "directions": [
+    "left",
+    "right",
+    "up",
+    "down"
+  ],
+  "modes": [
+    "off",
+    "distortion",
+    "tca",
+    "combined"
+  ],
+  "strengthsPercent": [
+    37,
+    100,
+    137
+  ],
+  "transfers": [
+    "linear",
+    "encoded_sRGB"
+  ],
+  "outsideSamplesChecked": 935832,
+  "allCheckedOutsideSamplesTransparent": true,
+  "maxValidInteriorChannelError": 1.7840862274187685e-06,
+  "fullCanvasGainCombinations": 8,
+  "fullCanvasGainPixelChecks": 786432,
+  "maxFullCanvasGainChannelError": 1.2324760617632435e-07,
+  "oldRendererRegression": {
+    "sourceCommit": "5347632fc5496f81c9750534f9a4433878b5fcdf",
+    "exitCode": 7,
+    "firstFailureOutsideSamples": 1024,
+    "firstFailureFabricatedOpaqueOrColorSamples": 1024,
+    "oldRendererSourceSHA256": "b9ee47b0be7202e11afd4d8047719f5037cff1dfe941461e4a3040e900d2ccc6",
+    "negativeLogSHA256": "b32151ae48ff3dd3c60b203c37e7d25f4e7e0109762b091511b9d951ea0995f8"
+  },
+  "fullSuite": {
+    "groups": 22,
+    "existingNativeRenderCombinations": 192,
+    "passed": true,
+    "boundaryGainTestExpandedAndRerunAfterSuite": true,
+    "logSHA256": "a6ee29e857f1785c6636a68f6fc08238e7554302afc435659d2c4b1963200f27"
+  },
+  "build": {
+    "version": "0.2.3-preview",
+    "deploymentTarget": "26.0",
+    "notarized": false,
+    "redistributesVendorApp": false,
+    "sha256": {
+      "Contents/MacOS/LensDock": "de80d3975098d9660d0f577b88f56a4090a187f23ddc1a4f44dd94dfcb938b8f",
+      "Contents/Resources/Payload/LensPanel.dylib": "2aee11e038eeb53a4af586b708b9f671ecff7a1b70a71ee9c91359b5307ab940",
+      "Contents/Resources/Payload/LensLiveSource.dylib": "1522e881d6ba53b317751362c45c8086d5acf1dc9ea504b3887f316128769e30"
+    }
+  },
+  "sourceSHA256": {
+    "Sources/Native/LensVignettingFilter.m": "5da8a9cbb5fa9a1a6a14a147b68b0a88aece58032b90f48665021158f8af7587",
+    "Tests/verify-geometry-boundaries.m": "5dae16f86e22d7946386ca095f6331ace310ae496a03f894f2b5cb06edf6c6c4",
+    "Scripts/test.py": "6759b893cdd9964af047ea7bf3319f64d619edc5002c49f51adaae6bef276f23"
+  },
+  "detailedTestResultSHA256": "1b026316589bfa424b37faa285e58a848ad9faccd71a4ee886eda9432d1a7382",
+  "researchHostModuleUnchangedSHA256": "d52d0fc1760fdf00db22299425237fc55f029e0abf1b1b2683da6f0a33eb24ce",
+  "researchHostUpdated": false,
+  "guiSaveReopenOrExportVerified": false,
+  "automaticConstrainCropImplemented": false,
+  "newDMGPackaged": false,
+  "screenCaptureError": "ScreenCaptureKit -3812 / -3811 despite resetting CUA; no forced host termination or state mutation",
+  "opticalCalibrationOrLightroomEquivalenceVerified": false
+}

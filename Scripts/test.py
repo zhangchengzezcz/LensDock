@@ -10,6 +10,7 @@ native=ROOT/'Sources/Native'
 groups={
  'compare-rendered-images-16':[],
  'verify-compact-maps':['LensNativeProfileEngine.m'],
+ 'verify-geometry-boundaries':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-public-capture-metadata':['LensNativeProfileEngine.m','LensRecommendationPolicy.m'],
  'verify-public-lx3':['LensNativeProfileEngine.m','LensRecommendationPolicy.m'],
  'verify-host-diagnostics':['LensHostDiagnostics.m'],
