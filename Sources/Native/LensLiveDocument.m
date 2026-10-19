@@ -1,6 +1,7 @@
 #import "LensLiveDocument.h"
 #import "LensNativeState.h"
 #import "LensNativeDocument.h"
+#import "LensHostCompatibility.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <dlfcn.h>
@@ -26,9 +27,15 @@ typedef struct{void*buffer;uint64_t timestamp;} BitmapInfo;
 typedef BitmapInfo __attribute__((swiftcall))(*BitmapGetter)(void*,void* __attribute__((swift_context)));
 static void liveFail(NSError**error,NSString*message){if(error)*error=[NSError errorWithDomain:@"LensBridgeLive" code:1 userInfo:@{NSLocalizedDescriptionKey:message}];}
 static void diagnostic(NSDictionary*state){[[NSJSONSerialization dataWithJSONObject:state options:NSJSONWritingPrettyPrinted error:nil]writeToFile:[NSTemporaryDirectory()stringByAppendingPathComponent:@"LensLiveFailure.json"] atomically:YES];}
-static id reference(id script,const char*name){Ivar ivar=class_getInstanceVariable(object_getClass(script),name);if(!ivar)return nil;void*p=NULL;memcpy(&p,(char*)(__bridge void*)script+ivar_getOffset(ivar),sizeof(p));return (__bridge id)p;}
+static void*liveBridge(void);
+id LensCopyScriptingReference(id script,NSString*field){
+ if(!script||![@[@"layer",@"identifier"]containsObject:field])return nil;
+ void*handle=liveBridge();void*(*copy)(void*,const char*)=handle?dlsym(handle,"LensBridgeCopyScriptingReference"):NULL;
+ return copy?CFBridgingRelease(copy((__bridge void*)script,field.UTF8String)):nil;
+}
+static id reference(id script,const char*name){return LensCopyScriptingReference(script,@(name));}
 static NSArray*liveObjects(NSDocument*doc,id script){
- if(!NSThread.isMainThread||![[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]isEqual:@"4.3"]||![doc isKindOfClass:NSClassFromString(@"PXMPro.Document")]||![script isKindOfClass:NSClassFromString(@"Pixelmator.ScriptingLayer")]){diagnostic(@{@"stage":@"host-class",@"document":NSStringFromClass(object_getClass(doc))?:@"",@"script":NSStringFromClass(object_getClass(script))?:@"",@"mainThread":@(NSThread.isMainThread),@"version":[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]?:@""});return nil;}
+ if(!NSThread.isMainThread||!LensHostCompatibilityReady()||![doc isKindOfClass:NSClassFromString(@"PXMPro.Document")]||![script isKindOfClass:NSClassFromString(@"Pixelmator.ScriptingLayer")]){diagnostic(@{@"stage":@"host-class",@"document":NSStringFromClass(object_getClass(doc))?:@"",@"script":NSStringFromClass(object_getClass(script))?:@"",@"mainThread":@(NSThread.isMainThread),@"version":[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]?:@""});return nil;}
  LiveGetter contextGet=dlsym(RTLD_DEFAULT,"$s6PXMKit0A8DocumentC15documentContextAA0abD0Cvg"),engineGet=dlsym(RTLD_DEFAULT,"$s6PXMKit0A15DocumentContextC6engine9PXMEngine6EngineCvg");
  id context=contextGet?CFBridgingRelease(contextGet((__bridge void*)doc)):nil;id engine=context&&engineGet?CFBridgingRelease(engineGet((__bridge void*)context)):nil;id uid=reference(script,"identifier"),raw=reference(script,"layer");
  if(![NSStringFromClass(object_getClass(engine))isEqual:@"PXMEngine.Engine"]||![NSStringFromClass(object_getClass(uid))isEqual:@"PTFoundation.PTHashableString"]||![NSStringFromClass(object_getClass(raw))isEqual:@"PXMEngine.RawLayer"]){diagnostic(@{@"stage":@"references",@"engine":NSStringFromClass(object_getClass(engine))?:@"",@"identifier":NSStringFromClass(object_getClass(uid))?:@"",@"layer":NSStringFromClass(object_getClass(raw))?:@""});return nil;}

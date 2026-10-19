@@ -1,4 +1,5 @@
 #import "LensHostDiagnostics.h"
+#import "LensHostCompatibility.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <dlfcn.h>
@@ -43,7 +44,7 @@ void LensWriteHostState(NSDocument *document,NSString *event){
   if([document respondsToSelector:@selector(validateMenuItem:)])validation[action]=@([(id<NSMenuItemValidation>)document validateMenuItem:item]);
  }
  NSMutableDictionary *swiftState=[NSMutableDictionary new];
- if([[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]isEqual:@"4.3"]&&[document isKindOfClass:NSClassFromString(@"PXMPro.Document")]){
+ if(LensHostVersionSupported([NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"])&&[document isKindOfClass:NSClassFromString(@"PXMPro.Document")]){
   NSDictionary *queries=@{@"isShowingProgress":@"$s6PXMKit0A8DocumentC17isShowingProgressSbvg",@"initialDrawHappened":@"$s6PXMKit0A8DocumentC19initialDrawHappenedSbvg",@"fullContentHasBeenLoaded":@"$s6PXMKit0A8DocumentC24fullContentHasBeenLoadedSbvg",@"isCurrenlyLoadingFullContent":@"$s6PXMKit0A8DocumentC28isCurrenlyLoadingFullContentSbvg"};
   for(NSString *key in queries){HostBoolGetter get=dlsym(RTLD_DEFAULT,[queries[key]UTF8String]);if(get)swiftState[key]=@(get((__bridge void*)document));}
  }

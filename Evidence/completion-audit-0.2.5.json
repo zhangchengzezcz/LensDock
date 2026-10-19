@@ -1,0 +1,15 @@
+{
+  "version": "0.2.5-preview-build9",
+  "revisedScope": "Apple Silicon macOS26+, Pixelmator4.3+, generic capability gate and public Issues, no per-version allowlist",
+  "complete": false,
+  "remainingReleaseGate": [
+    "Actual current-host RAW reference reflection and automatic photo-open notice/suppression acceptance; waiting for unlocked Mac"
+  ],
+  "knownFollowUps": [
+    "Additional real lenses and embedded calibration coverage",
+    "More optical samples, low-memory and long-term validation",
+    "Developer ID / notarization and cross-device download checks"
+  ],
+  "status": "active",
+  "whyNotComplete": "New automatic popup and reflection path are not yet accepted in the real photo window."
+}

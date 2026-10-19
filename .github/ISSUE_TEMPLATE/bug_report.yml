@@ -1,0 +1,36 @@
+name: 兼容性或镜头矫正问题
+description: 报告自动检查、匹配、显示或保存异常
+title: "[问题] "
+body:
+  - type: input
+    id: lensdock
+    attributes:
+      label: LensDock 版本
+      placeholder: 例如 0.2.5 preview
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: macOS 与 Pixelmator Pro 版本
+      placeholder: 例如 macOS 27.2 / Pixelmator Pro 4.3
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 现象与复现步骤
+      description: 请写出预期效果、实际效果和操作顺序。
+    validations:
+      required: true
+  - type: textarea
+    id: diagnosis
+    attributes:
+      label: 兼容性诊断
+      description: 打开照片后，从“镜头矫正 → 兼容性自检…”复制诊断并粘贴。诊断不含照片或文件路径，无需附原片。
+      render: json
+  - type: input
+    id: optics
+    attributes:
+      label: 相机、镜头及拍摄参数（匹配或画面问题时填写）
+      placeholder: 相机 / 镜头 / 焦距 / 光圈，以及三项矫正与约束边缘是否启用

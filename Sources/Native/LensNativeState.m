@@ -1,4 +1,5 @@
 #import "LensNativeState.h"
+#import "LensHostCompatibility.h"
 #import <objc/runtime.h>
 #import <dlfcn.h>
 #import <CoreImage/CoreImage.h>
@@ -12,7 +13,7 @@ static void releaseEffects(NativeEffects value){
 }
 id LensCopyLayerEffects(id layer){
  GetEffects get=dlsym(RTLD_DEFAULT,"$s9PXMEngine5LayerC7effects12PTFoundation9PTEffectsVSgvg");CreateEffects create=dlsym(RTLD_DEFAULT,"$s12PTFoundation13PTEffectsObjCC7effectsAcA0B0V_tcfC");Class cls=NSClassFromString(@"PTFoundation.PTEffectsObjC");
- if(!layer||!get||!create||!cls)return nil;
+ if(!layer||!get||!create||!cls||!LensHostValueLayout("$s12PTFoundation9PTEffectsVMa",16,16))return nil;
  NativeEffects value=get((__bridge void*)layer);if(!value.items){
   // The Swift class has no usable NSObject.init; decode its valid empty schema.
   // Optional.none has no owned payload; the second word is unspecified.
@@ -23,7 +24,7 @@ id LensCopyLayerEffects(id layer){
 }
 BOOL LensSetLayerEffects(id layer,id effects){
  GetEffects get=dlsym(RTLD_DEFAULT,"$s12PTFoundation13PTEffectsObjCC7effectsAA0B0Vvg");SetEffects set=dlsym(RTLD_DEFAULT,"$s9PXMEngine5LayerC10setEffects_20isIntermediateChangey12PTFoundation9PTEffectsVSg_SbtF");
- if(!layer||!effects||!get||!set||!dlsym(RTLD_DEFAULT,"swift_bridgeObjectRelease")||!dlsym(RTLD_DEFAULT,"objc_release"))return NO;
+ if(!layer||!effects||!get||!set||!LensHostValueLayout("$s12PTFoundation9PTEffectsVMa",16,16)||!dlsym(RTLD_DEFAULT,"swift_bridgeObjectRelease")||!dlsym(RTLD_DEFAULT,"objc_release"))return NO;
  NativeEffects value=get((__bridge void*)effects);set(value,NO,(__bridge void*)layer);
  // Layer.setEffects borrows the value (its owned property setter releases it
  // after this call in the verified arm64 binary); release our getter results.

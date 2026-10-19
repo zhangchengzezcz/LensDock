@@ -1,0 +1,21 @@
+{
+  "version": "0.2.5-preview-build9",
+  "passed": true,
+  "scope": "Production installer in isolated directory, generic exported-interface eligibility, strict copied-source signature before modification, copy Info.plist/hash provenance",
+  "currentHostVersion": "4.3",
+  "futureVersionsPredicateTested": [
+    "4.3.1",
+    "4.4",
+    "5",
+    "10.0"
+  ],
+  "futureRuntimesActuallyTested": false,
+  "requiredDefinitions": 19,
+  "strippedExportTrieAndCycleRejectionTested": true,
+  "missingInterfaceRejected": true,
+  "completeIsolatedInstallationPassed": true,
+  "runtimeContractCopied": true,
+  "copiedSourceInfoAndDeepSignatureVerified": true,
+  "userInstalledHostReplaced": false,
+  "logSHA256": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56"
+}

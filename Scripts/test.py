@@ -17,6 +17,7 @@ groups={
  'verify-public-capture-metadata':['LensNativeProfileEngine.m','LensRecommendationPolicy.m'],
  'verify-public-lx3':['LensNativeProfileEngine.m','LensRecommendationPolicy.m'],
  'verify-host-diagnostics':['LensHostDiagnostics.m'],
+ 'verify-host-compatibility':['LensHostCompatibility.m','LensNativeState.m'],
  'verify-recorded-aperture':['LensNativeProfileEngine.m'],
  'verify-capture-tag-precedence':['LensNativeProfileEngine.m'],
  'verify-focus-distance-range':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m','LensRecommendationPolicy.m'],
@@ -37,8 +38,10 @@ groups={
 for name,sources in groups.items():
  if 'LensVignettingFilter.m' in sources:sources=[*sources,'LensCalibrationImage.m','LensConstrainedCrop.m']
  subprocess.run(['xcrun','clang','-arch','arm64','-mmacosx-version-min=26.0','-O2','-fobjc-arc','-Wno-deprecated-declarations',*(['-Wl,-export_dynamic'] if name=='verify-effect-replacement' else []),'-I',str(native),'-framework','Cocoa','-framework','CoreImage','-framework','ImageIO',str(ROOT/'Tests'/(name+'.m')),*[str(native/s) for s in sources],'-o',str(out/name)],check=True,cwd=ROOT)
- subprocess.run([str(out/name)],check=True,cwd=ROOT)
+ subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,**({'DYLD_FRAMEWORK_PATH':'/Applications/Pixelmator Pro Creator Studio.app/Contents/Frameworks'} if name=='verify-host-compatibility' else {})})
  if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_GRID_TEST':'1'})
  if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_GAIN_GRID_TEST':'1'})
  if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_RESIDUAL_GRID_TEST':'1'})
 print('All selected tests passed. RAW-specific checks run only when Tests/PrivateRAW is supplied.')
+subprocess.run(['xcrun','swiftc','-target','arm64-apple-macos26.0','-O',str(native/'LensScriptingReference.swift'),str(ROOT/'Tests/verify-scripting-reference.swift'),'-o',str(out/'verify-scripting-reference')],check=True)
+subprocess.run([str(out/'verify-scripting-reference')],check=True)

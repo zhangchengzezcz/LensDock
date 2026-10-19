@@ -10,6 +10,7 @@
 #import "LensLiveDocument.h"
 #import "LensRecommendationPolicy.h"
 #import "LensHostDiagnostics.h"
+#import "LensHostCompatibility.h"
 #import "LensGainMap.h"
 #import "LensCalibrationEvidence.h"
 #import "LensProfilePicker.h"
@@ -17,7 +18,7 @@
 #import "LensConstrainedCrop.h"
 Class LensRegisterVignettingFilter(void);
 static id getter(id obj,NSString*name){SEL s=NSSelectorFromString(name);Method m=class_getInstanceMethod([obj class],s);if(!m||method_getNumberOfArguments(m)!=2)return nil;char*t=method_copyReturnType(m);BOOL object=t&&t[0]=='@';free(t);return object?((id(*)(id,SEL))objc_msgSend)(obj,s):nil;}
-static id rawLayer(id script){Ivar i=class_getInstanceVariable([script class],"layer");if(!i)return nil;void*p=NULL;memcpy(&p,(char*)(__bridge void*)script+ivar_getOffset(i),8);return (__bridge id)p;}
+static id rawLayer(id script){return LensCopyScriptingReference(script,@"layer");}
 static id findLayer(id holder,NSString*uuid,int depth){if(depth>50)return nil;for(id script in getter(holder,@"scriptLayers")){if([getter(script,@"scriptUniqueID")isEqual:uuid])return script;id found=findLayer(script,uuid,depth+1);if(found)return found;}return nil;}
 static NSTextField*label(NSString*text,NSRect frame,CGFloat size,NSFontWeight weight){NSTextField*v=[NSTextField labelWithString:text];v.frame=frame;v.font=[NSFont systemFontOfSize:size weight:weight];v.textColor=NSColor.labelColor;v.lineBreakMode=NSLineBreakByWordWrapping;v.maximumNumberOfLines=0;return v;}
 static NSView*card(NSRect frame){NSView*v=[[NSView alloc]initWithFrame:frame];v.wantsLayer=YES;v.layer.cornerRadius=14;v.layer.backgroundColor=[NSColor colorWithWhite:1 alpha:.065].CGColor;v.layer.borderWidth=.7;v.layer.borderColor=[NSColor colorWithWhite:1 alpha:.09].CGColor;v.autoresizingMask=NSViewWidthSizable;return v;}
@@ -224,6 +225,9 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 }
 - (void)match:(id)sender{
  if(self.busy)return;
+ if(!LensHostCompatibilityReady()){
+  [self clearMatchWithMessage:@"兼容性自检未通过。请从“镜头矫正 → 兼容性自检…”复制诊断并提交 GitHub Issue。" requiresRAW:NO];return;
+ }
  NSDocument*doc=[self activeDocument];id script=getter(doc,@"scriptingCurrentLayer");NSString*uuid=getter(script,@"scriptUniqueID");id layer=rawLayer(script);
  if(![NSStringFromClass(object_getClass(layer))isEqual:@"PXMEngine.RawLayer"]){[self clearMatchWithMessage:doc?@"请在图层列表中选中 RAW 图层，再点击“重新匹配”。":@"请先打开 RAW 照片，再在图层列表中选中 RAW 图层。" requiresRAW:YES];NSString*diagnostic=[NSString stringWithFormat:@"document=%@ documents=%lu script=%@ layer=%@ uuid=%@",NSStringFromClass(object_getClass(doc)),(unsigned long)NSDocumentController.sharedDocumentController.documents.count,NSStringFromClass(object_getClass(script)),NSStringFromClass(object_getClass(layer)),uuid];[diagnostic writeToFile:[NSTemporaryDirectory()stringByAppendingPathComponent:@"LensPanelSelection.txt"] atomically:YES encoding:NSUTF8StringEncoding error:nil];return;}
  NSDictionary*saved=LensSavedCorrectionProfile(LensCopyLayerEffects(layer));
@@ -360,7 +364,75 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  }});
 }
 @end
+@interface LensCompatibilityController:NSObject
+@property NSHashTable*checkedDocuments;
+@property NSHashTable*queuedWindows;
+@property NSMapTable*readinessAttempts;
+- (void)showCompatibility:(id)sender;
+- (void)documentWindowReady:(NSNotification*)notification;
+@end
+@implementation LensCompatibilityController
+- (instancetype)init{
+ if((self=[super init])){self.checkedDocuments=NSHashTable.weakObjectsHashTable;self.queuedWindows=NSHashTable.weakObjectsHashTable;self.readinessAttempts=NSMapTable.weakToStrongObjectsMapTable;}
+ return self;
+}
+- (NSDictionary*)reportForDocument:(NSDocument*)document{
+ NSMutableDictionary*r=[LensHostCompatibilityReport()mutableCopy];NSMutableArray*failures=[r[@"failures"]mutableCopy];
+ id script=getter(document,@"scriptingCurrentLayer");
+ r[@"photoOpened"]=@(document!=nil);r[@"selectedLayerAvailable"]=@(script!=nil);
+ if([r[@"passed"]boolValue]&&script){
+  id layer=rawLayer(script);
+  if([layer isKindOfClass:NSClassFromString(@"PXMEngine.RawLayer")]){
+   id uid=LensCopyScriptingReference(script,@"identifier");
+   BOOL valid=[uid isKindOfClass:NSClassFromString(@"PTFoundation.PTHashableString")];
+   r[@"rawReferenceCheck"]=valid?@"passed":@"failed";
+   if(!valid)[failures addObject:@"当前 RAW 资源引用不兼容"];
+  }else {
+   r[@"rawReferenceCheck"]=layer?@"not-RAW-layer":@"reference-unavailable";
+   if(!layer)[failures addObject:@"当前照片图层引用尚未就绪或不可用"];
+  }
+ }
+ r[@"failures"]=failures;r[@"passed"]=@(failures.count==0);
+ return r;
+}
+- (void)presentReport:(NSDictionary*)report automatic:(BOOL)automatic{
+ NSData*json=[NSJSONSerialization dataWithJSONObject:report options:NSJSONWritingPrettyPrinted|NSJSONWritingSortedKeys error:nil];
+ NSString*text=[[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding]?:@"无法生成诊断";
+ [text writeToFile:[NSTemporaryDirectory()stringByAppendingPathComponent:@"LensDock-Compatibility.json"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+ NSString*key=@"LensDockSuppressAutomaticCompatibilityNotice";
+ if(automatic&&[NSUserDefaults.standardUserDefaults boolForKey:key])return;
+ NSAlert*alert=[NSAlert new];alert.messageText=[report[@"passed"]boolValue]?@"照片兼容性检查通过":@"照片兼容性检查未通过";
+ NSString*detail=[report[@"passed"]boolValue]?([report[@"rawReferenceCheck"]isEqual:@"passed"]?@"必要接口、数据布局与当前 RAW 图层引用正常。镜头矫正仍会按照片自动匹配可靠标定。":@"必要接口与数据布局正常。镜头矫正需要打开 RAW 并选中 RAW 图层。"): [report[@"failures"]componentsJoinedByString:@"\n"];
+ alert.informativeText=[NSString stringWithFormat:@"Pixelmator %@ · Apple 芯片\n%@\n\n%@\n诊断不包含照片、文件路径或拍摄信息。",report[@"hostVersion"],report[@"macOS"],detail];
+ alert.showsSuppressionButton=YES;alert.suppressionButton.title=@"以后不再自动提示";alert.suppressionButton.state=[NSUserDefaults.standardUserDefaults boolForKey:key]?NSControlStateValueOn:NSControlStateValueOff;
+ [alert addButtonWithTitle:@"继续"];[alert addButtonWithTitle:@"复制诊断"];[alert addButtonWithTitle:@"前往 GitHub Issues"];
+ NSModalResponse response=[alert runModal];[NSUserDefaults.standardUserDefaults setBool:alert.suppressionButton.state==NSControlStateValueOn forKey:key];
+ if(response==NSAlertSecondButtonReturn){[NSPasteboard.generalPasteboard clearContents];[NSPasteboard.generalPasteboard setString:text forType:NSPasteboardTypeString];}
+ if(response==NSAlertThirdButtonReturn)[NSWorkspace.sharedWorkspace openURL:[NSURL URLWithString:report[@"issueURL"]]];
+}
+- (void)showCompatibility:(id)sender{
+ NSDocument*document=NSDocumentController.sharedDocumentController.currentDocument;
+ if(!document){NSAlert*alert=[NSAlert new];alert.messageText=@"请先打开照片";alert.informativeText=@"照片载入后会自动检查，也可随时从此菜单重新检查。";[alert addButtonWithTitle:@"好"];[alert runModal];return;}
+ [self presentReport:[self reportForDocument:document] automatic:NO];
+}
+- (void)documentWindowReady:(NSNotification*)notification{
+ NSWindow*window=[notification.object isKindOfClass:NSWindow.class]?notification.object:nil;
+ if(!window||[self.queuedWindows containsObject:window])return;
+ NSDocument*document=window.windowController.document;
+ if(![document isKindOfClass:NSDocument.class]||[self.checkedDocuments containsObject:document])return;
+ [self.queuedWindows addObject:window];
+ dispatch_after(dispatch_time(DISPATCH_TIME_NOW,(int64_t)(.25*NSEC_PER_SEC)),dispatch_get_main_queue(),^{
+  [self.queuedWindows removeObject:window];
+  if(!window.visible||window.attachedSheet||NSApp.modalWindow||[self.checkedDocuments containsObject:document]||!getter(document,@"scriptingCurrentLayer"))return;
+  NSDictionary*report=[self reportForDocument:document];
+  if([report[@"rawReferenceCheck"]isEqual:@"reference-unavailable"]){NSUInteger attempt=[[self.readinessAttempts objectForKey:document]unsignedIntegerValue]+1;[self.readinessAttempts setObject:@(attempt) forKey:document];if(attempt<20)return;}
+  [self.checkedDocuments addObject:document];
+  [self presentReport:report automatic:YES];
+ });
+}
+@end
 static LensPanelController*controller;
+static LensCompatibilityController*compatibilityController;
 static void install(void){
  if(!NSApp.mainMenu)return;
  for(NSMenuItem*item in NSApp.mainMenu.itemArray)if([item.identifier isEqual:@"local.lensbridge.menu"])return;
@@ -368,6 +440,9 @@ static void install(void){
  NSMenuItem*root=[[NSMenuItem alloc]initWithTitle:@"镜头矫正" action:nil keyEquivalent:@""];root.identifier=@"local.lensbridge.menu";
  NSMenu*menu=[[NSMenu alloc]initWithTitle:root.title];menu.autoenablesItems=NO;
  NSMenuItem*show=[[NSMenuItem alloc]initWithTitle:@"打开镜头矫正…" action:@selector(show:) keyEquivalent:@""];show.target=controller;show.enabled=YES;[menu addItem:show];
+ compatibilityController=[LensCompatibilityController new];
+ for(NSNotificationName name in @[NSWindowDidBecomeMainNotification,NSWindowDidUpdateNotification])[NSNotificationCenter.defaultCenter addObserver:compatibilityController selector:@selector(documentWindowReady:) name:name object:nil];
+ NSMenuItem*check=[[NSMenuItem alloc]initWithTitle:@"兼容性自检…" action:@selector(showCompatibility:) keyEquivalent:@""];check.target=compatibilityController;check.enabled=YES;[menu addItem:check];
  root.submenu=menu;[NSApp.mainMenu insertItem:root atIndex:MAX(1,(NSInteger)NSApp.mainMenu.numberOfItems-1)];
 }
 __attribute__((constructor))static void loadLensPanel(void){@autoreleasepool{LensRegisterVignettingFilter();[NSNotificationCenter.defaultCenter addObserverForName:NSApplicationDidFinishLaunchingNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification*n){install();}];dispatch_async(dispatch_get_main_queue(),^{if(NSApp.isRunning)install();});}}

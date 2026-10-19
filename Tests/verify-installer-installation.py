@@ -98,16 +98,37 @@ func verifyCodeFingerprint(_ installer: Installer, _ original: URL, _ root: URL)
  guard refused else {throw DockError("Four-file fallback accepted a changed member")}
  print("Four production fingerprints match independent Python results; signature/size/thin/FAT64 variations accepted; changed code/header/VM sizes, truncated and overlapping inputs rejected.")
 }
+func verifyGenericEligibility(_ installer: Installer,_ original: URL) throws {
+ for version in ["4.3","4.3.1","4.4","5","10.0"] {guard hostVersionSupported(version) else {throw DockError("Future version eligibility rejected")}}
+ for version in ["4.2.99","4.3beta","","4..3","-4.3"] {guard !hostVersionSupported(version) else {throw DockError("Invalid version accepted")}}
+ for (path,symbols) in installer.compatibility.requiredHostSymbols! {
+  let data=try Data(contentsOf:original.appendingPathComponent(path))
+  guard try hostExports(data,required:symbols),try !hostExports(data,required:["$sLensDockMissingInterface"]) else {throw DockError("Static export eligibility failed")}
+ }
+ // A fully stripped image can still expose a well-formed export trie.
+ let name=Data("_$sDemo\0".utf8);var trie=Data([0,1]);trie.append(name);trie.append(UInt8(trie.count+1));trie.append(contentsOf:[2,0,1,0])
+ var image=Data(repeating:0,count:48)
+ func put(_ value: UInt32,_ offset: Int){for i in 0..<4{image[offset+i]=UInt8(truncatingIfNeeded:value >> (i*8))}}
+ put(0xfeedfacf,0);put(0x100000c,4);put(6,12);put(1,16);put(16,20);put(0x80000033,32);put(16,36);put(48,40);put(UInt32(trie.count),44);image.append(trie)
+ guard try hostExports(image,required:["$sDemo"]),try !hostExports(image,required:["$sMissing"]) else {throw DockError("Export-trie lookup failed")}
+ image[48+2+name.count]=0
+ var rejected=false;do {_ = try hostExports(image,required:["$sDemo"])}catch{rejected=true}
+ guard rejected else {throw DockError("Cyclic export trie accepted")}
+ guard try installer.verifiedEligibleSource(original).values.sorted()==installer.verifiedSourceHashes(original).values.sorted() else {throw DockError("Source provenance differs under generic policy")}
+ print("4.3 and later eligibility, current required exports, missing export rejection, stripped export trie and cycle rejection passed; no exact code hash gate used for installation.")
+}
 let resources=URL(fileURLWithPath:CommandLine.arguments[1]), original=URL(fileURLWithPath:CommandLine.arguments[2]), testDirectory=URL(fileURLWithPath:CommandLine.arguments[3])
 do {
  try verifyVariantSeparation(resources,testDirectory)
  let installer=try Installer(resources:resources)
  try verifyCodeFingerprint(installer,original,testDirectory)
+ try verifyGenericEligibility(installer,original)
  let installed=try installer.install(original,applicationsDirectory:testDirectory){print($0)}
  let info=try plist(installed.appendingPathComponent("Contents/Info.plist"))
  let payload=lensDigest(try Data(contentsOf:resources.appendingPathComponent("Payload/LensPanel.dylib")))
  let actual=lensDigest(try Data(contentsOf:installed.appendingPathComponent("Contents/Frameworks/LensPanel.dylib")))
- guard let copiedSource=info["LensDockSourceFileSHA256"] as? [String:String], copiedSource == (try installer.verifiedSourceHashes(original)) else {throw DockError("Installed source provenance missing or incorrect")}
+ guard let copiedSource=info["LensDockSourceFileSHA256"] as? [String:String], copiedSource == (try installer.verifiedEligibleSource(original)) else {throw DockError("Installed source provenance missing or incorrect")}
+ guard info["LensDockCompatibilityPolicy"] as? String == "capability-check-v1",try Data(contentsOf:installed.appendingPathComponent("Contents/Resources/LensDock-HostInterfaces.json")) == Data(contentsOf:resources.appendingPathComponent("Pixelmator-4.3.json")) else {throw DockError("Runtime compatibility contract missing")}
  guard installedHostIsCurrent(info,version:previewVersion,expectedHash:payload,actualHash:actual) else {throw DockError("Freshly signed host not recognized")}
  _ = try installer.validate(original)
  print("Isolated full installation, signed module recognition, strict signature and unchanged vendor verified.")

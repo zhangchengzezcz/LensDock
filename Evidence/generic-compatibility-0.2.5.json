@@ -1,0 +1,34 @@
+{
+  "version": "0.2.5-preview-build9",
+  "policy": "capability-check-v1",
+  "supportTarget": {
+    "architecture": "arm64",
+    "minimumOS": "26.0",
+    "minimumPixelmator": "4.3",
+    "maximumOS": null,
+    "maximumPixelmator": null
+  },
+  "exactBuildOrCodeHashAllowlistRequired": false,
+  "requiredExportDefinitions": 19,
+  "runtimeValueLayoutSizes": {
+    "RAW": 280,
+    "Effects": 16,
+    "Bitmap": 16
+  },
+  "scriptingReferences": "Swift Mirror object identity; optional, inherited and pure Swift class fixtures checked; scalar/nil/unknown fields rejected",
+  "photoOpenedAutomaticNotice": {
+    "implemented": true,
+    "realGUIAcceptance": "PENDING_UNLOCK",
+    "persistentOptOut": true,
+    "optOutDisablesSafetyChecks": false,
+    "sameDocumentRepeatedActivationDeduplicated": true
+  },
+  "repositoryPublic": true,
+  "issuesEnabled": true,
+  "opticalCoverageEqualToLightroom": false,
+  "futureRuntimeActuallyTested": false,
+  "photosAndPXDIncluded": false,
+  "installerLogSHA256": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56",
+  "processChecksCachedAfterSuccess": true,
+  "openingDoesNotDecodeOrHashWholeRAW": true
+}

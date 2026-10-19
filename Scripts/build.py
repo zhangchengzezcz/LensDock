@@ -4,11 +4,11 @@ import subprocess,plistlib,shutil,hashlib,json
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=json.loads((ROOT/'Version.json').read_text())
 RELEASE=VERSION['version']+'-'+VERSION['channel']
-SOURCES=('LensPanel.m','LensProfilePicker.m','LensVignettingFilter.m','LensCalibrationImage.m','LensConstrainedCrop.m','LensNativeDocument.m','LensNativeProfileEngine.m','LensCornerAssessment.m','LensNativeState.m','LensCorrectionSettings.m','LensLiveDocument.m','LensRecommendationPolicy.m','LensHostDiagnostics.m')
+SOURCES=('LensPanel.m','LensProfilePicker.m','LensVignettingFilter.m','LensCalibrationImage.m','LensConstrainedCrop.m','LensNativeDocument.m','LensNativeProfileEngine.m','LensCornerAssessment.m','LensNativeState.m','LensCorrectionSettings.m','LensLiveDocument.m','LensRecommendationPolicy.m','LensHostDiagnostics.m','LensHostCompatibility.m')
 def call(*args):subprocess.run(list(args),check=True)
 def build():
  native=ROOT/'Sources/Native';payload=ROOT/'Build/Payload';payload.mkdir(parents=True,exist_ok=True)
- call('xcrun','swiftc','-target','arm64-apple-macos26.0','-O','-emit-library','-module-name','LensLiveSource',str(native/'LensLiveSource.swift'),'-Xlinker','-undefined','-Xlinker','dynamic_lookup','-Xlinker','-install_name','-Xlinker','@rpath/LensLiveSource.dylib','-o',str(payload/'LensLiveSource.dylib'))
+ call('xcrun','swiftc','-target','arm64-apple-macos26.0','-O','-emit-library','-module-name','LensLiveSource',str(native/'LensLiveSource.swift'),str(native/'LensScriptingReference.swift'),'-Xlinker','-undefined','-Xlinker','dynamic_lookup','-Xlinker','-install_name','-Xlinker','@rpath/LensLiveSource.dylib','-o',str(payload/'LensLiveSource.dylib'))
  call('xcrun','clang','-arch','arm64','-mmacosx-version-min=26.0','-Werror=unguarded-availability','-Werror=unguarded-availability-new','-O2','-Wno-deprecated-declarations','-dynamiclib','-fobjc-arc','-install_name','@rpath/LensPanel.dylib','-framework','Cocoa','-framework','CoreImage','-framework','ImageIO','-framework','UniformTypeIdentifiers','-lsqlite3',*[str(native/s) for s in SOURCES],'-o',str(payload/'LensPanel.dylib'))
  app=ROOT/'Build/LensDock.app';contents=app/'Contents';(contents/'MacOS').mkdir(parents=True,exist_ok=True);resources=contents/'Resources';resources.mkdir(exist_ok=True)
  call('xcrun','swiftc','-target','arm64-apple-macos26.0','-O',str(ROOT/'Sources/Installer/LensDock.swift'),'-o',str(contents/'MacOS/LensDock'))

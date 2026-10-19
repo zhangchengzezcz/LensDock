@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "vendorBundleIdentifier": "com.apple.pixelmator",
   "version": "4.3",
   "build": "3.0.75",
@@ -32,5 +32,38 @@
       },
       "verification": "Same arm64 section data and all bytes between load commands and code signature as the previously verified research host; normalized load commands equal after excluding research-only load command and signature-related sizes. Full runtime validation recorded separately."
     }
-  ]
+  ],
+  "minimumHostVersion": "4.3",
+  "acceptedBundleIdentifiers": [
+    "com.apple.pixelmator",
+    "com.pixelmatorteam.pixelmator.x"
+  ],
+  "eligibilityPolicy": "capability-check-v1",
+  "requiredHostSymbols": {
+    "Contents/Frameworks/PXMEngine.framework/PXMEngine": [
+      "$s9PXMEngine12ContentStateC016bitmapOfRawLayerB07layerIDAC0fgbC4DataV10BitmapInfoVSg12PTFoundation16PTHashableStringC_tF",
+      "$s9PXMEngine12ContentStateC08RawLayerbC4DataV10BitmapInfoVMa",
+      "$s9PXMEngine5LayerC10setEffects_20isIntermediateChangey12PTFoundation9PTEffectsVSg_SbtF",
+      "$s9PXMEngine5LayerC12backingScale12CoreGraphics7CGFloatVvg",
+      "$s9PXMEngine5LayerC4sizeSo6CGSizeVvg",
+      "$s9PXMEngine5LayerC5scaleSo7CGPointVvg",
+      "$s9PXMEngine5LayerC7effects12PTFoundation9PTEffectsVSgvg",
+      "$s9PXMEngine6EngineC12contentStateAA07ContentD0CSgvg",
+      "$s9PXMEngine6EngineC20exportRawLayerSource15layerIdentifier2toy12PTFoundation16PTHashableStringC_10Foundation3URLVtKF",
+      "$s9PXMEngine6EngineC26registerHistoryTransactionyySSF",
+      "$s9PXMEngine8RawLayerC13rawParameters12PTFoundation05PTRawE0Vvg"
+    ],
+    "Contents/Frameworks/PXMKit.framework/PXMKit": [
+      "$s6PXMKit0A15DocumentContextC14documentFormatSo012PTBitmapDataE0Cvg",
+      "$s6PXMKit0A15DocumentContextC6engine9PXMEngine6EngineCvg",
+      "$s6PXMKit0A8DocumentC15documentContextAA0abD0Cvg"
+    ],
+    "Contents/Frameworks/PTFoundation.framework/PTFoundation": [
+      "$s12PTFoundation13PTEffectsObjCC7effectsAA0B0Vvg",
+      "$s12PTFoundation13PTEffectsObjCC7effectsAcA0B0V_tcfC",
+      "$s12PTFoundation15PTRawParametersVMa",
+      "$s12PTFoundation19PTRawParametersObjCC03rawC0AcA0bC0V_tcfC",
+      "$s12PTFoundation9PTEffectsVMa"
+    ]
+  }
 }

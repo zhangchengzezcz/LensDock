@@ -1,0 +1,25 @@
+{
+  "futureVersionEligibilityTested" : true,
+  "hostVersion" : "4.3",
+  "valueLayouts" : {
+    "Effects" : true,
+    "Bitmap" : true,
+    "RAW" : true
+  },
+  "macOS" : "Version 27.2 (Build 26B5112a)",
+  "passed" : 1,
+  "missingInterfaceRejected" : true,
+  "checkedHostUI" : false,
+  "policy" : "capability-check-v1",
+  "scope" : "接口与数据布局自检；不代表所有未来版本、镜头和照片都已实测。诊断不含照片、文件路径或 EXIF。",
+  "requiredExports" : 19,
+  "failures" : [
+
+  ],
+  "architecture" : "arm64",
+  "futureRuntimeActuallyTested" : false,
+  "changedValueLayoutRejected" : true,
+  "issueURL" : "https:\/\/github.com\/zhangchengzezcz\/LensDock\/issues\/new",
+  "referenceAccess" : "Swift Mirror; runtime reference classes checked on RAW selection",
+  "effectsRoundtrip" : true
+}

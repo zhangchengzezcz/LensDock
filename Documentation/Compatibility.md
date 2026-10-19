@@ -1,10 +1,14 @@
 # 兼容接口与失效边界
 
-支持目标：Apple 芯片 Mac，macOS 26 及以上；没有最高系统版本限制。当前宿主契约为 Pixelmator Pro Creator Studio 4.3（3.0.75）、bundle ID `com.apple.pixelmator`。0.2.4 build 8 的安装器、两个原生模块及四个依赖库均为 arm64，最低部署版本不高于 26.0。macOS 27.2 完成本机安装与渲染测试；26、其他 27 小版本及后续系统仍需实机验收，不能由部署目标推断全部通过。Intel 不在用户确认的范围内。
+支持目标为 Apple 芯片 Mac、macOS 26 及以上、Pixelmator Pro 4.3 及以上，没有最高系统或应用版本限制。0.2.5 build 9 按用户确认改为通用能力检查，不再把应用版本、build 或整文件代码哈希绑定到一份原厂安装。识别常见 Pixelmator bundle ID，并允许用户选择应用；不要求应用名称含 Creator Studio。当前实机基线是 4.3 / macOS 27.2，后续版本通过检查即可尝试，不宣称逐版本实测。
 
-安装时先检查 `Compatibility/Pixelmator-4.3.json` 中主程序、PTFoundation、PXMEngine、PXMKit 的完整哈希组。整文件摘要不同则使用四文件完整 `arm64-code-v1` 指纹：提取唯一 arm64 slice，保留签名前全部头部、加载命令、填充、代码、数据和符号字节，仅归一化 `LC_CODE_SIGNATURE.datasize` 与由签名长度决定的 `__LINKEDIT.filesize/vmsize`。签名必须是最终 LINKEDIT 尾部，原 vmsize 必须等于完整 filesize 向上对齐 16 KiB；不忽略新增的加载命令、不按 UUID 或名称猜测兼容。thin、FAT32、FAT64 容器可识别，架构重叠、截断、加密、代码/数据或接口改变均拒绝。整个应用仍须通过 strict deep 签名校验。复制前记录完整文件摘要，复制后逐个重核，并写入宿主来源记录。
+安装先核对版本门槛、strict deep 签名、唯一 arm64 Mach-O 结构、未加密与干净头部空间，再从三个宿主框架检查 19 个实际需要的导出定义。使用符号表或导出 trie，不执行原厂代码来探测，不要求另一种签名或版本登记新哈希。原始四文件完整摘要仍用于复制前后变化检测与来源记录。历史完整哈希和 `arm64-code-v1` 保留作诊断与回归，已不作为通用安装允许列表。
 
-这允许代码一致的签名和架构封装差异，不代表接受任意 Pixelmator 新版。Python 独立只读实现与生产 Swift 四个指纹一致；安装器正反测试覆盖签名长度改变、薄包/FAT64、代码和头部改变、异常 VM 尺寸、截断、重叠、整组混搭与记录缺失。`Scripts/host_fingerprint.py` 只输出，不自动修改允许列表。构建将未保护的新系统 API 使用视为错误；当前 tiled intermediate 接口从 macOS 26 起可用。见 `Evidence/platform-contract-verification.json` 与 `Evidence/installer-0.2.4-verification.json`。
+运行时验证必要类型、接口及 RAW 参数（280 字节）、效果（16 字节）、预览信息（16 字节）的 Swift value-witness 大小和 stride；另验证效果 JSON 编解码。图层和标识符通过公开 Swift Mirror 取得真实类引用，拒绝 nil、标量与未知字段，不再通过未公开 ivar 偏移取指针。取得引用后还检查实际资源/RAW 类型，读写前后继续核对原片、显影参数与效果回读。接口或布局不符时停止写入；忽略提示不会跳过这些保护。通用检查并非所有未来行为或光学精度的保证。
+
+打开照片后自动自检，文档载入且图层可读时显示结果；同一文档重复激活不重复弹出。首次结果中可选“以后不再自动提示”，后台检查仍执行。可从“镜头矫正 → 兼容性自检…”重新检查、恢复提示、复制不含照片/路径/EXIF 的诊断或打开 GitHub Issues。未打开照片时菜单说明先打开照片。该流程不自动提交 Issue 或上传原片。
+
+通过的进程接口检查在进程内复用；每张照片的引用检查仍独立进行。安装前摘要结果复用，复制后再次校验。构建把未保护的新系统 API 当成错误；7 个随包二进制均为 arm64，最低版本不高于 macOS 26.0，tiled intermediate 接口从 macOS 26 起可用。跨系统采用通用检查和公开 Issue 反馈机制，26 / 后续版本仍未逐一实测。
 
 ## 公开接口
 
@@ -16,7 +20,7 @@ ImageIO 读取 EXIF；CIRAWFilter 检查该原片的原生矫正能力；Core Im
 
 宿主由用户自己的应用本机复制后插入 LensPanel 加载命令；原应用不修改，未修改 DRM、许可校验或系统安全设置。分发包不含原厂代码。若加密或没有干净头部空间，安装停止。
 
-`LensLiveDocument.m`、`LensLiveSource.swift`、`LensNativeState.m` 通过已验证 Swift 符号、ObjC 类型和布局访问当前文档、原始 RAW 资源、显影缓冲、参数及效果。桥接检查主线程、4.3 版本、文档/RAW 类型、原始参数 value-witness 大小 0x118、资源类型、尺寸、变换和颜色空间；接口缺失时报告，不把普通图像当 RAW。完整 ABI 更新需要新契约和实机验证。
+`LensLiveDocument.m`、`LensLiveSource.swift`、`LensNativeState.m` 通过已验证 Swift 符号、ObjC 类型和布局访问当前文档、原始 RAW 资源、显影缓冲、参数及效果。桥接检查主线程、4.3+ 版本门槛、文档/RAW 类型、原始参数 value-witness 大小 0x118、资源类型、尺寸、变换和颜色空间；接口缺失时报告，不把普通图像当 RAW。必要接口或值布局确实改变时，需要修复桥接；普通版本号或签名变化不单独要求适配。
 
 效果采用 PTCustomCIEffect 包装；历史动态滤镜类名保留以兼容已保存效果。完整 RAW 与原有其他效果保留。几何映射使用原片方向映射和底向上坐标；紧凑网格仅在每一个全分辨率坐标误差不超过 0.001 px 时采用。
 

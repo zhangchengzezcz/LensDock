@@ -17,7 +17,7 @@ def package():
  source=distribution/f'LensDock-{RELEASE}-source.zip'
  dmg=distribution/f'LensDock-{RELEASE}-Retina.dmg'
  if source.exists() or dmg.exists():raise FileExistsError('Versioned assets already exist; use a new version or explicitly archive the candidate first')
- dirs=['Sources','Scripts','Resources','Vendor','Compatibility','Evidence','Tests','Documentation']
+ dirs=['Sources','Scripts','Resources','Vendor','Compatibility','Evidence','Tests','Documentation','.github']
  files=[ROOT/n for n in ['README.md','LICENSE','.gitignore','Version.json']]
  for name in dirs:
   files.extend(p for p in (ROOT/name).rglob('*') if p.is_file() and '__pycache__' not in p.parts and 'PrivateRAW' not in p.parts)
