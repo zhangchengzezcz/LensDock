@@ -1,0 +1,27 @@
+{
+  "version": "0.2.6-preview-build11",
+  "buildExit": 0,
+  "installerIsolationExit": 0,
+  "regularRegressionExit": 0,
+  "catalogAuditExit": 0,
+  "fullResolutionTests": "DEFAULT_EXPLICIT_SKIP_NOT_RERUN",
+  "realPhotoNewBridgeAndAutomaticNotice": "PENDING_LOCKED_MAC",
+  "updatedOwnedHostResourcesMatchBuiltInstaller": true,
+  "verifiedXMLFiles": 56,
+  "sha256": {
+    "Build/Development/build-0.2.6-build11.log": "539a0f9c9bba235bc146941757f6c30bcc3168f8cff6861b6b6b82a02f1709aa",
+    "Build/Development/installer-0.2.6-build11-verification.log": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56",
+    "Build/Development/tests-updated-db-20261020.log": "349babaa9205cc81fc5a039683420e25b20d10a5b735c28a4ab090a74c8a4732",
+    "Build/Development/update-research-build11.log": "2601467916524d2de686c1bea0b6bc21c1fda1e4a998274311b2e3e1079dcb26"
+  },
+  "newDMGCreated": false,
+  "lightroomEquivalentCoverageProven": false,
+  "builtCFBundleVersion": "11",
+  "builtPayloadSHA256": {
+    "MacOS/LensDock": "bf5db5e75ee99a1ac45d8d18cbd0b03b89caaa2ff771ef4ea682745336748ff7",
+    "Resources/Payload/LensPanel.dylib": "c005a673d43ddc33a954c946e7ac4030915083c0eac1aeb8e922c61a800b7355",
+    "Resources/Payload/LensLiveSource.dylib": "da6d1d222bd2d520dd3a4e8b0ff7b3dc3f73183ebcc9bafb4b8f9a896a828a0e",
+    "Resources/Payload/LensBridge/database-provenance.json": "891dbc548f3adb4bbdc88e0676557f7bce9a8bdd828c4d6cf37cbb9cc7ef0cb7",
+    "Resources/Payload/LensBridge/db/mil-tamron.xml": "6bd35c35312a5fcbc8e820616d9148223923f14192cafaca6ec4141b12d8c39a"
+  }
+}

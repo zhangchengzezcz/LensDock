@@ -1,0 +1,29 @@
+{
+  "mounts": [
+    "Nikon Z",
+    "Sony E"
+  ],
+  "calibratedFocalLengths": [
+    70,
+    100,
+    135,
+    200,
+    300
+  ],
+  "recordedAlternateLensIdentityUsed": true,
+  "scope": "Upstream coefficient/identity routing regression with controlled metadata; no A047 real RAW or optical-accuracy claim",
+  "sourceCommit": "3e14a04ba6a5c02a65fcce50d4f1987c705dc196",
+  "missingVignettingNeverInvented": true,
+  "realA047RAWTested": false,
+  "upstreamTermsChecked": true,
+  "newProfileCases": 10,
+  "genericNameAmbiguityRejected": true,
+  "version": "0.2.6-preview-build11",
+  "baselineDBExit": 1,
+  "updatedDBExit": 0,
+  "sourceSHA256": {
+    "Tests/verify-a047-profile-update.m": "da26fc03cec476c8c541694ae229b5c1f7ab8c4b53337155fb85ac70a537c9c0",
+    "Sources/Native/LensNativeProfileEngine.m": "36a54355bbb6629c86937c00f5d8fd062892737dfce6a09aca099e9cb82d132d",
+    "Resources/LensBridge/db/mil-tamron.xml": "6bd35c35312a5fcbc8e820616d9148223923f14192cafaca6ec4141b12d8c39a"
+  }
+}

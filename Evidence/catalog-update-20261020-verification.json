@@ -1,0 +1,110 @@
+{
+  "sourceCommit": "3e14a04ba6a5c02a65fcce50d4f1987c705dc196",
+  "matchedCount": 1564,
+  "lensEntries": 1572,
+  "failureCount": 3,
+  "cameraEntries": 1057,
+  "scope": "Database-derived identity aliases and interpolation witnesses in small native coordinates at each recorded aspect ratio; not real RAW or optical accuracy coverage",
+  "failures": [
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 7.2,
+        "FNumber": 8,
+        "Make": "Fujifilm",
+        "Model": "FinePix F810",
+        "LensModel": "FinePix F810 & compatibles (Standard)"
+      },
+      "id": "compact-fujifilm.xml:5",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "FinePix F810 & compatibles (Standard)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 7.2,
+        "FNumber": 8,
+        "Make": "Fujifilm",
+        "Model": "FinePix F810",
+        "LensModel": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+      },
+      "id": "compact-fujifilm.xml:6",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+    },
+    {
+      "metadata": {
+        "FocusDistance": 1000,
+        "FocalLength": 5.1,
+        "FNumber": 8,
+        "Make": "Panasonic",
+        "Model": "DMC-LX3",
+        "LensModel": "DMC-LX3 & compatibles (Standard)"
+      },
+      "id": "compact-panasonic.xml:1",
+      "matchedLens": "",
+      "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+      "expectedLens": "DMC-LX3 & compatibles (Standard)"
+    }
+  ],
+  "calibrationVariantDifferenceCount": 0,
+  "calibrationVariantDifferences": [],
+  "uniqueMakerModels": 1473,
+  "skipped": [
+    {
+      "id": "generic.xml:0",
+      "reason": "no-optical-calibration-point",
+      "lens": "Rectilinear 10-1000mm f/1.0"
+    },
+    {
+      "id": "generic.xml:1",
+      "reason": "no-optical-calibration-point",
+      "lens": "Fisheye 8-20mm f/1.0"
+    },
+    {
+      "id": "generic.xml:2",
+      "reason": "no-optical-calibration-point",
+      "lens": "Panoramic 10-100mm f/1.0"
+    },
+    {
+      "id": "misc.xml:131",
+      "reason": "no-compatible-calibration-crop-camera",
+      "lens": "Pergear 7.5mm f/2.8"
+    },
+    {
+      "id": "misc.xml:132",
+      "reason": "no-compatible-calibration-crop-camera",
+      "lens": "Yongnuo 25mm f/1.7 II"
+    }
+  ],
+  "requestCount": 1567,
+  "version": "0.2.6-preview-build11",
+  "realRAWCoverageClaim": false,
+  "newRecordID": "mil-tamron.xml:22",
+  "newRecordResult": {
+    "id": "mil-tamron.xml:22",
+    "cameraMethod": "exact-camera-database-alias",
+    "cameraMount": "Generic",
+    "selectedProjection": 1,
+    "selectedAspectRatio": 1.5,
+    "requestedAspectRatio": 1.5,
+    "cameraCrop": 1,
+    "tcaAvailable": true,
+    "requestedCrop": 1,
+    "calibrationVariantMatchesWitness": true,
+    "camera": "Crop-factor 1.0 (Full Frame)",
+    "distortionAvailable": true,
+    "selectedCrop": 1,
+    "requestedProjection": 1,
+    "vignettingAvailable": false,
+    "lens": "Tamron 70-300mm F/4.5-6.3 Di III RXD",
+    "identityMethod": "normalized-exact-database-alias"
+  },
+  "resultSHA256": "dbe7a57edb634966bb04530453e2849b7c2be9fcd2949d3a46099b1fa9e093c4",
+  "logSHA256": "ff0b003436138f4d1c7101b41b9407b78fadfeec1ad07483422e22b541013d6b",
+  "databaseProvenanceSHA256": "891dbc548f3adb4bbdc88e0676557f7bce9a8bdd828c4d6cf37cbb9cc7ef0cb7",
+  "failureIDsUnchangedFromHistoricalAudit": true,
+  "historicalAudit": "Evidence/identity-sensor-catalog-verification.json"
+}

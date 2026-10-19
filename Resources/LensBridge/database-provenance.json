@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/lensfun/lensfun",
+  "sourceCommit": "3e14a04ba6a5c02a65fcce50d4f1987c705dc196",
+  "previousSourceCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
+  "databaseFormat": 1,
+  "officialExportURL": "https://lensfun.github.io/db/version_1.tar.bz2",
+  "officialExportSHA256": "9ea4a38ee3c93f0eff057f0fc69ea3ea9f2587af6af0c70412b7c5d5360e5017",
+  "updatedFiles": {
+    "mil-tamron.xml": {
+      "sha256": "6bd35c35312a5fcbc8e820616d9148223923f14192cafaca6ec4141b12d8c39a",
+      "previousSHA256": "03dbdc7c59c96e9cefc55fbd4cc56af1174cec96704def68177f2acb3946ce36"
+    }
+  },
+  "otherXMLFilesKeptByteIdentical": 55,
+  "allXMLSemanticsMatchOfficialExport": true,
+  "change": "One new upstream Tamron A047Z/E lens record; five distortion and five TCA points; no vignetting data. Existing calibration records unchanged.",
+  "cameraRecords": 1057,
+  "lensRecords": 1572,
+  "actualOpticalValidation": false
+}
