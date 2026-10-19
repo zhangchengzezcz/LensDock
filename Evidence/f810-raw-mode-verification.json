@@ -1,0 +1,37 @@
+{
+  "manual": {
+    "document": "BL00411-200(1)",
+    "printedPage": 91,
+    "title": "FUJIFILM FinePix F810 Owner's Manual",
+    "pdfPageIndex": 45,
+    "url": "https://www.instructionsmanuals.com/sites/default/files/2019-06/Fujifilm-F810-en.pdf",
+    "finding": "Widescreen photography and digital zoom are unavailable in CCD-RAW mode. Standard photography uses 4:3 (printed p20)."
+  },
+  "previewSizeNotUsed": true,
+  "cameraCropFactor": 4.5,
+  "widescreenOutputRejected": true,
+  "scope": "Documented RAW capture-mode restriction plus controlled metadata cases; not a captured F810 RAW or optical validation",
+  "realF810RAWTested": false,
+  "documentedStandardModeSelected": true,
+  "explicitLensPlansChecked": 8,
+  "missingHeaderOrUnknownLensStillRejected": true,
+  "parserFixtures": {
+    "headerAndEmbeddedModelMismatchRejected": true,
+    "upstreamContainerSHA256": "e12e30bd0cf5f160b82b93f043696c04d1d5f4628f1fdd19abdab9f8328d8bf0"
+  },
+  "opticalCoefficientsChanged": false,
+  "regression": {
+    "baselineCommit": "b2a56a2b8552951e5039245974bfe2e2cd0abaa7",
+    "baselineExit": 2,
+    "currentExit": 0,
+    "scope": "Explicit-lens routing at documented F810 RAW standard mode; baseline plan rejected",
+    "baselineExecutableSHA256": "40f18abfba814bddaceace85db39a6d77f605f5f3ed39430959b569232691fe4",
+    "currentExecutableSHA256": "cf3d8343018f7fb576cbffc2d474eace263e976b940dd4e82e6ac5e0e8ae6978"
+  },
+  "sourceSHA256": {
+    "Sources/Native/LensCaptureModeEvidence.h": "f2fe1923f6981586748ca0804abf5bb13b1b29b4dacd2f5af20d657ace2f42fa",
+    "Sources/Native/LensNativeProfileEngine.m": "36a54355bbb6629c86937c00f5d8fd062892737dfce6a09aca099e9cb82d132d",
+    "Tests/verify-f810-raw-mode.m": "36c259ad9de218767a43d2b0e676c470094cde2f9d79b46b0f968df0025f32af",
+    "Tests/Fixtures/F810-raw-mode.json": "0c4ffcaa1d5aa243d9e1e09547daf27779b40a9b36d043b4e37cfd5069ddff71"
+  }
+}

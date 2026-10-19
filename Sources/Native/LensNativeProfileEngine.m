@@ -107,8 +107,8 @@ static const lfCamera*selectCamera(const lfDatabase*db,const lfCamera**candidate
  NSDictionary*capture=LensCaptureModeEvidence(metadata[@"rawCaptureMetadata"]);
  if(capture&&[norm(capture[@"cameraModel"])isEqual:norm(text(metadata[@"Model"]))]){
   const lfCamera*selected=NULL;NSUInteger count=0;BOOL conflict=NO;
-  for(NSValue*v in exact){const lfCamera*c=v.pointerValue;if(c->Variant&&[norm(@(c->Variant))isEqual:norm(capture[@"variant"])]){if(selected&&!sameCameraOptics(selected,c))conflict=YES;if(!selected)selected=c;count++;}}
-  if(selected&&!conflict){*method=@"raw-sensor-active-area-aspect-mode";*evidenceKey=@"rawCaptureMetadata";*equivalentCount=count;return selected;}
+  for(NSValue*v in exact){const lfCamera*c=v.pointerValue;BOOL matches=c->Variant?[norm(@(c->Variant))isEqual:norm(capture[@"variant"])]:[capture[@"variant"]isEqual:@"standard"];if(matches){if(selected&&!sameCameraOptics(selected,c))conflict=YES;if(!selected)selected=c;count++;}}
+  if(selected&&!conflict){*method=capture[@"cameraSelectionMethod"]?:@"raw-sensor-active-area-aspect-mode";*evidenceKey=@"rawCaptureMetadata";*equivalentCount=count;return selected;}
  }
  // Joint evidence is accepted only from recorded exact lens identities, never
  // focal similarity or a nearest lens. Distinct crop/mount contexts stay errors.
@@ -224,7 +224,17 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
 }
 NSDictionary*LensReadRawCaptureMetadata(NSURL*raw,NSURL*tool,NSError**error){
  NSArray*rows=runExifArguments(raw,tool,@[@"-j",@"-n",@"-G1",@"-a",@"-FileType",@"-IFD0:Make",@"-IFD0:Model",@"-IFD0:SensorWidth",@"-IFD0:SensorHeight",@"-IFD0:SensorTopBorder",@"-IFD0:SensorLeftBorder",@"-IFD0:SensorBottomBorder",@"-IFD0:SensorRightBorder",@"-IFD0:CropTop",@"-IFD0:CropLeft",@"-IFD0:CropBottom",@"-IFD0:CropRight",@"-ExifIFD:DigitalZoomRatio",@"-Panasonic:ConversionLens"],error);
- if(!rows.count)return nil;NSMutableDictionary*tags=[rows[0]mutableCopy];[tags removeObjectForKey:@"SourceFile"];return tags;
+ if(!rows.count)return nil;NSMutableDictionary*tags=[rows[0]mutableCopy];[tags removeObjectForKey:@"SourceFile"];
+ if([tags[@"File:FileType"]isEqual:@"RAF"]){
+  NSFileHandle*file=[NSFileHandle fileHandleForReadingFromURL:raw error:nil];NSData*header=[file readDataUpToLength:60 error:nil];[file closeFile];
+  if(header.length==60&&!memcmp(header.bytes,"FUJIFILMCCD-RAW ",16)){
+   NSString*model=[[NSString alloc]initWithBytes:(const char*)header.bytes+28 length:32 encoding:NSASCIIStringEncoding];
+   NSMutableCharacterSet*padding=[NSCharacterSet.whitespaceAndNewlineCharacterSet mutableCopy];[padding formUnionWithCharacterSet:NSCharacterSet.controlCharacterSet];
+   model=[model stringByTrimmingCharactersInSet:padding];
+   if(model.length)tags[@"LensDock:RAFHeaderModel"]=model;
+  }
+ }
+ return tags;
 }
 NSDictionary*LensReadRawMetadata(NSURL*rawURL,NSURL*tool,NSError**error){
  CGImageSourceRef source=CGImageSourceCreateWithURL((__bridge CFURLRef)rawURL,NULL);
@@ -264,7 +274,7 @@ NSDictionary*LensReadRawMetadata(NSURL*rawURL,NSURL*tool,NSError**error){
  }
  // Do not retain two incompatible encodings under the same EXIF key.
  [m removeObjectForKey:@"ApertureValue"];
- if([norm(text(m[@"Model"]))isEqual:@"dmclx3"]){NSError*captureError=nil;NSDictionary*tags=LensReadRawCaptureMetadata(rawURL,tool,&captureError);if(tags)m[@"rawCaptureMetadata"]=tags;if(captureError)m[@"captureMetadataWarning"]=captureError.localizedDescription;}
+ if([@[@"dmclx3",@"finepixf810"]containsObject:norm(text(m[@"Model"]))]){NSError*captureError=nil;NSDictionary*tags=LensReadRawCaptureMetadata(rawURL,tool,&captureError);if(tags)m[@"rawCaptureMetadata"]=tags;if(captureError)m[@"captureMetadataWarning"]=captureError.localizedDescription;}
  if(makerError){
   if(!text(m[@"LensModel"]).length&&![m[@"nativeCorrectionSupport"][@"lensCorrectionSupported"]boolValue]){if(error)*error=makerError;return nil;}
   m[@"metadataWarning"]=makerError.localizedDescription;

@@ -1,10 +1,19 @@
 #pragma once
 #import <Foundation/Foundation.h>
 #import <math.h>
-// Limited to the verified Panasonic LX3 RW2 tag layout. Preview dimensions,
-// canvas aspect, JPEG/XMP crops and 35mm focal estimates are not mode evidence.
+// Original RAW evidence only. Preview/canvas dimensions are not mode evidence.
 static NSDictionary*LensCaptureModeEvidence(NSDictionary*tags){
  if(![tags isKindOfClass:NSDictionary.class])return nil;
+ // FinePix F810 owner's manual BL00411-200(1), printed p91: widescreen
+ // and digital zoom are unavailable in CCD-RAW. Require the RAF header model
+ // as well as embedded EXIF; do not apply this rule to JPEG/DNG or other bodies.
+ if([tags[@"File:FileType"]isEqual:@"RAF"]&&[tags[@"IFD0:Make"]isKindOfClass:NSString.class]&&[[tags[@"IFD0:Make"]uppercaseString]isEqual:@"FUJIFILM"]&&
+    [tags[@"IFD0:Model"]isKindOfClass:NSString.class]&&[[tags[@"IFD0:Model"]uppercaseString]isEqual:@"FINEPIX F810"]&&
+    [tags[@"LensDock:RAFHeaderModel"]isKindOfClass:NSString.class]&&[[tags[@"LensDock:RAFHeaderModel"]uppercaseString]isEqual:@"FINEPIX F810"]){
+  id zoom=tags[@"ExifIFD:DigitalZoomRatio"];
+  if(zoom&&(![zoom isKindOfClass:NSNumber.class]||!isfinite([zoom doubleValue])||[zoom doubleValue]<0||[zoom doubleValue]>1.00001))return nil;
+  return @{@"cameraModel":@"FinePix F810",@"variant":@"standard",@"aspectRatio":@(4.0/3),@"source":@"RAF header and camera CCD-RAW mode restriction (owner manual p91)",@"cameraSelectionMethod":@"raw-format-documented-camera-mode"};
+ }
  if(![tags[@"File:FileType"]isEqual:@"RW2"]||![tags[@"IFD0:Model"]isKindOfClass:NSString.class]||[[tags[@"IFD0:Model"]uppercaseString]compare:@"DMC-LX3"]!=NSOrderedSame||![tags[@"IFD0:Make"]isKindOfClass:NSString.class]||![[tags[@"IFD0:Make"]lowercaseString]hasPrefix:@"panasonic"])return nil;
  id zoom=tags[@"ExifIFD:DigitalZoomRatio"];if(zoom&&(![zoom isKindOfClass:NSNumber.class]||!isfinite([zoom doubleValue])||[zoom doubleValue]<0||[zoom doubleValue]>1.00001))return nil;
  id conversion=tags[@"Panasonic:ConversionLens"];if(conversion&&(![conversion isKindOfClass:NSNumber.class]||[conversion intValue]!=1||[conversion doubleValue]!=1))return nil;

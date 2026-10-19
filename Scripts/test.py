@@ -8,6 +8,7 @@ for name,target in [('lib',ROOT/'Vendor/Lib'),('resources',ROOT/'Resources/LensB
 shutil.copy2(ROOT/'Resources/native-effects-template.json',out/'native-effects-template.json')
 native=ROOT/'Sources/Native'
 groups={
+ 'verify-photo-open-notice':['LensCompatibilityNotice.m'],
  'compare-rendered-images-16':[],
  'verify-compact-maps':['LensNativeProfileEngine.m'],
  'verify-calibration-image':['LensCalibrationImage.m'],
@@ -23,6 +24,7 @@ groups={
  'verify-focus-distance-range':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m','LensRecommendationPolicy.m'],
  'verify-capture-parameters':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-capture-mode':['LensNativeProfileEngine.m'],
+ 'verify-f810-raw-mode':['LensNativeProfileEngine.m'],
  'verify-effect-replacement':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-profile-selection':['LensNativeProfileEngine.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-recorded-aliases':['LensNativeProfileEngine.m'],

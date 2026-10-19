@@ -1,0 +1,17 @@
+{
+  "version": "0.2.6-preview-build10",
+  "goal": "Pixelmator integrated, RAW-preserving independent lens correction with automatic matching as comprehensive as Lightroom Classic",
+  "goalComplete": false,
+  "compatibilityPolicy": "Apple Silicon, macOS 26+, Pixelmator Pro 4.3+ capability checks; future versions not individually certified",
+  "implementedLatestRequest": "Photo-open automatic compatibility notice; persistent suppression; manual recheck; suppression keeps checks active",
+  "headlessNoticeRegressionPassed": true,
+  "realPhotoNewReferenceBridgeAndNoticeAcceptance": "PENDING_LOCKED_MAC",
+  "lightroomEquivalentCoverage": "NOT_PROVEN",
+  "broadRealOpticalValidation": "INCOMPLETE",
+  "developerIDAndNotarization": "MISSING",
+  "publicSourceAndIssues": true,
+  "currentSourceVersion": "0.2.6 build 10",
+  "frozenDesktopDMGCandidate": "0.2.5 build 9",
+  "completionDefinition": "Documentation/Completion.md",
+  "historicalAuditNote": "Evidence/completion-audit-0.2.5.json describes a narrower compatibility workstream, not the complete goal"
+}

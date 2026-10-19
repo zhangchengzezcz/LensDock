@@ -4,7 +4,7 @@ import subprocess,plistlib,shutil,hashlib,json
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=json.loads((ROOT/'Version.json').read_text())
 RELEASE=VERSION['version']+'-'+VERSION['channel']
-SOURCES=('LensPanel.m','LensProfilePicker.m','LensVignettingFilter.m','LensCalibrationImage.m','LensConstrainedCrop.m','LensNativeDocument.m','LensNativeProfileEngine.m','LensCornerAssessment.m','LensNativeState.m','LensCorrectionSettings.m','LensLiveDocument.m','LensRecommendationPolicy.m','LensHostDiagnostics.m','LensHostCompatibility.m')
+SOURCES=('LensPanel.m','LensCompatibilityNotice.m','LensProfilePicker.m','LensVignettingFilter.m','LensCalibrationImage.m','LensConstrainedCrop.m','LensNativeDocument.m','LensNativeProfileEngine.m','LensCornerAssessment.m','LensNativeState.m','LensCorrectionSettings.m','LensLiveDocument.m','LensRecommendationPolicy.m','LensHostDiagnostics.m','LensHostCompatibility.m')
 def call(*args):subprocess.run(list(args),check=True)
 def build():
  native=ROOT/'Sources/Native';payload=ROOT/'Build/Payload';payload.mkdir(parents=True,exist_ok=True)

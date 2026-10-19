@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Documented RAW capture-mode restriction plus controlled metadata cases; not a captured F810 RAW or optical validation",
+  "manual": {
+    "title": "FUJIFILM FinePix F810 Owner's Manual",
+    "document": "BL00411-200(1)",
+    "url": "https://www.instructionsmanuals.com/sites/default/files/2019-06/Fujifilm-F810-en.pdf",
+    "printedPage": 91,
+    "pdfPageIndex": 45,
+    "finding": "Widescreen photography and digital zoom are unavailable in CCD-RAW mode. Standard photography uses 4:3 (printed p20)."
+  },
+  "manufacturerSpecification": "https://www.fujifilm.co.jp/news_r/nrj1240b.html",
+  "tags": {
+    "File:FileType": "RAF",
+    "IFD0:Make": "FUJIFILM",
+    "IFD0:Model": "FinePix F810",
+    "LensDock:RAFHeaderModel": "FinePix F810"
+  },
+  "expectedVariant": "standard",
+  "expectedAspectRatio": 1.3333333333333333,
+  "expectedCameraCropFactor": 4.5,
+  "realF810RAWAvailable": false
+}

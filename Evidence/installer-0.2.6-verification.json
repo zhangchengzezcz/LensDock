@@ -1,0 +1,16 @@
+{
+  "version": "0.2.6-preview-build10",
+  "scope": "Headless isolated installation and payload integrity; does not launch or GUI-validate Pixelmator",
+  "exitCode": 0,
+  "installerLogSHA256": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56",
+  "buildLogSHA256": "539a0f9c9bba235bc146941757f6c30bcc3168f8cff6861b6b6b82a02f1709aa",
+  "payloadSHA256": {
+    "LensPanel.dylib": "c005a673d43ddc33a954c946e7ac4030915083c0eac1aeb8e922c61a800b7355",
+    "LensLiveSource.dylib": "da6d1d222bd2d520dd3a4e8b0ff7b3dc3f73183ebcc9bafb4b8f9a896a828a0e"
+  },
+  "installerSHA256": "f806e2d4db5b0759d26d4a1e3e74b77d2701b864f446a4085f8043c7fe98e0a8",
+  "vendorUnchanged": true,
+  "strictSignaturePassed": true,
+  "realPhotoGUIValidated": false,
+  "newDMGCreated": false
+}
