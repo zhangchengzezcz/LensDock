@@ -7,6 +7,10 @@ struct DockError: LocalizedError {
     var errorDescription: String? { message }
     init(_ message: String) { self.message = message }
 }
+struct SourceVariant: Codable {
+    let id: String
+    let fileSHA256: [String: String]
+}
 struct Compatibility: Codable {
     let schema: Int
     let vendorBundleIdentifier: String
@@ -16,6 +20,9 @@ struct Compatibility: Codable {
     let minimumOS: String
     let architecture: String
     let fileSHA256: [String: String]
+    let sourceVariants: [SourceVariant]?
+    let arm64CodeSHA256: [String: String]?
+    let codeFingerprintAlgorithm: String?
 }
 let hostID = "local.lensdock.pixelmator"
 let hostName = "Pixelmator LensDock Preview.app"
@@ -28,6 +35,84 @@ func installedHostIsCurrent(_ info: [String: Any], version: String, expectedHash
     !expectedHash.isEmpty && !actualHash.isEmpty && info["LensDockNativeModuleSHA256"] as? String == actualHash
 }
 func lensDigest(_ data: Data) -> String { SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined() }
+func machNumber(_ data: Data, _ offset: Int, _ width: Int = 4, _ big: Bool = false) throws -> UInt64 {
+    guard offset >= 0, width > 0, width <= 8, width <= data.count, offset <= data.count-width else { throw DockError("Mach-O 指纹数据越界。") }
+    var value: UInt64 = 0
+    for i in 0..<width { value |= UInt64(data[offset+i]) << ((big ? width-1-i : i)*8) }
+    return value
+}
+func arm64Image(_ input: Data) throws -> Data {
+    func number(_ data: Data, _ offset: Int, _ width: Int = 4, _ big: Bool = false) throws -> UInt64 { try machNumber(data,offset,width,big) }
+    var image = input
+    let magic = try number(input,0,4,true)
+    if magic == 0xcafebabe || magic == 0xcafebabf {
+        let count = Int(try number(input,4,4,true)), stride = magic == 0xcafebabf ? 32 : 20
+        guard count > 0, count <= 16, 8+count*stride <= input.count else { throw DockError("无效通用架构表。") }
+        var selected: Range<Int>?, ranges: [Range<Int>] = []
+        for i in 0..<count {
+            let p = 8+i*stride, wide = stride == 32
+            let start = try number(input,p+8,wide ? 8 : 4,true)
+            let size = try number(input,p+(wide ? 16 : 12),wide ? 8 : 4,true)
+            let align = try number(input,p+(wide ? 24 : 16),4,true)
+            guard align <= 31, start >= UInt64(8+count*stride), size >= 32,
+                  start <= UInt64(input.count), size <= UInt64(input.count)-start,
+                  start % (UInt64(1)<<align) == 0 else { throw DockError("架构范围或对齐无效。") }
+            let range = Int(start)..<Int(start+size)
+            guard ranges.allSatisfy({ !$0.overlaps(range) }) else { throw DockError("架构范围重叠。") }
+            ranges.append(range)
+            if try number(input,p,4,true) == 0x100000c {
+                guard selected == nil else { throw DockError("重复 arm64 架构。") }
+                selected = range
+            }
+        }
+        guard let selected else { throw DockError("缺少 arm64 架构。") }
+        image = Data(input[selected])
+    }
+    guard try number(image,0) == 0xfeedfacf, try number(image,4) == 0x100000c else { throw DockError("无效 arm64 指纹输入。") }
+    return image
+}
+// v1 binds every pre-signature byte except signature-dependent lengths.
+func arm64CodeDigest(_ input: Data) throws -> String {
+    func number(_ data: Data, _ offset: Int, _ width: Int = 4, _ big: Bool = false) throws -> UInt64 { try machNumber(data,offset,width,big) }
+    var image = try arm64Image(input)
+    let count = Int(try number(image,16)), size = Int(try number(image,20))
+    guard count > 0, count <= 4096, size >= count*8, size <= image.count-32 else { throw DockError("无效加载表。") }
+    var p = 32, signature: (Int,Int,Int)?, link: (Int,Int,Int,Int)?
+    for _ in 0..<count {
+        let command = try number(image,p), length = Int(try number(image,p+4))
+        guard length >= 8, length % 8 == 0, p <= 32+size-length else { throw DockError("加载表越界。") }
+        if command == 0x2c {
+            guard length == 24, try number(image,p+16) == 0 else { throw DockError("不能集成加密版本。") }
+        }
+        if command == 0x1d {
+            guard length == 16, signature == nil else { throw DockError("无效签名命令。") }
+            signature = (p,Int(try number(image,p+8)),Int(try number(image,p+12)))
+        }
+        if command == 0x19 {
+            guard length >= 72 else { throw DockError("无效段命令。") }
+            let name = Data(image[p+8..<p+24])
+            if name == Data(Array("__LINKEDIT".utf8)+Array(repeating:0,count:6)) {
+                guard link == nil, length == 72, try number(image,p+64) == 0 else { throw DockError("无效 LINKEDIT。") }
+                let offset = try number(image,p+40,8), bytes = try number(image,p+48,8), vm = try number(image,p+32,8)
+                guard offset <= UInt64(image.count), bytes <= UInt64(image.count)-offset,
+                      vm == (bytes+16383) & ~UInt64(16383) else { throw DockError("LINKEDIT 签名尺寸无效。") }
+                link = (p,Int(offset),Int(bytes),Int(vm))
+            }
+        }
+        p += length
+    }
+    guard p == 32+size, let (sigCommand,offset,bytes) = signature, let (linkCommand,start,linkBytes,_) = link,
+          offset >= p, offset >= start, bytes > 0, offset <= image.count,
+          bytes == image.count-offset, start+linkBytes == image.count else { throw DockError("签名必须位于最终 LINKEDIT 尾部。") }
+    image = Data(image[..<offset])
+    func put(_ value: UInt64, _ position: Int, _ width: Int) {
+        for i in 0..<width { image[position+i] = UInt8(truncatingIfNeeded:value >> (i*8)) }
+    }
+    put(0,sigCommand+12,4)
+    put(UInt64(offset-start),linkCommand+48,8)
+    put((UInt64(offset-start)+16383) & ~UInt64(16383),linkCommand+32,8)
+    return lensDigest(image)
+}
 func run(_ executable: String, _ arguments: [String]) throws -> Data {
     let task = Process(), pipe = Pipe()
     task.executableURL = URL(fileURLWithPath: executable); task.arguments = arguments
@@ -49,20 +134,7 @@ func patchedExecutable(_ input: Data) throws -> Data {
         let bytes = [UInt32](data[offset..<offset+4].map { UInt32($0) })
         return big ? bytes[0]<<24 | bytes[1]<<16 | bytes[2]<<8 | bytes[3] : bytes[0] | bytes[1]<<8 | bytes[2]<<16 | bytes[3]<<24
     }
-    guard try word(input, 0, true) == 0xcafebabe else { throw DockError("可执行文件格式不属于已验证版本。") }
-    let count = Int(try word(input, 4, true))
-    guard count > 0, count <= 16, 8 + count * 20 <= input.count else { throw DockError("无效架构表。") }
-    var ranges: [Range<Int>] = []
-    for i in 0..<count {
-        let base = 8 + i * 20
-        if try word(input, base, true) == 0x100000c {
-            let start = Int(try word(input, base+8, true)), size = Int(try word(input, base+12, true))
-            guard start >= 8 + count * 20, size >= 32, start <= input.count-size else { throw DockError("架构范围无效。") }
-            ranges.append(start..<start+size)
-        }
-    }
-    guard ranges.count == 1 else { throw DockError("需要唯一的 Apple 芯片架构。") }
-    var image = Data(input[ranges[0]])
+    var image = try arm64Image(input)
     guard try word(image, 0) == 0xfeedfacf, try word(image, 4) == 0x100000c else { throw DockError("无效的 arm64 Mach-O。") }
     let commands = Int(try word(image, 16)), size = Int(try word(image, 20))
     guard commands <= 4096, size >= 8*commands, size <= image.count-32 else { throw DockError("无效加载命令。") }
@@ -103,7 +175,41 @@ struct Installer {
         self.resources = resources
         compatibility = try JSONDecoder().decode(Compatibility.self, from: Data(contentsOf: resources.appendingPathComponent("Pixelmator-4.3.json")))
     }
-    func validate(_ source: URL) throws -> [String: Any] {
+    func verifiedSourceHashes(_ source: URL) throws -> [String: String] {
+        let protectedPaths: Set<String> = [
+            "Contents/MacOS/"+compatibility.executable,
+            "Contents/Frameworks/PTFoundation.framework/Versions/A/PTFoundation",
+            "Contents/Frameworks/PXMEngine.framework/Versions/A/PXMEngine",
+            "Contents/Frameworks/PXMKit.framework/Versions/A/PXMKit"
+        ]
+        let candidates = [compatibility.fileSHA256] + (compatibility.sourceVariants ?? []).map(\.fileSHA256)
+        let hexadecimal = CharacterSet(charactersIn: "0123456789abcdef")
+        guard candidates.allSatisfy({ candidate in
+            Set(candidate.keys) == protectedPaths && candidate.values.allSatisfy {
+                $0.count == 64 && $0.unicodeScalars.allSatisfy { hexadecimal.contains($0) }
+            }
+        }) else { throw DockError("兼容记录不完整，已停止安装。") }
+        var actual: [String: String] = [:]
+        for path in protectedPaths {
+            actual[path] = lensDigest(try Data(contentsOf: source.appendingPathComponent(path), options: .mappedIfSafe))
+        }
+        // Match a complete, independently verified source variant. Do not mix
+        // individually allowed files from different variants during validation.
+        if !candidates.contains(actual) {
+            guard compatibility.codeFingerprintAlgorithm == "arm64-code-v1",
+                  let expected = compatibility.arm64CodeSHA256, Set(expected.keys) == protectedPaths,
+                  expected.values.allSatisfy({ $0.count == 64 && $0.unicodeScalars.allSatisfy { hexadecimal.contains($0) } }) else {
+                throw DockError("四个兼容接口文件不属于同一套已验证版本。应用可能已更新，请等待适配。")
+            }
+            for path in protectedPaths {
+                guard try arm64CodeDigest(Data(contentsOf:source.appendingPathComponent(path),options:.mappedIfSafe)) == expected[path] else {
+                    throw DockError("应用代码或兼容接口发生变化，请等待适配。")
+                }
+            }
+        }
+        return actual
+    }
+    func validatedSource(_ source: URL) throws -> (info: [String: Any], hashes: [String: String]) {
         #if !arch(arm64)
         throw DockError("预览版仅支持 Apple 芯片 Mac。")
         #else
@@ -113,18 +219,18 @@ struct Installer {
               info["CFBundleShortVersionString"] as? String == compatibility.version,
               info["CFBundleVersion"] as? String == compatibility.build,
               info["CFBundleExecutable"] as? String == compatibility.executable else { throw DockError("仅接受已验证的 Pixelmator Pro Creator Studio 4.3（3.0.75）。其他版本暂不能集成。") }
-        for (path,expected) in compatibility.fileSHA256 {
-            let data = try Data(contentsOf: source.appendingPathComponent(path), options: .mappedIfSafe)
-            guard lensDigest(data) == expected else { throw DockError("兼容接口校验不通过：\(URL(fileURLWithPath:path).lastPathComponent)。应用可能已更新，请等待适配。") }
-        }
+        let hashes = try verifiedSourceHashes(source)
         _ = try run("/usr/bin/codesign", ["--verify", "--deep", "--strict", source.path])
         _ = try patchedExecutable(Data(contentsOf: source.appendingPathComponent("Contents/MacOS/"+compatibility.executable)))
-        return info
+        return (info,hashes)
         #endif
     }
+    func validate(_ source: URL) throws -> [String: Any] { try validatedSource(source).info }
     func install(_ source: URL, applicationsDirectory: URL? = nil, progress: @escaping (String)->Void) throws -> URL {
         progress("检查本机 Pixelmator 与兼容接口…")
-        var info = try validate(source)
+        let verified = try validatedSource(source)
+        var info = verified.info
+        let sourceHashes = verified.hashes
         let applications = applicationsDirectory ?? fm.homeDirectoryForCurrentUser.appendingPathComponent("Applications",isDirectory:true)
         let destination = applications.appendingPathComponent(hostName,isDirectory:true)
         guard !fm.fileExists(atPath: destination.path) else { throw DockError("预览宿主已存在。可先打开；重新安装前请将旧宿主移到废纸篓。已有文件不会被覆盖。") }
@@ -135,7 +241,7 @@ struct Installer {
         progress("从你本机的应用建立独立预览宿主…")
         _ = try run("/usr/bin/ditto",[source.path,staging.path])
         // Verify the copied critical bytes too; refuse source updates during copy.
-        for (path,expected) in compatibility.fileSHA256 {
+        for (path,expected) in sourceHashes {
             guard lensDigest(try Data(contentsOf:staging.appendingPathComponent(path),options:.mappedIfSafe)) == expected else { throw DockError("复制期间应用内容变化，已停止安装。") }
         }
         let executable = staging.appendingPathComponent("Contents/MacOS/"+compatibility.executable)
@@ -146,6 +252,7 @@ struct Installer {
         }
         info["CFBundleIdentifier"] = hostID; info["CFBundleName"] = "Pixelmator LensDock Preview"; info["CFBundleDisplayName"] = "Pixelmator LensDock Preview"
         info["LensDockPreviewVersion"] = previewVersion; info["LensDockPayloadSHA256"] = lensDigest(try Data(contentsOf:payload.appendingPathComponent("LensPanel.dylib")))
+        info["LensDockSourceFileSHA256"] = sourceHashes
         let infoURL = staging.appendingPathComponent("Contents/Info.plist")
         try PropertyListSerialization.data(fromPropertyList:info,format:.xml,options:0).write(to:infoURL)
         var entitlements = try PropertyListSerialization.propertyList(from:run("/usr/bin/codesign",["-d","--entitlements","-","--xml",source.path]),format:nil) as? [String:Any] ?? [:]
@@ -196,7 +303,7 @@ final class DockApp: NSObject, NSApplicationDelegate {
         _ = label("本机 Pixelmator",NSRect(x:32,y:230,width:390,height:22),13,.medium)
         sourceLabel=label(source.lastPathComponent,NSRect(x:32,y:200,width:385,height:24),12);sourceLabel.lineBreakMode = .byTruncatingMiddle;sourceLabel.setAccessibilityLabel("已选择的 Pixelmator 应用")
         chooseButton=NSButton(title:"选择应用…",target:self,action:#selector(choose));chooseButton.frame=NSRect(x:428,y:199,width:120,height:30);root.addSubview(chooseButton)
-        let note=label("需要 Pixelmator 4.3（3.0.75）与 Apple 芯片 Mac。仅本机建立独立宿主；正式覆盖范围和稳定性仍在验证。",NSRect(x:32,y:134,width:510,height:54),12);note.textColor = .secondaryLabelColor
+        let note=label("需要 macOS 26 或更新版本、Apple 芯片与 Pixelmator 4.3（3.0.75）。当前实测 macOS 27.2，其他系统版本仍待实测。",NSRect(x:32,y:134,width:510,height:54),12);note.textColor = .secondaryLabelColor
         status=label("选择本机应用后安装。首次完成后通过 LensDock 打开。",NSRect(x:54,y:88,width:490,height:42),12);status.isSelectable=true
         spinner=NSProgressIndicator(frame:NSRect(x:30,y:107,width:16,height:16));spinner.style = .spinning;spinner.isIndeterminate=true;spinner.isDisplayedWhenStopped=false;root.addSubview(spinner)
         installButton=NSButton(title:"安装预览宿主",target:self,action:#selector(install));installButton.frame=NSRect(x:32,y:30,width:190,height:34);installButton.bezelStyle = .rounded;root.addSubview(installButton)

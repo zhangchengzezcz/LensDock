@@ -1,6 +1,10 @@
 # 兼容接口与失效边界
 
-当前契约：Apple 芯片、Pixelmator Pro Creator Studio 4.3（3.0.75）、bundle ID `com.apple.pixelmator`。构建目标 macOS 26.0；仅 macOS 27.2 完成实机测试。安装时检查 `Compatibility/Pixelmator-4.3.json` 中原始主程序、PTFoundation、PXMEngine、PXMKit 哈希及应用签名；任何漂移都拒绝适配。
+支持目标：Apple 芯片 Mac，macOS 26 及以上；没有最高系统版本限制。当前宿主契约为 Pixelmator Pro Creator Studio 4.3（3.0.75）、bundle ID `com.apple.pixelmator`。0.2.4 build 8 的安装器、两个原生模块及四个依赖库均为 arm64，最低部署版本不高于 26.0。macOS 27.2 完成本机安装与渲染测试；26、其他 27 小版本及后续系统仍需实机验收，不能由部署目标推断全部通过。Intel 不在用户确认的范围内。
+
+安装时先检查 `Compatibility/Pixelmator-4.3.json` 中主程序、PTFoundation、PXMEngine、PXMKit 的完整哈希组。整文件摘要不同则使用四文件完整 `arm64-code-v1` 指纹：提取唯一 arm64 slice，保留签名前全部头部、加载命令、填充、代码、数据和符号字节，仅归一化 `LC_CODE_SIGNATURE.datasize` 与由签名长度决定的 `__LINKEDIT.filesize/vmsize`。签名必须是最终 LINKEDIT 尾部，原 vmsize 必须等于完整 filesize 向上对齐 16 KiB；不忽略新增的加载命令、不按 UUID 或名称猜测兼容。thin、FAT32、FAT64 容器可识别，架构重叠、截断、加密、代码/数据或接口改变均拒绝。整个应用仍须通过 strict deep 签名校验。复制前记录完整文件摘要，复制后逐个重核，并写入宿主来源记录。
+
+这允许代码一致的签名和架构封装差异，不代表接受任意 Pixelmator 新版。Python 独立只读实现与生产 Swift 四个指纹一致；安装器正反测试覆盖签名长度改变、薄包/FAT64、代码和头部改变、异常 VM 尺寸、截断、重叠、整组混搭与记录缺失。`Scripts/host_fingerprint.py` 只输出，不自动修改允许列表。构建将未保护的新系统 API 使用视为错误；当前 tiled intermediate 接口从 macOS 26 起可用。见 `Evidence/platform-contract-verification.json` 与 `Evidence/installer-0.2.4-verification.json`。
 
 ## 公开接口
 

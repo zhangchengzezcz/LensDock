@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "scope": "Deployment and architecture contract, not cross-OS runtime acceptance",
+  "target": "Apple Silicon Macs running macOS 26 or later",
+  "runtimeOS": "27.2",
+  "runtimeBuild": "26B5112a",
+  "sdk": "27.0",
+  "runtimeMatrix": {
+    "macOS26": "NOT_TESTED",
+    "macOS27.2": "LOCAL_TESTS_ONLY",
+    "laterOS": "NOT_TESTED"
+  },
+  "binaries": [
+    {
+      "path": "Contents/MacOS/LensDock",
+      "architecture": "arm64",
+      "minimumOS": "26.0"
+    },
+    {
+      "path": "Contents/Resources/Payload/LensLiveSource.dylib",
+      "architecture": "arm64",
+      "minimumOS": "26.0"
+    },
+    {
+      "path": "Contents/Resources/Payload/LensPanel.dylib",
+      "architecture": "arm64",
+      "minimumOS": "26.0"
+    },
+    {
+      "path": "Contents/Resources/Payload/Lib/libglib-2.0.0.dylib",
+      "architecture": "arm64",
+      "minimumOS": "14.0"
+    },
+    {
+      "path": "Contents/Resources/Payload/Lib/libintl.8.dylib",
+      "architecture": "arm64",
+      "minimumOS": "14.0"
+    },
+    {
+      "path": "Contents/Resources/Payload/Lib/liblensfun.0.3.4.dylib",
+      "architecture": "arm64",
+      "minimumOS": "14.0"
+    },
+    {
+      "path": "Contents/Resources/Payload/Lib/libpcre2-8.0.dylib",
+      "architecture": "arm64",
+      "minimumOS": "14.0"
+    }
+  ]
+}

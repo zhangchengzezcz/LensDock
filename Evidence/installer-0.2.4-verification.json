@@ -1,0 +1,29 @@
+{
+  "version": "0.2.4-preview-build8",
+  "passed": true,
+  "runtimeOS": "27.2",
+  "runtimeBuild": "26B5112a",
+  "scope": "Real production installer compiled into owned temporary harness, no user-installed host replacement",
+  "fullIsolatedInstallationPassed": true,
+  "strictDeepSignaturePassed": true,
+  "sourceHashesUnchanged": {
+    "Contents/MacOS/Pixelmator Pro": "0b3e668c8006995828ceae4fc8a1aedbe76df4fe4b357f80274975833fadb784",
+    "Contents/Frameworks/PTFoundation.framework/Versions/A/PTFoundation": "ef8fc1e5097aa7ba534c5341aa67424d7999eb19ef475924fa2cc61a4e6b4f3c",
+    "Contents/Frameworks/PXMEngine.framework/Versions/A/PXMEngine": "fa888a8227f162594bdee5c1ba4e425939c06fc147181493d42b78f99eff5007",
+    "Contents/Frameworks/PXMKit.framework/Versions/A/PXMKit": "0347b2736d44fb8d759a661c3165f958de046854fd566d08f4318efa0fbeec57"
+  },
+  "installedSourceProvenanceVerified": true,
+  "legacyWholeFileContractAccepted": true,
+  "completeVariantsAccepted": true,
+  "mixedMalformedMissingAndTamperedVariantsRejected": true,
+  "independentPythonSwiftFingerprintsMatch": true,
+  "signatureSizeThinFAT64VariantsAccepted": true,
+  "codeHeaderVMSizeTruncationOverlapEncryptionAndExistingInjectionRejected": true,
+  "sourceHashResultReusedBeforeCopy": true,
+  "copyHashRecheckRetained": true,
+  "avoidedDuplicateHashInputBytes": 47855600,
+  "renderModuleSHA256": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
+  "logSHA256": "1e6f66050b8a8a300decb51f7ad8ef596f7242a6950b531a37814f01d8c64706",
+  "macOS26RuntimeTested": false,
+  "secondDeviceTested": false
+}

@@ -1,0 +1,20 @@
+{
+  "version": "0.2.4-preview-build8",
+  "complete": false,
+  "verified": [
+    "Three independent correction choices, recommendations, automatic capture metadata and native-priority regression",
+    "Actual constrained-crop PXD reopened and full-size 16-bit Display P3 PNG exported with 24000000 opaque pixels",
+    "macOS26 deployment and arm64 metadata for all seven shipped binaries",
+    "Production installer source-signature variation handling and isolated installation"
+  ],
+  "remaining": [
+    "macOS26 and a second Apple Silicon device runtime validation",
+    "Other Pixelmator versions need separate ABI contracts",
+    "Lightroom-equivalent coverage is not available; missing or ambiguous lens calibrations stay rejected",
+    "F810 capture mode and unimplemented embedded correction models need real metadata/optical validation",
+    "More real-photo optical validation, transformed layers, color spaces and long-term/low-memory validation",
+    "Developer ID signing, notarization and downloaded Gatekeeper distribution test"
+  ],
+  "performance": "Avoid one duplicate 46MB-class source hash scan during install; existing lazy field decoding/tiled rendering kept; no claimed GUI speedup",
+  "goalStatus": "active"
+}

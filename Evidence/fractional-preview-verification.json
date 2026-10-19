@@ -1,0 +1,161 @@
+{
+  "scope" : "Full production calibration and native wrapper using opaque constant source; alpha compared byte-for-byte to an uncorrected cropped constant under identical Core Image scaling. Not a decoded photo or actual GUI PNG export.",
+  "rawSHA256" : "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+  "workingTransfer" : "encoded_sRGB",
+  "originalUnchanged" : true,
+  "checks" : [
+    {
+      "outputBounds" : [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "firstNonopaqueRows" : [
+
+      ],
+      "minimumAlpha8Bit" : 255,
+      "differentAlphaPixels" : 0,
+      "nonopaqueRows" : 0,
+      "actualAlphaSHA256" : "d2efc652c5323f86cbc289853bcdbcabf6f9a17a4584996417afac61d2cd4545",
+      "referenceAlphaSHA256" : "d2efc652c5323f86cbc289853bcdbcabf6f9a17a4584996417afac61d2cd4545",
+      "maximumAlphaDelta8Bit" : 0,
+      "nonopaquePixels" : 0,
+      "translation" : [
+        0,
+        0
+      ],
+      "scale" : 1
+    },
+    {
+      "outputBounds" : [
+        0,
+        0,
+        4096,
+        2731
+      ],
+      "firstNonopaqueRows" : [
+        {
+          "row" : 0,
+          "count" : 4096
+        }
+      ],
+      "minimumAlpha8Bit" : 190,
+      "differentAlphaPixels" : 0,
+      "nonopaqueRows" : 1,
+      "actualAlphaSHA256" : "276495b80048cb873602aecea0a2c432a91695434d829e0bb13b98cfd8316404",
+      "referenceAlphaSHA256" : "276495b80048cb873602aecea0a2c432a91695434d829e0bb13b98cfd8316404",
+      "maximumAlphaDelta8Bit" : 0,
+      "nonopaquePixels" : 4096,
+      "translation" : [
+        0,
+        0
+      ],
+      "scale" : 0.68266666666666664
+    },
+    {
+      "outputBounds" : [
+        0,
+        0,
+        1600,
+        1067
+      ],
+      "firstNonopaqueRows" : [
+        {
+          "row" : 0,
+          "count" : 1600
+        }
+      ],
+      "minimumAlpha8Bit" : 207,
+      "differentAlphaPixels" : 0,
+      "nonopaqueRows" : 1,
+      "actualAlphaSHA256" : "7c01112feacb4ea4e063c080df92c22a230d9b7e3d4a05a08cd32e3e99a610aa",
+      "referenceAlphaSHA256" : "7c01112feacb4ea4e063c080df92c22a230d9b7e3d4a05a08cd32e3e99a610aa",
+      "maximumAlphaDelta8Bit" : 0,
+      "nonopaquePixels" : 1600,
+      "translation" : [
+        0,
+        0
+      ],
+      "scale" : 0.26666666666666666
+    },
+    {
+      "outputBounds" : [
+        0,
+        0,
+        1500,
+        1000
+      ],
+      "firstNonopaqueRows" : [
+
+      ],
+      "minimumAlpha8Bit" : 255,
+      "differentAlphaPixels" : 0,
+      "nonopaqueRows" : 0,
+      "actualAlphaSHA256" : "32165d13b7991ea2c825f5035688c3f1619b88491d3d6c9461d22a24b8656b70",
+      "referenceAlphaSHA256" : "32165d13b7991ea2c825f5035688c3f1619b88491d3d6c9461d22a24b8656b70",
+      "maximumAlphaDelta8Bit" : 0,
+      "nonopaquePixels" : 0,
+      "translation" : [
+        0,
+        0
+      ],
+      "scale" : 0.25
+    },
+    {
+      "outputBounds" : [
+        17,
+        29,
+        4097,
+        2731
+      ],
+      "firstNonopaqueRows" : [
+        {
+          "row" : 0,
+          "count" : 4097
+        },
+        {
+          "row" : 1,
+          "count" : 2
+        },
+        {
+          "row" : 2,
+          "count" : 2
+        },
+        {
+          "row" : 3,
+          "count" : 2
+        },
+        {
+          "row" : 4,
+          "count" : 2
+        },
+        {
+          "row" : 5,
+          "count" : 2
+        },
+        {
+          "row" : 6,
+          "count" : 2
+        },
+        {
+          "row" : 7,
+          "count" : 2
+        }
+      ],
+      "minimumAlpha8Bit" : 32,
+      "differentAlphaPixels" : 0,
+      "nonopaqueRows" : 2731,
+      "actualAlphaSHA256" : "89f600d3071da3bcca0e90d4fbcd87d0b92060449bbf0a6e491d0e8d0e7ec687",
+      "referenceAlphaSHA256" : "89f600d3071da3bcca0e90d4fbcd87d0b92060449bbf0a6e491d0e8d0e7ec687",
+      "maximumAlphaDelta8Bit" : 0,
+      "nonopaquePixels" : 9557,
+      "translation" : [
+        17.25,
+        29.125
+      ],
+      "scale" : 0.68266666666666664
+    }
+  ],
+  "passed" : true
+}

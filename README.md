@@ -1,16 +1,16 @@
 # LensDock · 镜头坞
 
-**保留 RAW 的 Pixelmator 镜头矫正预览版（源码 0.2.3 build 7 开发候选）。** 为原生镜头矫正尚不支持的照片，补充有可靠标定依据的畸变、横向色差和暗角补偿；原生支持时自动跳过补充畸变与色差，并保留默认关闭的“额外去暗角”。
+**保留 RAW 的 Pixelmator 镜头矫正预览版（源码 0.2.4 build 8 候选）。** 支持目标为 Apple 芯片 Mac、macOS 26 及以上。为原生镜头矫正尚不支持的照片，补充有可靠标定依据的畸变、横向色差和暗角补偿；原生支持时自动跳过补充畸变与色差，并保留默认关闭的“额外去暗角”。
 
-0.2.3 build 7 修复越界采样和数值表边界，并提供可逆的“约束边缘”选择；23 个常规测试组及另行启用的全尺寸专项通过，研究宿主已正常退出后更新。用户确认新开关消除了照片空边、构图正常；实际保存的 PXD、原 RAW 哈希和宿主预览也已核查。预览仍有一行半透明像素，新版独立重开与完整 16 位 PNG 导出尚未验证，因此仍是候选版。打包版本、大小及校验和以 `Distribution/0.2.3-preview/` 清单为准；历史 0.2.2 资产保留，其中实际几何导出存在已知边缘拉伸条带。版本范围不可混用。
+0.2.4 build 8 扩展安装识别：相同代码的签名/架构封装差异可通过完整 arm64 指纹识别，代码或接口改变继续拒绝；7 个随包二进制部署版本均不高于 macOS 26.0。仅 27.2 完成本机测试，26 与其他设备尚未实测。0.2.3 build 7 的可逆“约束边缘”已补齐真实文档独立重开和 6000×4000、16 位 Display P3 PNG 导出核查：2400 万像素全部不透明。分数尺寸预览的部分覆盖与无矫正缩放对照逐字节相同，不强制修改 alpha。打包版本、大小及校验和以 `Distribution/<版本>-preview/` 清单为准；历史资产保留。Lightroom 等量覆盖、跨设备分发与更多真实照片光学验收仍未完成，因此保持候选状态。
 
 当前是可安装、已做本机测试的预览版。**尚未达到 Lightroom Classic 的镜头覆盖范围或光学等效验收，也不是 Apple 官方扩展。** Pixelmator 没有提供本项目所需的公开 RAW 编辑插件接口，因此安装程序从用户自己安装的兼容应用建立独立本机宿主，在其菜单与可编辑效果中集成 LensDock。原厂应用保留；分发包不包含 Pixelmator 应用或框架。
 
 ## 安装与使用
 
-1. 在 Apple 芯片 Mac 上自行安装 **Pixelmator Pro Creator Studio 4.3，build 3.0.75**。其他版本、普通版和 Intel Mac 尚未适配。
+1. 在 **macOS 26 或更新版本的 Apple 芯片 Mac** 上自行安装 **Pixelmator Pro Creator Studio 4.3，build 3.0.75**。其他 Pixelmator 版本、普通版和 Intel Mac 尚未适配。
 2. 打开含内嵌矢量高清背景的 DMG，将 `LensDock.app` 拖到“应用程序”，打开 LensDock。
-3. 点击“安装预览宿主”。版本、四个关键二进制的 SHA256、签名和 arm64 加载结构全部通过才会安装；不需要管理员权限。
+3. 点击“安装预览宿主”。版本、四个关键二进制的整组 SHA256 或完整 arm64 代码指纹、签名和加载结构全部通过才会安装；不需要管理员权限。
 4. 点击“打开 Pixelmator”，打开 RAW 并选中 RAW 图层，进入 **镜头矫正 → 打开镜头矫正…**。
 5. 查看推荐量，独立选择三项功能，点击“应用到 RAW”。重新匹配恢复本次建议；普通重新打开会重新检测支持并保留已保存的手动选择及拍摄参数覆盖。
 
@@ -76,6 +76,7 @@ python3 Scripts/test.py
 # 可选的全尺寸专项需要 Tests/PrivateRAW/ILCE-6000.ARW 与固定校验和一致：
 LENS_FULL_RENDER_TEST=1 Build/Tests/verify-full-resolution-boundaries
 python3 Tests/verify-installer-installation.py
+python3 Tests/verify-platform-contract.py
 python3 Scripts/audit_catalog.py --run
 python3 -m pip install -r Scripts/dmg_requirements.txt
 python3 Scripts/package.py

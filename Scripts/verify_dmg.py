@@ -1,11 +1,11 @@
 """Validate embedded Finder metadata with source artwork absent and image remounted."""
 from pathlib import Path
-import subprocess,hashlib,json,shutil
+import subprocess,hashlib,json,shutil,argparse
 from ds_store import DSStore
 from mac_alias import Alias
 from mac_alias.bookmark import kBookmarkPath,kBookmarkVolumePath,kBookmarkVolumeUUID
 ROOT=Path(__file__).resolve().parents[1]
-def verify():
+def verify(report_path=None):
  version=json.loads((ROOT/'Version.json').read_text());release=version['version']+'-'+version['channel']
  image=ROOT/'Distribution'/release/f'LensDock-{release}-Retina.dmg'
  mount=ROOT/'Build/Relocated-Image';mount.mkdir(exist_ok=True)
@@ -32,8 +32,10 @@ def verify():
    subprocess.run(['xcrun','swiftc','-target','arm64-apple-macos26.0',str(ROOT/'Scripts/verify_background_resolution.swift'),'-o',str(executable)],check=True)
    subprocess.run([str(executable),str(data),str(mount)],check=True)
    report={'sourceArtworkTemporarilyAbsent':True,'readonlyFinalImageMountedAtDifferentPath':True,'finderBookmarkResolvedToInternalPicture':True,'backgroundPath':target.lstrip('/'),'backgroundSHA256':hashlib.sha256(picture.read_bytes()).hexdigest(),'aliasAndBookmarkReferenceImageVolumeOnly':True,'noUserHomePictureReference':True,'iconLocationsVerified':True,'applicationSignatureVerifiedAfterPackaging':True,'vectorPDFVerified':True,'backgroundLogicalPoints':[760,480],'resolutionIndependent':True,'testedOnSecondComputer':False}
-   (ROOT/'Evidence/dmg-background-verification.json').write_text(json.dumps(report,indent=2)+'\n')
+   (report_path or ROOT/'Evidence/dmg-background-verification.json').write_text(json.dumps(report,indent=2)+'\n')
    print(json.dumps(report,indent=2))
   finally:subprocess.run(['hdiutil','detach',str(mount)],check=True,stdout=subprocess.DEVNULL)
  finally:hidden.rename(original)
-if __name__=='__main__':verify()
+if __name__=='__main__':
+ parser=argparse.ArgumentParser();parser.add_argument('--report',type=Path)
+ verify(parser.parse_args().report)

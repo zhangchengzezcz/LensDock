@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "vendorBundleIdentifier": "com.apple.pixelmator",
   "version": "4.3",
   "build": "3.0.75",
@@ -7,11 +7,30 @@
   "minimumOS": "26.0",
   "verifiedRuntimeOS": "27.2",
   "architecture": "arm64",
+  "codeFingerprintAlgorithm": "arm64-code-v1",
+  "arm64CodeSHA256": {
+    "Contents/MacOS/Pixelmator Pro": "421368bec189f1468910c67b04454be345515aaf69cb5bfefab23ef1253c5381",
+    "Contents/Frameworks/PTFoundation.framework/Versions/A/PTFoundation": "e0032007a3d1d9182a2986b916e54d572f7b6b83d1287d40187e254e9d50d3ca",
+    "Contents/Frameworks/PXMEngine.framework/Versions/A/PXMEngine": "007b84fcb600f69eea038d97a678f93e88a03bdf18f0c4d2039a65f7990f3fa7",
+    "Contents/Frameworks/PXMKit.framework/Versions/A/PXMKit": "a5403910646109f930906c320ea1a6c349e468523d3121d2c204e4f9e2dc0186"
+  },
   "lensfunDatabaseCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
   "fileSHA256": {
     "Contents/MacOS/Pixelmator Pro": "85b83ad6463747721921bec0d6ef370852441961c43c8bfc1b94ed5feb30bf5b",
     "Contents/Frameworks/PTFoundation.framework/Versions/A/PTFoundation": "19a89c0852b3eb962bdf7abdf6c900ea7287ce4da56a7dd4817c8aaaa29e4b90",
     "Contents/Frameworks/PXMEngine.framework/Versions/A/PXMEngine": "a3b896fb9135e10df57eef6c0da6be2df8c5e546c7d7f2ccc3750217175877f5",
     "Contents/Frameworks/PXMKit.framework/Versions/A/PXMKit": "9facaf1b05c101a47443e2b93053bb2560c87f788f2a5cc76fbbf5040b7e8eb2"
-  }
+  },
+  "sourceVariants": [
+    {
+      "id": "4.3-3.0.75-arm64-signature-20261019",
+      "fileSHA256": {
+        "Contents/MacOS/Pixelmator Pro": "0b3e668c8006995828ceae4fc8a1aedbe76df4fe4b357f80274975833fadb784",
+        "Contents/Frameworks/PTFoundation.framework/Versions/A/PTFoundation": "ef8fc1e5097aa7ba534c5341aa67424d7999eb19ef475924fa2cc61a4e6b4f3c",
+        "Contents/Frameworks/PXMEngine.framework/Versions/A/PXMEngine": "fa888a8227f162594bdee5c1ba4e425939c06fc147181493d42b78f99eff5007",
+        "Contents/Frameworks/PXMKit.framework/Versions/A/PXMKit": "0347b2736d44fb8d759a661c3165f958de046854fd566d08f4318efa0fbeec57"
+      },
+      "verification": "Same arm64 section data and all bytes between load commands and code signature as the previously verified research host; normalized load commands equal after excluding research-only load command and signature-related sizes. Full runtime validation recorded separately."
+    }
+  ]
 }

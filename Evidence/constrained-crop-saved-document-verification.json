@@ -1,6 +1,6 @@
 {
   "version": "0.2.3-preview-build7",
-  "scope": "Read-only saved test PXD audit; does not establish GUI export or optical accuracy",
+  "scope": "Saved PXD audit plus actual independent GUI reopen and original-size 16-bit PNG export; not optical equivalence",
   "documentBasename": "A6000BoundaryPerfTest-build6-preserved.pxd",
   "pxdBytes": 97612186,
   "pxdSHA256": "618bdb4b8a176bc4611f4498c220cbad3af36a15a71b29880d4fdbe2f31ad704",
@@ -143,10 +143,71 @@
     "width": 4096
   },
   "savedPreviewVisuallyInspectedAt1600Pixels": true,
-  "previewLimitation": "New preview has no fully transparent pixels, but 4096 partially transparent pixels remain in its first bitmap row (minimum alpha 191/255). Root cause and full-resolution 16-bit export remain unverified. Old 0.2.2 preview control is fully opaque.",
-  "newIndependentGUIReopenVerified": false,
-  "newFullResolution16BitPNGExportVerified": false,
+  "previewLimitation": "Actual 16-bit original-size export is fully opaque. Fractional-size constant-source native render alpha matches an uncorrected scaling control byte-for-byte; the saved HEIC first-row partial coverage remains recorded separately.",
+  "newIndependentGUIReopenVerified": true,
+  "newFullResolution16BitPNGExportVerified": true,
   "savedDocumentAuditToolSHA256": "4e0f17e7f3d72bf481dc6290dda593e70e5cb11d4c2560cc85d3c90edf27bf0e",
   "savedPreviewAuditToolSHA256": "15c487b76974605bd2a7ea84625c3442273bc58fde11826239ffc61fbb100043",
-  "photosOrPXDRedistributed": false
+  "photosOrPXDRedistributed": false,
+  "postReopenExportDocument": {
+    "pxdBytes": 97614956,
+    "pxdSHA256": "98ff01e32fb31b2da416b8bacca45dd5f49759b1ef4090d7b49ec8aaffba1951",
+    "embeddedRAW": [
+      {
+        "bytes": 25624576,
+        "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+      }
+    ],
+    "settings": {
+      "distortionEnabled": 1,
+      "vignettingEnabled": 0,
+      "tcaStrength": 100.0,
+      "distortionStrength": 100.0,
+      "vignettingStrength": 50.0,
+      "tcaEnabled": 1,
+      "constrainCropEnabled": 1
+    },
+    "format": {
+      "profileFormatVersion": 5,
+      "workingTransfer": "lensdock-compact-v5",
+      "compactWorkingTransfer": "encoded_sRGB"
+    },
+    "automaticCapture": {
+      "focal_mm": 39.0,
+      "aperture": 5.0,
+      "focus_distance_m": 1000.0,
+      "distance_source": "infinity_fallback"
+    },
+    "constrainedCrop": {
+      "scale": 0.9677280847167968,
+      "safetyMarginPixels": 2,
+      "maximumDisplacementPixels": [
+        93.85404309082031,
+        62.54383056640625
+      ],
+      "method": "conservative-all-field-extrema-centred-uniform-scale-v1",
+      "version": 1
+    },
+    "bindingFieldsEqualExceptSerializationContext": true
+  },
+  "verifiedOn": "2026-10-19",
+  "actualExport": {
+    "allPixelsOpaque": true,
+    "bitsPerComponent": 16,
+    "colorSpace": "kCGColorSpaceDisplayP3",
+    "fileBytes": 123667155,
+    "filename": "LensDock-Crop-Test.png",
+    "fileSHA256": "d80502366e2e0bbef3d89f35424a74178efafe01c2f19d5183bf75b5f2981ffc",
+    "height": 4000,
+    "iccSHA256": "0ff6958f98684c61f6bbdce1368ddeaf3873baf84545baba482e920d92a914c0",
+    "minimumAlpha16Bit": 65535,
+    "nonopaquePixels": 0,
+    "outer32PixelBandNonopaquePixels": 0,
+    "scope": "Actual host-exported PNG decoded in its embedded RGB color space at 16 bits; alpha audit, not optical accuracy",
+    "transparentPixels": 0,
+    "width": 6000
+  },
+  "researchModuleSHA256": "31d0ad8bbccde8359d1a92d6176b7e2cff0ccb216200e8830c53ae5390ee2995",
+  "runtimeOS": "27.2",
+  "runtimeBuild": "26B5112a"
 }
