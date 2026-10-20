@@ -26,3 +26,5 @@
 新实机证据见 `Evidence/build11-live-raw-verification.json`、`Evidence/build11-export-16bit-verification.json`、`Evidence/photo-open-notice-ui-verification.json` 与 `Evidence/build12-verification.json`。下一步仍包括独立自动匹配覆盖、实拍光学证据、正式签名分发。F810 只有格式约束的受控路由，没有真实 F810 RAF；只读参考名称统计不证明 Lightroom 等效，也不为缺失镜头生成猜测曲线。
 
 系统提示的最后外观判定已由用户直接确认，记录在 `Evidence/notice-user-visual-confirmation.json`；这项确认不改变镜头覆盖、广泛光学验证与正式分发仍未完成的结论。
+
+0.2.7 build 13 又修复镜头身份比较与等价小数写法，保留型号标识并移除单个词查询候选的自动接受路径。同组旧版 11 项失败、新版零失败；30 个常规组、192 组渲染及全库 1564/1567 回归通过，无新增目录拒绝或指定版本差异。两组小尺寸配置约 123–127 ms，未证明完整应用提速。本轮新宿主打开 PXD 又遇到文件面板按钮禁用，没有新增 GUI 保存/导出通过声明。0.2.6 冻结交付不变，见 `Evidence/build13-verification.json`；不能把身份修复当成 Lightroom 等量覆盖完成。

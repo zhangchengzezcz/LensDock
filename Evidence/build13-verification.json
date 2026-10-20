@@ -1,0 +1,258 @@
+{
+  "version": "0.2.7-preview-build13",
+  "verifiedAt": "2026-10-20T14:09:10.394788+00:00",
+  "scope": "Lens identity comparison and automatic equivalent-format selection; no new calibrations or optical coverage claim",
+  "baselineCommit": "5a4d7da7e790f8474a8fc6720028e22068424cdf",
+  "sameTestBaselineFailures": 11,
+  "currentFailures": 0,
+  "controlledIdentityCases": 18,
+  "priorityCases": 2,
+  "canonEquivalentFormattingSameCalibration": true,
+  "catalog": {
+    "sourceCommit": "3e14a04ba6a5c02a65fcce50d4f1987c705dc196",
+    "cameraEntries": 1057,
+    "lensEntries": 1572,
+    "requestCount": 1567,
+    "matchedCount": 1564,
+    "failureCount": 3,
+    "calibrationVariantDifferenceCount": 0,
+    "failures": [
+      {
+        "metadata": {
+          "FocusDistance": 1000,
+          "FocalLength": 7.2,
+          "FNumber": 8,
+          "Make": "Fujifilm",
+          "Model": "FinePix F810",
+          "LensModel": "FinePix F810 & compatibles (Standard)"
+        },
+        "id": "compact-fujifilm.xml:5",
+        "matchedLens": "",
+        "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+        "expectedLens": "FinePix F810 & compatibles (Standard)"
+      },
+      {
+        "metadata": {
+          "FocusDistance": 1000,
+          "FocalLength": 7.2,
+          "FNumber": 8,
+          "Make": "Fujifilm",
+          "Model": "FinePix F810",
+          "LensModel": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+        },
+        "id": "compact-fujifilm.xml:6",
+        "matchedLens": "",
+        "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+        "expectedLens": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+      },
+      {
+        "metadata": {
+          "FocusDistance": 1000,
+          "FocalLength": 5.1,
+          "FNumber": 8,
+          "Make": "Panasonic",
+          "Model": "DMC-LX3",
+          "LensModel": "DMC-LX3 & compatibles (Standard)"
+        },
+        "id": "compact-panasonic.xml:1",
+        "matchedLens": "",
+        "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+        "expectedLens": "DMC-LX3 & compatibles (Standard)"
+      }
+    ],
+    "skipped": [
+      {
+        "id": "generic.xml:0",
+        "reason": "no-optical-calibration-point",
+        "lens": "Rectilinear 10-1000mm f/1.0"
+      },
+      {
+        "id": "generic.xml:1",
+        "reason": "no-optical-calibration-point",
+        "lens": "Fisheye 8-20mm f/1.0"
+      },
+      {
+        "id": "generic.xml:2",
+        "reason": "no-optical-calibration-point",
+        "lens": "Panoramic 10-100mm f/1.0"
+      },
+      {
+        "id": "misc.xml:131",
+        "reason": "no-compatible-calibration-crop-camera",
+        "lens": "Pergear 7.5mm f/2.8"
+      },
+      {
+        "id": "misc.xml:132",
+        "reason": "no-compatible-calibration-crop-camera",
+        "lens": "Yongnuo 25mm f/1.7 II"
+      }
+    ]
+  },
+  "historicalFailureIDsUnchanged": true,
+  "publicDatabaseBytesUnmodified": true,
+  "fullSuiteGroupsPassed": 30,
+  "nativeRenderCombinationsPassed": 192,
+  "fullSizeSpecialGroups": "EXPLICITLY_SKIPPED_BY_DEFAULT; prior full-size evidence belongs to its recorded build",
+  "buildExit": 0,
+  "isolatedInstallerExit": 0,
+  "platformContract": {
+    "passed": true,
+    "scope": "Deployment and architecture contract, not cross-OS runtime acceptance",
+    "target": "Apple Silicon Macs running macOS 26 or later",
+    "runtimeOS": "27.2",
+    "runtimeBuild": "26B5112a",
+    "sdk": "27.0",
+    "runtimeMatrix": {
+      "macOS26": "NOT_TESTED",
+      "macOS27.2": "LOCAL_TESTS_ONLY",
+      "laterOS": "NOT_TESTED"
+    },
+    "binaries": [
+      {
+        "path": "Contents/MacOS/LensDock",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/LensLiveSource.dylib",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/LensPanel.dylib",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libglib-2.0.0.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libintl.8.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/liblensfun.0.3.4.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libpcre2-8.0.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      }
+    ]
+  },
+  "ownedHostUpdatedAfterNormalQuit": true,
+  "ownedHostModuleEqualsBuiltPayload": true,
+  "ownedHostStrictSignatureVerified": true,
+  "currentHostGUI": {
+    "newTestCopyOpened": false,
+    "reason": "Normal file picker identified and selected the PXD but Open remained disabled; double-click did not open it. Cancelled normally. No setters or forced controls used.",
+    "recentDocuments": "Welcome window reported No Recent Documents",
+    "newApplySaveReopenExportClaim": false,
+    "previousVerifiedPhotoFlow": "Evidence/build11-live-raw-verification.json; Evidence/build11-export-16bit-verification.json",
+    "noticeAppearance": "User confirmed on build12; Evidence/notice-user-visual-confirmation.json"
+  },
+  "performance": {
+    "method": "Warm process, full database load and 96x64 plan, 2 fixed metadata identities; no GUI or full-size rendering speed claim",
+    "samplesPerCase": 9,
+    "warmupsPerCase": 1,
+    "timingBaseline": {
+      "scope": "Warm process, full database load and 96x64 plan, 2 fixed metadata identities; no GUI or full-size rendering speed claim",
+      "cases": [
+        {
+          "samplesMS": [
+            127.98607349395752,
+            127.99298763275146,
+            126.35505199432373,
+            127.68304347991943,
+            126.48999691009521,
+            126.76894664764404,
+            126.9679069519043,
+            126.70505046844482,
+            126.82795524597168
+          ],
+          "profileID": "lens-v1-a425803ca10fb85ccdd24d925ff9260701a7f94044ba39063d12585fc1e46579",
+          "lens": "EF-S17-85mm f/4-5.6 IS USM",
+          "medianMS": 126.82795524597168
+        },
+        {
+          "samplesMS": [
+            125.80907344818115,
+            125.19001960754395,
+            125.43797492980957,
+            124.9840259552002,
+            126.95801258087158,
+            127.86388397216797,
+            127.6479959487915,
+            125.8540153503418,
+            125.23198127746582
+          ],
+          "profileID": "lens-v1-c169fae4f60b7f17d1124337fc865d08263ba9f911d1c28be75243f4cc8072e7",
+          "lens": "E 18-55mm f/3.5-5.6 OSS",
+          "medianMS": 125.80907344818115
+        }
+      ]
+    },
+    "timingCurrent": {
+      "scope": "Warm process, full database load and 96x64 plan, 2 fixed metadata identities; no GUI or full-size rendering speed claim",
+      "cases": [
+        {
+          "samplesMS": [
+            128.42094898223877,
+            129.9140453338623,
+            125.96607208251953,
+            127.0979642868042,
+            128.11708450317383,
+            127.07996368408203,
+            126.80304050445557,
+            126.26099586486816,
+            126.53803825378418
+          ],
+          "profileID": "lens-v1-a425803ca10fb85ccdd24d925ff9260701a7f94044ba39063d12585fc1e46579",
+          "lens": "EF-S17-85mm f/4-5.6 IS USM",
+          "medianMS": 127.07996368408203
+        },
+        {
+          "samplesMS": [
+            122.10297584533691,
+            122.50697612762451,
+            122.56300449371338,
+            122.5970983505249,
+            122.76697158813477,
+            122.1550703048706,
+            122.40898609161377,
+            122.38597869873047,
+            123.2140064239502
+          ],
+          "profileID": "lens-v1-c169fae4f60b7f17d1124337fc865d08263ba9f911d1c28be75243f4cc8072e7",
+          "lens": "E 18-55mm f/3.5-5.6 OSS",
+          "medianMS": 122.50697612762451
+        }
+      ]
+    },
+    "conclusion": "Approximately 123-127ms for two small plans; no material overall GUI/full-resolution speedup proven. Common direct-identity path avoids maker parsing for unrelated candidates."
+  },
+  "sourceSHA256": {
+    "Sources/Native/LensNativeProfileEngine.m": "db64cefcec7436bc0ee18c8c55a69d1ed0b71831f9788ee165cbc7ff20b2cab5",
+    "Tests/verify-lens-identity-format.m": "a82f016cc10ade839d5e277119c131a9517ab0cea01df628537117b3e3c861fc",
+    "Tests/benchmark-profile-plan.m": "65d7915fa6fdf2bd9b3d2d9a647959489cb0927fdc3ef031acd6e19d871e87ac",
+    "Scripts/test.py": "5768ed5f22432fbc07d18f6ac5fbd8d2e920284cf9e6cc96401dea32782ce79b",
+    "Version.json": "f88d39e3b6ec9d102475e8d0f991a311f8290c9621812f4944458a1aaac81f27"
+  },
+  "logSHA256": {
+    "Build/Development/build13-final-build.log": "539a0f9c9bba235bc146941757f6c30bcc3168f8cff6861b6b6b82a02f1709aa",
+    "Build/Development/build13-final-regression-tests.log": "fe766e711743c59e9e276f8e3970aa31c5f2b48ceb785d445679796d8907b577",
+    "Build/Development/build13-final-catalog-audit.log": "b43aa29f88efbcc3a95e5f93fde0f55d704884ef275df56a121f7e82111b4588",
+    "Build/Development/build13-installer-verification.log": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56",
+    "Build/Development/build13-host-update.log": "2601467916524d2de686c1bea0b6bc21c1fda1e4a998274311b2e3e1079dcb26"
+  },
+  "catalogResultSHA256": "dbe7a57edb634966bb04530453e2849b7c2be9fcd2949d3a46099b1fa9e093c4",
+  "builtPanelSHA256": "fb8e7c452602ef2d49383e9d4d2c875631c7e2d709d59891561c003032b3a63b",
+  "broadOpticalOrLightroomEquivalentAcceptance": false,
+  "dmgRebuilt": false,
+  "frozenDistribution": "0.2.6-preview assets preserved"
+}

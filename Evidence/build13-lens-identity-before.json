@@ -1,0 +1,125 @@
+{
+  "scope" : "Controlled identity metadata and equivalent numeric formatting against existing Canon calibration; no new lens records or real RAW claim",
+  "priorityCases" : [
+    {
+      "case" : "recorded-model-before-maker-omission",
+      "passed" : true
+    },
+    {
+      "case" : "ambiguous-maker-omission-rejected",
+      "passed" : true
+    }
+  ],
+  "canonEquivalentFormattingSameCalibration" : false,
+  "failures" : 11,
+  "cases" : [
+    {
+      "matched" : true,
+      "case" : "missing-generation",
+      "passed" : 0,
+      "expected" : false
+    },
+    {
+      "matched" : true,
+      "case" : "missing-star",
+      "passed" : 0,
+      "expected" : false
+    },
+    {
+      "matched" : true,
+      "case" : "missing-plus",
+      "passed" : 0,
+      "expected" : false
+    },
+    {
+      "matched" : true,
+      "case" : "different-unicode-identity",
+      "passed" : 0,
+      "expected" : false
+    },
+    {
+      "matched" : false,
+      "case" : "model-leading-zero",
+      "passed" : 1,
+      "expected" : false
+    },
+    {
+      "matched" : true,
+      "case" : "decimal-not-integer",
+      "passed" : 0,
+      "expected" : false
+    },
+    {
+      "matched" : true,
+      "case" : "focal-boundaries",
+      "passed" : 0,
+      "expected" : false
+    },
+    {
+      "matched" : false,
+      "case" : "focal-order",
+      "passed" : 1,
+      "expected" : false
+    },
+    {
+      "matched" : false,
+      "case" : "different-generation",
+      "passed" : 1,
+      "expected" : false
+    },
+    {
+      "matched" : false,
+      "case" : "unrecorded-maker",
+      "passed" : 1,
+      "expected" : false
+    },
+    {
+      "matched" : true,
+      "case" : "extra-star",
+      "passed" : 0,
+      "expected" : false
+    },
+    {
+      "matched" : true,
+      "case" : "exact-generation",
+      "passed" : 1,
+      "expected" : true
+    },
+    {
+      "matched" : true,
+      "case" : "exact-star",
+      "passed" : 1,
+      "expected" : true
+    },
+    {
+      "matched" : true,
+      "case" : "exact-plus",
+      "passed" : 1,
+      "expected" : true
+    },
+    {
+      "matched" : true,
+      "case" : "exact-unicode-identity",
+      "passed" : 1,
+      "expected" : true
+    },
+    {
+      "matched" : false,
+      "case" : "maker-omission-decimal-format",
+      "passed" : 0,
+      "expected" : true
+    },
+    {
+      "matched" : false,
+      "case" : "recorded-maker-prefix",
+      "passed" : 0,
+      "expected" : true
+    },
+    {
+      "matched" : false,
+      "case" : "unicode-decimal-format",
+      "passed" : 0,
+      "expected" : true
+    }
+  ]
+}

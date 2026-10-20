@@ -1,0 +1,115 @@
+{
+  "missingFiles" : [
+
+  ],
+  "photosIncluded" : false,
+  "scope" : "Optional complete public LX3 RAW: original checksum, capture mode, automatic profile identity, actual Core Image preview decoding and native priority; not Pixelmator GUI\/save\/reopen or optical accuracy verification",
+  "verifiedFiles" : [
+    {
+      "automaticFNumber" : 2.7999999999999998,
+      "automaticFocalMM" : 7.4000000000000004,
+      "cameraCropFactor" : 5.320000171661377,
+      "cameraProfileID" : "camera-v1-8ed8bee83a8d3ffdc600ca55d23afe4175c673c5b9cd40b2fdd408309a6ca9aa",
+      "captureMode" : {
+        "activeHeight" : 2736,
+        "activeWidth" : 2736,
+        "aspectRatio" : 1,
+        "cameraModel" : "DMC-LX3",
+        "source" : "RW2 IFD0 Sensor*Border",
+        "variant" : "1:1"
+      },
+      "decodedFullExtent" : [
+        2736,
+        2736
+      ],
+      "extraGeometrySkipped" : true,
+      "fixture" : {
+        "activeSize" : [
+          2736,
+          2736
+        ],
+        "cameraCropFactor" : 5.3200000000000003,
+        "file" : "LX3-square.RW2",
+        "fNumber" : 2.7999999999999998,
+        "focalMM" : 7.4000000000000004,
+        "license" : "CC0-1.0",
+        "mode" : "1:1",
+        "repositoryEntry" : 1395,
+        "sha256" : "6663d5b6539de15640ded2b0f422c8affb8cf1bec93e27b3548e970226c063a5",
+        "source" : "https:\/\/raw.pixls.us\/getfile.php\/1395\/nice\/Panasonic%20-%20DMC-LX3%20-%201%3A1.RW2"
+      },
+      "lensProfileID" : "lens-v1-25a1b0c67313747f84d5cfa36690e9519294a31ad5509c30b803fec035ff5a71",
+      "nativeSupport" : {
+        "decoderVersion" : "7",
+        "lensCorrectionEnabledByDefault" : true,
+        "lensCorrectionSupported" : true,
+        "osVersion" : "Version 27.2 (Build 26B5112a)",
+        "probeSource" : "CIRAWFilter.isLensCorrectionSupported",
+        "probeSucceeded" : true
+      },
+      "originalUnchanged" : true,
+      "renderedPreviewPixelSHA256" : "c202549b8bd7d36edaa420f4de8c3b3b7a3dece65d07230125da8776b1183e4f",
+      "renderedPreviewSize" : [
+        192,
+        192
+      ],
+      "renderedRGBSumRange" : [
+        46,
+        765
+      ]
+    },
+    {
+      "automaticFNumber" : 4.5,
+      "automaticFocalMM" : 5.0999999999999996,
+      "cameraCropFactor" : 4.6999998092651367,
+      "cameraProfileID" : "camera-v1-8248bed356c28dfad9b9b0aab690134dee22ab384965654f5e0fab3c64d12ee2",
+      "captureMode" : {
+        "activeHeight" : 2736,
+        "activeWidth" : 3648,
+        "aspectRatio" : 1.3333333333333333,
+        "cameraModel" : "DMC-LX3",
+        "source" : "RW2 IFD0 Sensor*Border",
+        "variant" : "4:3"
+      },
+      "decodedFullExtent" : [
+        3648,
+        2736
+      ],
+      "extraGeometrySkipped" : true,
+      "fixture" : {
+        "activeSize" : [
+          3648,
+          2736
+        ],
+        "cameraCropFactor" : 4.7000000000000002,
+        "file" : "LX3-4x3.RW2",
+        "fNumber" : 4.5,
+        "focalMM" : 5.0999999999999996,
+        "license" : "CC0-1.0",
+        "mode" : "4:3",
+        "repositoryEntry" : 1808,
+        "sha256" : "f2aeaa1cf9a1922a6b9bbe5d0bf1ba19d4c8988fefa320377a5e7461a31ffc23",
+        "source" : "https:\/\/raw.pixls.us\/getfile.php\/1808\/nice\/Panasonic%20-%20DMC-LX3%20-%204%3A3.RW2"
+      },
+      "lensProfileID" : "lens-v1-25a1b0c67313747f84d5cfa36690e9519294a31ad5509c30b803fec035ff5a71",
+      "nativeSupport" : {
+        "decoderVersion" : "7",
+        "lensCorrectionEnabledByDefault" : true,
+        "lensCorrectionSupported" : true,
+        "osVersion" : "Version 27.2 (Build 26B5112a)",
+        "probeSource" : "CIRAWFilter.isLensCorrectionSupported",
+        "probeSucceeded" : true
+      },
+      "originalUnchanged" : true,
+      "renderedPreviewPixelSHA256" : "770e075cdedb2275662f6ef756870610bfed76b8f23735b70d7c5cd37988bf33",
+      "renderedPreviewSize" : [
+        192,
+        144
+      ],
+      "renderedRGBSumRange" : [
+        54,
+        630
+      ]
+    }
+  ]
+}

@@ -19,10 +19,42 @@ static NSArray<NSString*>*identityNames(lfMLstr value){
  for(NSUInteger i=0;i<64&&*next;i++){next+=strlen(next)+1;if(!*next)break;[names addObject:@(next)];next+=strlen(next)+1;}
  return names;
 }
-static BOOL exactLensIdentity(const lfLens*lens,NSString*name){
- NSString*n=norm(name);if(!n.length)return NO;
- for(NSString*model in identityNames(lens->Model)){if([norm(model)isEqual:n])return YES;for(NSString*maker in identityNames(lens->Maker))if([norm([maker stringByAppendingString:model])isEqual:n])return YES;}
- return NO;
+// Optical identity must retain generation/model suffixes, Unicode and numeric
+// boundaries. Lensfun's strict search allows extra candidate words, so a sole
+// search result is not evidence of identity. Only decimal trailing zeroes and
+// presentation separators are interchangeable; A047 is still distinct from A47.
+static NSString*lensIdentityKey(NSString*name){
+ static NSRegularExpression*tokens;static dispatch_once_t once;
+ dispatch_once(&once,^{tokens=[NSRegularExpression regularExpressionWithPattern:@"[0-9]+(?:\\.[0-9]+)?|[\\p{L}\\p{M}]+|[\\p{N}]|[+*]" options:0 error:nil];});
+ NSString*s=name.precomposedStringWithCanonicalMapping.lowercaseString;NSMutableString*key=[NSMutableString new];
+ for(NSTextCheckingResult*match in [tokens matchesInString:s options:0 range:NSMakeRange(0,s.length)]){
+  NSString*part=[s substringWithRange:match.range];unichar first=[part characterAtIndex:0];
+  if(first>='0'&&first<='9'){
+   if([part containsString:@"."]){while([part hasSuffix:@"0"])part=[part substringToIndex:part.length-1];if([part hasSuffix:@"."])part=[part substringToIndex:part.length-1];}
+   [key appendFormat:@"#%@#",part];
+  }else [key appendString:part];
+ }
+ return key;
+}
+static NSUInteger lensIdentityRank(const lfLens*lens,NSString*key){
+ if(!key.length)return 0;NSMutableArray*models=[NSMutableArray new],*makers=[NSMutableArray new];
+ for(NSString*model in identityNames(lens->Model)){NSString*k=lensIdentityKey(model);if([key isEqual:k])return 3;[models addObject:k];}
+ for(NSString*maker in identityNames(lens->Maker)){NSString*k=lensIdentityKey(maker);if(k.length)[makers addObject:k];}
+ NSUInteger rank=0;
+ for(NSString*model in models)for(NSString*maker in makers){
+  if([key isEqual:[maker stringByAppendingString:model]])rank=MAX(rank,2);
+  // Omission is weaker evidence than a recorded full model. This prevents an
+  // unbranded recorded model being displaced by another maker's similar name.
+  NSString*bareKey=key,*bareModel=model;
+  if(key.length>maker.length&&[key hasPrefix:maker])bareKey=[key substringFromIndex:maker.length];
+  if(model.length>maker.length&&[model hasPrefix:maker])bareModel=[model substringFromIndex:maker.length];
+  if([bareKey isEqual:bareModel])rank=MAX(rank,1);
+ }
+ return rank;
+}
+static BOOL exactLensIdentity(const lfLens*lens,NSString*name){return lensIdentityRank(lens,lensIdentityKey(name))>0;}
+static BOOL recordedLensIdentity(const lfLens*lens,NSString*key){
+ if(!key.length)return NO;for(NSString*model in identityNames(lens->Model))if([key isEqual:lensIdentityKey(model)])return YES;return NO;
 }
 // Lensfun replaces earlier default model elements with the last one. Retain
 // those explicitly recorded names as private language aliases in memory.
@@ -57,15 +89,23 @@ static BOOL sameProjectionContext(const lfLens*a,const lfLens*b){
  if(a->Type==b->Type)return YES;
  // Different fisheye fits can be calibrated for different sensor regions of
  // one recorded lens. A translated alias alone cannot establish that identity.
- return fisheyeProjection(a->Type)&&fisheyeProjection(b->Type)&&a->Model&&b->Model&&[norm(@(a->Model))isEqual:norm(@(b->Model))]&&isfinite(a->AspectRatio)&&a->AspectRatio>0&&a->AspectRatio==b->AspectRatio;
+ return fisheyeProjection(a->Type)&&fisheyeProjection(b->Type)&&a->Model&&b->Model&&[lensIdentityKey(@(a->Model))isEqual:lensIdentityKey(@(b->Model))]&&isfinite(a->AspectRatio)&&a->AspectRatio>0&&a->AspectRatio==b->AspectRatio;
 }
 static const lfLens*selectExactLensVariant(const lfLens**candidates,const lfCamera*camera,NSString*name,NSUInteger*count,BOOL*sensorVariant){
- const lfLens*first=NULL;*count=0;*sensorVariant=NO;
- if(candidates)for(NSUInteger i=0;candidates[i];i++)if(exactLensIdentity(candidates[i],name)){if(!first)first=candidates[i];(*count)++;}
+ const lfLens*first=NULL;*count=0;*sensorVariant=NO;NSString*key=lensIdentityKey(name);NSUInteger bestRank=0;NSMutableArray<NSValue*>*matches=[NSMutableArray new];
+ // Most EXIF names are recorded directly. Resolve this stronger tier first,
+ // avoiding maker parsing for every non-matching lens in the common path.
+ if(candidates)for(NSUInteger i=0;candidates[i];i++)if(recordedLensIdentity(candidates[i],key))[matches addObject:[NSValue valueWithPointer:candidates[i]]];
+ if(!matches.count&&candidates)for(NSUInteger i=0;candidates[i];i++){
+  NSUInteger rank=lensIdentityRank(candidates[i],key);if(!rank||rank<bestRank)continue;
+  if(rank>bestRank){bestRank=rank;[matches removeAllObjects];}
+  [matches addObject:[NSValue valueWithPointer:candidates[i]]];
+ }
+ *count=matches.count;if(*count)first=matches.firstObject.pointerValue;
  if(*count<=1)return first;
  const lfLens*selected=NULL;NSUInteger near=0;
- for(NSUInteger i=0;candidates[i];i++)if(exactLensIdentity(candidates[i],name)){
-  const lfLens*l=candidates[i];BOOL sameMaker=NO;
+ for(NSValue*value in matches){
+  const lfLens*l=value.pointerValue;BOOL sameMaker=NO;
   for(NSString*a in identityNames(first->Maker))for(NSString*b in identityNames(l->Maker))if([norm(a)isEqual:norm(b)])sameMaker=YES;
   if(!sameMaker||!sameProjectionContext(first,l)||!isfinite(l->CropFactor)||l->CropFactor<=0||!isfinite(camera->CropFactor)||camera->CropFactor<=0)return NULL;
   // 3% admits recorded 1.50/1.534 rounding, but does not collapse Canon 1.6,
@@ -309,12 +349,6 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
   ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);
   NSUInteger exactCount=0;BOOL sensorVariant=NO;const lfLens*exact=selectExactLensVariant(ls,camera,name,&exactCount,&sensorVariant);
   if(exact){lens=exact;identitySource=key;identityMethod=sensorVariant?@"exact-lens-identity-sensor-calibration-variant":@"normalized-exact-database-alias";break;}
-  if(exactCount>1)continue;
-  if(ls){lf_freeFn(ls);ls=NULL;}
-  ls=lf_db_find_lenses_hdFn(db,camera,NULL,name.UTF8String,0);
-  if(!ls)continue;exact=selectExactLensVariant(ls,camera,name,&exactCount,&sensorVariant);NSUInteger count=0;
-  for(;ls[count];count++){}
-  if(exact){lens=exact;identitySource=key;identityMethod=sensorVariant?@"exact-lens-identity-sensor-calibration-variant":@"normalized-exact";break;}if(exactCount==0&&count==1){lens=ls[0];identitySource=key;identityMethod=@"unique-strict-token-match";break;}
  }
  if(!lens){if(ls){lf_freeFn(ls);ls=NULL;}ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);lens=fixedBuiltInLens(ls,camera,m);if(lens){identitySource=@"rawCaptureMetadata";identityMethod=@"fixed-built-in-camera-lens";}}
  if(!lens){fail(error,@"无法唯一匹配镜头，请选择镜头配置。");goto cleanup;}
