@@ -1,0 +1,134 @@
+{
+  "version": "0.2.6-preview-build11",
+  "verifiedAt": "2026-10-20T12:24:35.426948+00:00",
+  "scope": "Actual Pixelmator 4.3 / macOS 27.2 (26B5112a) owned-host PXD apply/save, normal quit/relaunch/reopen and full PNG export; single A6000 test photo, not optical accuracy or universal RAW support",
+  "initialPXDSHA256": "48c055afa502c9ea28d355eb59e74b524f617a8c4b94048e9814c7b50427d05a",
+  "afterSave": {
+    "scope": "Read-only saved test PXD audit; does not establish GUI export or optical accuracy",
+    "documentBasename": "A6000-build11-notice-test.pxd",
+    "pxdBytes": 97617337,
+    "pxdSHA256": "8fe0685daeb1b4cb84b29ecdc8c20358a36efaf3838f4caabb18122e9a430028",
+    "embeddedRAW": [
+      {
+        "bytes": 25624576,
+        "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+      }
+    ],
+    "settings": {
+      "distortionEnabled": 1,
+      "vignettingEnabled": 0,
+      "tcaStrength": 100.0,
+      "distortionStrength": 90.0,
+      "vignettingStrength": 50.0,
+      "tcaEnabled": 1,
+      "constrainCropEnabled": 1
+    },
+    "bindingFieldsEqualExceptSerializationContext": true,
+    "bindingOnlySerializationContext": [
+      1,
+      {
+        "cs": [
+          1,
+          {
+            "map": {}
+          }
+        ]
+      }
+    ],
+    "format": {
+      "profileFormatVersion": 5,
+      "workingTransfer": "lensdock-compact-v5",
+      "compactWorkingTransfer": "encoded_sRGB"
+    },
+    "automaticCapture": {
+      "focal_mm": 39.0,
+      "aperture": 5.0,
+      "focus_distance_m": 1000.0,
+      "distance_source": "infinity_fallback"
+    },
+    "constrainedCrop": {
+      "version": 1,
+      "safetyMarginPixels": 2,
+      "maximumDisplacementPixels": [
+        84.66547389688492,
+        56.420609826660154
+      ],
+      "method": "conservative-all-field-extrema-centred-uniform-scale-v1",
+      "scale": 0.9707896950866699
+    },
+    "temporaryWorkingMapsAbsent": true
+  },
+  "afterExport": {
+    "scope": "Read-only saved test PXD audit; does not establish GUI export or optical accuracy",
+    "documentBasename": "A6000-build11-notice-test.pxd",
+    "pxdBytes": 97617337,
+    "pxdSHA256": "8fe0685daeb1b4cb84b29ecdc8c20358a36efaf3838f4caabb18122e9a430028",
+    "embeddedRAW": [
+      {
+        "bytes": 25624576,
+        "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+      }
+    ],
+    "settings": {
+      "distortionEnabled": 1,
+      "vignettingEnabled": 0,
+      "tcaStrength": 100.0,
+      "distortionStrength": 90.0,
+      "vignettingStrength": 50.0,
+      "tcaEnabled": 1,
+      "constrainCropEnabled": 1
+    },
+    "bindingFieldsEqualExceptSerializationContext": true,
+    "bindingOnlySerializationContext": [
+      1,
+      {
+        "cs": [
+          1,
+          {
+            "map": {}
+          }
+        ]
+      }
+    ],
+    "format": {
+      "profileFormatVersion": 5,
+      "workingTransfer": "lensdock-compact-v5",
+      "compactWorkingTransfer": "encoded_sRGB"
+    },
+    "automaticCapture": {
+      "focal_mm": 39.0,
+      "aperture": 5.0,
+      "focus_distance_m": 1000.0,
+      "distance_source": "infinity_fallback"
+    },
+    "constrainedCrop": {
+      "version": 1,
+      "safetyMarginPixels": 2,
+      "maximumDisplacementPixels": [
+        84.66547389688492,
+        56.420609826660154
+      ],
+      "method": "conservative-all-field-extrema-centred-uniform-scale-v1",
+      "scale": 0.9707896950866699
+    },
+    "temporaryWorkingMapsAbsent": true
+  },
+  "observedReopenedSliders": {
+    "distortionAmountPercent": 2.476718455299584,
+    "distortionRecommendedPercent": 2.751909394777316,
+    "tcaAmountPixels": 2.363198427596656,
+    "vignettingTrialEV": 0.4809438118171166,
+    "vignettingEnabled": false,
+    "cropEnabled": true
+  },
+  "automaticCaptureUI": {
+    "focalLength": 39,
+    "aperture": 5,
+    "focusDistance": 1000,
+    "distanceLabel": "Explicit far-distance calibration fallback, not measured focus distance"
+  },
+  "sliderBelowAboveAndRecommendButtonVerified": true,
+  "photoAndPanelVisuallyInspected": true,
+  "RAWHashUnchanged": true,
+  "photosOrPXDRedistributed": false
+}

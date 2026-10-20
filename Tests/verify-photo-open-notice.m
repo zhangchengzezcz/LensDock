@@ -24,6 +24,7 @@ id LensCopyScriptingReference(id script,NSString*field){return nil;}
 @interface NoticeProbe:LensCompatibilityController
 @property NSUInteger reports,presentations,unavailableReports;
 @property BOOL exerciseSuppression;
+@property(weak) NSWindow*lastOwner;
 @end
 @implementation NoticeProbe
 - (NSTimeInterval)readinessRetryDelay{return .002;}
@@ -31,10 +32,11 @@ id LensCopyScriptingReference(id script,NSString*field){return nil;}
  self.reports++;
  return @{@"passed":@YES,@"rawReferenceCheck":self.reports<=self.unavailableReports?@"reference-unavailable":@"passed"};
 }
-- (void)presentReport:(NSDictionary*)report automatic:(BOOL)automatic{
+- (void)presentReport:(NSDictionary*)report automatic:(BOOL)automatic forWindow:(NSWindow*)window{
  self.presentations++;
+ self.lastOwner=window;
  // The real method must return without creating NSAlert when opted out.
- if(self.exerciseSuppression)[super presentReport:report automatic:automatic];
+ if(self.exerciseSuppression)[super presentReport:report automatic:automatic forWindow:window];
 }
 @end
 static NoticeWindow*window(BOOL loaded){
@@ -47,7 +49,7 @@ int main(){@autoreleasepool{
  NoticeProbe*p=[NoticeProbe new];p.unavailableReports=3;NoticeWindow*w=window(NO);
  [p scheduleWindow:(NSWindow*)w];[p scheduleWindow:(NSWindow*)w];
  dispatch_after(dispatch_time(DISPATCH_TIME_NOW,10*NSEC_PER_MSEC),dispatch_get_main_queue(),^{((NoticeDocument*)w.windowController.document).scriptingCurrentLayer=[NSObject new];});
- pump(.12);require(p.reports==4&&p.presentations==1,"Photo/reference readiness must retry without further window events and present once");
+ pump(.12);require(p.reports==4&&p.presentations==1&&p.lastOwner==(id)w,"Photo/reference readiness must retry without further window events and present once on the originating document");
  [p scheduleWindow:(NSWindow*)w];pump(.02);require(p.presentations==1,"Reactivation must not repeat a notice");
  NoticeWindow*second=window(YES);[p scheduleWindow:(NSWindow*)second];pump(.02);require(p.presentations==2,"A different opened photograph must be checked");
  NoticeProbe*bounded=[NoticeProbe new];bounded.unavailableReports=100;NoticeWindow*bad=window(YES);[bounded scheduleWindow:(NSWindow*)bad];pump(.12);

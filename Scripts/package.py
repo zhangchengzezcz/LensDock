@@ -11,7 +11,7 @@ def package():
  subprocess.run(['codesign','--verify','--deep','--strict',str(app)],check=True)
  info=plistlib.loads((app/'Contents/Info.plist').read_bytes())
  build=json.loads((ROOT/'Build/build-manifest.json').read_text())
- if info.get('CFBundleShortVersionString')!=VERSION['version'] or build.get('version')!=RELEASE:raise ValueError('Build the requested version before packaging')
+ if info.get('CFBundleShortVersionString')!=VERSION['version'] or str(info.get('CFBundleVersion'))!=str(VERSION['build']) or build.get('version')!=RELEASE:raise ValueError('Build the requested version and build number before packaging')
  for name,digest in build['sha256'].items():
   if hashlib.sha256((app/name).read_bytes()).hexdigest()!=digest:raise ValueError('Built payload changed: '+name)
  source=distribution/f'LensDock-{RELEASE}-source.zip'

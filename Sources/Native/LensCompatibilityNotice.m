@@ -28,25 +28,34 @@ static id noticeGetter(id obj,NSString*name){SEL s=NSSelectorFromString(name);Me
  r[@"failures"]=failures;r[@"passed"]=@(failures.count==0);
  return r;
 }
-- (void)presentReport:(NSDictionary*)report automatic:(BOOL)automatic{
+- (void)presentReport:(NSDictionary*)report automatic:(BOOL)automatic forWindow:(NSWindow*)window{
  NSData*json=[NSJSONSerialization dataWithJSONObject:report options:NSJSONWritingPrettyPrinted|NSJSONWritingSortedKeys error:nil];
  NSString*text=[[NSString alloc]initWithData:json encoding:NSUTF8StringEncoding]?:@"无法生成诊断";
  [text writeToFile:[NSTemporaryDirectory()stringByAppendingPathComponent:@"LensDock-Compatibility.json"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
  NSString*key=@"LensDockSuppressAutomaticCompatibilityNotice";
  if(automatic&&[NSUserDefaults.standardUserDefaults boolForKey:key])return;
  NSAlert*alert=[NSAlert new];alert.messageText=[report[@"passed"]boolValue]?@"照片兼容性检查通过":@"照片兼容性检查未通过";
+ alert.alertStyle=[report[@"passed"]boolValue]?NSAlertStyleInformational:NSAlertStyleWarning;
  NSString*detail=[report[@"passed"]boolValue]?([report[@"rawReferenceCheck"]isEqual:@"passed"]?@"必要接口、数据布局与当前 RAW 图层引用正常。镜头矫正仍会按照片自动匹配可靠标定。":@"必要接口与数据布局正常。镜头矫正需要打开 RAW 并选中 RAW 图层。"): [report[@"failures"]componentsJoinedByString:@"\n"];
  alert.informativeText=[NSString stringWithFormat:@"Pixelmator %@ · Apple 芯片\n%@\n\n%@\n诊断不包含照片、文件路径或拍摄信息。",report[@"hostVersion"],report[@"macOS"],detail];
  alert.showsSuppressionButton=YES;alert.suppressionButton.title=@"以后不再自动提示";alert.suppressionButton.state=[NSUserDefaults.standardUserDefaults boolForKey:key]?NSControlStateValueOn:NSControlStateValueOff;
  [alert addButtonWithTitle:@"继续"];[alert addButtonWithTitle:@"复制诊断"];[alert addButtonWithTitle:@"前往 GitHub Issues"];
- NSModalResponse response=[alert runModal];[NSUserDefaults.standardUserDefaults setBool:alert.suppressionButton.state==NSControlStateValueOn forKey:key];
- if(response==NSAlertSecondButtonReturn){[NSPasteboard.generalPasteboard clearContents];[NSPasteboard.generalPasteboard setString:text forType:NSPasteboardTypeString];}
- if(response==NSAlertThirdButtonReturn)[NSWorkspace.sharedWorkspace openURL:[NSURL URLWithString:report[@"issueURL"]]];
+ void(^finish)(NSModalResponse)=^(NSModalResponse response){
+  [NSUserDefaults.standardUserDefaults setBool:alert.suppressionButton.state==NSControlStateValueOn forKey:key];
+  if(response==NSAlertSecondButtonReturn){[NSPasteboard.generalPasteboard clearContents];[NSPasteboard.generalPasteboard setString:text forType:NSPasteboardTypeString];}
+  if(response==NSAlertThirdButtonReturn)[NSWorkspace.sharedWorkspace openURL:[NSURL URLWithString:report[@"issueURL"]]];
+ };
+ // Keep the notice owned by the photographed document. A sheet leaves the
+ // normal application run loop available while the document finishes opening.
+ if(window&&window.visible){
+  if(window.attachedSheet)return;
+  [alert beginSheetModalForWindow:window completionHandler:finish];
+ }else if(!automatic){finish([alert runModal]);}
 }
 - (void)showCompatibility:(id)sender{
  NSDocument*document=NSDocumentController.sharedDocumentController.currentDocument;
  if(!document){NSAlert*alert=[NSAlert new];alert.messageText=@"请先打开照片";alert.informativeText=@"照片载入后会自动检查，也可随时从此菜单重新检查。";[alert addButtonWithTitle:@"好"];[alert runModal];return;}
- [self presentReport:[self reportForDocument:document] automatic:NO];
+ [self presentReport:[self reportForDocument:document] automatic:NO forWindow:document.windowForSheet];
 }
 - (void)documentWindowReady:(NSNotification*)notification{
  NSWindow*window=[notification.object isKindOfClass:NSWindow.class]?notification.object:nil;
@@ -69,7 +78,7 @@ static id noticeGetter(id obj,NSString*name){SEL s=NSSelectorFromString(name);Me
   NSDictionary*report=[self reportForDocument:document];
   if([report[@"rawReferenceCheck"]isEqual:@"reference-unavailable"]){NSUInteger attempt=[[self.readinessAttempts objectForKey:document]unsignedIntegerValue]+1;[self.readinessAttempts setObject:@(attempt) forKey:document];if(attempt<20){[self scheduleWindow:window];return;}}
   [self.checkedDocuments addObject:document];
-  [self presentReport:report automatic:YES];
+  [self presentReport:report automatic:YES forWindow:window];
  });
 }
 @end

@@ -1,0 +1,19 @@
+{
+  "closedWindowIgnored": true,
+  "differentDocumentChecked": true,
+  "optOutStillChecks": true,
+  "quietLoadRetries": true,
+  "realGUIAcceptance": false,
+  "sameDocumentDeduplicated": true,
+  "scope": "Headless production-controller scheduling with fixture documents/windows; real Pixelmator GUI still pending",
+  "sheetDeferral": true,
+  "unavailableReferenceBoundedAt": 20,
+  "unloadedDocumentNeverPassed": true,
+  "version": "0.2.6-preview-build12",
+  "originatingDocumentWindowPreserved": true,
+  "sourceSHA256": {
+    "Sources/Native/LensCompatibilityNotice.h": "182a61d44f46b9a593a0a63a6afb1785043b14ae2a9b7aff8c5fcbdc933f286d",
+    "Sources/Native/LensCompatibilityNotice.m": "307bb747517504f0aa525154d37a56986378f764df141d161b2ce84ac859f43f",
+    "Tests/verify-photo-open-notice.m": "5cb233060def8a546986b63e54b6a33d480d5dbbe9e8e6a4de5553934581febb"
+  }
+}

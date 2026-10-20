@@ -1,0 +1,44 @@
+{
+  "version": "0.2.6-preview-build12",
+  "verifiedAt": "2026-10-20T12:24:35.426948+00:00",
+  "scope": "Actual owned Pixelmator 4.3 host on Apple Silicon macOS 27.2 (26B5112a); photo-open notice and selected RAW reference, not universal host/optical validation",
+  "rawReferenceCheck": "passed",
+  "automaticNoticeAXRole": "sheet",
+  "automaticNoticeObserved": true,
+  "suppressionObservedThenReopenWithoutNotice": true,
+  "suppressedReopenStillWrotePassingDiagnostic": true,
+  "manualRecheckWithSuppressionCheckedObserved": true,
+  "suppressionUncheckedThenNewOpenShowedNoticeAgain": true,
+  "sameDocumentNoImmediateRepeatAfterRestoring": true,
+  "normalQuitRelaunchSuppressionPersistence": "Verified on build 11; build 12 rechecks close/reopen and manual restore",
+  "alertVisualAcceptance": "INCONCLUSIVE: automatic/manual application-modal alerts and new sheets returned blank white captures while AX text/buttons were present and actionable; do not claim visual pass",
+  "mainCorrectionPanelVisualAcceptance": "Inspected on build 11; panel layout source unchanged in build 12",
+  "sourceSHA256": {
+    "Sources/Native/LensCompatibilityNotice.h": "182a61d44f46b9a593a0a63a6afb1785043b14ae2a9b7aff8c5fcbdc933f286d",
+    "Sources/Native/LensCompatibilityNotice.m": "307bb747517504f0aa525154d37a56986378f764df141d161b2ce84ac859f43f",
+    "Tests/verify-photo-open-notice.m": "5cb233060def8a546986b63e54b6a33d480d5dbbe9e8e6a4de5553934581febb"
+  },
+  "passingDiagnostic": {
+    "architecture": "arm64",
+    "checkedHostUI": true,
+    "effectsRoundtrip": true,
+    "failures": [],
+    "hostVersion": "4.3",
+    "issueURL": "https://github.com/zhangchengzezcz/LensDock/issues/new",
+    "macOS": "Version 27.2 (Build 26B5112a)",
+    "passed": 1,
+    "photoOpened": 1,
+    "policy": "capability-check-v1",
+    "rawReferenceCheck": "passed",
+    "referenceAccess": "Swift Mirror; runtime reference classes checked on RAW selection",
+    "requiredExports": 19,
+    "scope": "接口与数据布局自检；不代表所有未来版本、镜头和照片都已实测。诊断不含照片、文件路径或 EXIF。",
+    "selectedLayerAvailable": 1,
+    "valueLayouts": {
+      "Bitmap": true,
+      "Effects": true,
+      "RAW": true
+    }
+  },
+  "photosOrPathsSentToGitHub": false
+}

@@ -1,0 +1,28 @@
+{
+  "version": "0.2.6-preview-build12",
+  "scope": "Build and isolated installation, targeted production-controller regression, real document-sheet notice; full apply/save/reopen/export evidence is from build 11 whose listed bridge/render/panel sources remain byte-identical",
+  "buildExit": 0,
+  "installerIsolationExit": 0,
+  "targetedNoticeRegressionExit": 0,
+  "realPhotoReferenceAndNotice": "FUNCTIONAL_PASS",
+  "alertVisualCapture": "INCONCLUSIVE",
+  "sourceSHA256": {
+    "Sources/Native/LensScriptingReference.swift": "afdbbb1083619c3f5181512d47283afb6dc2cb1fd968cedcbf22b3a5684c1a8e",
+    "Sources/Native/LensLiveDocument.m": "725d1d2ca9372c82316de5ce59a20ee4593aa6342bc29fe901b6286c410e59de",
+    "Sources/Native/LensNativeProfileEngine.m": "36a54355bbb6629c86937c00f5d8fd062892737dfce6a09aca099e9cb82d132d",
+    "Sources/Native/LensVignettingFilter.m": "5734dcff1f803544ec744b0655e49c05f3303c2dbf240950cfa44a8e0a70c421",
+    "Sources/Native/LensConstrainedCrop.m": "d70bf88c99824306e1f9d8208f6dab34a30fa03bd02eb5851291c4c15de12f37",
+    "Sources/Native/LensPanel.m": "350e536d19886c2cd04ddcb6986558fd517e137ba840e0d42462766292449ad3"
+  },
+  "builtPayloadSHA256": {
+    "MacOS/LensDock": "eda288696afea4cf53c19b34d3f3baa8ed530379b82324d96d2678f8c46dbeae",
+    "Resources/Payload/LensPanel.dylib": "76856687056cef3af935606af1ffcc7bfe3565723574a7579ba3dc51fa3fc662",
+    "Resources/Payload/LensLiveSource.dylib": "da6d1d222bd2d520dd3a4e8b0ff7b3dc3f73183ebcc9bafb4b8f9a896a828a0e"
+  },
+  "logSHA256": {
+    "Build/Development/build-0.2.6-build12.log": "539a0f9c9bba235bc146941757f6c30bcc3168f8cff6861b6b6b82a02f1709aa",
+    "Build/Development/installer-0.2.6-build12-verification.log": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56",
+    "Build/Development/update-research-build12.log": "2601467916524d2de686c1bea0b6bc21c1fda1e4a998274311b2e3e1079dcb26"
+  },
+  "broadOpticalOrLightroomEquivalentAcceptance": false
+}

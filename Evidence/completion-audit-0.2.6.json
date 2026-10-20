@@ -1,16 +1,16 @@
 {
-  "version": "0.2.6-preview-build11",
+  "version": "0.2.6-preview-build12",
   "goal": "Pixelmator integrated, RAW-preserving independent lens correction with automatic matching as comprehensive as Lightroom Classic",
   "goalComplete": false,
   "compatibilityPolicy": "Apple Silicon, macOS 26+, Pixelmator Pro 4.3+ capability checks; future versions not individually certified",
   "implementedLatestRequest": "Photo-open automatic compatibility notice; persistent suppression; manual recheck; suppression keeps checks active",
   "headlessNoticeRegressionPassed": true,
-  "realPhotoNewReferenceBridgeAndNoticeAcceptance": "PENDING_LOCKED_MAC",
+  "realPhotoNewReferenceBridgeAndNoticeAcceptance": "FUNCTIONAL_PASS; system alert visual capture inconclusive",
   "lightroomEquivalentCoverage": "NOT_PROVEN",
   "broadRealOpticalValidation": "INCOMPLETE",
   "developerIDAndNotarization": "MISSING",
   "publicSourceAndIssues": true,
-  "currentSourceVersion": "0.2.6 build 11",
+  "currentSourceVersion": "0.2.6 build 12",
   "frozenDesktopDMGCandidate": "0.2.5 build 9",
   "completionDefinition": "Documentation/Completion.md",
   "historicalAuditNote": "Evidence/completion-audit-0.2.5.json describes a narrower compatibility workstream, not the complete goal",
@@ -21,5 +21,7 @@
     "catalogWitnessesMatched": 1564,
     "catalogWitnesses": 1567,
     "isRealRAWOrOpticalCoverage": false
-  }
+  },
+  "realApplySaveReopenExport": "build 11 single A6000 PXD, RAW hash unchanged, 6000x4000 16-bit Display P3 PNG all opaque",
+  "latestNoticePresentation": "Asynchronous document sheet in build 12"
 }

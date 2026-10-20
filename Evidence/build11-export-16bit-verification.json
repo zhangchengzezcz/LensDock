@@ -1,0 +1,16 @@
+{
+  "allPixelsOpaque" : true,
+  "bitsPerComponent" : 16,
+  "colorSpace" : "kCGColorSpaceDisplayP3",
+  "fileBytes" : 123690091,
+  "filename" : "LensDock-build11-Crop-Test.png",
+  "fileSHA256" : "9defd8825f410e772d8a93ec8b0df638b65fb869b118eb81915262f539ccbf3b",
+  "height" : 4000,
+  "iccSHA256" : "0ff6958f98684c61f6bbdce1368ddeaf3873baf84545baba482e920d92a914c0",
+  "minimumAlpha16Bit" : 65535,
+  "nonopaquePixels" : 0,
+  "outer32PixelBandNonopaquePixels" : 0,
+  "scope" : "Actual host-exported PNG decoded in its embedded RGB color space at 16 bits; alpha audit, not optical accuracy",
+  "transparentPixels" : 0,
+  "width" : 6000
+}

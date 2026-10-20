@@ -8,5 +8,5 @@
 - (void)scheduleWindow:(NSWindow*)window;
 - (NSTimeInterval)readinessRetryDelay;
 - (NSDictionary*)reportForDocument:(NSDocument*)document;
-- (void)presentReport:(NSDictionary*)report automatic:(BOOL)automatic;
+- (void)presentReport:(NSDictionary*)report automatic:(BOOL)automatic forWindow:(NSWindow*)window;
 @end
