@@ -5,7 +5,7 @@
   "compatibilityPolicy": "Apple Silicon, macOS 26+, Pixelmator Pro 4.3+ capability checks; future versions not individually certified",
   "implementedLatestRequest": "Photo-open automatic compatibility notice; persistent suppression; manual recheck; suppression keeps checks active",
   "headlessNoticeRegressionPassed": true,
-  "realPhotoNewReferenceBridgeAndNoticeAcceptance": "FUNCTIONAL_PASS; system alert visual capture inconclusive",
+  "realPhotoNewReferenceBridgeAndNoticeAcceptance": "FUNCTIONAL_PASS; user confirmed normal notice text and buttons",
   "lightroomEquivalentCoverage": "NOT_PROVEN",
   "broadRealOpticalValidation": "INCOMPLETE",
   "developerIDAndNotarization": "MISSING",

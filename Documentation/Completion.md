@@ -15,7 +15,7 @@
 | 透明边修复，保留可逆选择与原始数据 | build 11 新桥接实际 PXD 与重开、RAW 哈希及 6000×4000、16 位 Display P3 PNG 已复测：全图 alpha=65535，导出不改变设置或 RAW；没有全镜头光学等效证明 |
 | Pixelmator 4.3+、Apple 芯片 macOS 26+，通用检查而非逐版本适配 | 安装器签名/结构/导出接口检查、运行时值布局与序列化自检、7 个 arm64 二进制部署契约通过。本机 4.3 / 27.2 基线；未来行为以检查与 Issue 反馈处理，不声称逐机实测 |
 | 打开照片自动检查，首次可忽略以后提示 | build 11/12 实际照片自动提示、忽略、后台继续检查、手动重查和恢复通过，build 11 正常退出/重启后忽略保留。build 12 使用异步文档附属面板；同文档恢复后不立刻重复提示 |
-| 菜单可用、界面清楚 | 占位菜单已移除，真实主矫正面板、滑块推荐标记及照片画布已截图检查。系统提示在自动/手动及 sheet 截图均为空白，AX 正文/按钮完整且可操作；提示外观仍未确认 |
+| 菜单可用、界面清楚 | 占位菜单已移除，真实主矫正面板、滑块推荐标记及照片画布已截图检查。系统提示的截图工具仍返回空白，AX 正文/按钮完整且可操作；用户已直接目视确认文字与按钮显示正常 |
 | 应用速率与内存 | 已有紧凑格式、懒数值表、按需平面与系统分块；源摘要和进程自检结果复用。已有 24 MP 数据与基准，不能推广至全部 Mac、低内存设备或长期负载 |
 | 高清背景 DMG，图片真正内嵌 | 0.2.5 候选镜像内矢量 PDF、源图移开及异名只读挂载验证通过；桌面副本与清单摘要一致。该包不是完整目标的最终验收版 |
 | 整理源码、公开 GitHub 和 Issues | 已公开仓库，问题模板、源码提交、506 文件候选源码包逐文件核对与六项草稿附件核对通过。RAW、PXD、原厂应用不分发 |
@@ -23,4 +23,6 @@
 
 主要证据：`Evidence/constrained-crop-saved-document-verification.json`、`Evidence/constrained-export-16bit-verification.json`、`Evidence/generic-compatibility-0.2.5.json`、`Evidence/installer-0.2.5-verification.json`、`Evidence/three-corrections-verification.json`、`Evidence/native-priority-verification.json`、`Evidence/public-capture-metadata-verification.json` 及 `Distribution/0.2.5-preview/` 的候选交付清单。各证据的版本、范围和未测项仍有效，不能跨版本冒用。
 
-新实机证据见 `Evidence/build11-live-raw-verification.json`、`Evidence/build11-export-16bit-verification.json`、`Evidence/photo-open-notice-ui-verification.json` 与 `Evidence/build12-verification.json`。下一步仍包括独立自动匹配覆盖、实拍光学证据、系统提示外观确认及正式签名分发。F810 只有格式约束的受控路由，没有真实 F810 RAF；只读参考名称统计不证明 Lightroom 等效，也不为缺失镜头生成猜测曲线。
+新实机证据见 `Evidence/build11-live-raw-verification.json`、`Evidence/build11-export-16bit-verification.json`、`Evidence/photo-open-notice-ui-verification.json` 与 `Evidence/build12-verification.json`。下一步仍包括独立自动匹配覆盖、实拍光学证据、正式签名分发。F810 只有格式约束的受控路由，没有真实 F810 RAF；只读参考名称统计不证明 Lightroom 等效，也不为缺失镜头生成猜测曲线。
+
+系统提示的最后外观判定已由用户直接确认，记录在 `Evidence/notice-user-visual-confirmation.json`；这项确认不改变镜头覆盖、广泛光学验证与正式分发仍未完成的结论。

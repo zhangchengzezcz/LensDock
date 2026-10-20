@@ -11,7 +11,7 @@
   "suppressionUncheckedThenNewOpenShowedNoticeAgain": true,
   "sameDocumentNoImmediateRepeatAfterRestoring": true,
   "normalQuitRelaunchSuppressionPersistence": "Verified on build 11; build 12 rechecks close/reopen and manual restore",
-  "alertVisualAcceptance": "INCONCLUSIVE: automatic/manual application-modal alerts and new sheets returned blank white captures while AX text/buttons were present and actionable; do not claim visual pass",
+  "alertVisualAcceptance": "USER_CONFIRMED_TEXT_AND_BUTTONS_NORMAL",
   "mainCorrectionPanelVisualAcceptance": "Inspected on build 11; panel layout source unchanged in build 12",
   "sourceSHA256": {
     "Sources/Native/LensCompatibilityNotice.h": "182a61d44f46b9a593a0a63a6afb1785043b14ae2a9b7aff8c5fcbdc933f286d",
@@ -40,5 +40,7 @@
       "RAW": true
     }
   },
-  "photosOrPathsSentToGitHub": false
+  "photosOrPathsSentToGitHub": false,
+  "captureLimitation": "Automatic/manual alert and sheet screenshots returned blank while AX controls were actionable; user directly confirmed normal visible text/buttons",
+  "userVisualConfirmation": "Evidence/notice-user-visual-confirmation.json"
 }

@@ -24,5 +24,7 @@
     "Build/Development/installer-0.2.6-build12-verification.log": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56",
     "Build/Development/update-research-build12.log": "2601467916524d2de686c1bea0b6bc21c1fda1e4a998274311b2e3e1079dcb26"
   },
-  "broadOpticalOrLightroomEquivalentAcceptance": false
+  "broadOpticalOrLightroomEquivalentAcceptance": false,
+  "alertVisualUserConfirmation": true,
+  "userConfirmationEvidence": "Evidence/notice-user-visual-confirmation.json"
 }

@@ -1,0 +1,10 @@
+{
+  "version": "0.2.6-preview-build12",
+  "verifiedAt": "2026-10-20T12:42:39.413635+00:00",
+  "source": "Direct user response to the currently displayed document-sheet compatibility check",
+  "question": "当前“照片兼容性检查通过”提示的文字和按钮是否正常显示？",
+  "answer": "文字和按钮正常显示",
+  "systemNoticeTextAndButtonsVisuallyConfirmed": true,
+  "captureToolStillReturnedBlank": true,
+  "scope": "User visual confirmation for the displayed compatibility sheet; not all hosts, all optical profiles or Lightroom coverage"
+}
