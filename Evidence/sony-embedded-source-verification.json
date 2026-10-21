@@ -1,0 +1,73 @@
+{
+  "scope": "Direct grouped metadata facts in complete CC0 Sony RAWs. Not a correction algorithm, usable frame interpretation, optical acceptance or added automatic coverage.",
+  "verified": [
+    {
+      "fixture": {
+        "file": "ILCE-6000.ARW",
+        "source": "https://raw.pixls.us/getfile.php/1971/nice/Sony%20-%20ILCE-6000%20-%2012bit%2012bit%20compressed%20%283:2%29.ARW",
+        "repositoryEntry": 1971,
+        "license": "CC0-1.0",
+        "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+        "expectedGroupedFields": {
+          "File:FileType": "ARW",
+          "IFD0:Make": "SONY",
+          "IFD0:Model": "ILCE-6000",
+          "SubIFD:ImageWidth": 6048,
+          "SubIFD:ImageHeight": 4024,
+          "SubIFD:DistortionCorrParams": "11 9 7 14 34 63 102 155 221 304 406 528 0 0 0 0 0",
+          "SubIFD:ChromaticAberrationCorrParams": "22 -384 -128 -128 0 0 -128 -256 -384 -640 -1024 -1408 640 640 512 512 640 640 768 1024 1408 1792 2304 0 0 0 0 0 0 0 0 0 0",
+          "SubIFD:VignettingCorrParams": "11 0 0 192 640 1280 1920 2560 3072 3968 5632 8448 0 0 0 0 0",
+          "Sony:DistortionCorrParams": "10 8 16 38 70 114 172 246 338 452 588 0 0 0 0 0",
+          "Sony:ChromaticAberrationCorrParams": "-376 -192 -80 -16 -32 -96 -232 -424 -688 -1000 -1392 0 0 0 0 0 656 600 568 568 600 640 752 1040 1416 1840 2264 0 0 0 0 0",
+          "Sony:VignettingCorrParams": "0 0 192 640 1280 1920 2560 3072 3968 5632 8448 0 0 0 0 0"
+        }
+      },
+      "originalUnchanged": true,
+      "completeSubIFDTableSetPresent": true,
+      "recordedKnotCount": 11,
+      "sourceFramePixels": [
+        6048,
+        4024
+      ],
+      "makerNoteAndSubIFDValuesMustNotBeFlattened": true,
+      "tablesAppliedToPixels": false,
+      "addedAutomaticCoverageClaim": false
+    },
+    {
+      "fixture": {
+        "file": "DSLR-A200.ARW",
+        "source": "https://raw.pixls.us/getfile.php/2271/nice/Sony%20-%20DSLR-A200%20-%2012bit%2012bit%20compressed%20%283:2%29.ARW",
+        "repositoryEntry": 2271,
+        "license": "CC0-1.0",
+        "sha256": "04eacd403d92e0c90da9d91b87615af8eda1afc963350d3ab774557c36763eef",
+        "expectedGroupedFields": {
+          "File:FileType": "ARW",
+          "IFD0:Make": "SONY",
+          "IFD0:Model": "DSLR-A200",
+          "SubIFD:ImageWidth": 3880,
+          "SubIFD:ImageHeight": 2600
+        }
+      },
+      "originalUnchanged": true,
+      "completeSubIFDTableSetPresent": false,
+      "recordedKnotCount": null,
+      "sourceFramePixels": [
+        3880,
+        2600
+      ],
+      "makerNoteAndSubIFDValuesMustNotBeFlattened": false,
+      "tablesAppliedToPixels": false,
+      "addedAutomaticCoverageClaim": false
+    }
+  ],
+  "missingFiles": [],
+  "fixtureSHA256": "20f56d74bb95709ae763d932fac0b5ca10c3825ca8bf3529b3150638e4b414c6",
+  "readerSHA256": "a6b8018093845ac93011307bac4ab630d6604b2365fc7f66bb88c88d7dedb5ed",
+  "pending": [
+    "pixel-frame and active-area alignment",
+    "coefficient interpretation and independent numerical oracle",
+    "linear-light vignette response",
+    "native-priority routing and saved editable effects",
+    "real optical and host render acceptance"
+  ]
+}

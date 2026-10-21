@@ -1,0 +1,100 @@
+{
+  "version": "0.2.7-preview-build14",
+  "verifiedAt": "2026-10-21T12:47:50.388123+00:00",
+  "scope": "Shared automatic identity selection in plan and picker, regression and live RAW flow; embedded metadata is source research only",
+  "baselineCommit": "a885dcb08ae85fcae7cd0de59d8cfd4c10d25f84",
+  "sameTestBaselineFailures": 3,
+  "currentFailures": 0,
+  "fullSuiteGroupsPassed": 30,
+  "nativeRenderCombinationsPassed": 192,
+  "optionalSonySourceRawFilesVerified": 2,
+  "catalog": {
+    "cameraEntries": 1057,
+    "lensEntries": 1572,
+    "requestCount": 1567,
+    "matchedCount": 1564,
+    "failureCount": 3,
+    "calibrationVariantDifferenceCount": 0
+  },
+  "historicalFailureIDsUnchanged": true,
+  "publicCalibrationBytesUnchanged": true,
+  "buildExit": 0,
+  "isolatedInstallerExit": 0,
+  "platformContract": {
+    "passed": true,
+    "scope": "Deployment and architecture contract, not cross-OS runtime acceptance",
+    "target": "Apple Silicon Macs running macOS 26 or later",
+    "runtimeOS": "27.2",
+    "runtimeBuild": "26B118",
+    "sdk": "27.0",
+    "runtimeMatrix": {
+      "macOS26": "NOT_TESTED",
+      "macOS27.2": "LOCAL_TESTS_ONLY",
+      "laterOS": "NOT_TESTED"
+    },
+    "binaries": [
+      {
+        "path": "Contents/MacOS/LensDock",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/LensLiveSource.dylib",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/LensPanel.dylib",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libglib-2.0.0.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libintl.8.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/liblensfun.0.3.4.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libpcre2-8.0.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      }
+    ]
+  },
+  "researchHostUpdatedAfterNormalQuit": true,
+  "ownedHostModuleEqualsBuiltPayload": true,
+  "ownedHostSignatureVerified": true,
+  "liveEvidence": "Evidence/build14-live-raw-verification.json",
+  "exportEvidence": "Evidence/build14-export-16bit-verification.json",
+  "sourceSHA256": {
+    "Sources/Native/LensNativeProfileEngine.m": "1e427001f921b71db3cd02b56859428c83fed1ac38b39729ae3d3c5ff8a9e9ce",
+    "Tests/verify-lens-identity-format.m": "dce92ad56c6b4a42c3d9ff422bd161082cf9201e72a2378ec9c594be361cfe15",
+    "Tests/verify-sony-embedded-metadata.py": "12f493520cd75b91a75fbda2f73286367988c38233e6c6171d59d129c6b09cd1",
+    "Tests/Fixtures/Sony-embedded-metadata.json": "20f56d74bb95709ae763d932fac0b5ca10c3825ca8bf3529b3150638e4b414c6",
+    "Version.json": "e4fe96ce1182df447de07f843a92f3520984337021f08388cbf66da6c9e38417"
+  },
+  "logSHA256": {
+    "Build/Development/build14-build.log": "539a0f9c9bba235bc146941757f6c30bcc3168f8cff6861b6b6b82a02f1709aa",
+    "Build/Development/build14-regression-tests.log": "f8b921fed641f7ccca807c7f3583518f3c16d87c95ab80ed5bb221a6bfddf024",
+    "Build/Development/build14-catalog-audit.log": "993905c45e9d9b6bb962735c46a0a33e50ca3bff405453bb0e0f4149909877a6",
+    "Build/Development/build14-installer-verification.log": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56",
+    "Build/Development/build14-host-update.log": "2601467916524d2de686c1bea0b6bc21c1fda1e4a998274311b2e3e1079dcb26"
+  },
+  "catalogResultSHA256": "dbe7a57edb634966bb04530453e2849b7c2be9fcd2949d3a46099b1fa9e093c4",
+  "builtPanelSHA256": "95ec60cec2607a2369723a84ad5ccaeff8e46217b9322020ec70436e4ca70ab6",
+  "embeddedCorrectionTablesApplied": false,
+  "additionalPhysicalLensCoverageClaim": false,
+  "fullSizeSpecialRegressionGroups": "DEFAULT_EXPLICIT_SKIP; actual new 24MP host export separately audited",
+  "broadOpticalOrLightroomEquivalentAcceptance": false,
+  "packagingScope": "This report verifies the build and runtime. Versioned delivery verification is recorded separately under Distribution/0.2.7-preview/.",
+  "frozenDistribution": "0.2.6-preview kept unchanged"
+}

@@ -1,0 +1,103 @@
+{
+  "version": "0.2.7-preview-build14",
+  "scope": "Actual new public A6000 RAW in the owned Pixelmator 4.3 host; automatic identity, application, first save, close/reopen, saved effect and full-size PNG export",
+  "hostOS": "27.2",
+  "hostOSBuild": "26B118",
+  "automaticCompatibilitySheet": true,
+  "normalRAWOpenViaWelcomeBrowse": true,
+  "pickerAutomaticallySelectedSameCameraAndLens": true,
+  "pickerCancelledToPreserveAutomaticRoute": true,
+  "usedManualCalibrationOverride": false,
+  "savedMetadataAndBaseMetadataContainNoManualSelection": true,
+  "savedMatchingIdentity": {
+    "matchedCameraProfileID": "camera-v1-018624cadb5b31544a869e970323c5e8c9c41eac503031bf544762ec887f230e",
+    "matchedLensProfileID": "lens-v1-c169fae4f60b7f17d1124337fc865d08263ba9f911d1c28be75243f4cc8072e7",
+    "matchingIdentityMethod": "normalized-exact-database-alias",
+    "matchingIdentitySource": "LensModel",
+    "camera": "Alpha 6000",
+    "lens": "E 18-55mm f/3.5-5.6 OSS",
+    "cameraIdentityMethod": "exact-camera-database-alias"
+  },
+  "automaticCapture": {
+    "focal_mm": 39.0,
+    "aperture": 5.0,
+    "focus_distance_m": 1000.0,
+    "distance_source": "infinity_fallback"
+  },
+  "recommendedDisplay": {
+    "distortionPercent": 2.751909394777316,
+    "tcaPixels": 2.363198427596656,
+    "vignetteTrialEV": 0.4809438118171166,
+    "vignettingEnabled": false
+  },
+  "appliedToRAW": true,
+  "firstSaveCompleted": true,
+  "normalDocumentCloseAndRecentReopenCompleted": true,
+  "reopenedPanelPreservedSettings": true,
+  "savedDocument": {
+    "scope": "Read-only saved test PXD audit; does not establish GUI export or optical accuracy",
+    "documentBasename": "A6000-build14-automatic.pxd",
+    "pxdBytes": 97608256,
+    "pxdSHA256": "382213eb897a2936f5c9b585e296229dc4c64be03b316789260dd4e087908d3d",
+    "embeddedRAW": [
+      {
+        "bytes": 25624576,
+        "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+      }
+    ],
+    "settings": {
+      "distortionEnabled": 1,
+      "vignettingEnabled": 0,
+      "tcaStrength": 100.0,
+      "distortionStrength": 100.0,
+      "vignettingStrength": 50.0,
+      "tcaEnabled": 1,
+      "constrainCropEnabled": 1
+    },
+    "bindingFieldsEqualExceptSerializationContext": true,
+    "bindingOnlySerializationContext": [
+      1,
+      {
+        "cs": [
+          1,
+          {
+            "map": {}
+          }
+        ]
+      }
+    ],
+    "format": {
+      "profileFormatVersion": 5,
+      "workingTransfer": "lensdock-compact-v5",
+      "compactWorkingTransfer": "encoded_sRGB"
+    },
+    "automaticCapture": {
+      "focal_mm": 39.0,
+      "aperture": 5.0,
+      "focus_distance_m": 1000.0,
+      "distance_source": "infinity_fallback"
+    },
+    "constrainedCrop": {
+      "version": 1,
+      "safetyMarginPixels": 2,
+      "maximumDisplacementPixels": [
+        93.85404309082031,
+        62.54383056640625
+      ],
+      "method": "conservative-all-field-extrema-centred-uniform-scale-v1",
+      "scale": 0.9677280847167968
+    },
+    "temporaryWorkingMapsAbsent": true
+  },
+  "hostCanvasVisuallyChecked": true,
+  "canvasTransparentBordersObserved": false,
+  "exportEvidence": "Evidence/build14-export-16bit-verification.json",
+  "exportDidNotChangePXDOrEmbeddedRAWOrSettings": true,
+  "scopeLimitations": [
+    "A6000 sample, not every camera or optical profile",
+    "Normal file controls worked this time; prior intermittent failures are not proven fixed",
+    "Close/reopen within one process; not a new app-restart persistence test",
+    "System notice visual confirmation remains the user-confirmed build12 appearance"
+  ],
+  "photosPXDOrPixelsPublished": false
+}

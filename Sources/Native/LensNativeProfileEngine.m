@@ -121,6 +121,17 @@ static const lfLens*fixedBuiltInLens(const lfLens**lenses,const lfCamera*camera,
  NSDictionary*tags=m[@"rawCaptureMetadata"];if(!LensCaptureModeEvidence(tags)||![tags[@"Panasonic:ConversionLens"]isEqual:@1])return NULL;
  return exactLensIdentity(lenses[0],@"DMC-LX3 & compatibles (Standard)")?lenses[0]:NULL;
 }
+// Both the picker and correction plan must use this decision. A preselected
+// picker row must never turn a rejected token-only match into manual approval.
+static const lfLens*automaticLens(const lfLens**lenses,const lfCamera*camera,NSDictionary*m,NSString**source,NSString**method){
+ for(NSString*key in @[@"LensModel",@"LensIDName",@"Lens"]){
+  NSString*name=text(m[key]);if(!name.length)continue;NSUInteger count=0;BOOL sensor=NO;
+  const lfLens*lens=selectExactLensVariant(lenses,camera,name,&count,&sensor);
+  if(lens){if(source)*source=key;if(method)*method=sensor?@"exact-lens-identity-sensor-calibration-variant":@"normalized-exact-database-alias";return lens;}
+ }
+ const lfLens*builtin=fixedBuiltInLens(lenses,camera,m);
+ if(builtin){if(source)*source=@"rawCaptureMetadata";if(method)*method=@"fixed-built-in-camera-lens";}return builtin;
+}
 // Camera marketing variants can be equivalent for lens correction. A shared
 // name alone is insufficient: require identical maker, mount and crop factor.
 static BOOL exactCameraIdentity(const lfCamera*camera,NSString*model){
@@ -205,12 +216,7 @@ NSDictionary*LensNativeProfileCandidates(NSDictionary*m,NSURL*dbURL,NSURL*libURL
  }
  if(camera){
   ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);
-  for(NSString*key in @[@"LensModel",@"LensIDName",@"Lens"]){
-   NSString*name=text(m[key]);if(!name.length)continue;NSUInteger count=0;BOOL sensor=NO;const lfLens*l=selectExactLensVariant(ls,camera,name,&count,&sensor);if(l){automaticLensID=LensLensProfileID(l);break;}if(count>1)continue;
-   const lfLens**query=lf_db_find_lenses_hdFn(db,camera,NULL,name.UTF8String,0);NSUInteger total=0;while(query&&query[total])total++;
-   l=selectExactLensVariant(query,camera,name,&count,&sensor);if(!l&&count==0&&total==1)l=query[0];if(l)automaticLensID=LensLensProfileID(l);if(query)lf_freeFn((void*)query);if(automaticLensID)break;
-  }
-  if(!automaticLensID){const lfLens*builtin=fixedBuiltInLens(ls,camera,m);if(builtin)automaticLensID=LensLensProfileID(builtin);}
+  const lfLens*automaticProfile=automaticLens(ls,camera,m,NULL,NULL);if(automaticProfile)automaticLensID=LensLensProfileID(automaticProfile);
   const lfLens*manual=selection[@"lensID"]?lensForID(ls,selection[@"lensID"]):NULL;
   if(selection[@"lensID"]&&!manual){selectionFailure(error,@"保存的镜头校准已变更或与此相机不兼容，请重新选择。");goto done;}
   selectedLensID=manual?LensLensProfileID(manual):automaticLensID;
@@ -338,19 +344,11 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
  const lfCamera*camera=selection[@"cameraID"]?cameraForID(lf_db_get_camerasFn(db),selection[@"cameraID"]):selectCamera(db,cs,m,lf_db_find_lenses_hdFn,lf_freeFn,&cameraMethod,&cameraEvidenceKey,&equivalentCameras);const lfLens*lens=NULL;
  if(selection[@"cameraID"]){if(!camera){selectionFailure(error,@"手动相机模式已变更或不存在，请重新选择。");goto cleanup;}cameraMethod=@"user-selected-content-profile";equivalentCameras=1;}
  if(!camera){fail(error,@"相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。");goto cleanup;}
- if(selection[@"lensID"]){ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);lens=lensForID(ls,selection[@"lensID"]);if(!lens){selectionFailure(error,@"手动镜头校准已变更或与此相机不兼容，请重新选择。");goto cleanup;}identitySource=@"LensDockProfileSelection";identityMethod=@"user-selected-content-profile";}
- else for(NSString*key in @[@"LensModel",@"LensIDName",@"Lens"]){
-  NSString*name=text(m[key]);if(!name.length)continue;
-  if(ls){lf_freeFn(ls);ls=NULL;}
-  // Keep every sensor calibration candidate; the library display-list
-  // uniquifier would hide alternative profiles before our identity checks.
-  // Search identities among compatible camera mounts before parsing aperture
-  // tokens from the name. This accepts recorded aliases, never nearby optics.
-  ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);
-  NSUInteger exactCount=0;BOOL sensorVariant=NO;const lfLens*exact=selectExactLensVariant(ls,camera,name,&exactCount,&sensorVariant);
-  if(exact){lens=exact;identitySource=key;identityMethod=sensorVariant?@"exact-lens-identity-sensor-calibration-variant":@"normalized-exact-database-alias";break;}
- }
- if(!lens){if(ls){lf_freeFn(ls);ls=NULL;}ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);lens=fixedBuiltInLens(ls,camera,m);if(lens){identitySource=@"rawCaptureMetadata";identityMethod=@"fixed-built-in-camera-lens";}}
+ // Keep every compatible calibration; display-list uniquification would hide
+ // sensor variants. Load once for all recorded identity fields and both routes.
+ ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);
+ if(selection[@"lensID"]){lens=lensForID(ls,selection[@"lensID"]);if(!lens){selectionFailure(error,@"手动镜头校准已变更或与此相机不兼容，请重新选择。");goto cleanup;}identitySource=@"LensDockProfileSelection";identityMethod=@"user-selected-content-profile";}
+ else lens=automaticLens(ls,camera,m,&identitySource,&identityMethod);
  if(!lens){fail(error,@"无法唯一匹配镜头，请选择镜头配置。");goto cleanup;}
  if(lens->MinFocal&&(focal<lens->MinFocal*.97||focal>lens->MaxFocal*1.03)){fail(error,@"实际焦距超出匹配镜头范围。");goto cleanup;}
  double distance=positive(m[@"FocusDistance"]);if(!distance)distance=positive(m[@"SubjectDistance"]);distanceSource=distance?@"metadata":@"infinity_fallback";if(!distance)distance=1000;

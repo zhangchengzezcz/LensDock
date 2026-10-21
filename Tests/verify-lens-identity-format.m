@@ -30,25 +30,29 @@ int main(int argc,char**argv){@autoreleasepool{
   NSString*s=[NSString stringWithFormat:@"<lensdatabase version=\"1\"><mount><name>IdentityFixture</name></mount><camera><maker>LensDock Test</maker><model>Camera</model><mount>IdentityFixture</mount><cropfactor>1</cropfactor></camera><lens><maker>LensDock Optics</maker><model>%@</model><mount>IdentityFixture</mount><cropfactor>1</cropfactor><calibration><distortion model=\"poly3\" focal=\"50\" k1=\"0.01\"/></calibration></lens></lensdatabase>",c[0]];
   [s writeToURL:xml atomically:YES encoding:NSUTF8StringEncoding error:nil];
   NSDictionary*m=@{@"Make":@"LensDock Test",@"Model":@"Camera",@"LensModel":c[1],@"FocalLength":@50,@"FNumber":@2};
-  NSDictionary*p=LensNativeProfilePlan(m,folder,lib,48,32,nil);BOOL matched=p!=nil,expected=[c[2]boolValue];if(matched!=expected)failures++;
-  [results addObject:@{@"case":c[3],@"matched":@(matched),@"expected":@(expected),@"passed":@(matched==expected)}];
+  NSDictionary*p=LensNativeProfilePlan(m,folder,lib,48,32,nil),*picker=LensNativeProfileCandidates(m,folder,lib,nil);BOOL matched=p!=nil,expected=[c[2]boolValue];if(matched!=expected)failures++;
+  BOOL agreement=picker&&(matched?[picker[@"automaticLensID"]isEqual:p[@"report"][@"matchedLensProfileID"]]&&[picker[@"selectedLensID"]isEqual:p[@"report"][@"matchedLensProfileID"]]:![picker[@"automaticLensID"]length]&&![picker[@"selectedLensID"]length]);if(!agreement)failures++;
+  [results addObject:@{@"case":c[3],@"matched":@(matched),@"expected":@(expected),@"passed":@(matched==expected),@"pickerPlanIdentityAgreement":@(agreement)}];
  }
  NSMutableArray*priorityCases=[NSMutableArray new];
  for(NSNumber*direct in @[@YES,@NO]){
   NSString*firstModel=direct.boolValue?@"Known 50mm f/2":@"LensDock Optics Known 50mm f/2";
   NSString*s=[NSString stringWithFormat:@"<lensdatabase version=\"1\"><mount><name>IdentityFixture</name></mount><camera><maker>LensDock Test</maker><model>Camera</model><mount>IdentityFixture</mount><cropfactor>1</cropfactor></camera><lens><maker>LensDock Optics</maker><model>%@</model><mount>IdentityFixture</mount><cropfactor>1</cropfactor><calibration><distortion model=\"poly3\" focal=\"50\" k1=\"0.01\"/></calibration></lens><lens><maker>Other Optics</maker><model>Other Optics Known 50mm f/2</model><mount>IdentityFixture</mount><cropfactor>1</cropfactor><calibration><distortion model=\"poly3\" focal=\"50\" k1=\"0.02\"/></calibration></lens></lensdatabase>",firstModel];
   [s writeToURL:xml atomically:YES encoding:NSUTF8StringEncoding error:nil];
-  NSDictionary*p=LensNativeProfilePlan(@{@"Make":@"LensDock Test",@"Model":@"Camera",@"LensModel":@"Known 50mm f/2",@"FocalLength":@50,@"FNumber":@2},folder,lib,48,32,nil);
+  NSDictionary*m=@{@"Make":@"LensDock Test",@"Model":@"Camera",@"LensModel":@"Known 50mm f/2",@"FocalLength":@50,@"FNumber":@2};
+  NSDictionary*p=LensNativeProfilePlan(m,folder,lib,48,32,nil),*picker=LensNativeProfileCandidates(m,folder,lib,nil);
   BOOL passed=direct.boolValue?[p[@"report"][@"lensMaker"]isEqual:@"LensDock Optics"]:!p;if(!passed)failures++;
-  [priorityCases addObject:@{@"case":direct.boolValue?@"recorded-model-before-maker-omission":@"ambiguous-maker-omission-rejected",@"passed":@(passed)}];
+  BOOL agreement=picker&&(p?[picker[@"automaticLensID"]isEqual:p[@"report"][@"matchedLensProfileID"]]:![picker[@"automaticLensID"]length]&&![picker[@"selectedLensID"]length]);if(!agreement)failures++;
+  [priorityCases addObject:@{@"case":direct.boolValue?@"recorded-model-before-maker-omission":@"ambiguous-maker-omission-rejected",@"passed":@(passed),@"pickerPlanIdentityAgreement":@(agreement)}];
  }
  NSDictionary*base=@{@"Make":@"Canon",@"Model":@"Canon EOS 40D",@"LensModel":@"EF-S17-85mm f/4-5.6 IS USM",@"FocalLength":@17,@"FNumber":@4};
  NSMutableDictionary*formatted=[base mutableCopy];formatted[@"LensModel"]=@"EF-S17.0-85.0mm F4.00-5.60 IS USM";
  NSURL*db=[NSURL fileURLWithPath:@"Resources/LensBridge/db"];
  NSDictionary*normal=LensNativeProfilePlan(base,db,lib,48,32,nil),*equivalent=LensNativeProfilePlan(formatted,db,lib,48,32,nil);
  BOOL same=normal&&equivalent&&[normal[@"report"][@"interpolatedCalibration"]isEqual:equivalent[@"report"][@"interpolatedCalibration"]];if(!same)failures++;
+ NSDictionary*picker=LensNativeProfileCandidates(formatted,db,lib,nil);BOOL canonAgreement=[picker[@"automaticLensID"]isEqual:equivalent[@"report"][@"matchedLensProfileID"]];if(!canonAgreement)failures++;
  [NSFileManager.defaultManager removeItemAtURL:folder error:nil];
- NSDictionary*r=@{@"scope":@"Controlled identity metadata and equivalent numeric formatting against existing Canon calibration; no new lens records or real RAW claim",@"cases":results,@"priorityCases":priorityCases,@"canonEquivalentFormattingSameCalibration":@(same),@"failures":@(failures)};
+ NSDictionary*r=@{@"scope":@"Controlled identity metadata and equivalent numeric formatting against existing Canon calibration; no new lens records or real RAW claim",@"cases":results,@"priorityCases":priorityCases,@"canonEquivalentFormattingSameCalibration":@(same),@"canonPickerPlanIdentityAgreement":@(canonAgreement),@"failures":@(failures)};
  NSString*output=argc>1?@(argv[1]):@"Build/Tests/lens-identity-format-verification.json";
  [[NSJSONSerialization dataWithJSONObject:r options:NSJSONWritingPrettyPrinted error:nil]writeToFile:output atomically:YES];
  printf("Lens identity/format checks: %lu failures.\n",(unsigned long)failures);return failures?1:0;

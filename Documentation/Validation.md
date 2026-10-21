@@ -164,3 +164,13 @@ build 11 的应用级模态提示已经过自动出现、持久忽略、正常�
 自有研究宿主经正常退出后更新，模块字节与构建一致，完整严格签名通过。本轮正常文件面板能识别并选中新的 PXD 副本，但“打开”禁用、双击无效，取消后最近文档为空；未强制启用控件，也未把未完成的新应用/保存/重开/导出写成通过。此前 build 11 的完整照片流程及 build 12 的用户提示外观确认保持原验收范围。
 
 精简对照、当前元数据检查及源码/日志摘要见 `Evidence/build13-verification.json`、`Evidence/build13-lens-identity-before.json`、`Evidence/build13-lens-identity-after.json` 和 `Evidence/build13-public-*-verification.json`。可选小尺寸速度基准源码为 `Tests/benchmark-profile-plan.m`，需要本机编译并与相应版本引擎链接。0.2.6 DMG、源码包与 GitHub 草稿资产保持原样，没有反复打包。完整目标仍未完成。
+
+## 0.2.7 build 14：统一选择判断与新的真实照片验收
+
+配置选择界面仍存在仅凭 Lensfun 单个词查询结果自动选中的旧路径。现在界面和实际矫正共用 `automaticLens`，同时复用本次读取的完整兼容列表；不改变标定值、原生优先或手动配置。扩展的同一组回归在 build 13 复现 3 处界面/引擎不一致，在 build 14 为零。30 个常规组、192 组渲染、全库 1564/1567（相同 3 个模式歧义、5 个明确跳过、零指定版本差异）、构建、隔离安装及部署检查通过。
+
+在 macOS 27.2（26B118）与 Pixelmator 4.3 的自有研究宿主中，从欢迎页浏览正常打开未修改 A6000 ARW。自动提示引用检查通过，主面板及选择界面均匹配 Alpha 6000 / E 18–55mm；取消选择界面后保留纯自动路径。推荐 2.752% 畸变与 2.363 px 色差，暗角试用 0.481 EV 且关闭，约束裁切开启。实际应用后首次保存为新的独立 PXD，关闭文档并从最近文档重开，面板设置保留。保存档案的有效元数据和原始元数据均无手选配置，身份来源为 LensModel。
+
+新 PXD 为 97,608,256 字节，内嵌 25,624,576 字节 RAW 的 SHA256 仍为 `ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89`。正常从宿主导出 6000×4000、16 位 Display P3 PNG，全 24M 像素 alpha=65535；导出前后 PXD 哈希、RAW、设置和裁切数据均一致。画布截图已视觉检查，没有透明空边。本轮为同一进程内关闭/重开，不冒充新增进程重启测试；正常控件这次成功，不证明此前间歇性文件面板问题的根因已解决。见 `Evidence/build14-live-raw-verification.json`、`Evidence/build14-export-16bit-verification.json`、`Evidence/build14-verification.json`。
+
+另对两份已有公开 Sony RAW 只读取明确分组的校正字段并核对固定原片哈希。A6000 有一致的 11 个节点 SubIFD 三项表和零填充，A200 不含该表；MakerNote 数据不能与 SubIFD 混用，记录尺寸为传感器存储尺寸。只记录源事实，没有在产品中应用这些表或宣称新增匹配覆盖。字段夹具和可重跑检查见 `Tests/Fixtures/Sony-embedded-metadata.json`、`Tests/verify-sony-embedded-metadata.py` 与 `Documentation/EmbeddedCorrections.md`。更多公开样本的下载遇到服务器 TLS 握手失败，没有跳过证书验证，也没有产生新的完整 RAW 验收记录。
