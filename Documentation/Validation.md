@@ -174,3 +174,11 @@ build 11 的应用级模态提示已经过自动出现、持久忽略、正常�
 新 PXD 为 97,608,256 字节，内嵌 25,624,576 字节 RAW 的 SHA256 仍为 `ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89`。正常从宿主导出 6000×4000、16 位 Display P3 PNG，全 24M 像素 alpha=65535；导出前后 PXD 哈希、RAW、设置和裁切数据均一致。画布截图已视觉检查，没有透明空边。本轮为同一进程内关闭/重开，不冒充新增进程重启测试；正常控件这次成功，不证明此前间歇性文件面板问题的根因已解决。见 `Evidence/build14-live-raw-verification.json`、`Evidence/build14-export-16bit-verification.json`、`Evidence/build14-verification.json`。
 
 另对两份已有公开 Sony RAW 只读取明确分组的校正字段并核对固定原片哈希。A6000 有一致的 11 个节点 SubIFD 三项表和零填充，A200 不含该表；MakerNote 数据不能与 SubIFD 混用，记录尺寸为传感器存储尺寸。只记录源事实，没有在产品中应用这些表或宣称新增匹配覆盖。字段夹具和可重跑检查见 `Tests/Fixtures/Sony-embedded-metadata.json`、`Tests/verify-sony-embedded-metadata.py` 与 `Documentation/EmbeddedCorrections.md`。更多公开样本的下载遇到服务器 TLS 握手失败，没有跳过证书验证，也没有产生新的完整 RAW 验收记录。
+
+## 0.2.8 build 15：原生来源读取与几何数值基础
+
+生产元数据读取新增严格的 Sony SubIFD 表来源对象，保留分组、计数和各分量缺失；没有增加 ExifTool 进程。公开 Core Image 原始尺寸与方向也记录为观测事实，不认定它就是厂家表的坐标系。新径向几何核心未接入像素渲染，也没有厂家表暗角增益函数。
+
+同组旧版生产读取有 4 项新增来源/尺寸观测断言不满足，新版为零。72 组精确分数对照与编译的固定 RawTherapee 方法一致，21 组无效来源拒绝、零几何表恒等、缺项独立性及两份完整原片的读取/哈希通过；添加来源对象前后当前 Lensfun 方案相等。31 个常规组、192 组原生渲染、构建、隔离安装和 7 个二进制部署检查通过；全尺寸专项按默认明确跳过。本轮没有新 GUI、保存/重开或导出验收，研究宿主和桌面 0.2.7 包保持原样。
+
+固定 darktable 4.6 与 RawTherapee 的两项组合插值和暗角解释存在数值差异，开发参照已量化；未挑选一个值当成光学真值。厂家表坐标范围、裁切原点、像素中心、暗角线性响应及后续原生优先/可编辑效果验收仍待完成。未将数值实现通过计入新增镜头覆盖或 Lightroom 等效。详见 `Documentation/EmbeddedCorrections.md` 与 `Evidence/build15-verification.json`。

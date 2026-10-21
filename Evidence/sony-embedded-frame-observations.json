@@ -1,0 +1,44 @@
+{
+  "scope": "Independent decoder observations only; does not identify which frame the camera correction table uses and does not enable a warp. LibRaw/rawpy are developer-only and are not added to the product runtime.",
+  "sourceRAW": {
+    "fixture": "ILCE-6000.ARW",
+    "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+    "originalUnchanged": true
+  },
+  "rawpyVersion": "0.27.1",
+  "librawVersion": [
+    0,
+    22,
+    1
+  ],
+  "librawSizes": {
+    "raw_height": 4024,
+    "raw_width": 6048,
+    "height": 4024,
+    "width": 6024,
+    "top_margin": 0,
+    "left_margin": 0,
+    "iheight": 4024,
+    "iwidth": 6024,
+    "pixel_aspect": 1.0,
+    "flip": 0,
+    "crop_left_margin": 0,
+    "crop_top_margin": 0,
+    "crop_width": 6000,
+    "crop_height": 4000
+  },
+  "coreImageNativePixelSize": [
+    6000,
+    4000
+  ],
+  "sourceSubIFDStoredPixels": [
+    6048,
+    4024
+  ],
+  "sourceSonyFullImageSize": [
+    6000,
+    4000
+  ],
+  "tablePixelFrameProven": false,
+  "remainingQuestion": "Establish whether camera tables use pre-default-crop visible dimensions, full-image dimensions or another normalized frame, including crop origin and pixel-centre conventions."
+}

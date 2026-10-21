@@ -1,0 +1,103 @@
+{
+  "version": "0.2.8-preview-build15-development",
+  "verifiedAt": "2026-10-21T15:37:55.888601+00:00",
+  "scope": "Read original grouped Sony source tables, coordinate-free D/TCA arithmetic and public Core Image native size; source/model foundation only, no new pixel correction route",
+  "baselineCommit": "c59c46ad0662d0d4daa99b3cfbf56a64f274d36f",
+  "beforeIntegrationAssertionsUnmet": [
+    "production metadata preserves validated grouped source",
+    "public decoder native frame recorded",
+    "A6000 native size matches verified host canvas",
+    "public decoder native frame recorded"
+  ],
+  "afterIntegrationFailures": [],
+  "fullSuiteGroupsPassed": 31,
+  "nativeRenderCombinationsPassed": 192,
+  "optionalCompleteSonyRAWReadbacks": 2,
+  "rationalCases": 72,
+  "malformedSourceCases": 21,
+  "sourceFieldExtractionAddsNoExifToolProcess": true,
+  "publicNativeSizeGetterDoesNotRenderPixels": true,
+  "existingPlanUnchangedWithSourceFacts": true,
+  "sourceSchema": "sony-subifd-radial-source-v1",
+  "pixelFrameVerified": false,
+  "manufacturerVignetteGainEnabled": false,
+  "geometryFactorUsedByProductRenderer": false,
+  "builtExit": 0,
+  "isolatedInstallerExit": 0,
+  "platformContract": {
+    "passed": true,
+    "scope": "Deployment and architecture contract, not cross-OS runtime acceptance",
+    "target": "Apple Silicon Macs running macOS 26 or later",
+    "runtimeOS": "27.2",
+    "runtimeBuild": "26B118",
+    "sdk": "27.0",
+    "runtimeMatrix": {
+      "macOS26": "NOT_TESTED",
+      "macOS27.2": "LOCAL_TESTS_ONLY",
+      "laterOS": "NOT_TESTED"
+    },
+    "binaries": [
+      {
+        "path": "Contents/MacOS/LensDock",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/LensLiveSource.dylib",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/LensPanel.dylib",
+        "architecture": "arm64",
+        "minimumOS": "26.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libglib-2.0.0.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libintl.8.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/liblensfun.0.3.4.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      },
+      {
+        "path": "Contents/Resources/Payload/Lib/libpcre2-8.0.dylib",
+        "architecture": "arm64",
+        "minimumOS": "14.0"
+      }
+    ]
+  },
+  "catalogNotRerunForSourceOnlyChanges": "Matching and calibration paths unchanged; last catalog audit is Evidence/build14-verification.json, not a new build15 coverage claim",
+  "researchHostUpdated": false,
+  "newHostGUIOrSaveReopenExportClaim": false,
+  "frozenDesktopAndGitHubCandidate": "0.2.7-preview build14 remains unchanged",
+  "sourceSHA256": {
+    "Sources/Native/LensSonyEmbeddedProfile.h": "0a42b32ebb471cc2e4e27a8e9f37763de671a1322211be0c271e48e1d21683cd",
+    "Sources/Native/LensNativeProfileEngine.m": "f094167b0f42c8ad6a188e643b7ed8f748f2849e83133d8aa592d370ad336a8e",
+    "Tests/verify-sony-embedded-profile.m": "bf7c8eaa39fdd2e5d8c1245b28ab3bd02a89ab6943fa214210ab201fbb91105e",
+    "Tests/Fixtures/Sony-embedded-metadata.json": "81743dca10b52f295426551ededc92c1eaea4e28ecfa4c0a9f2cff6afc7df5ae",
+    "Tests/Fixtures/Sony-radial-rational-reference.json": "cc17046e93de68a198920783562135bbff9776ad571d274977f60fc88fcd7622",
+    "Scripts/test.py": "f6c5f0c886f995ee93905bf6f4f48724b808b9f1c43100f6be6a0f71b4e855e3",
+    "Version.json": "ce8a8689f0152b98fffe5f897a2f8aa57d50a02a0bd4dbcc6924e4dff954b4e8"
+  },
+  "logSHA256": {
+    "Build/Development/build15-final-regression-tests.log": "e74ebe76f3673c3d8ac9291f1d87fa323cf510ed09c087d661bee38b3bb4a4c5",
+    "Build/Development/build15-final-build.log": "539a0f9c9bba235bc146941757f6c30bcc3168f8cff6861b6b6b82a02f1709aa",
+    "Build/Development/build15-installer-verification.log": "7948190b01fba2de34fd425498eac058c988a73a99f5f3b7a3c8d4b2bec3fc56"
+  },
+  "newPhysicalLensCoverageClaim": false,
+  "LightroomEquivalentAcceptance": false,
+  "nextRequirements": [
+    "source-to-decoder coordinate-frame alignment and crop origin",
+    "pixel-center and orientation mapping",
+    "independent physical evidence for vignette response",
+    "native-priority integration, editable effect serialization and actual host image acceptance"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "zeroTablesExactIdentity" : true,
+  "missingOptionalRAW" : [
+
+  ],
+  "scope" : "Validated original table reading and coordinate-free D\/TCA arithmetic only; no pixel-frame selection, vignette gain, rendered optical acceptance or added physical-lens coverage",
+  "vignettingGainImplemented" : false,
+  "productionPixelRouteEnabled" : false,
+  "malformedSourceCases" : 21,
+  "maximumFactorAbsoluteError" : 0,
+  "rationalCases" : 72,
+  "rawChecks" : [
+    {
+      "sha256" : "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+      "originalUnchanged" : true,
+      "nativePixelSize" : [
+
+      ],
+      "fixture" : "ILCE-6000.ARW",
+      "recordedFullImageSize" : [
+        6000,
+        4000
+      ],
+      "sourcePresent" : 1,
+      "currentPlanUnchanged" : true,
+      "pixelFrameVerified" : false,
+      "productionReadbackPassed" : false
+    },
+    {
+      "sha256" : "04eacd403d92e0c90da9d91b87615af8eda1afc963350d3ab774557c36763eef",
+      "originalUnchanged" : true,
+      "nativePixelSize" : [
+
+      ],
+      "fixture" : "DSLR-A200.ARW",
+      "recordedFullImageSize" : [
+
+      ],
+      "sourcePresent" : 0,
+      "currentPlanUnchanged" : true,
+      "pixelFrameVerified" : false,
+      "productionReadbackPassed" : true
+    }
+  ],
+  "failures" : [
+    "production metadata preserves validated grouped source",
+    "public decoder native frame recorded",
+    "A6000 native size matches verified host canvas",
+    "public decoder native frame recorded"
+  ]
+}

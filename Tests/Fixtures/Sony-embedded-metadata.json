@@ -12,6 +12,8 @@
         "File:FileType": "ARW",
         "IFD0:Make": "SONY",
         "IFD0:Model": "ILCE-6000",
+        "SubIFD:PhotometricInterpretation": 32803,
+        "Sony:FullImageSize": "6000 4000",
         "SubIFD:ImageWidth": 6048,
         "SubIFD:ImageHeight": 4024,
         "SubIFD:DistortionCorrParams": "11 9 7 14 34 63 102 155 221 304 406 528 0 0 0 0 0",
@@ -32,6 +34,8 @@
         "File:FileType": "ARW",
         "IFD0:Make": "SONY",
         "IFD0:Model": "DSLR-A200",
+        "SubIFD:PhotometricInterpretation": 32803,
+        "Sony:FullImageSize": "3872 2592",
         "SubIFD:ImageWidth": 3880,
         "SubIFD:ImageHeight": 2600
       }

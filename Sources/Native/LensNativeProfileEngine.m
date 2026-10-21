@@ -8,6 +8,7 @@
 #import "LensProfileIdentity.h"
 #import "LensCaptureModeEvidence.h"
 #import "LensFocusDistanceEvidence.h"
+#import "LensSonyEmbeddedProfile.h"
 static void fail(NSError**error,NSString*message){if(error)*error=[NSError errorWithDomain:@"LensBridgeProfile" code:1 userInfo:@{NSLocalizedDescriptionKey:message}];}
 static double positive(id n){if(![n respondsToSelector:@selector(doubleValue)])return 0;double v=[n doubleValue];return isfinite(v)&&v>0?v:0;}
 static NSString*text(id v){return [v isKindOfClass:NSString.class]?v:@"";}
@@ -234,7 +235,11 @@ done:
 NSDictionary*LensReadNativeCorrectionSupport(NSURL*rawURL){
  CIRAWFilter*raw=[CIRAWFilter filterWithImageURL:rawURL];
  if(!raw)return @{@"probeSucceeded":@NO,@"probeSource":@"CIRAWFilter.isLensCorrectionSupported"};
- return @{@"probeSucceeded":@YES,@"lensCorrectionSupported":@(raw.isLensCorrectionSupported),@"lensCorrectionEnabledByDefault":@(raw.isLensCorrectionEnabled),@"decoderVersion":raw.decoderVersion?:@"",@"probeSource":@"CIRAWFilter.isLensCorrectionSupported",@"osVersion":NSProcessInfo.processInfo.operatingSystemVersionString};
+ NSMutableDictionary*support=[@{@"probeSucceeded":@YES,@"lensCorrectionSupported":@(raw.isLensCorrectionSupported),@"lensCorrectionEnabledByDefault":@(raw.isLensCorrectionEnabled),@"decoderVersion":raw.decoderVersion?:@"",@"probeSource":@"CIRAWFilter.isLensCorrectionSupported",@"osVersion":NSProcessInfo.processInfo.operatingSystemVersionString}mutableCopy];
+ // A public, unscaled decoder observation, not an inferred sensor crop or a
+ // verified coordinate frame for manufacturer tables. No pixels are rendered.
+ CGSize native=raw.nativeSize;if(isfinite(native.width)&&isfinite(native.height)&&native.width>0&&native.height>0)support[@"nativePixelSize"]=@[@(native.width),@(native.height)];
+ support[@"decoderOrientation"]=@(raw.orientation);return support;
 }
 static NSArray*runExifArguments(NSURL*raw,NSURL*tool,NSArray*options,NSError**error){
  if(![NSFileManager.defaultManager fileExistsAtPath:tool.path]){fail(error,@"缺少 MakerNote 元数据读取器。");return nil;}
@@ -251,7 +256,7 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  // A CR3 can contain different values with the same tag name in EXIF,
  // MakerNotes and a track. Keep their groups until capture fields are selected;
  // ExifTool's unqualified duplicate winner is not necessarily standard EXIF.
- if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower"]];
+ if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower",@"-FileType",@"-SubIFD:PhotometricInterpretation",@"-SubIFD:ImageWidth",@"-SubIFD:ImageHeight",@"-Sony:FullImageSize",@"-SubIFD:DistortionCorrParams",@"-SubIFD:ChromaticAberrationCorrParams",@"-SubIFD:VignettingCorrParams"]];
  [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];
  NSArray*rows=runExifArguments(raw,tool,args,error);if(!numeric||!rows.count)return rows;
  NSDictionary*grouped=rows[0];NSMutableDictionary*values=[NSMutableDictionary new];
@@ -261,11 +266,15 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
   // not a directly recorded focus distance. It sorts before MakerNote groups
   // and must neither override them nor masquerade as a measured distance.
   if([name isEqual:@"FocusDistance"]&&[key hasPrefix:@"Composite:"])continue;
+  // Preserve source group and table validation; these are not scalar capture
+  // parameters and must never compete with similarly named MakerNote copies.
+  if([name hasSuffix:@"CorrParams"]||[@[@"PhotometricInterpretation",@"ImageWidth",@"ImageHeight",@"FullImageSize",@"FileType"]containsObject:name])continue;
   if(!values[name])values[name]=grouped[key];
  }
  NSDictionary*standard=@{@"Make":@"IFD0:Make",@"Model":@"IFD0:Model",@"LensModel":@"ExifIFD:LensModel",@"FocalLength":@"ExifIFD:FocalLength",@"FNumber":@"ExifIFD:FNumber",@"SubjectDistance":@"ExifIFD:SubjectDistance",@"ApertureValue":@"ExifIFD:ApertureValue",@"Orientation":@"IFD0:Orientation"};
  for(NSString*name in standard){id value=grouped[standard[name]];if(value)values[name]=value;}
  NSDictionary*range=LensCanonFocusDistanceRange(grouped);if(range)values[@"FocusDistanceRangeMeters"]=range;
+ NSDictionary*embedded=LensSonyEmbeddedSourceEvidence(grouped);if(embedded)values[@"embeddedLensCorrectionSource"]=embedded;
  return @[values];
 }
 NSDictionary*LensReadRawCaptureMetadata(NSURL*raw,NSURL*tool,NSError**error){

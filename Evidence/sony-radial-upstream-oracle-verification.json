@@ -1,0 +1,82 @@
+{
+  "scope": "Numerical interoperability only. Does not determine the correct pixel frame, manufacturer accuracy or vignette model.",
+  "rawtherapee": {
+    "scope": "Compiled, pinned upstream RawTherapee interpolation/setup/factor methods adapted only for standalone IO; numeric radial-factor comparison, not frame or optical verification. Reference GPL source remains in ignored Build and is not linked into or distributed with LensDock.",
+    "referenceURL": "https://github.com/RawTherapee/RawTherapee/blob/7deb2754d1f31beff891063b476905d4093e8570/rtengine/lensmetadata.cc",
+    "referenceBlobSHA": "89a1ab13b4a185449221e2a789ffaaef478315b0",
+    "referenceFileSHA256": "8db8986eb6df164c1a47e27696dee1c37195bd97132b40d796e159cd90f40e93",
+    "referenceCommit": "7deb2754d1f31beff891063b476905d4093e8570",
+    "oracleSourceSHA256": "9265e050bd7450db313eb740cc9712e95efca959d8b6b7d1802f400dc6c7557b",
+    "cases": 72,
+    "maximumDifferenceFromExactRationalReference": 0.0,
+    "vignetteSamplesNotUsedInProduct": [
+      {
+        "radius": 0,
+        "rawtherapeeFactor": 1.0
+      },
+      {
+        "radius": 0.25,
+        "rawtherapeeFactor": 1.0056923627853394
+      },
+      {
+        "radius": 0.5,
+        "rawtherapeeFactor": 1.051740825176239
+      },
+      {
+        "radius": 0.75,
+        "rawtherapeeFactor": 1.1083548069000244
+      },
+      {
+        "radius": 1,
+        "rawtherapeeFactor": 1.3357353806495667
+      }
+    ],
+    "nativeVignettingGainImplemented": false
+  },
+  "darktable46": {
+    "scope": "Compiled pinned darktable 4.6 Sony setup and linear-spline source with standalone IO. No product linkage, pixel/frame or optical-accuracy claim. Differences record distinct interpolation composition and vignette interpretation; no curve chosen based on this comparison alone.",
+    "referenceURL": "https://github.com/darktable-org/darktable/blob/release-4.6.0/src/iop/lens.cc",
+    "referenceBlobSHA": "1ffe2eb898f0ee5b5b3b1da49434f258fb03e0ff",
+    "referenceFileSHA256": "5da8f95bca20b4ff1ea56e163de022c2e5716fe72a618a5effc69ba2f770b30f",
+    "oracleSourceSHA256": "4cd39e407e84c46c46d40f6b6af49a675b5d16620d17e18a8e890f58d9d02e00",
+    "cases": 72,
+    "maximumFactorDifferenceFromNativeRTRationalConventionBySwitches": {
+      "D0T0": 0,
+      "D1T0": 0,
+      "D0T1": 0,
+      "D1T1": 5.364418029785156e-07
+    },
+    "vignetteDisagreement": [
+      {
+        "radius": 0,
+        "darktable46Gain": 1.0,
+        "rawtherapeeGain": 1.0
+      },
+      {
+        "radius": 0.25,
+        "darktable46Gain": 1.0114171504974365,
+        "rawtherapeeGain": 1.0056923627853394
+      },
+      {
+        "radius": 0.5,
+        "darktable46Gain": 1.1057757139205933,
+        "rawtherapeeGain": 1.051740825176239
+      },
+      {
+        "radius": 0.75,
+        "darktable46Gain": 1.2284505367279053,
+        "rawtherapeeGain": 1.1083548069000244
+      },
+      {
+        "radius": 1,
+        "darktable46Gain": 1.754348874092102,
+        "rawtherapeeGain": 1.3357353806495667
+      }
+    ],
+    "nativeVignettingGainImplemented": false
+  },
+  "nativeFactorConvention": "Interpolate distortion and channel factors separately, then multiply; matches the pinned RawTherapee methods for the sampled source.",
+  "referenceSourceBundledInProduct": false,
+  "referenceGPLMethodsLinkedIntoProduct": false,
+  "vignettingCurveChosenOrApplied": false
+}
