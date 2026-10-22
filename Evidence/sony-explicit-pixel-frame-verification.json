@@ -1,0 +1,267 @@
+{
+  "maximumReferenceErrorPixels": 2.5421149729252077e-13,
+  "nativeHeaderSHA256": "652778f366a1db0c6cbd9a840b3035f02e95592f2e0ded22b76b4576b4bb9ae3",
+  "nativeOrientationCheck": {
+    "opticalTablesApplied": false,
+    "reference": "Actual CIImage imageByApplyingOrientation results for canonical coordinate ramps, all eight EXIF orientations on full and offset crop",
+    "maximumCanonicalPixelError": 3.814697265625e-06,
+    "pixels": 245760,
+    "images": 16,
+    "perImage": [
+      {
+        "expectedFirstCanonical": [
+          0.5,
+          0.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          0.5,
+          0.5
+        ],
+        "orientation": 1
+      },
+      {
+        "expectedFirstCanonical": [
+          119.5,
+          0.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          119.5,
+          0.5
+        ],
+        "orientation": 2
+      },
+      {
+        "expectedFirstCanonical": [
+          119.5,
+          159.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          119.5,
+          159.5
+        ],
+        "orientation": 3
+      },
+      {
+        "expectedFirstCanonical": [
+          0.5,
+          159.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          0.5,
+          159.5
+        ],
+        "orientation": 4
+      },
+      {
+        "expectedFirstCanonical": [
+          0.5,
+          0.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          0.5,
+          0.5
+        ],
+        "orientation": 5
+      },
+      {
+        "expectedFirstCanonical": [
+          0.5,
+          159.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          0.5,
+          159.5
+        ],
+        "orientation": 6
+      },
+      {
+        "expectedFirstCanonical": [
+          119.5,
+          159.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          119.5,
+          159.5
+        ],
+        "orientation": 7
+      },
+      {
+        "expectedFirstCanonical": [
+          119.5,
+          0.5
+        ],
+        "frame": 0,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          119.5,
+          0.5
+        ],
+        "orientation": 8
+      },
+      {
+        "expectedFirstCanonical": [
+          12.5,
+          20.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          12.5,
+          20.5
+        ],
+        "orientation": 1
+      },
+      {
+        "expectedFirstCanonical": [
+          107.5,
+          20.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          107.5,
+          20.5
+        ],
+        "orientation": 2
+      },
+      {
+        "expectedFirstCanonical": [
+          107.5,
+          139.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          107.5,
+          139.5
+        ],
+        "orientation": 3
+      },
+      {
+        "expectedFirstCanonical": [
+          12.5,
+          139.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          12.5,
+          139.5
+        ],
+        "orientation": 4
+      },
+      {
+        "expectedFirstCanonical": [
+          12.5,
+          20.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          12.5,
+          20.5
+        ],
+        "orientation": 5
+      },
+      {
+        "expectedFirstCanonical": [
+          12.5,
+          139.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          12.5,
+          139.5
+        ],
+        "orientation": 6
+      },
+      {
+        "expectedFirstCanonical": [
+          107.5,
+          139.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          107.5,
+          139.5
+        ],
+        "orientation": 7
+      },
+      {
+        "expectedFirstCanonical": [
+          107.5,
+          20.5
+        ],
+        "frame": 1,
+        "maximumCanonicalPixelError": 3.814697265625e-06,
+        "firstPixelCanonical": [
+          107.5,
+          20.5
+        ],
+        "orientation": 8
+      }
+    ]
+  },
+  "decimalReferenceCases": 2016,
+  "scope": "Explicit mathematical frame mapping and native EXIF orientation only; no manufacturer frame inference, product renderer integration, physical optical accuracy or added lens coverage",
+  "outsideCoordinatesPreserved": 752,
+  "preparedTransformBytes": 528,
+  "testSourceSHA256": "42d4ac4c5227d68cc26803a0fdd8c577add562ab664fef442bda99648c90f1f7",
+  "maximumScalarCoreDifferencePixels": 2.909377512977897e-14,
+  "productRendererCallsMapper": false,
+  "invalidInputCases": 33,
+  "exactIdentityCases": 144,
+  "failures": [],
+  "fixtureSHA256": "44767e357e6b992afad0ae72b586dd997b5d628503aba734daebb07d5f0291a3",
+  "supportedNodeCounts": {
+    "maximumScalarCoreDifferencePixels": 2.842170943040401e-14,
+    "minimum": 2,
+    "maximum": 16,
+    "cases": 1665
+  },
+  "hotLoopBenchmark": {
+    "preparedSeconds": 0.002819416666170582,
+    "scope": "Developer scalar arithmetic only, not whole-app or image-render timing",
+    "pointsPerPath": 200000,
+    "dictionaryScalarSeconds": 0.16992233332712203
+  },
+  "manufacturerFrameProven": false,
+  "verifiedAt": "2026-10-22T11:18:53.543904+00:00",
+  "baselineCommit": "b1d8518d67b7043f2100b44f376214c932cf54d7",
+  "manufacturerSourceFrameSelectionImplemented": false,
+  "newHostSaveExportClaim": false,
+  "frozenDistribution": "0.2.7-preview build 14 unchanged; no product rebuild in this turn",
+  "regressionSuite": {
+    "exitCode": 0,
+    "groups": 32,
+    "nativeRenderCombinations": 192,
+    "logSHA256": "c4d1d57a4ada12b0d8e00c2aedfe594754ebc70041e96d39acbfd95211680657",
+    "scope": "Full suite passed with the initial Decimal/identity/invalid-input test. Additional native-orientation and all-node-count assertions were subsequently compiled and run in the final targeted test. No production renderer changed."
+  },
+  "targetedFinalTest": {
+    "exitCode": 0,
+    "frameworks": [
+      "Cocoa",
+      "CoreImage",
+      "ImageIO"
+    ],
+    "target": "arm64-apple-macos26.0",
+    "productRendererInvoked": false
+  }
+}

@@ -52,3 +52,5 @@ python3 Tests/verify-sony-embedded-metadata.py
 这只是同一场景的 24 个跨解码器区域观察及 4 个控制，尚未证明厂家表的归一化尺寸、中心约定、其他方向、其他机型或实际光学精度。`pixelFrameVerified`、`renderingEnabled` 仍为 false。证据与可复现工具：`Evidence/sony-decoder-frame-registration.json`、`Tests/observe-decoder-frame.swift`、`Tests/verify-sony-decoder-frame.py`。
 
 在开发虚拟环境中安装 rawpy、NumPy 和 Pillow 后，可运行 `python Tests/verify-sony-decoder-frame.py`；它需要可选公开原片与 macOS 的 Core Image/Vision，缺失或哈希不符会直接停止。`Tests/compare-sony-vignette-references.py` 从三个固定本地上游源码快照抽取独立比较程序，拒绝不同哈希；各下载地址及可选路径参数在脚本中列明。所有抽取的 GPL 代码和可执行文件只进入 Build，不参与 LensDock 链接或分发。本轮只增加证据和开发验证工具，不改变 build 15 产品或冻结的 0.2.7 安装包。
+
+后续已新增要求调用方明确给定坐标的几何映射核心，覆盖方向、裁切、缩放和三通道，并完成 Decimal 与实际 Core Image 方向对照。它没有选择厂家坐标空间，也未进入产品渲染路径；参见 [显式坐标契约](SonyGeometryFrame.md) 与 `Evidence/sony-explicit-pixel-frame-verification.json`。
