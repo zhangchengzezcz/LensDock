@@ -34,7 +34,7 @@
     "nativeVignettingGainImplemented": false
   },
   "darktable46": {
-    "scope": "Compiled pinned darktable 4.6 Sony setup and linear-spline source with standalone IO. No product linkage, pixel/frame or optical-accuracy claim. Differences record distinct interpolation composition and vignette interpretation; no curve chosen based on this comparison alone.",
+    "scope": "Compiled pinned darktable 4.6 legacy v1 Sony setup and linear-spline source with standalone IO. Its squared-transmission vignette result must not be described as the default v2 response. No product linkage, pixel/frame or optical-accuracy claim.",
     "referenceURL": "https://github.com/darktable-org/darktable/blob/release-4.6.0/src/iop/lens.cc",
     "referenceBlobSHA": "1ffe2eb898f0ee5b5b3b1da49434f258fb03e0ff",
     "referenceFileSHA256": "5da8f95bca20b4ff1ea56e163de022c2e5716fe72a618a5effc69ba2f770b30f",
@@ -73,10 +73,17 @@
         "rawtherapeeGain": 1.3357353806495667
       }
     ],
-    "nativeVignettingGainImplemented": false
+    "nativeVignettingGainImplemented": false,
+    "algorithmVersion": "legacy-v1 (_init_coeffs_md_v1), retained for existing edits; not 4.6 default v2"
   },
   "nativeFactorConvention": "Interpolate distortion and channel factors separately, then multiply; matches the pinned RawTherapee methods for the sampled source.",
   "referenceSourceBundledInProduct": false,
   "referenceGPLMethodsLinkedIntoProduct": false,
-  "vignettingCurveChosenOrApplied": false
+  "vignettingCurveChosenOrApplied": false,
+  "interpretationCorrection": {
+    "date": "2026-10-22",
+    "reason": "The earlier adapter selected the first Sony branch in the source, inside _init_coeffs_md_v1. reload_defaults selects v2 for available embedded metadata. Measured legacy values remain valid; the implied default-version interpretation does not.",
+    "supersedingEvidence": "Evidence/sony-vignette-algorithm-version-verification.json",
+    "originalNumericMeasurementsPreserved": true
+  }
 }

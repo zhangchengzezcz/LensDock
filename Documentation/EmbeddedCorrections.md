@@ -35,6 +35,20 @@ python3 Tests/verify-sony-embedded-metadata.py
 
 [darktable 4.6 的固定参照](https://github.com/darktable-org/darktable/blob/release-4.6.0/src/iop/lens.cc) 先在节点组合几何倍率再插值，RawTherapee 则分别插值再相乘。当前样本单项因子一致，两项同时使用时采样最大差为约 5.36×10⁻⁷；不能把这些实现视为逐位相同，更不能由此推断光学精度。
 
-同一暗角表在归一化半径 1 的开发参照计算得到约 1.336 与 1.754 两个不同增益，响应及插值定义需要进一步验证。LensDock 尚未实现或选择其中任一相机表暗角增益，没有用已有场景亮度去决定哪个数值正确。现有 Lensfun 暗角和默认关闭规则不变。
+此前同一暗角表在归一化半径 1 得到约 1.336 与 1.754，并把后者笼统标为 darktable 4.6 的响应。这一解释已于 2026-10-22 更正：旧比较程序抽取的是保留旧编辑的 `_init_coeffs_md_v1`，其中会平方透射率；4.6 的 `reload_defaults` 实际选择 v2。原测量保留并补上版本说明，不能再用它推断默认算法的差异。
+
+重新分别编译固定的 RawTherapee、darktable 4.6 v1/v2 及较新 darktable 快照的 v2，5 套表、每个参照 1346 个半径采样均符合独立公式；两套零表全部严格恒等。真实 A6000 在半径 1 的 RT 增益为 1.3357353806，4.6/current v2 为 1.3282330036，旧 v1 为 1.7543488741。RT 先求节点增益再插值；v2 先插值透射率再取倒数，所以节点之间仍会不同。两份 v2 快照在本次采样逐值一致，不能推广为整个管线相同或光学真值。
+
+这项更正缩小了计算差异，却未证明厂家暗角的光学响应。上游也有 [Sony 实拍暗角过校正报告](https://github.com/darktable-org/darktable/issues/15937)，其自动关闭不表示已修复。LensDock 尚未实现或选择相机表暗角增益，没有用已有场景亮度去决定哪个数值正确。现有 Lensfun 暗角和默认关闭规则不变。新证据为 `Evidence/sony-vignette-algorithm-version-verification.json`。
 
 证据见 `Evidence/build15-sony-source-model-verification.json`、`Evidence/sony-radial-upstream-oracle-verification.json`、`Evidence/sony-embedded-frame-observations.json` 和 `Evidence/build15-verification.json`。参照 GPL 源码与独立比较程序只保存在被忽略的开发临时目录，不链接或分发进产品；LibRaw/rawpy 也只是开发比较工具，不增加用户运行依赖。build 15 的 31 个常规组、192 组渲染、构建、隔离安装与部署检查通过，尚未更新研究宿主、重新做 GUI/保存/导出或生成新 DMG。已验收的 0.2.7 包保持原样。
+
+## 当前样本的解码器画面配准
+
+2026-10-22 使用同一份固定 SHA256 的 A6000 原片，分别生成未添加镜头矫正的 Core Image 与 LibRaw 观察图。先裁切 LibRaw，再按 1/4、1/2 缩放，对三种候选原点进行 Vision 平移和单应配准。居中候选 `(12,12)` 的全图与九个重叠局部区域，在两种缩放均返回零整像素平移；四角和中心的单应采样残差最大为约 0.1302 原图像素。候选 `(0,0)`、`(4,4)` 各返回与裁切差相符的偏移；另外四次恒等/已知位移控制均通过。预先使用的验收容差是 2 原图像素，结果没有据测量放宽容差。
+
+这支持本次 Core Image 的 6000×4000 画面对应 LibRaw 6024×4024 可见区域中的居中裁切。LibRaw 报告的默认 crop margin `(0,0)` 不能直接替代实际像素关系。原片哈希不变；图像只在忽略的 Build 中生成，提交的证据不含照片、GPS 或序列号。本次记录还明确显示 `SubIFD:DistortionCorrection` 和 `SubIFD:VignettingCorrection` 均为 Off，不能将机内预览当作已矫正光学基准。
+
+这只是同一场景的 24 个跨解码器区域观察及 4 个控制，尚未证明厂家表的归一化尺寸、中心约定、其他方向、其他机型或实际光学精度。`pixelFrameVerified`、`renderingEnabled` 仍为 false。证据与可复现工具：`Evidence/sony-decoder-frame-registration.json`、`Tests/observe-decoder-frame.swift`、`Tests/verify-sony-decoder-frame.py`。
+
+在开发虚拟环境中安装 rawpy、NumPy 和 Pillow 后，可运行 `python Tests/verify-sony-decoder-frame.py`；它需要可选公开原片与 macOS 的 Core Image/Vision，缺失或哈希不符会直接停止。`Tests/compare-sony-vignette-references.py` 从三个固定本地上游源码快照抽取独立比较程序，拒绝不同哈希；各下载地址及可选路径参数在脚本中列明。所有抽取的 GPL 代码和可执行文件只进入 Build，不参与 LensDock 链接或分发。本轮只增加证据和开发验证工具，不改变 build 15 产品或冻结的 0.2.7 安装包。

@@ -1,0 +1,286 @@
+{
+  "scope": "Coordinate-free upstream response comparison. Corrects the earlier legacy-v1-as-default interpretation; not manufacturer calibration, physical accuracy, source frame or product enablement.",
+  "references": {
+    "rawtherapee": {
+      "url": "https://github.com/RawTherapee/RawTherapee/blob/7deb2754d1f31beff891063b476905d4093e8570/rtengine/lensmetadata.cc",
+      "fileSHA256": "8db8986eb6df164c1a47e27696dee1c37195bd97132b40d796e159cd90f40e93"
+    },
+    "darktable46": {
+      "url": "https://github.com/darktable-org/darktable/blob/release-4.6.0/src/iop/lens.cc",
+      "fileSHA256": "5da8f95bca20b4ff1ea56e163de022c2e5716fe72a618a5effc69ba2f770b30f"
+    },
+    "darktableCurrent": {
+      "url": "https://github.com/darktable-org/darktable/blob/4769e85ed227f35112a75b1f1c18fb2067c337cc/src/iop/lens.cc",
+      "fileSHA256": "45658c4188bdf8ea51e270521917d551ba366695221db353ea31b112fa0684b4"
+    }
+  },
+  "driverSHA256": "b25f152b29d7689381c97cd02563d5c21a0d216434b0726a789fdf5b57a50689",
+  "oracleSourceSHA256": {
+    "rt": "1fcad93708adf9dc1b27201a4c3f0c334ab6969dbe323c4fa7fcf762bd76bbc2",
+    "dt46v1": "8807de65bc5c57b2fbfb93ad8e840892ab0a24c1a8e8b01695aced1adcb9fb55",
+    "dt46v2": "f8681dbd5ff26383daf2b29b8fcaa0a97e81ba8506e1fad7eeacf184cc767b2d",
+    "dtCurrentV2": "84c263817468f83d568931bd34be4b58312542f3fd26d10edde7afbc4cdfde9b"
+  },
+  "darktable46DefaultUsesV2": "src/iop/lens.cc:3573; reload_defaults assigns VERSION_2 for available embedded metadata. Preserved v1 remains selectable for old edits.",
+  "geometryAutoscaleExcluded": "Vignette-only scalar response; source v2 automatic scaling changes only distortion knots/RGB arrays, not vignette knots/values.",
+  "samples": [
+    {
+      "profile": "A6000Recorded",
+      "nodeCount": 11,
+      "sampleCount": 275,
+      "maximumRTVsV2GainDifference": 0.007502377033233643,
+      "samples": [
+        {
+          "radius": 0,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 0.25,
+          "rt": 1.0056923627853394,
+          "dt46v1": 1.0114171504974365,
+          "dt46v2": 1.0056923627853394,
+          "dtCurrentV2": 1.0056923627853394
+        },
+        {
+          "radius": 0.5,
+          "rt": 1.051740825176239,
+          "dt46v1": 1.1057757139205933,
+          "dt46v2": 1.0516194105148315,
+          "dtCurrentV2": 1.0516194105148315
+        },
+        {
+          "radius": 0.75,
+          "rt": 1.1083548069000244,
+          "dt46v1": 1.2284505367279053,
+          "dt46v2": 1.1083548069000244,
+          "dtCurrentV2": 1.1083548069000244
+        },
+        {
+          "radius": 1,
+          "rt": 1.3357353806495667,
+          "dt46v1": 1.754348874092102,
+          "dt46v2": 1.328233003616333,
+          "dtCurrentV2": 1.328233003616333
+        }
+      ],
+      "maximumIndependentFormulaError": {
+        "rt": 6.928338147638158e-08,
+        "dt46v1": 2.963276592993225e-07,
+        "dt46v2": 1.4152316651916408e-07,
+        "dtCurrentV2": 1.4152316651916408e-07
+      }
+    },
+    {
+      "profile": "zero2",
+      "nodeCount": 2,
+      "sampleCount": 258,
+      "maximumRTVsV2GainDifference": 0.0,
+      "samples": [
+        {
+          "radius": 0,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 0.25,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 0.5,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 0.75,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 1,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        }
+      ],
+      "maximumIndependentFormulaError": {
+        "rt": 0.0,
+        "dt46v1": 0.0,
+        "dt46v2": 0.0,
+        "dtCurrentV2": 0.0
+      }
+    },
+    {
+      "profile": "zero16",
+      "nodeCount": 16,
+      "sampleCount": 287,
+      "maximumRTVsV2GainDifference": 0.0,
+      "samples": [
+        {
+          "radius": 0,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 0.25,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 0.5,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 0.75,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        },
+        {
+          "radius": 1,
+          "rt": 1.0,
+          "dt46v1": 1.0,
+          "dt46v2": 1.0,
+          "dtCurrentV2": 1.0
+        }
+      ],
+      "maximumIndependentFormulaError": {
+        "rt": 0.0,
+        "dt46v1": 0.0,
+        "dt46v2": 0.0,
+        "dtCurrentV2": 0.0
+      }
+    },
+    {
+      "profile": "constantPositive",
+      "nodeCount": 4,
+      "sampleCount": 263,
+      "maximumRTVsV2GainDifference": 0.0,
+      "samples": [
+        {
+          "radius": 0,
+          "rt": 1.4142135381698608,
+          "dt46v1": 2.000000238418579,
+          "dt46v2": 1.4142135381698608,
+          "dtCurrentV2": 1.4142135381698608
+        },
+        {
+          "radius": 0.25,
+          "rt": 1.4142135381698608,
+          "dt46v1": 2.000000238418579,
+          "dt46v2": 1.4142135381698608,
+          "dtCurrentV2": 1.4142135381698608
+        },
+        {
+          "radius": 0.5,
+          "rt": 1.4142135381698608,
+          "dt46v1": 2.000000238418579,
+          "dt46v2": 1.4142135381698608,
+          "dtCurrentV2": 1.4142135381698608
+        },
+        {
+          "radius": 0.75,
+          "rt": 1.4142135381698608,
+          "dt46v1": 2.000000238418579,
+          "dt46v2": 1.4142135381698608,
+          "dtCurrentV2": 1.4142135381698608
+        },
+        {
+          "radius": 1,
+          "rt": 1.4142135381698608,
+          "dt46v1": 2.000000238418579,
+          "dt46v2": 1.4142135381698608,
+          "dtCurrentV2": 1.4142135381698608
+        }
+      ],
+      "maximumIndependentFormulaError": {
+        "rt": 2.4203234083586267e-08,
+        "dt46v1": 2.384185795456517e-07,
+        "dt46v2": 2.4203234083586267e-08,
+        "dtCurrentV2": 2.4203234083586267e-08
+      }
+    },
+    {
+      "profile": "constantNegative",
+      "nodeCount": 4,
+      "sampleCount": 263,
+      "maximumRTVsV2GainDifference": 0.0,
+      "samples": [
+        {
+          "radius": 0,
+          "rt": 0.8408964276313782,
+          "dt46v1": 0.7071068286895752,
+          "dt46v2": 0.8408964276313782,
+          "dtCurrentV2": 0.8408964276313782
+        },
+        {
+          "radius": 0.25,
+          "rt": 0.8408964276313782,
+          "dt46v1": 0.7071068286895752,
+          "dt46v2": 0.8408964276313782,
+          "dtCurrentV2": 0.8408964276313782
+        },
+        {
+          "radius": 0.5,
+          "rt": 0.8408964276313782,
+          "dt46v1": 0.7071068286895752,
+          "dt46v2": 0.8408964276313782,
+          "dtCurrentV2": 0.8408964276313782
+        },
+        {
+          "radius": 0.75,
+          "rt": 0.8408964276313782,
+          "dt46v1": 0.7071068286895752,
+          "dt46v2": 0.8408964276313782,
+          "dtCurrentV2": 0.8408964276313782
+        },
+        {
+          "radius": 1,
+          "rt": 0.8408964276313782,
+          "dt46v1": 0.7071068286895752,
+          "dt46v2": 0.8408964276313782,
+          "dtCurrentV2": 0.8408964276313782
+        }
+      ],
+      "maximumIndependentFormulaError": {
+        "rt": 1.2377663560769747e-08,
+        "dt46v1": 4.750302762257519e-08,
+        "dt46v2": 1.2377663782814352e-08,
+        "dtCurrentV2": 1.2377663782814352e-08
+      }
+    }
+  ],
+  "failures": [],
+  "oldEvidenceCorrection": "Evidence/sony-radial-upstream-oracle-verification.json darktable46 compiled _init_coeffs_md_v1. Its numeric results are legacy v1, not the 4.6 default v2.",
+  "referenceGPLCodeIncludedInProduct": false,
+  "manufacturerVignetteRenderingEnabled": false,
+  "verifiedAt": "2026-10-22T10:49:09.431322+00:00",
+  "scalarEvaluations": 5384,
+  "upstreamHistory": {
+    "v2ChangeURL": "https://github.com/darktable-org/darktable/pull/14468",
+    "mergedCommit": "c0ac913cd207244a508ebfb92e837c452f5cc8b7",
+    "mergedAt": "2023-05-12T17:19:34Z",
+    "realImageOvercorrectionReportURL": "https://github.com/darktable-org/darktable/issues/15937",
+    "issueClosureMeaning": "Closed by inactivity bot, not evidence of a resolved response model"
+  }
+}

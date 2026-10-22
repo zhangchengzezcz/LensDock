@@ -1,0 +1,1605 @@
+{
+  "scope": "One pinned A6000 scene: spatial relation between uncorrected Core Image and LibRaw decoder frames. Not optical calibration, manufacturer-table normalization, all cameras or added automatic coverage.",
+  "sourceRAW": {
+    "fixture": "ILCE-6000.ARW",
+    "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+    "originalUnchanged": true
+  },
+  "toolSHA256": {
+    "swift": "76c23cd4830a6e6b6995b5ed345a68237255b27fb498b368bc1d39527c72e4b8",
+    "driver": "9c26b3fdb2671163ec27b52b4d5af652759b898d170937bd976e41336af608c2",
+    "metadataFixture": "81743dca10b52f295426551ededc92c1eaea4e28ecfa4c0a9f2cff6afc7df5ae"
+  },
+  "environment": {
+    "macOS": "27.2",
+    "rawpy": "0.27.1",
+    "libraw": [
+      0,
+      22,
+      1
+    ],
+    "numpy": "2.5.4",
+    "Pillow": "12.3.0"
+  },
+  "librawSizes": {
+    "raw_height": 4024,
+    "raw_width": 6048,
+    "height": 4024,
+    "width": 6024,
+    "top_margin": 0,
+    "left_margin": 0,
+    "iheight": 4024,
+    "iwidth": 6024,
+    "pixel_aspect": 1.0,
+    "flip": 0,
+    "crop_left_margin": 0,
+    "crop_top_margin": 0,
+    "crop_width": 6000,
+    "crop_height": 4000
+  },
+  "cameraRecordedCorrectionFlags": {
+    "SubIFD:DistortionCorrection": 0,
+    "SubIFD:VignettingCorrection": 256
+  },
+  "cameraRecordedCorrectionLabels": {
+    "SubIFD:DistortionCorrection": "Off",
+    "SubIFD:VignettingCorrection": "Off"
+  },
+  "visionTranslationConvention": "Known control: moving content shifted right 8/down 6 reports +8/-6. Values are observations, not a product warp.",
+  "toleranceFullResolutionPixels": 2,
+  "measurements": [
+    {
+      "scale": 0.25,
+      "coreImage": {
+        "nativeLensCorrectionEnabled": false,
+        "nativeLensCorrectionSupported": false,
+        "nativePixelSize": [
+          6000,
+          4000
+        ],
+        "observationPixels": [
+          1500,
+          1000
+        ],
+        "observationScale": 0.25,
+        "orientation": 1,
+        "outputExtent": [
+          0,
+          0,
+          6000,
+          4000
+        ]
+      },
+      "targetSHA256": "5e319b4ba1449ea4fe6069d40358f6110de85f2392cf72d23d6f1543274a07dd",
+      "candidates": [
+        {
+          "librawCropOrigin": [
+            0,
+            0
+          ],
+          "imageSHA256": "24e0ded35ed604f9b474d619c8faebead13003e749a392221d42604235650086",
+          "observations": [
+            {
+              "homographyColumns": [
+                [
+                  1.0000430345535278,
+                  5.05527677887585e-05,
+                  -2.7949450753794736e-08
+                ],
+                [
+                  -0.0001361711329082027,
+                  0.9998167157173157,
+                  -1.935314770662444e-07
+                ],
+                [
+                  3.103360414505005,
+                  -2.882235288619995,
+                  1.0001940727233887
+                ]
+              ],
+              "name": "full",
+              "region": [
+                0,
+                0,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                3,
+                -3
+              ],
+              "expectedTranslationObservationPixels": [
+                3.0,
+                -3.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.6268629153949532,
+                0.8129732206724574,
+                0.2948290174714101,
+                0.42743669514383464,
+                0.1118590928475172
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.8129732206724574
+            }
+          ],
+          "targetPixels": [
+            1500,
+            1000
+          ]
+        },
+        {
+          "librawCropOrigin": [
+            4,
+            4
+          ],
+          "imageSHA256": "42e70c537021a846a10dc1d756265cfbd2ff028ee4f1c54862841788e02f61b9",
+          "observations": [
+            {
+              "homographyColumns": [
+                [
+                  1.0000345706939697,
+                  9.332166882813908e-06,
+                  1.435824792395124e-08
+                ],
+                [
+                  -6.418478278646944e-06,
+                  0.9999841451644897,
+                  -2.4427055933529118e-08
+                ],
+                [
+                  1.9980965852737427,
+                  -1.980338454246521,
+                  1.000024437904358
+                ]
+              ],
+              "name": "full",
+              "region": [
+                0,
+                0,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                2,
+                -2
+              ],
+              "expectedTranslationObservationPixels": [
+                2.0,
+                -2.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.07922554967900908,
+                0.15502505872736624,
+                0.03654972462852746,
+                0.04695663359879779,
+                0.032362328192306826
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.15502505872736624
+            }
+          ],
+          "targetPixels": [
+            1500,
+            1000
+          ]
+        },
+        {
+          "librawCropOrigin": [
+            12,
+            12
+          ],
+          "imageSHA256": "0e48ff942f58cbf6da7749688b071502730e37662be71aaf2e4aec0eab3e4c25",
+          "observations": [
+            {
+              "homographyColumns": [
+                [
+                  1.0000358819961548,
+                  1.1046520739910193e-05,
+                  2.136111376671579e-08
+                ],
+                [
+                  8.919668289308902e-06,
+                  0.9999905824661255,
+                  -8.259447348279991e-09
+                ],
+                [
+                  -0.00909834261983633,
+                  0.011962390504777431,
+                  1.000008225440979
+                ]
+              ],
+              "name": "full",
+              "region": [
+                0,
+                0,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.060116541372233906,
+                0.13010560825618447,
+                0.010347225949257891,
+                0.05612905689962143,
+                0.03614685535427962
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.13010560825618447
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000872611999512,
+                  8.911732948035933e-06,
+                  1.0544057005290597e-07
+                ],
+                [
+                  2.4712431695661508e-05,
+                  0.9999875426292419,
+                  1.9643291437887456e-08
+                ],
+                [
+                  -0.016753777861595154,
+                  0.009980300441384315,
+                  0.9999901652336121
+                ]
+              ],
+              "name": "tile-0-0",
+              "region": [
+                0,
+                0,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.07800543056793165,
+                0.06782039269556593,
+                0.02327164844559772,
+                0.11602941878906012,
+                0.03718647321007706
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.11602941878906012
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.9999122619628906,
+                  -3.0210911063477397e-05,
+                  -7.6123214398649e-08
+                ],
+                [
+                  3.652046143542975e-05,
+                  0.9999368190765381,
+                  3.580903751299047e-08
+                ],
+                [
+                  0.009863425977528095,
+                  0.015945741906762123,
+                  0.9999821186065674
+                ]
+              ],
+              "name": "tile-0-1",
+              "region": [
+                375,
+                0,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.07500041918326956,
+                0.026749031633660485,
+                0.12846630101580014,
+                0.043997132859578784,
+                0.007262462771084425
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.12846630101580014
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000410079956055,
+                  1.1542152833499131e-07,
+                  2.4236470608229865e-09
+                ],
+                [
+                  -2.1856400053366087e-05,
+                  0.9999908208847046,
+                  -1.0986406095980783e-07
+                ],
+                [
+                  0.003383257891982794,
+                  0.006005320232361555,
+                  1.000054955482483
+                ]
+              ],
+              "name": "tile-0-2",
+              "region": [
+                750,
+                0,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.027569572672445128,
+                0.04157800414658192,
+                0.030578973191603912,
+                0.08695608864385267,
+                0.01706637082511416
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.08695608864385267
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000889301300049,
+                  3.786623346968554e-05,
+                  1.0734491695529869e-07
+                ],
+                [
+                  2.0458350263652392e-05,
+                  1.0000641345977783,
+                  5.568254124455052e-08
+                ],
+                [
+                  -0.01926983706653118,
+                  -0.017833396792411804,
+                  0.9999721646308899
+                ]
+              ],
+              "name": "tile-1-0",
+              "region": [
+                0,
+                250,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.10502533334946834,
+                0.05280922442852183,
+                0.06736062136607379,
+                0.014355509092950114,
+                0.043927495312218706
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.10502533334946834
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.999994158744812,
+                  -1.2912998954561772e-06,
+                  4.1391663430090375e-09
+                ],
+                [
+                  -2.2637692381977104e-05,
+                  0.9999567270278931,
+                  -5.668989189189233e-08
+                ],
+                [
+                  0.015917081385850906,
+                  0.020926659926772118,
+                  1.000028371810913
+                ]
+              ],
+              "name": "tile-1-1",
+              "region": [
+                375,
+                250,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.10516572457250857,
+                0.09321642801622769,
+                0.018699337503768322,
+                0.015470700982043667,
+                0.024331050152680105
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.10516572457250857
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.9999613761901855,
+                  -1.9911843992304057e-05,
+                  -4.0772199838556844e-08
+                ],
+                [
+                  2.3175240130512975e-05,
+                  0.9999416470527649,
+                  1.2888892175766387e-09
+                ],
+                [
+                  0.0004211977939121425,
+                  0.024439724162220955,
+                  0.9999993443489075
+                ]
+              ],
+              "name": "tile-1-2",
+              "region": [
+                750,
+                250,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.09777347764553718,
+                0.04330450630508162,
+                0.05145634646942442,
+                0.02944168071171007,
+                0.02694550677001626
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.09777347764553718
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000580549240112,
+                  1.7898568330565467e-05,
+                  1.1005030664534843e-08
+                ],
+                [
+                  -5.627716745948419e-05,
+                  0.9999538064002991,
+                  -1.4918465751634358e-07
+                ],
+                [
+                  0.015415100380778313,
+                  0.018942490220069885,
+                  1.0000746250152588
+                ]
+              ],
+              "name": "tile-2-0",
+              "region": [
+                0,
+                500,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.09768146160056583,
+                0.13000299888738012,
+                0.05337992952381044,
+                0.10011804775555212,
+                0.03377811502339306
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.13000299888738012
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.99993896484375,
+                  1.5419327610288747e-05,
+                  2.682216582172714e-08
+                ],
+                [
+                  9.416654211236164e-05,
+                  1.0000042915344238,
+                  2.1454799536968494e-07
+                ],
+                [
+                  -0.01605638861656189,
+                  -0.002865209709852934,
+                  0.9998927116394043
+                ]
+              ],
+              "name": "tile-2-1",
+              "region": [
+                375,
+                500,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.06524711577866792,
+                0.03751404561120509,
+                0.12375490942378875,
+                0.1186877521057792,
+                0.059675044090055245
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.12375490942378875
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000135898590088,
+                  -1.2802852324966807e-05,
+                  3.213233767951351e-08
+                ],
+                [
+                  1.5594347132719122e-05,
+                  1.0000072717666626,
+                  1.0039170383890905e-08
+                ],
+                [
+                  -0.010341650806367397,
+                  0.011385107412934303,
+                  0.9999949932098389
+                ]
+              ],
+              "name": "tile-2-2",
+              "region": [
+                750,
+                500,
+                750,
+                500
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.06152369054463579,
+                0.05819999043198894,
+                0.060916261437325606,
+                0.04927220173760574,
+                0.03110265752436796
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.06152369054463579
+            }
+          ],
+          "targetPixels": [
+            1500,
+            1000
+          ]
+        }
+      ],
+      "knownShiftControl": {
+        "movingContentShiftImagePixels": [
+          8,
+          6
+        ],
+        "observations": [
+          {
+            "homographyColumns": [
+              [
+                1.0000050067901611,
+                2.8210147320351098e-06,
+                2.522861475284799e-09
+              ],
+              [
+                1.624958895263262e-05,
+                1.0000008344650269,
+                1.3338923743333453e-08
+              ],
+              [
+                7.979694366455078,
+                -5.997584819793701,
+                0.9999865293502808
+              ]
+            ],
+            "name": "full",
+            "region": [
+              0,
+              0,
+              1500,
+              1000
+            ],
+            "translationAffine": [
+              1,
+              0,
+              0,
+              1,
+              8,
+              -6
+            ]
+          }
+        ],
+        "targetPixels": [
+          1500,
+          1000
+        ]
+      },
+      "identityControl": {
+        "observations": [
+          {
+            "homographyColumns": [
+              [
+                1.000009298324585,
+                2.1675355128536467e-06,
+                2.5836603967377414e-09
+              ],
+              [
+                9.862498700385913e-06,
+                1.0000020265579224,
+                9.180253224272406e-10
+              ],
+              [
+                -0.010398569516837597,
+                -0.00023183261509984732,
+                0.9999991059303284
+              ]
+            ],
+            "name": "full",
+            "region": [
+              0,
+              0,
+              1500,
+              1000
+            ],
+            "translationAffine": [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        ],
+        "targetPixels": [
+          1500,
+          1000
+        ]
+      }
+    },
+    {
+      "scale": 0.5,
+      "coreImage": {
+        "nativeLensCorrectionEnabled": false,
+        "nativeLensCorrectionSupported": false,
+        "nativePixelSize": [
+          6000,
+          4000
+        ],
+        "observationPixels": [
+          3000,
+          2000
+        ],
+        "observationScale": 0.5,
+        "orientation": 1,
+        "outputExtent": [
+          0,
+          0,
+          6000,
+          4000
+        ]
+      },
+      "targetSHA256": "208b7ade0f698f503a191e2a9a795f88a681253d9054c7f514018223b202fd8d",
+      "candidates": [
+        {
+          "librawCropOrigin": [
+            0,
+            0
+          ],
+          "imageSHA256": "f71e2c11e007eef09baac2adea4efaa12da03234e212a02d5580b7cc79e60c61",
+          "observations": [
+            {
+              "homographyColumns": [
+                [
+                  1.0000245571136475,
+                  2.5630379241192713e-06,
+                  3.62212682070151e-09
+                ],
+                [
+                  -2.334844430151861e-05,
+                  1.0000122785568237,
+                  -1.9412988550016053e-08
+                ],
+                [
+                  6.02974271774292,
+                  -5.98492956161499,
+                  1.000038981437683
+                ]
+              ],
+              "name": "full",
+              "region": [
+                0,
+                0,
+                3000,
+                2000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                6,
+                -6
+              ],
+              "expectedTranslationObservationPixels": [
+                6.0,
+                -6.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.0664802911450119,
+                0.10360618330944402,
+                0.08552345477054438,
+                0.0691305912431141,
+                0.01689078364658706
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.10360618330944402
+            }
+          ],
+          "targetPixels": [
+            3000,
+            2000
+          ]
+        },
+        {
+          "librawCropOrigin": [
+            4,
+            4
+          ],
+          "imageSHA256": "218008b85c92ca21608df78d1d0bc4ac01d18df05eb8b76c4df6590077123cbb",
+          "observations": [
+            {
+              "homographyColumns": [
+                [
+                  1.000009298324585,
+                  1.234708065567247e-06,
+                  2.175106761370671e-09
+                ],
+                [
+                  -1.2827665159420576e-05,
+                  0.9999978542327881,
+                  -8.769909243255825e-09
+                ],
+                [
+                  4.020854473114014,
+                  -3.9829728603363037,
+                  1.000017523765564
+                ]
+              ],
+              "name": "full",
+              "region": [
+                0,
+                0,
+                3000,
+                2000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                4,
+                -4
+              ],
+              "expectedTranslationObservationPixels": [
+                4.0,
+                -4.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.053824916973819865,
+                0.06275835374016564,
+                0.027243025645703845,
+                0.009860646633003302,
+                0.012316737617918884
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.06275835374016564
+            }
+          ],
+          "targetPixels": [
+            3000,
+            2000
+          ]
+        },
+        {
+          "librawCropOrigin": [
+            12,
+            12
+          ],
+          "imageSHA256": "3bb98281c8f11fe741030e0b3470470e81ae41f6eb68a644ca454611fc25bdad",
+          "observations": [
+            {
+              "homographyColumns": [
+                [
+                  1.000014066696167,
+                  3.887324510287726e-06,
+                  4.799777908459646e-09
+                ],
+                [
+                  -1.0586561074887868e-05,
+                  0.9999959468841553,
+                  -6.082154779818438e-09
+                ],
+                [
+                  0.01670418493449688,
+                  0.015109349973499775,
+                  1.0000121593475342
+                ]
+              ],
+              "name": "full",
+              "region": [
+                0,
+                0,
+                3000,
+                2000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.04504708264726882,
+                0.06772842654367262,
+                0.016606741569297062,
+                0.022968557081532042,
+                0.016292044801087237
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.06772842654367262
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000120401382446,
+                  -6.181585376907606e-06,
+                  5.803540314985867e-09
+                ],
+                [
+                  4.0240370253741276e-06,
+                  0.9999973177909851,
+                  4.84937601186175e-09
+                ],
+                [
+                  -0.004872831050306559,
+                  0.006320631597191095,
+                  0.9999951720237732
+                ]
+              ],
+              "name": "tile-0-0",
+              "region": [
+                0,
+                0,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.015961889771740206,
+                0.01587714658173677,
+                0.00744709678574736,
+                0.029830956071843565,
+                0.009498812818466087
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.029830956071843565
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.9999849796295166,
+                  6.209633284015581e-06,
+                  -2.474576765720826e-09
+                ],
+                [
+                  7.716375876043458e-06,
+                  0.9999940991401672,
+                  1.6152542414715754e-08
+                ],
+                [
+                  0.0021116570569574833,
+                  -0.010614288970828056,
+                  0.9999838471412659
+                ]
+              ],
+              "name": "tile-0-1",
+              "region": [
+                750,
+                0,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.021644954117914672,
+                0.018920819084205228,
+                0.038390151575504766,
+                0.015831278289996215,
+                0.008982929776471603
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.038390151575504766
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000046491622925,
+                  3.1658105399401393e-06,
+                  -9.240703202628708e-10
+                ],
+                [
+                  -1.2518425137386657e-05,
+                  0.9999924898147583,
+                  -1.728275833556836e-08
+                ],
+                [
+                  0.009838075377047062,
+                  0.0024959840811789036,
+                  1.0000172853469849
+                ]
+              ],
+              "name": "tile-0-2",
+              "region": [
+                1500,
+                0,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.020299172629264683,
+                0.020180962935453964,
+                0.011381292082430874,
+                0.01288590694049149,
+                0.006130661939171792
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.020299172629264683
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000336170196533,
+                  8.298737839140813e-07,
+                  1.121384585189844e-08
+                ],
+                [
+                  -3.6805762647418305e-05,
+                  0.9999964237213135,
+                  -2.6350990722789902e-08
+                ],
+                [
+                  0.01938241720199585,
+                  0.014405830763280392,
+                  1.0000263452529907
+                ]
+              ],
+              "name": "tile-1-0",
+              "region": [
+                0,
+                500,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.048298046683674774,
+                0.032909161654269777,
+                0.04094887902443277,
+                0.018210989497753013,
+                0.02060504587220108
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.048298046683674774
+            },
+            {
+              "homographyColumns": [
+                [
+                  1.0000150203704834,
+                  2.4335597572644474e-06,
+                  8.965692632756372e-10
+                ],
+                [
+                  -4.589570016833022e-05,
+                  0.9999590516090393,
+                  -4.438019729491316e-08
+                ],
+                [
+                  0.03432571142911911,
+                  0.032102975994348526,
+                  1.000044345855713
+                ]
+              ],
+              "name": "tile-1-1",
+              "region": [
+                750,
+                500,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.0939927579904349,
+                0.07519753276243417,
+                0.02901723907831023,
+                0.022152497510876258,
+                0.011773179199792141
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.0939927579904349
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.999977707862854,
+                  -1.7796703104977496e-05,
+                  -1.6788680667900735e-08
+                ],
+                [
+                  -5.198125109018292e-06,
+                  0.9999630451202393,
+                  -2.416984834496816e-08
+                ],
+                [
+                  0.015294169075787067,
+                  0.03460307791829109,
+                  1.0000241994857788
+                ]
+              ],
+              "name": "tile-1-2",
+              "region": [
+                1500,
+                500,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.07566281355988455,
+                0.03692124517493745,
+                0.020750455247751126,
+                0.029703503352452316,
+                0.009495567549101195
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.07566281355988455
+            },
+            {
+              "homographyColumns": [
+                [
+                  1,
+                  -4.908604296360863e-07,
+                  -6.75117572956907e-10
+                ],
+                [
+                  -1.724358298815787e-05,
+                  0.9999857544898987,
+                  -3.6038514394931553e-08
+                ],
+                [
+                  0.02876904420554638,
+                  0.022710420191287994,
+                  1.0000360012054443
+                ]
+              ],
+              "name": "tile-2-0",
+              "region": [
+                0,
+                1000,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.07330277935880908,
+                0.06460781871008364,
+                0.02864623108467183,
+                0.031449429320347104,
+                0.019139352330190037
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.07330277935880908
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.9999847412109375,
+                  1.49608958963654e-05,
+                  1.1311063197183557e-08
+                ],
+                [
+                  5.8719680964713916e-05,
+                  1.0000107288360596,
+                  4.946498322055959e-08
+                ],
+                [
+                  -0.02539285458624363,
+                  -0.006824995391070843,
+                  0.9999505281448364
+                ]
+              ],
+              "name": "tile-2-1",
+              "region": [
+                750,
+                1000,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.05259072308575039,
+                0.03121834390916614,
+                0.06700342529150977,
+                0.03533548290862331,
+                0.03699875301128707
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.06700342529150977
+            },
+            {
+              "homographyColumns": [
+                [
+                  0.9999626874923706,
+                  -2.181518721044995e-05,
+                  -1.4666860614909183e-08
+                ],
+                [
+                  9.463444143875677e-07,
+                  0.9999790787696838,
+                  3.0663632744065694e-10
+                ],
+                [
+                  0.01147262379527092,
+                  0.03201902657747269,
+                  0.9999997019767761
+                ]
+              ],
+              "name": "tile-2-2",
+              "region": [
+                1500,
+                1000,
+                1500,
+                1000
+              ],
+              "translationAffine": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "expectedTranslationObservationPixels": [
+                0.0,
+                0.0
+              ],
+              "translationResidualFullResolutionPixels": [
+                0.0,
+                0.0
+              ],
+              "homographyProbeLocations": "Four local region corners and its center",
+              "homographyProbeResidualFullResolutionPixels": [
+                0.06802469696358518,
+                0.02215379313820365,
+                0.03332558657489161,
+                0.02115248661595817,
+                0.02645497731830877
+              ],
+              "homographyMaxSampledResidualFullResolutionPixels": 0.06802469696358518
+            }
+          ],
+          "targetPixels": [
+            3000,
+            2000
+          ]
+        }
+      ],
+      "knownShiftControl": {
+        "movingContentShiftImagePixels": [
+          8,
+          6
+        ],
+        "observations": [
+          {
+            "homographyColumns": [
+              [
+                0.9999896287918091,
+                -4.618269940692699e-06,
+                -2.1973041164358165e-09
+              ],
+              [
+                9.337603842141107e-06,
+                0.9999905228614807,
+                5.859906337946086e-09
+              ],
+              [
+                7.99124002456665,
+                -5.991553783416748,
+                0.9999882578849792
+              ]
+            ],
+            "name": "full",
+            "region": [
+              0,
+              0,
+              3000,
+              2000
+            ],
+            "translationAffine": [
+              1,
+              0,
+              0,
+              1,
+              8,
+              -6
+            ]
+          }
+        ],
+        "targetPixels": [
+          3000,
+          2000
+        ]
+      },
+      "identityControl": {
+        "observations": [
+          {
+            "homographyColumns": [
+              [
+                0.9999997615814209,
+                -2.290991460540681e-06,
+                -7.240156391086217e-11
+              ],
+              [
+                -2.3990376121219015e-06,
+                1.0000035762786865,
+                4.887480975490632e-10
+              ],
+              [
+                0.005155570805072784,
+                -0.0016578566282987595,
+                0.9999990463256836
+              ]
+            ],
+            "name": "full",
+            "region": [
+              0,
+              0,
+              3000,
+              2000
+            ],
+            "translationAffine": [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        ],
+        "targetPixels": [
+          3000,
+          2000
+        ]
+      }
+    }
+  ],
+  "failures": [],
+  "manufacturerTableFrameProven": false,
+  "renderingEnabled": false,
+  "verifiedAt": "2026-10-22T10:42:26.652278+00:00",
+  "finding": {
+    "librawVisiblePixels": [
+      6024,
+      4024
+    ],
+    "coreImagePixels": [
+      6000,
+      4000
+    ],
+    "observedCoreImageCropOriginInLibraw": [
+      12,
+      12
+    ],
+    "sameSceneCrossDecoderRegions": 24,
+    "knownShiftControls": 2,
+    "identityControls": 2,
+    "maximumCenteredCandidateSampledHomographyResidualFullResolutionPixels": 0.13010560825618447,
+    "conclusion": "The observed decoder frame relation is a centered crop for this sample only. Neither FullImageSize equality nor LibRaw crop margins establish the manufacturer table normalization."
+  }
+}
