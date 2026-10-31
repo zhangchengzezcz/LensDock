@@ -54,3 +54,5 @@ python3 Tests/verify-sony-embedded-metadata.py
 在开发虚拟环境中安装 rawpy、NumPy 和 Pillow 后，可运行 `python Tests/verify-sony-decoder-frame.py`；它需要可选公开原片与 macOS 的 Core Image/Vision，缺失或哈希不符会直接停止。`Tests/compare-sony-vignette-references.py` 从三个固定本地上游源码快照抽取独立比较程序，拒绝不同哈希；各下载地址及可选路径参数在脚本中列明。所有抽取的 GPL 代码和可执行文件只进入 Build，不参与 LensDock 链接或分发。本轮只增加证据和开发验证工具，不改变 build 15 产品或冻结的 0.2.7 安装包。
 
 后续已新增要求调用方明确给定坐标的几何映射核心，覆盖方向、裁切、缩放和三通道，并完成 Decimal 与实际 Core Image 方向对照。它没有选择厂家坐标空间，也未进入产品渲染路径；参见 [显式坐标契约](SonyGeometryFrame.md) 与 `Evidence/sony-explicit-pixel-frame-verification.json`。
+
+2026-10-31 后续接入状态：显式图像原语现在可通过 v6 原生效果归档、重载、复制和继续调整，不生成伪 Lensfun 模型或全尺寸位移图。当前 RAW 绑定与重新读取的分组来源会被核对；厂家空间仍由明确调用者提供，**自动计划没有启用厂家表**，两个来源资格标志没有修改。独立暗角增益规则保持不变，未据此启用 Sony 暗角。原生效果编解码/合成渲染通过不等于真实 PXD 保存/重开或新增自动覆盖，详细契约见 `Documentation/SonyGeometryFrame.md` 的 v6 一节。

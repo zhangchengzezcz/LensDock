@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-31",
+  "scope": "Explicit mathematical-frame v6 archive and native effect integration; automatic frame selection, actual PXD save/reopen, 24MP performance and full Lightroom coverage remain unverified.",
+  "environment": {
+    "macOS": "27.2",
+    "build": "26B123",
+    "SDK": "27.0"
+  },
+  "regularGroups": 34,
+  "existingNativeRenderCombinations": 192,
+  "newNativeExplicitEffectRenders": 160,
+  "allSelectedTestsPassed": true,
+  "finalRegressionLogSHA256": "b79ff40fefe8c4c3602d42dd035e1629e5ed0fd5ceaf4987910186f92215c8f6",
+  "sourceSHA256": {
+    "Sources/Native/LensSonyGeometryArchive.h": "4d78ce642f56352bf21922d6b6af830d282b2e42500ed716047d4a48e08e6705",
+    "Sources/Native/LensSonyGeometryImage.h": "8f696e462a2a9a79447fb22006ceeb3078415ea35054d5e23ee22c1f12ff9602",
+    "Sources/Native/LensSonyGeometryImage.m": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+    "Sources/Native/LensCalibrationEvidence.h": "a38977975ddfc32e2be97b028585b6d000deb841bce2fa668a0c82f1a5e505c1",
+    "Sources/Native/LensConstrainedCrop.m": "40b67ccc1356e04c050dd90c24ae1082fa5f1276270d014684c1529a1434a529",
+    "Sources/Native/LensCorrectionSettings.h": "d0adc6bd5679f62520175269f1bc22a2f7a3ef9719a19783c18ed87f0f4d5ebe",
+    "Sources/Native/LensCorrectionSettings.m": "c6d1b0768ee13d51f15fa085e2694f970439a0576b445afd748e9f808c98e015",
+    "Sources/Native/LensVignettingFilter.m": "9d7a48bbdffda3b7123fb63271d21f2f6b6c57817f0642f4064692cda05f7cc7",
+    "Sources/Native/LensPanel.m": "c5ef71e131f8e0c29606debace3098a05c5269d86705952bc3cc0c98569549ae",
+    "Scripts/build.py": "da6c583453f4ab8489785de342dea1652dde4d304718fcfa6b3856a8c63bbccf",
+    "Scripts/test.py": "44f343953e33d89686a5f597ca24e397d99b3fe75ec6ebb98c26e2b5481c95a5",
+    "Tests/verify-sony-geometry-effect.m": "56aaf3a2f3f56d9630985b1261fea4fbc97590e49741fb70834d1f617e246b25"
+  },
+  "moduleBuild": {
+    "file": "Build/Development/LensPanel-explicit-archive.dylib",
+    "sha256": "42010084f38f53950c0d5cca887e8a36bc88441a10b882baba07819beec62978",
+    "architecture": "arm64",
+    "minimumOS": "26.0",
+    "sdk": "27.0",
+    "availabilityWarningsAreErrors": true,
+    "installedIntoHost": false
+  },
+  "effectEvidence": "sony-explicit-effect-verification.json",
+  "rendererArchiveVersion": 6,
+  "newAutomaticProviderEnabled": false,
+  "manufacturerFrameProven": false,
+  "actualPXDSaveReopenVerified": false,
+  "performance24MPMeasured": false,
+  "frozen027DMGChanged": false,
+  "activeStrengthValidationWithoutCropVerified": true
+}

@@ -22,6 +22,16 @@ NSDictionary *LensConstrainedCrop(NSDictionary *plan, NSDictionary *settings, NS
     if ((!ds && !ts) || ![settings[@"constrainCropEnabled"] boolValue])
         return @{@"version":@1, @"scale":@1, @"maximumDisplacementPixels":@[@0,@0]};
 
+    if (report[@"geometryProvider"]) {
+        NSDictionary *source; LensSonyExplicitPixelFrame frame; LensSonyGeometryTransform transform;
+        if (!LensSonyExplicitGeometryReport(report) || !LensSonyReadExplicitGeometry(report[@"explicitGeometry"],&source,&frame) ||
+            !LensSonyPrepareGeometry(source,frame,ds,ts,&transform)) return cropError(error);
+        double scale = LensSonyGeometryCropScale(&transform,frame.outputSize);
+        if (!isfinite(scale) || scale <= 0 || scale > 1) return cropError(error);
+        return @{@"version":@1,@"scale":@(scale),@"safetyMarginPixels":@2,
+            @"method":@"sony-explicit-frame-conservative-factor-extrema-v1"};
+    }
+
     NSString *encoding = report[@"geometryMapEncoding"];
     BOOL residual = [encoding isEqual:@"pixel-displacement-residual-RG8-bottom-up-grid-v4"];
     BOOL offsets = residual || [encoding isEqual:@"pixel-displacement-RGf-bottom-up-grid-v3"];

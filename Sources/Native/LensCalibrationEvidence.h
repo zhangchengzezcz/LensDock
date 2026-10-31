@@ -1,9 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <math.h>
+#import "LensSonyGeometryArchive.h"
 
 // Identity is a mathematical property of the recorded optical model, not a
 // guess from scene shapes. Missing/unsupported models must never create a warp.
 static inline BOOL LensGeometryCalibrationNeeded(NSDictionary *report,NSString *kind){
+ if(report[@"geometryProvider"]){
+  if(![report[[kind stringByAppendingString:@"ProfileAvailable"]]boolValue]||!LensSonyExplicitGeometryNeeded(report,kind))return NO;
+  NSNumber*measured=report[[kind stringByAppendingString:@"CorrectionNeeded"]];return !measured||[measured boolValue];
+ }
  if(![report[[kind stringByAppendingString:@"ProfileAvailable"]]boolValue])return NO;
  NSDictionary *calibration=report[@"interpolatedCalibration"][kind];NSArray *terms=calibration[@"terms"];
  int model=[calibration[@"model"]intValue];NSUInteger count=0;BOOL tca=[kind isEqual:@"tca"];

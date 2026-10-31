@@ -48,6 +48,19 @@ NSDictionary*LensSavedCorrectionProfile(id effects){
  for(NSDictionary*wrapper in data[1][@"w"])for(NSDictionary*item in wrapper[@"versionSpecifiContainer"][@"effectUnkeyedContainer"]){CIFilter*f=filterFromItem(item);if([f isKindOfClass:LensRegisterVignettingFilter()])return ((id(*)(id,SEL))objc_msgSend)(f,NSSelectorFromString(@"lensProfile"));}
  return nil;
 }
+NSDictionary *LensPlanRestoringExplicitGeometry(NSDictionary *saved,NSDictionary *live){
+ if(![saved isKindOfClass:NSDictionary.class]||![saved[@"workingTransfer"]isEqual:@"lensdock-explicit-v6"]||![saved[@"profileFormatVersion"]isEqual:@6]||
+    !LensSonyExplicitGeometrySettings(saved[@"correctionSettings"])||!LensSonyExplicitGeometryBound(saved[@"matchedProfile"],saved[@"sourceBinding"])||
+    !LensCorrectionSourceMatches(saved[@"sourceBinding"],live)||[saved[@"normalizedGeometryMapsLZFSE"]count]||saved[@"geometryResidualMapsLZFSE"])return nil;
+ NSDictionary*r=saved[@"matchedProfile"];
+ if(![saved[@"compactWorkingTransfer"]isEqual:r[@"workingTransfer"]]||[saved[@"width"]doubleValue]!=[r[@"width"]doubleValue]||[saved[@"height"]doubleValue]!=[r[@"height"]doubleValue])return nil;
+ NSMutableDictionary*plan=[@{@"report":r,@"normalizedGeometryMapsLZFSE":@{},@"sourceBinding":saved[@"sourceBinding"],@"liveFingerprint":live}mutableCopy];
+ NSData*gain=LensDecodedGainData(saved,nil);if(gain)plan[@"linearGainFloat32BottomUp"]=gain;
+ if([saved[@"correctionSettings"][@"vignettingEnabled"]boolValue]&&!gain)return nil;
+ for(NSString*key in @[@"metadata",@"baseMetadata",@"parameterOverrides",@"cornerAssessment",@"assessmentPreviewData",@"constrainedCrop"])if(saved[key])plan[key]=saved[key];
+ if(saved[@"constrainedCrop"])plan[@"constrainedCropSettings"]=saved[@"correctionSettings"];
+ return plan;
+}
 static NSData*effectsWithoutCorrection(NSData*existing,NSError**error){
  NSMutableArray*data=[NSJSONSerialization JSONObjectWithData:existing options:NSJSONReadingMutableContainers error:error];if(![data isKindOfClass:NSArray.class]||data.count!=2)return nil;
  NSMutableArray*keep=[NSMutableArray new];for(NSDictionary*wrapper in data[1][@"w"]){NSMutableArray*retained=[NSMutableArray new];for(NSDictionary*item in wrapper[@"versionSpecifiContainer"][@"effectUnkeyedContainer"]){CIFilter*q=filterFromItem(item);if(![q isKindOfClass:LensRegisterVignettingFilter()])[retained addObject:item];}
@@ -70,15 +83,29 @@ BOOL LensReplaceLayerCorrection(id layer,id effects,NSError**error){
 id LensEffectsForCorrectionPlan(NSDictionary*plan,NSData*envelope,NSDictionary*settings,NSData*existing,NSError**error){
  NSDictionary*r=plan[@"report"];NSUInteger w=[r[@"width"]unsignedIntegerValue],h=[r[@"height"]unsignedIntegerValue];NSString*transfer=r[@"workingTransfer"];
  if(!w||!h||w>16000||h>16000||(![transfer isEqual:@"linear"]&&![transfer isEqual:@"encoded_sRGB"]))return nil;
+ BOOL explicit=r[@"geometryProvider"]!=nil;
+ if(explicit&&(!LensSonyExplicitGeometryReport(r)||!LensSonyExplicitGeometrySettings(settings)))return nil;
+ NSDictionary*binding=plan[@"sourceBinding"]?:LensCorrectionSourceBinding(plan[@"liveFingerprint"]);
+ // New node-based effects must retain a complete source binding. The
+ // explicit format is not a way to apply a calibration to an unbound layer.
+ if(explicit&&(!LensSonyExplicitGeometryBound(r,binding)||![binding isEqual:LensCorrectionSourceBinding(binding)]))return nil;
+ if(explicit&&[binding[@"rawParameters"][1][@"lc"]boolValue]&&
+    ([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue]))return nil;
  NSDictionary*maps=plan[@"normalizedGeometryMapsLZFSE"];
+ if(explicit&&((maps&&![maps isKindOfClass:NSDictionary.class])||[maps count]||plan[@"geometryResidualMapsLZFSE"]))return nil;
  BOOL residual=[r[@"geometryMapEncoding"]isEqual:@"pixel-displacement-residual-RG8-bottom-up-grid-v4"];
  if(residual){double step=[r[@"geometryResidualStepPixels"]doubleValue];if(!isfinite(step)||step<=0||step>1)return nil;for(NSString*key in maps)if(![plan[@"geometryResidualMapsLZFSE"][key]isKindOfClass:NSData.class]||![plan[@"geometryResidualMapsLZFSE"][key]length])return nil;}
  if([r[@"supplementalVignettingOnly"]boolValue]&&([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue]))return nil;
  for(NSString*key in @[@"distortion",@"tca",@"vignetting"]){double strength=[settings[[key stringByAppendingString:@"Strength"]]doubleValue];if(!isfinite(strength)||strength<0||strength>200)return nil;}
- if([settings[@"distortionEnabled"]boolValue]&&!maps[@"D"])return nil;
+ if(!explicit&&[settings[@"distortionEnabled"]boolValue]&&!maps[@"D"])return nil;
  if([settings[@"distortionEnabled"]boolValue]&&!LensGeometryCalibrationNeeded(r,@"distortion"))return nil;
- if([settings[@"tcaEnabled"]boolValue]&&(!maps[@"T0"]||!maps[@"T1"]||!maps[@"T2"]))return nil;
+ if(!explicit&&[settings[@"tcaEnabled"]boolValue]&&(!maps[@"T0"]||!maps[@"T1"]||!maps[@"T2"]))return nil;
  if([settings[@"tcaEnabled"]boolValue]&&!LensGeometryCalibrationNeeded(r,@"tca"))return nil;
+ if(explicit){
+  NSDictionary*source;LensSonyExplicitPixelFrame frame;LensSonyGeometryTransform transform;
+  double ds=[settings[@"distortionEnabled"]boolValue]?[settings[@"distortionStrength"]doubleValue]/100:0,ts=[settings[@"tcaEnabled"]boolValue]?[settings[@"tcaStrength"]doubleValue]/100:0;
+  if(!LensSonyReadExplicitGeometry(r[@"explicitGeometry"],&source,&frame)||!LensSonyPrepareGeometry(source,frame,ds,ts,&transform))return nil;
+ }
  NSUInteger gainWidth=0,gainHeight=0;
  if([settings[@"vignettingEnabled"]boolValue]&&(![r[@"vignettingCorrectionNeeded"]boolValue]||!LensGainMapDimensions(r,w,h,&gainWidth,&gainHeight)||[plan[@"linearGainFloat32BottomUp"]length]!=gainWidth*gainHeight*4))return nil;
  NSMutableDictionary*profile=[@{@"width":@(w),@"height":@(h),@"workingTransfer":transfer,@"matchedProfile":r,@"gainModeVersion":@3,@"correctionSettings":settings,@"normalizedGeometryMapsLZFSE":maps?:@{}}mutableCopy];
@@ -94,6 +121,11 @@ id LensEffectsForCorrectionPlan(NSDictionary*plan,NSData*envelope,NSDictionary*s
   // Older readers must not silently show a different framing.
   profile[@"workingTransfer"]=@"lensdock-compact-v5";profile[@"compactWorkingTransfer"]=transfer;profile[@"profileFormatVersion"]=@5;
  }
+ if(explicit){
+  // Older readers reject the unknown transfer and show the original image.
+  // Never label node tables as the legacy dense-map archive format.
+  profile[@"workingTransfer"]=@"lensdock-explicit-v6";profile[@"compactWorkingTransfer"]=transfer;profile[@"profileFormatVersion"]=@6;
+ }
  if(plan[@"linearGainFloat32BottomUp"]){
   NSData*gain=plan[@"linearGainFloat32BottomUp"],*encoded=r[@"gainMapEncoding"]?LensEncodeGainGrid(gain,error):nil;
   if(r[@"gainMapEncoding"]&&!encoded)return nil;
@@ -102,7 +134,6 @@ id LensEffectsForCorrectionPlan(NSDictionary*plan,NSData*envelope,NSDictionary*s
  }
  if(residual)profile[@"geometryResidualMapsLZFSE"]=plan[@"geometryResidualMapsLZFSE"];
  for(NSString*key in @[@"metadata",@"baseMetadata",@"parameterOverrides",@"cornerAssessment",@"assessmentPreviewData"])if(plan[key])profile[key]=plan[key];
- NSDictionary *binding=plan[@"sourceBinding"]?:LensCorrectionSourceBinding(plan[@"liveFingerprint"]);
  if(binding)profile[@"sourceBinding"]=binding;
  CIFilter*f=[[LensRegisterVignettingFilter() alloc]init];[f setDefaults];[f setValue:@100 forKey:@"inputAmount"];((void(*)(id,SEL,id))objc_msgSend)(f,NSSelectorFromString(@"setLensProfile:"),profile);
  NSData*archive=[NSKeyedArchiver archivedDataWithRootObject:f requiringSecureCoding:NO error:error];if(!archive)return nil;

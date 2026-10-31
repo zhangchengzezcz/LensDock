@@ -8,6 +8,7 @@ for name,target in [('lib',ROOT/'Vendor/Lib'),('resources',ROOT/'Resources/LensB
 shutil.copy2(ROOT/'Resources/native-effects-template.json',out/'native-effects-template.json')
 native=ROOT/'Sources/Native'
 groups={
+ 'verify-sony-geometry-effect':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-sony-geometry-image':['LensSonyGeometryImage.m'],
  'verify-sony-pixel-frame':[],
  'verify-sony-embedded-profile':['LensNativeProfileEngine.m'],
@@ -43,7 +44,7 @@ groups={
  'verify-source-binding':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
 }
 for name,sources in groups.items():
- if 'LensVignettingFilter.m' in sources:sources=[*sources,'LensCalibrationImage.m','LensConstrainedCrop.m']
+ if 'LensVignettingFilter.m' in sources:sources=[*sources,'LensCalibrationImage.m','LensConstrainedCrop.m','LensSonyGeometryImage.m']
  subprocess.run(['xcrun','clang','-arch','arm64','-mmacosx-version-min=26.0','-O2','-fobjc-arc','-Wno-deprecated-declarations',*(['-Wl,-export_dynamic'] if name=='verify-effect-replacement' else []),'-I',str(native),'-framework','Cocoa','-framework','CoreImage','-framework','ImageIO',str(ROOT/'Tests'/(name+'.m')),*[str(native/s) for s in sources],'-o',str(out/name)],check=True,cwd=ROOT)
  subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,**({'DYLD_FRAMEWORK_PATH':'/Applications/Pixelmator Pro Creator Studio.app/Contents/Frameworks'} if name=='verify-host-compatibility' else {})})
  if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_GRID_TEST':'1'})

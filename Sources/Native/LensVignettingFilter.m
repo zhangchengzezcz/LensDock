@@ -45,7 +45,11 @@ static id copyProfile(id self,SEL cmd,NSZone*zone) {
 }
 static id gainOutput(id self,SEL cmd) {
  CIImage*input=[self valueForKey:kCIInputImageKey];NSDictionary*p=profile(self);if(!input||!p)return input;
- NSString*transfer=p[@"workingTransfer"];if(([transfer isEqual:@"lensdock-compact-v4"]&&[p[@"profileFormatVersion"]isEqual:@4])||([transfer isEqual:@"lensdock-compact-v5"]&&[p[@"profileFormatVersion"]isEqual:@5]))transfer=p[@"compactWorkingTransfer"];if(![transfer isEqual:@"linear"]&&![transfer isEqual:@"encoded_sRGB"])return input;
+ BOOL explicit=[p[@"workingTransfer"]isEqual:@"lensdock-explicit-v6"]&&[p[@"profileFormatVersion"]isEqual:@6];
+ if(explicit&&(!LensSonyExplicitGeometryBound(p[@"matchedProfile"],p[@"sourceBinding"])||!LensSonyExplicitGeometrySettings(p[@"correctionSettings"])))return input;
+ if(explicit&&(![p[@"compactWorkingTransfer"]isEqual:p[@"matchedProfile"][@"workingTransfer"]]||[p[@"width"]doubleValue]!=[p[@"matchedProfile"][@"width"]doubleValue]||[p[@"height"]doubleValue]!=[p[@"matchedProfile"][@"height"]doubleValue]))return input;
+ if(p[@"matchedProfile"][@"geometryProvider"]&&!explicit)return input;
+ NSString*transfer=p[@"workingTransfer"];if(explicit||([transfer isEqual:@"lensdock-compact-v4"]&&[p[@"profileFormatVersion"]isEqual:@4])||([transfer isEqual:@"lensdock-compact-v5"]&&[p[@"profileFormatVersion"]isEqual:@5]))transfer=p[@"compactWorkingTransfer"];if(![transfer isEqual:@"linear"]&&![transfer isEqual:@"encoded_sRGB"])return input;
  NSUInteger w=[p[@"width"]unsignedIntegerValue],h=[p[@"height"]unsignedIntegerValue];if(!w||!h||w>16000||h>16000)return input;
  CGRect rect=input.extent;if(CGRectIsInfinite(rect)||CGRectIsEmpty(rect))return input;
  NSDictionary*config=p[@"correctionSettings"];double vs,ds=0,ts=0;
@@ -54,6 +58,7 @@ static id gainOutput(id self,SEL cmd) {
  if([p[@"matchedProfile"][@"supplementalVignettingOnly"]boolValue])ds=ts=0;
  if(ds&&!LensGeometryCalibrationNeeded(p[@"matchedProfile"],@"distortion"))ds=0;
  if(ts&&!LensGeometryCalibrationNeeded(p[@"matchedProfile"],@"tca"))ts=0;
+ if(explicit&&[p[@"sourceBinding"][@"rawParameters"][1][@"lc"]boolValue])ds=ts=0;
  vs=fmax(0,fmin(2,vs));ds=fmax(0,fmin(2,ds));ts=fmax(0,fmin(2,ts));if(!vs&&!ds&&!ts)return input;
  CIImage*source=[transfer isEqual:@"encoded_sRGB"]?[input imageByApplyingFilter:@"CISRGBToneCurveToLinear"]:input;
  if(vs){
@@ -68,7 +73,22 @@ static id gainOutput(id self,SEL cmd) {
   source=[gainKernel applyWithExtent:rect arguments:@[source,map,@(vs)]];
   }
  }
- if(ds||ts){
+ if((ds||ts)&&explicit){
+  NSDictionary*sourceData;LensSonyExplicitPixelFrame frame;
+  if(!LensSonyReadExplicitGeometry(p[@"matchedProfile"][@"explicitGeometry"],&sourceData,&frame))return input;
+  if([config[@"constrainCropEnabled"]boolValue]){LensSonyGeometryTransform t;if(![p[@"constrainedCrop"]isKindOfClass:NSDictionary.class]||!LensSonyArchiveNumber(p[@"constrainedCrop"][@"scale"])||!LensSonyPrepareGeometry(sourceData,frame,ds,ts,&t))return input;double expected=LensSonyGeometryCropScale(&t,frame.outputSize),stored=[p[@"constrainedCrop"][@"scale"]doubleValue];if(!isfinite(expected)||!isfinite(stored)||fabs(expected-stored)>1e-12)return input;}
+  // Keep the archived source pixel frame before any later preview or layer
+  // transform. Canonicalizing a reduced input also keeps crop framing fixed,
+  // rather than recomputing a two-preview-pixel safety margin at each zoom.
+  CIImage*canonical=source;
+  if(rect.origin.x!=0||rect.origin.y!=0)canonical=[canonical imageByApplyingTransform:CGAffineTransformMakeTranslation(-rect.origin.x,-rect.origin.y)];
+  BOOL resized=rect.size.width!=w||rect.size.height!=h;
+  if(resized)canonical=[[canonical imageByApplyingTransform:CGAffineTransformMakeScale(w/rect.size.width,h/rect.size.height)]imageByCroppingToRect:CGRectMake(0,0,w,h)];
+  CIImage*corrected=LensSonyExplicitGeometryImage(canonical,sourceData,frame,ds,ts,[config[@"constrainCropEnabled"]boolValue],nil);if(!corrected)return input;
+  if(resized)corrected=[corrected imageByApplyingTransform:CGAffineTransformMakeScale(rect.size.width/w,rect.size.height/h)];
+  source=[[corrected imageByApplyingTransform:CGAffineTransformMakeTranslation(rect.origin.x,rect.origin.y)]imageByCroppingToRect:rect];
+ }
+ if((ds||ts)&&!explicit){
   NSUInteger mw=[p[@"matchedProfile"][@"geometryMapWidth"]unsignedIntegerValue]?:w,mh=[p[@"matchedProfile"][@"geometryMapHeight"]unsignedIntegerValue]?:h;if(mw<2||mh<2||mw>16000||mh>16000)return input;
   BOOL residual=[p[@"matchedProfile"][@"geometryMapEncoding"]isEqual:@"pixel-displacement-residual-RG8-bottom-up-grid-v4"];double residualStep=residual?[p[@"matchedProfile"][@"geometryResidualStepPixels"]doubleValue]:0;if(residual&&(!isfinite(residualStep)||residualStep<=0||residualStep>1))return input;
   NSDictionary*maps=objc_getAssociatedObject(self,&LensMapCacheKey);
