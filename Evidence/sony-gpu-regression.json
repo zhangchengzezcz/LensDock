@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-31",
+  "scope": "GPU implementation of existing explicit-frame v6 rendering. No new automatic provider, manufacturer-frame proof, real PXD save/reopen or whole-application performance claim.",
+  "regularGroups": 35,
+  "existingNativeRenderCombinations": 192,
+  "explicitNativeEffectRenders": 160,
+  "constantImageRenders": 256,
+  "variableTableImageRenders": 16,
+  "gpuCoordinateCases": 240,
+  "gpuCoordinateSamples": 460800,
+  "allSelectedTestsPassed": true,
+  "regressionLogSHA256": "6fd491041d98c575baa05b2765685d2d5ab3950923dd2e2df02d651bfd2d2aa5",
+  "sourceSHA256": {
+    "Sources/Native/LensSonyGeometryImage.m": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+    "Sources/Native/LensSonyGeometryImage.h": "8f696e462a2a9a79447fb22006ceeb3078415ea35054d5e23ee22c1f12ff9602",
+    "Sources/Native/LensSonyGeometry.h": "652778f366a1db0c6cbd9a840b3035f02e95592f2e0ded22b76b4576b4bb9ae3",
+    "Sources/Native/LensSonyGeometryArchive.h": "4d78ce642f56352bf21922d6b6af830d282b2e42500ed716047d4a48e08e6705",
+    "Tests/verify-sony-gpu-coordinates.m": "be3dbe9ee21bb6a2b24b5497962152c44491fbb0130badfedb57d200928794bf",
+    "Tests/verify-sony-geometry-image.m": "da13e38ff2896e1ae86effb1f60f512f3767106a3e484a44de1267e6589f3033",
+    "Tests/verify-sony-geometry-effect.m": "56aaf3a2f3f56d9630985b1261fea4fbc97590e49741fb70834d1f617e246b25",
+    "Scripts/build.py": "da6c583453f4ab8489785de342dea1652dde4d304718fcfa6b3856a8c63bbccf",
+    "Scripts/test.py": "4305478a3d85c59c07406eb0975c5005d85086e8fe82a9edf467c07e3642688e"
+  },
+  "moduleBuild": {
+    "file": "Build/Development/LensPanel-sony-gpu.dylib",
+    "sha256": "55164567533b1c89d456e3d7c602b042b68ebd73c6e2dc96b71a5dc486fe2ae2",
+    "architecture": "arm64",
+    "minimumOS": "26.0",
+    "sdk": "27.0",
+    "availabilityWarningsAreErrors": true,
+    "installedIntoHost": false
+  },
+  "performanceEvidence": "sony-gpu-performance.json",
+  "performanceScope": "Synthetic 24MP native effect in fresh processes with source warmup on one Apple M5 Pro, 24GiB, macOS27.2; excludes RAW decode, PXD I/O and app launch",
+  "manufacturerFrameProven": false,
+  "automaticProviderEnabled": false,
+  "realPXDSaveReopenVerified": false,
+  "frozen027DMGChanged": false
+}

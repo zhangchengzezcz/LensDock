@@ -1,0 +1,2655 @@
+{
+  "caseCount" : 240,
+  "cases" : [
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021649967516168545,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028785016475012526,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024146505411408725,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027238679031142965,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021625167805723322,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028627947267523268,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024069641531241359,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002774407319520833,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021810663297401334,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026874305785895558,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023486329055231181,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002786822316920734,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.00217523758601601,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029142078692530049,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023866580422691186,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028726830987579888,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022048714890843257,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029708635938732186,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002348539509512193,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027502753091539489,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021488931220119412,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0031833521843509516,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023001077124717995,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027301183727104217,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002209764724739216,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028809753857785836,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023919621053209994,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027830689941765741,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022032226734154392,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028893985290778801,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 1
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021598922630801098,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028785016475012526,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023982181701285299,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027735349904105533,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021483727978193201,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028627947267523268,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022664918005830259,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028271599348954624,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021810663297401334,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027231333388044732,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024186661594285397,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027660535015456844,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.00217523758601601,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029485007526091067,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023947955241965246,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028726830987579888,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022048714890843257,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029488108339137398,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023260175576069742,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027413694206188666,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021529162195292884,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027878347027581185,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023455981090592104,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027301183727104217,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002209764724739216,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029577451459772419,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023339469789789291,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027830689941765741,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.00224455431680326,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029729994621447986,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 2
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021268416417115077,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028805266083509196,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023982181701285299,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028145232008682797,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002163815644053102,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028082738663215423,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022664918005830259,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028271599348954624,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021240564765321324,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027231333388044732,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024186661594285397,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027083686036348809,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021557738168667129,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029485007526091067,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023947955241965246,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027802124113804894,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021916721416346263,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029488108339137398,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023260175576069742,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027949342638748931,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021529162195292884,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027878347027581185,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023455981090592104,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027716606182366377,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021617556849378161,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029577451459772419,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023339469789789291,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002825000039592851,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022548046990777948,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029729994621447986,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 3
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021649967516168545,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028805266083509196,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024146505411408725,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028145232008682797,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002163815644053102,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028082738663215423,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024069641531241359,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028107446705689654,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021686802242584236,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026874305785895558,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023486329055231181,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002786822316920734,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021557738168667129,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029142078692530049,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023866580422691186,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027802124113804894,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021916721416346263,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029708635938732186,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002348539509512193,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027949342638748931,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021488931220119412,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0031833521843509516,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023001077124717995,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027716606182366377,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021617556849378161,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028809753857785836,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023919621053209994,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        6000,
+        4000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002825000039592851,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022548046990777948,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        4096,
+        2731
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029242009804875124,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        16000,
+        10000
+      ],
+      "orientation" : 4
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021519241327041527,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027013086310034851,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023441868852387415,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028275109307287494,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021899881862736947,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028964653411094332,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022678091991110705,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029010194066358963,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021555534535764309,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002669652409167611,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023028015893942211,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028332174679235322,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021762385472356982,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026368834369350225,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002372275986999739,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028473777874751249,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0020996196089981822,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027114220793009736,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023673473560847924,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028478117474151077,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002191344859511446,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0030265231926023262,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023778579115969478,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028357017818052555,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021309772851054731,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027675714663928375,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024190483582060551,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029143233605282148,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021759333571935713,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0030822423650533892,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 5
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021498180381058773,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027964835899183527,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023441868852387415,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028275109307287494,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021899881862736947,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028964653411094332,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022678091991110705,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029010194066358963,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021378904475568561,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026718824210547609,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023028015893942211,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028332174679235322,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021612267428281484,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002693279360755696,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002372275986999739,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028473777874751249,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021949909319118888,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027114220793009736,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023673473560847924,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028478117474151077,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021188175832094203,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0030265231926023262,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023778579115969478,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028357017818052555,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0020788329825336405,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027335493232385488,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024190483582060551,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029143233605282148,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021430045982526735,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0030822423650533892,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 6
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021267683659971226,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028381847751006717,
+      "translated" : 0,
+      "nodeCount" : 2,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023449273403457482,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028377546404954046,
+      "translated" : 0,
+      "nodeCount" : 3,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021826353172400559,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029069865013298113,
+      "translated" : 0,
+      "nodeCount" : 4,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022680086394757382,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028100145427742973,
+      "translated" : 0,
+      "nodeCount" : 5,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021873078944736335,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026718824210547609,
+      "translated" : 0,
+      "nodeCount" : 6,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023632502197870053,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028999277219554642,
+      "translated" : 0,
+      "nodeCount" : 7,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021612267428281484,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002693279360755696,
+      "translated" : 0,
+      "nodeCount" : 8,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023821479162506876,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002839591224983451,
+      "translated" : 0,
+      "nodeCount" : 9,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021949909319118888,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026560814512777142,
+      "translated" : 0,
+      "nodeCount" : 10,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024376181318075396,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028116223056713352,
+      "translated" : 0,
+      "nodeCount" : 11,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021083891815578681,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0032088421994558303,
+      "translated" : 0,
+      "nodeCount" : 12,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002330988483663532,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027687261790561024,
+      "translated" : 0,
+      "nodeCount" : 13,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0020810683599847835,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027099403687316226,
+      "translated" : 0,
+      "nodeCount" : 14,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022847508753329748,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028419363989087287,
+      "translated" : 0,
+      "nodeCount" : 15,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021126163937879028,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029062465346214594,
+      "translated" : 0,
+      "nodeCount" : 16,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 7
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021519241327041527,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028381847751006717,
+      "translated" : 1,
+      "nodeCount" : 2,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023449273403457482,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028377546404954046,
+      "translated" : 1,
+      "nodeCount" : 3,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021826353172400559,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029069865013298113,
+      "translated" : 1,
+      "nodeCount" : 4,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022680086394757382,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027950850817433093,
+      "translated" : 1,
+      "nodeCount" : 5,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021873078944736335,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002669652409167611,
+      "translated" : 1,
+      "nodeCount" : 6,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023632502197870053,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028999277219554642,
+      "translated" : 1,
+      "nodeCount" : 7,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021762385472356982,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026368834369350225,
+      "translated" : 1,
+      "nodeCount" : 8,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0023821479162506876,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.002839591224983451,
+      "translated" : 1,
+      "nodeCount" : 9,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0020996196089981822,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0026437601045472547,
+      "translated" : 1,
+      "nodeCount" : 10,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0024376181318075396,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028116223056713352,
+      "translated" : 1,
+      "nodeCount" : 11,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002191344859511446,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0032088421994558303,
+      "translated" : 1,
+      "nodeCount" : 12,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.002330988483663532,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027542346997506684,
+      "translated" : 1,
+      "nodeCount" : 13,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021309772851054731,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0027675714663928375,
+      "translated" : 1,
+      "nodeCount" : 14,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0022847508753329748,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        4000,
+        6000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0028419363989087287,
+      "translated" : 1,
+      "nodeCount" : 15,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0030000000000000001,
+      "maximumCoordinateErrorPixels" : 0.0021759333571935713,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        2731,
+        4096
+      ],
+      "orientation" : 8
+    },
+    {
+      "toleranceOutputPixels" : 0.0080000000000000002,
+      "maximumCoordinateErrorPixels" : 0.0029062465346214594,
+      "translated" : 1,
+      "nodeCount" : 16,
+      "outputSize" : [
+        10000,
+        16000
+      ],
+      "orientation" : 8
+    }
+  ],
+  "scope" : "Large explicit mathematical-frame GPU coordinate probes: synthetic nonmonotonic tables, all 2-16 node counts and EXIF orientations, up to the 16000-pixel product axis limit. Only small ROIs rendered, not complete 160MP photos. CPU scalar map was separately independently verified. Not manufacturer frame, optical, PXD or added lens coverage evidence.",
+  "sourceSHA256" : {
+    "Tests\/verify-sony-gpu-coordinates.m" : "be3dbe9ee21bb6a2b24b5497962152c44491fbb0130badfedb57d200928794bf",
+    "Sources\/Native\/LensSonyGeometryImage.m" : "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a"
+  },
+  "failures" : [
+
+  ],
+  "coordinateSamples" : 460800,
+  "maximumCoordinateErrorPixels" : 0.0032088421994558303
+}

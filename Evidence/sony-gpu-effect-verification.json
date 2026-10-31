@@ -1,0 +1,1462 @@
+{
+  "renders" : [
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6819,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7036,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6833,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7137,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6833,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7137,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6834,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7129,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6825,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7041,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6838,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6838,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6839,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7138,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6859,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7156,
+      "maximumRGBAError" : 0,
+      "orientation" : 1,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6828,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7042,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7137,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7137,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7129,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6860,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6836,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7050,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6850,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7138,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6865,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7156,
+      "maximumRGBAError" : 0,
+      "orientation" : 2,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6818,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7036,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6833,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7137,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6833,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7137,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6834,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7129,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6824,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7041,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6838,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6838,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6839,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7138,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6859,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7156,
+      "maximumRGBAError" : 0,
+      "orientation" : 3,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6828,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7042,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6860,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7162,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6836,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7050,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7163,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7163,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6850,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7157,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6865,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7172,
+      "maximumRGBAError" : 0,
+      "orientation" : 4,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6828,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7042,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6860,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7162,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6836,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7050,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7163,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7163,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6850,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7157,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6865,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7172,
+      "maximumRGBAError" : 0,
+      "orientation" : 5,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6822,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7033,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6834,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7140,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6834,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7140,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6839,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7133,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6844,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7157,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6828,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7037,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6844,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6844,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7140,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6853,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7163,
+      "maximumRGBAError" : 0,
+      "orientation" : 6,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6819,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7037,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6834,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7136,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6834,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7136,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6835,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7131,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6825,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7040,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6841,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7144,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6841,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7144,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6840,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7141,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6861,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7156,
+      "maximumRGBAError" : 0,
+      "orientation" : 7,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6828,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7042,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7155,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6843,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7145,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6860,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7162,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 0
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6836,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7050,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 0,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7163,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 6851,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 0,
+      "archiveBytes" : 7163,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 6850,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1,
+      "distortionStrength" : 1,
+      "archiveBytes" : 7157,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 0,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 6865,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    },
+    {
+      "constrain" : 1,
+      "tcaStrength" : 1.3999999999999999,
+      "distortionStrength" : 0.59999999999999998,
+      "archiveBytes" : 7172,
+      "maximumRGBAError" : 0,
+      "orientation" : 8,
+      "encodedSRGB" : 1
+    }
+  ],
+  "sourceSHA256" : {
+    "Sources\/Native\/LensSonyGeometryArchive.h" : "4d78ce642f56352bf21922d6b6af830d282b2e42500ed716047d4a48e08e6705",
+    "Tests\/verify-sony-geometry-effect.m" : "56aaf3a2f3f56d9630985b1261fea4fbc97590e49741fb70834d1f617e246b25",
+    "Sources\/Native\/LensCorrectionSettings.m" : "c6d1b0768ee13d51f15fa085e2694f970439a0576b445afd748e9f808c98e015",
+    "Sources\/Native\/LensVignettingFilter.m" : "9d7a48bbdffda3b7123fb63271d21f2f6b6c57817f0642f4064692cda05f7cc7"
+  },
+  "fractionalPreviewChecks" : 3,
+  "maximumRGBAError" : 0,
+  "scope" : "Explicit hypothetical frames and pinned source tables through native PTFoundation effect serialization\/rendering. No automatic manufacturer-frame selection, actual PXD save\/reopen, photo optics or added lens coverage.",
+  "reducedTranslatedInputOpaque" : true,
+  "preservesExistingEffects" : true,
+  "failures" : [
+
+  ],
+  "renderCount" : 160,
+  "restoredPlanEditable" : 1,
+  "manufacturerFrameProven" : false,
+  "productAutomaticRouteEnabled" : false
+}

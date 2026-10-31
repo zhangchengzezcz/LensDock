@@ -1,5 +1,4 @@
 #import "LensSonyGeometryImage.h"
-#import <CoreImage/CIImageProvider.h>
 
 static CIImage*imageError(NSError**error){if(error)*error=[NSError errorWithDomain:@"LensDockExplicitGeometry" code:1 userInfo:@{NSLocalizedDescriptionKey:@"无法确认显式矫正坐标，未生成图像。"}];return nil;}
 static void factorBounds(const double*nodes,NSUInteger count,double lowRadius,double highRadius,double*low,double*high){
@@ -48,23 +47,21 @@ CGRect LensSonyGeometrySourceROI(const LensSonyGeometryTransform*t,CGRect extent
  result=CGRectIntersection(extent,CGRectInset(result,-2,-2));return CGRectIsNull(result)?CGRectZero:result;
 }
 
-@interface LensSonyGeometryProvider:NSObject
-@property(nonatomic) LensSonyGeometryTransform transform;
-@property(nonatomic) NSUInteger channel;
-@property(nonatomic) CGSize outputSize;
-@property(nonatomic) double cropScale;
-@end
-@implementation LensSonyGeometryProvider
-- (void)provideImageData:(void*)buffer bytesPerRow:(size_t)rowBytes origin:(size_t)x :(size_t)y size:(size_t)width :(size_t)height userInfo:(id)info{
- LensSonyGeometryTransform transform=self.transform;CGSize size=self.outputSize;double scale=self.cropScale;NSUInteger channel=self.channel;
- for(NSUInteger row=0;row<height;row++){float*out=(float*)((unsigned char*)buffer+row*rowBytes);
-  for(NSUInteger col=0;col<width;col++){
-   CGPoint point=CGPointMake((double)x+col-.5,(double)y+row-.5),cropped=CGPointMake((point.x-size.width/2)*scale+size.width/2,(point.y-size.height/2)*scale+size.height/2),mapped;
-   BOOL valid=LensSonyMapGeometryPoint(&transform,cropped,channel,&mapped);out[2*col]=valid?(float)(mapped.x-point.x):NAN;out[2*col+1]=valid?(float)(mapped.y-point.y):NAN;
+static CIKernel *geometryKernel(void){
+ static CIKernel *kernel;static dispatch_once_t once;
+ dispatch_once(&once,^{
+  // Fixed-size uniforms, no image-sized CPU fields. Keeping changes from one
+  // separate avoids rounding small CA factors to 1 in single precision.
+  NSMutableString *parameters=[NSMutableString new],*names=[NSMutableString new],*selection=[NSMutableString new];
+  for(NSUInteger i=0;i<16;i++){
+   [parameters appendFormat:@", vec3 n%lu",(unsigned long)i];[names appendFormat:@", n%lu",(unsigned long)i];
+   if(i<15)[selection appendFormat:@"if(index<%lu.5)return n%lu; ",(unsigned long)i,(unsigned long)i];
+   else [selection appendString:@"return n15; "];
   }
- }
+  NSString *code=[NSString stringWithFormat:@"vec3 node(float index%@) { %@ } kernel vec4 explicitGeometry(sampler src, vec4 extent, vec4 centerCropCount, vec4 radiusTransform%@) { vec2 top=vec2(destCoord().x-extent.x,extent.w-(destCoord().y-extent.y)); vec2 cropShift=(top-extent.zw*0.5)*centerCropCount.z; vec2 relative=top-centerCropCount.xy+cropShift; vec2 normalized=vec2(radiusTransform.x*relative.x+radiusTransform.z*relative.y,radiusTransform.y*relative.x+radiusTransform.w*relative.y); float p=clamp(length(normalized)*(centerCropCount.w-1.0)-0.5,0.0,centerCropCount.w-1.0); float left=floor(p); vec3 change=mix(node(left%@),node(min(left+1.0,centerCropCount.w-1.0)%@),fract(p)); vec3 combined=vec3(change.x+change.y+change.x*change.y,change.x,change.x+change.z+change.x*change.z); vec2 r=top+cropShift+relative*combined.r; vec2 g=top+cropShift+relative*combined.g; vec2 b=top+cropShift+relative*combined.b; vec2 hi=extent.zw-vec2(0.5); if(r.x<0.5||r.y<0.5||r.x>hi.x||r.y>hi.y||g.x<0.5||g.y<0.5||g.x>hi.x||g.y>hi.y||b.x<0.5||b.y<0.5||b.x>hi.x||b.y>hi.y)return vec4(0.0); vec4 red=sample(src,samplerTransform(src,extent.xy+vec2(r.x,extent.w-r.y))); vec4 green=sample(src,samplerTransform(src,extent.xy+vec2(g.x,extent.w-g.y))); vec4 blue=sample(src,samplerTransform(src,extent.xy+vec2(b.x,extent.w-b.y))); vec3 color=vec3(red.a>0.0?red.r/red.a:0.0,green.a>0.0?green.g/green.a:0.0,blue.a>0.0?blue.b/blue.a:0.0); return vec4(color*green.a,green.a); }",parameters,selection,parameters,names,names];
+  kernel=[CIKernel kernelWithString:code];
+ });return kernel;
 }
-@end
 
 CIImage*LensSonyExplicitGeometryImage(CIImage*input,NSDictionary*source,LensSonyExplicitPixelFrame frame,double ds,double ts,BOOL constrain,NSError**error){
  CGRect extent=input.extent;LensSonyGeometryTransform transform;
@@ -76,14 +73,14 @@ CIImage*LensSonyExplicitGeometryImage(CIImage*input,NSDictionary*source,LensSony
  // placement after the finite sampling boundary, including negative origins.
  if(extent.origin.x!=0||extent.origin.y!=0){CIImage*local=[input imageByApplyingTransform:CGAffineTransformMakeTranslation(-extent.origin.x,-extent.origin.y)];if(local.extent.origin.x!=0||local.extent.origin.y!=0||!CGSizeEqualToSize(local.extent.size,extent.size))return imageError(error);CIImage*corrected=LensSonyExplicitGeometryImage(local,source,frame,ds,ts,constrain,error);return corrected?[corrected imageByApplyingTransform:CGAffineTransformMakeTranslation(extent.origin.x,extent.origin.y)]:nil;}
  double scale=constrain?LensSonyGeometryCropScale(&transform,extent.size):1;if(!isfinite(scale))return imageError(error);
- static CIKernel*kernel;static dispatch_once_t once;dispatch_once(&once,^{kernel=[CIKernel kernelWithString:@"kernel vec4 explicitGeometry(sampler src, sampler rm, sampler gm, sampler bm, vec4 extent, vec2 fieldSize) { vec2 local=destCoord()-extent.xy; vec2 top=vec2(local.x,extent.w-local.y); vec2 fc=vec2(top.x+1.0,fieldSize.y-top.y-1.0); vec2 r=top+sample(rm,samplerTransform(rm,fc)).rg; vec2 g=top+sample(gm,samplerTransform(gm,fc)).rg; vec2 b=top+sample(bm,samplerTransform(bm,fc)).rg; vec2 hi=extent.zw-vec2(0.5); if(r.x<0.5||r.y<0.5||r.x>hi.x||r.y>hi.y||g.x<0.5||g.y<0.5||g.x>hi.x||g.y>hi.y||b.x<0.5||b.y<0.5||b.x>hi.x||b.y>hi.y)return vec4(0.0); vec4 red=sample(src,samplerTransform(src,extent.xy+vec2(r.x,extent.w-r.y))); vec4 green=sample(src,samplerTransform(src,extent.xy+vec2(g.x,extent.w-g.y))); vec4 blue=sample(src,samplerTransform(src,extent.xy+vec2(b.x,extent.w-b.y))); vec3 color=vec3(red.a>0.0?red.r/red.a:0.0,green.a>0.0?green.g/green.a:0.0,blue.a>0.0?blue.b/blue.a:0.0); return vec4(color*green.a,green.a); }"];});
+ CIKernel *kernel=geometryKernel();
  if(!kernel)return imageError(error);
- NSUInteger width=ceil(extent.size.width)+2,height=ceil(extent.size.height)+2;NSMutableArray*arguments=[NSMutableArray arrayWithObject:input];
- for(NSUInteger c=0;c<3;c++){LensSonyGeometryProvider*p=[LensSonyGeometryProvider new];p.transform=transform;p.channel=c;p.outputSize=extent.size;p.cropScale=scale;CIImage*field=[CIImage imageWithImageProvider:p size:width :height format:kCIFormatRGf colorSpace:nil options:@{kCIImageProviderTileSize:NSNull.null}];if(!field)return imageError(error);[arguments addObject:field];}
- [arguments addObjectsFromArray:@[[CIVector vectorWithCGRect:extent],[CIVector vectorWithX:width Y:height]]];
+ CGPoint center=CGPointApplyAffineTransform(CGPointMake(transform.centerX,transform.centerY),transform.calibrationToOutput);CGAffineTransform a=transform.outputToCalibration;
+ NSUInteger count=MAX(transform.distortionCount,transform.tcaCount);
+ NSMutableArray *arguments=[NSMutableArray arrayWithArray:@[input,[CIVector vectorWithCGRect:extent],[CIVector vectorWithX:center.x Y:center.y Z:scale-1 W:count],[CIVector vectorWithX:a.a*transform.inverseRadius Y:a.b*transform.inverseRadius Z:a.c*transform.inverseRadius W:a.d*transform.inverseRadius]]];
+ for(NSUInteger i=0;i<16;i++)[arguments addObject:[CIVector vectorWithX:i<transform.distortionCount?transform.distortion[i]-1:0 Y:i<transform.tcaCount?transform.red[i]-1:0 Z:i<transform.tcaCount?transform.blue[i]-1:0]];
  CIImage*result=[kernel applyWithExtent:extent roiCallback:^CGRect(int index,CGRect request){
-  if(index==0)return LensSonyGeometrySourceROI(&transform,extent,request,scale);
-  CGRect field=CGRectOffset(request,1-extent.origin.x,(double)height-extent.size.height-extent.origin.y-1);return CGRectIntersection(CGRectInset(field,-2,-2),CGRectMake(0,0,width,height));
+  return LensSonyGeometrySourceROI(&transform,extent,request,scale);
  } arguments:arguments];
  // Keep finite source-pixel coverage before later preview/layer transforms.
  // Without a sampling boundary, CI can fuse a fractional transform into this

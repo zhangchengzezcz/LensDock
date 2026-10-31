@@ -8,6 +8,7 @@ for name,target in [('lib',ROOT/'Vendor/Lib'),('resources',ROOT/'Resources/LensB
 shutil.copy2(ROOT/'Resources/native-effects-template.json',out/'native-effects-template.json')
 native=ROOT/'Sources/Native'
 groups={
+ 'verify-sony-gpu-coordinates':['LensSonyGeometryImage.m'],
  'verify-sony-geometry-effect':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-sony-geometry-image':['LensSonyGeometryImage.m'],
  'verify-sony-pixel-frame':[],

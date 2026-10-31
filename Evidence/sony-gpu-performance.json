@@ -1,0 +1,2296 @@
+{
+  "scope": "Serial synthetic 24MP native effect comparison on one Mac, actual recorded source nodes in a hypothetical explicit frame. Not RAW decode, photo optical acceptance, actual app interaction, PXD I/O or all-Mac performance.",
+  "baselineCommit": "05bc52fdb0ef7409235c926f1c678f8ce4b55283",
+  "baselineImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+  "sourceSHA256": {
+    "Tests/benchmark-sony-geometry.py": "a45f87c801fba4f81ed0aaa55c3eb257eefa394d35fd284bb4df4862bcaa0e99",
+    "Tests/benchmark-sony-geometry-effect.m": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+    "Sources/Native/LensSonyGeometryImage.m": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+    "Sources/Native/LensSonyGeometryImage.h": "8f696e462a2a9a79447fb22006ceeb3078415ea35054d5e23ee22c1f12ff9602",
+    "Sources/Native/LensSonyGeometry.h": "652778f366a1db0c6cbd9a840b3035f02e95592f2e0ded22b76b4576b4bb9ae3",
+    "Sources/Native/LensSonyGeometryArchive.h": "4d78ce642f56352bf21922d6b6af830d282b2e42500ed716047d4a48e08e6705",
+    "Sources/Native/LensCorrectionSettings.m": "c6d1b0768ee13d51f15fa085e2694f970439a0576b445afd748e9f808c98e015",
+    "Sources/Native/LensVignettingFilter.m": "9d7a48bbdffda3b7123fb63271d21f2f6b6c57817f0642f4064692cda05f7cc7",
+    "Sources/Native/LensNativeState.m": "30c8198f094c9af96c71aba99b4867026ed9a144c3d94df4f2a32ca26e2520fe",
+    "Sources/Native/LensCalibrationImage.m": "3e44847bad0db219cbc280df6e4c1089205361183907bc8bea277fafc0d53804",
+    "Sources/Native/LensConstrainedCrop.m": "40b67ccc1356e04c050dd90c24ae1082fa5f1276270d014684c1529a1434a529",
+    "Tests/Fixtures/Sony-embedded-metadata.json": "81743dca10b52f295426551ededc92c1eaea4e28ecfa4c0a9f2cff6afc7df5ae",
+    "Tests/Fixtures/A6000-reopen-binding.json": "dce2d951c1c98dff180617cbe7face59f4774fbc28d69425ff1017c940a7a95b",
+    "Resources/native-effects-template.json": "b989ab021c7cf18c428ec6040a3f1d8c140d832dd05bfb3ace9772de241b8bb2"
+  },
+  "environment": {
+    "macOS": "27.2",
+    "build": "26B123",
+    "cpu": "Apple M5 Pro",
+    "physicalMemoryBytes": 25769803776
+  },
+  "compileOptions": [
+    "arm64",
+    "macosx-version-min=26.0",
+    "O2",
+    "objc-arc"
+  ],
+  "conditions": [
+    "Same current harness and supporting source for both variants; only geometry image implementation differs.",
+    "Every observation is a fresh process, same procedural source warmup and output buffer commitment.",
+    "Shared OS/driver shader caches may already be warm; this is not cold application startup.",
+    "Each process measures first evaluation and a second evaluation of the same image graph, cacheIntermediates=false.",
+    "Peak physical footprint includes the whole process and Core Image resources; it is not map storage alone.",
+    "RGBA8 output checks alpha and 63 spatial/color probes per evaluation; independent float-coordinate tests cover precision."
+  ],
+  "summaries": [
+    {
+      "mode": "control",
+      "view": "full",
+      "freshProcessesPerVariant": 3,
+      "before": {
+        "medianPreparationMS": 1.5949999797157943,
+        "medianFirstRenderMS": 9.451999998418614,
+        "medianPreparationPlusFirstRenderMS": 11.452999984612688,
+        "medianSecondRenderMS": 4.073999996762723,
+        "medianPeakPhysicalFootprintMiB": 246.76660919189453,
+        "medianPeakResidentMiB": 225.796875
+      },
+      "after": {
+        "medianPreparationMS": 1.6060000052675605,
+        "medianFirstRenderMS": 9.307000000262633,
+        "medianPreparationPlusFirstRenderMS": 10.913000005530193,
+        "medianSecondRenderMS": 4.22099998104386,
+        "medianPeakPhysicalFootprintMiB": 246.73533630371094,
+        "medianPeakResidentMiB": 225.78125
+      }
+    },
+    {
+      "mode": "DT",
+      "view": "full",
+      "freshProcessesPerVariant": 3,
+      "before": {
+        "medianPreparationMS": 2.361999999266118,
+        "medianFirstRenderMS": 807.4399999750312,
+        "medianPreparationPlusFirstRenderMS": 809.741999983089,
+        "medianSecondRenderMS": 14.084999973420054,
+        "medianPeakPhysicalFootprintMiB": 1703.3768997192383,
+        "medianPeakResidentMiB": 737.3125
+      },
+      "after": {
+        "medianPreparationMS": 2.4759999942034483,
+        "medianFirstRenderMS": 31.5390000178013,
+        "medianPreparationPlusFirstRenderMS": 34.01500001200475,
+        "medianSecondRenderMS": 14.41000000340864,
+        "medianPeakPhysicalFootprintMiB": 830.2510757446289,
+        "medianPeakResidentMiB": 187.203125
+      }
+    },
+    {
+      "mode": "DT",
+      "view": "preview",
+      "freshProcessesPerVariant": 3,
+      "before": {
+        "medianPreparationMS": 2.322000014828518,
+        "medianFirstRenderMS": 788.557000021683,
+        "medianPreparationPlusFirstRenderMS": 790.8650000172202,
+        "medianSecondRenderMS": 11.026000021956861,
+        "medianPeakPhysicalFootprintMiB": 1729.314308166504,
+        "medianPeakResidentMiB": 611.578125
+      },
+      "after": {
+        "medianPreparationMS": 2.441000018734485,
+        "medianFirstRenderMS": 22.36899998388253,
+        "medianPreparationPlusFirstRenderMS": 24.810000002617016,
+        "medianSecondRenderMS": 10.746999992989004,
+        "medianPeakPhysicalFootprintMiB": 902.2823944091797,
+        "medianPeakResidentMiB": 67.453125
+      }
+    },
+    {
+      "mode": "DT",
+      "view": "roi",
+      "freshProcessesPerVariant": 3,
+      "before": {
+        "medianPreparationMS": 2.314000012120232,
+        "medianFirstRenderMS": 249.78799998643808,
+        "medianPreparationPlusFirstRenderMS": 252.09999998332933,
+        "medianSecondRenderMS": 0.9310000168625265,
+        "medianPeakPhysicalFootprintMiB": 476.1885070800781,
+        "medianPeakResidentMiB": 226.96875
+      },
+      "after": {
+        "medianPreparationMS": 2.466999983880669,
+        "medianFirstRenderMS": 4.386000015074387,
+        "medianPreparationPlusFirstRenderMS": 6.847000011475757,
+        "medianSecondRenderMS": 0.450999999884516,
+        "medianPeakPhysicalFootprintMiB": 199.15711975097656,
+        "medianPeakResidentMiB": 46.484375
+      }
+    },
+    {
+      "mode": "D",
+      "view": "full",
+      "freshProcessesPerVariant": 3,
+      "before": {
+        "medianPreparationMS": 2.3560000117868185,
+        "medianFirstRenderMS": 678.7180000101216,
+        "medianPreparationPlusFirstRenderMS": 681.0850000183564,
+        "medianSecondRenderMS": 13.607999979285523,
+        "medianPeakPhysicalFootprintMiB": 1703.3143997192383,
+        "medianPeakResidentMiB": 737.453125
+      },
+      "after": {
+        "medianPreparationMS": 2.513999992515892,
+        "medianFirstRenderMS": 31.5790000022389,
+        "medianPreparationPlusFirstRenderMS": 34.09299999475479,
+        "medianSecondRenderMS": 14.687999995658174,
+        "medianPeakPhysicalFootprintMiB": 830.7823028564453,
+        "medianPeakResidentMiB": 187.390625
+      }
+    },
+    {
+      "mode": "T",
+      "view": "full",
+      "freshProcessesPerVariant": 3,
+      "before": {
+        "medianPreparationMS": 2.3689999943599105,
+        "medianFirstRenderMS": 568.0189999984577,
+        "medianPreparationPlusFirstRenderMS": 570.3360000043176,
+        "medianSecondRenderMS": 14.033999992534518,
+        "medianPeakPhysicalFootprintMiB": 1674.9550018310547,
+        "medianPeakResidentMiB": 737.140625
+      },
+      "after": {
+        "medianPreparationMS": 2.5099999911617488,
+        "medianFirstRenderMS": 30.41599999414757,
+        "medianPreparationPlusFirstRenderMS": 32.89599998970516,
+        "medianSecondRenderMS": 14.376999984961003,
+        "medianPeakPhysicalFootprintMiB": 801.0790863037109,
+        "medianPeakResidentMiB": 187.640625
+      }
+    }
+  ],
+  "records": [
+    {
+      "outputSHA256": "df4ff7e6f56ad00e9ef0e2dcc616e57f84412350fcdf90300bdcff7a3bcc12db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 259032048,
+            "peakResidentBytes": 237076480,
+            "peakPhysicalFootprintBytes": 259048432
+          },
+          "renderMS": 9.451999998418614,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258999280,
+            "peakResidentBytes": 237076480,
+            "peakPhysicalFootprintBytes": 259048432
+          },
+          "renderMS": 4.0250000020023435,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "control",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 9.591000009095296,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162251688,
+        "peakResidentBytes": 138182656,
+        "peakPhysicalFootprintBytes": 162251688
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 6984,
+      "variant": "before",
+      "repetition": 0,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "df4ff7e6f56ad00e9ef0e2dcc616e57f84412350fcdf90300bdcff7a3bcc12db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258687984,
+            "peakResidentBytes": 236732416,
+            "peakPhysicalFootprintBytes": 258687984
+          },
+          "renderMS": 9.289999987231568,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258720752,
+            "peakResidentBytes": 236765184,
+            "peakPhysicalFootprintBytes": 258720752
+          },
+          "renderMS": 4.283999995095655,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "control",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 1.6100000066217035,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161989520,
+        "peakResidentBytes": 137953280,
+        "peakPhysicalFootprintBytes": 161989520
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 6984,
+      "variant": "after",
+      "repetition": 0,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "ec86d1559538eed98f070a50ff8c42d1668aa8d09fa48ba838b7376862728a5e",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1501661152,
+            "peakResidentBytes": 773046272,
+            "peakPhysicalFootprintBytes": 1786562528
+          },
+          "renderMS": 819.4879999791738,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1287948256,
+            "peakResidentBytes": 773128192,
+            "peakPhysicalFootprintBytes": 1786562528
+          },
+          "renderMS": 14.084999973420054,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 276.71900001587346,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161907624,
+        "peakResidentBytes": 137838592,
+        "peakPhysicalFootprintBytes": 161907624
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 0,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "4debb7bb6cd4c61578eaadd6ed9fa133de8d075f112ae54661dc1029ddbfa151",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870515672,
+            "peakResidentBytes": 196444160,
+            "peakPhysicalFootprintBytes": 870515672
+          },
+          "renderMS": 50.75799999758601,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870564824,
+            "peakResidentBytes": 196444160,
+            "peakPhysicalFootprintBytes": 870581208
+          },
+          "renderMS": 14.41000000340864,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 276.914999994915,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162055056,
+        "peakResidentBytes": 138002432,
+        "peakPhysicalFootprintBytes": 162055056
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 0,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "f406788b2a13ac46d302b7222b273e64df768d1303ef5242808a191adc31748a",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1603405648,
+            "peakResidentBytes": 641351680,
+            "peakPhysicalFootprintBytes": 1620412240
+          },
+          "renderMS": 805.6639999849722,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1246316368,
+            "peakResidentBytes": 642269184,
+            "peakPhysicalFootprintBytes": 1620412240
+          },
+          "renderMS": 8.464999991701916,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        1500,
+        1000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "preview",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.367000008234754,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 71844704,
+        "peakResidentBytes": 47824896,
+        "peakPhysicalFootprintBytes": 71844704
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 6000000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 0,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "c6b3540efa5f603d5ff1469bb1374211eb90b2c9265a7b4b0f7a9568abb8d9d0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 896140200,
+            "peakResidentBytes": 69812224,
+            "peakPhysicalFootprintBytes": 896140200
+          },
+          "renderMS": 21.705999999539927,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 943997864,
+            "peakResidentBytes": 69844992,
+            "peakPhysicalFootprintBytes": 944030632
+          },
+          "renderMS": 10.406999994302168,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        1500,
+        1000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "preview",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.513999992515892,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 72008520,
+        "peakResidentBytes": 48021504,
+        "peakPhysicalFootprintBytes": 72008520
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 6000000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 0,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "a34424ac3a79e7cefc69969675a4856a93ae95b96bf107c382f0557a5cd617b0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 499205152,
+            "peakResidentBytes": 237912064,
+            "peakPhysicalFootprintBytes": 499205152
+          },
+          "renderMS": 247.90499999653548,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 499237920,
+            "peakResidentBytes": 237977600,
+            "peakPhysicalFootprintBytes": 499270688
+          },
+          "renderMS": 0.9469999931752682,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        2800,
+        1800,
+        400,
+        400
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "roi",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.314000012120232,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 66487112,
+        "peakResidentBytes": 42483712,
+        "peakPhysicalFootprintBytes": 66487112
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 640000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 0,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "a34424ac3a79e7cefc69969675a4856a93ae95b96bf107c382f0557a5cd617b0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 208749408,
+            "peakResidentBytes": 48676864,
+            "peakPhysicalFootprintBytes": 208765792
+          },
+          "renderMS": 4.298999992897734,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 208798560,
+            "peakResidentBytes": 48726016,
+            "peakPhysicalFootprintBytes": 208798560
+          },
+          "renderMS": 0.450999999884516,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        2800,
+        1800,
+        400,
+        400
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "roi",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.466999983880669,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 66667360,
+        "peakResidentBytes": 42647552,
+        "peakPhysicalFootprintBytes": 66667360
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 640000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 0,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "2c427cc83d69936225d56693dca3b0b11d6049874b1e5ad853046ea26068f9ad",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1298827208,
+            "peakResidentBytes": 772603904,
+            "peakPhysicalFootprintBytes": 1786054600
+          },
+          "renderMS": 675.4820000205655,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1288538056,
+            "peakResidentBytes": 773275648,
+            "peakPhysicalFootprintBytes": 1786054600
+          },
+          "renderMS": 13.654999987920746,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "D",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.263999980641529,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161874832,
+        "peakResidentBytes": 137822208,
+        "peakPhysicalFootprintBytes": 161874832
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "before",
+      "repetition": 0,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "65f5f1be0998abc215a4f0d1fbc131e9a00df9f8b9d6db9a1d8240ebcd772511",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870515912,
+            "peakResidentBytes": 196214784,
+            "peakPhysicalFootprintBytes": 870515912
+          },
+          "renderMS": 31.5790000022389,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870565064,
+            "peakResidentBytes": 196214784,
+            "peakPhysicalFootprintBytes": 870565064
+          },
+          "renderMS": 14.687999995658174,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "D",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.513999992515892,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162104232,
+        "peakResidentBytes": 138035200,
+        "peakPhysicalFootprintBytes": 162104232
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "after",
+      "repetition": 0,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "c176a63e313a0d3b3a0c24f70ad010523256ec7b3bc716aa0cd4a04643c476db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1469499312,
+            "peakResidentBytes": 772882432,
+            "peakPhysicalFootprintBytes": 1756317616
+          },
+          "renderMS": 565.6529999978375,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1259784112,
+            "peakResidentBytes": 772947968,
+            "peakPhysicalFootprintBytes": 1756317616
+          },
+          "renderMS": 15.489999990677461,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "T",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.4329999869223684,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161858448,
+        "peakResidentBytes": 137805824,
+        "peakPhysicalFootprintBytes": 161858448
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "before",
+      "repetition": 0,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "6c1d36a9393d961853da8fab4fd096831b0a36f95fe9266dd1a06988055da143",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 840074416,
+            "peakResidentBytes": 196837376,
+            "peakPhysicalFootprintBytes": 840074416
+          },
+          "renderMS": 30.68100000382401,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 840123568,
+            "peakResidentBytes": 196837376,
+            "peakPhysicalFootprintBytes": 840123568
+          },
+          "renderMS": 14.670000004116446,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "T",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.519000001484528,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162104232,
+        "peakResidentBytes": 138035200,
+        "peakPhysicalFootprintBytes": 162104232
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "after",
+      "repetition": 0,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "df4ff7e6f56ad00e9ef0e2dcc616e57f84412350fcdf90300bdcff7a3bcc12db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258704368,
+            "peakResidentBytes": 236732416,
+            "peakPhysicalFootprintBytes": 258704368
+          },
+          "renderMS": 9.307000000262633,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258704368,
+            "peakResidentBytes": 236732416,
+            "peakPhysicalFootprintBytes": 258704368
+          },
+          "renderMS": 4.22099998104386,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "control",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 1.6060000052675605,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162022288,
+        "peakResidentBytes": 137969664,
+        "peakPhysicalFootprintBytes": 162022288
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 6984,
+      "variant": "after",
+      "repetition": 1,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "df4ff7e6f56ad00e9ef0e2dcc616e57f84412350fcdf90300bdcff7a3bcc12db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258753544,
+            "peakResidentBytes": 236765184,
+            "peakPhysicalFootprintBytes": 258753544
+          },
+          "renderMS": 9.858000004896894,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258753544,
+            "peakResidentBytes": 236765184,
+            "peakPhysicalFootprintBytes": 258753544
+          },
+          "renderMS": 4.290000011678785,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "control",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 1.5949999797157943,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161924008,
+        "peakResidentBytes": 137854976,
+        "peakPhysicalFootprintBytes": 161924008
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 6984,
+      "variant": "before",
+      "repetition": 1,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "4debb7bb6cd4c61578eaadd6ed9fa133de8d075f112ae54661dc1029ddbfa151",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870597616,
+            "peakResidentBytes": 196296704,
+            "peakPhysicalFootprintBytes": 870597616
+          },
+          "renderMS": 31.21300000930205,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870614000,
+            "peakResidentBytes": 196296704,
+            "peakPhysicalFootprintBytes": 870630384
+          },
+          "renderMS": 15.78200000221841,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.4219999904744327,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162120616,
+        "peakResidentBytes": 138051584,
+        "peakPhysicalFootprintBytes": 162120616
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 1,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "ec86d1559538eed98f070a50ff8c42d1668aa8d09fa48ba838b7376862728a5e",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1511131104,
+            "peakResidentBytes": 772587520,
+            "peakPhysicalFootprintBytes": 1786071008
+          },
+          "renderMS": 807.4399999750312,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1287407584,
+            "peakResidentBytes": 772620288,
+            "peakPhysicalFootprintBytes": 1786071008
+          },
+          "renderMS": 13.399999996181577,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.302000008057803,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161858448,
+        "peakResidentBytes": 137822208,
+        "peakPhysicalFootprintBytes": 161858448
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 1,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "c6b3540efa5f603d5ff1469bb1374211eb90b2c9265a7b4b0f7a9568abb8d9d0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 898188464,
+            "peakResidentBytes": 70696960,
+            "peakPhysicalFootprintBytes": 898188464
+          },
+          "renderMS": 22.36899998388253,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 946095280,
+            "peakResidentBytes": 70762496,
+            "peakPhysicalFootprintBytes": 946111664
+          },
+          "renderMS": 10.777999996207654,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        1500,
+        1000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "preview",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.441000018734485,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 72008520,
+        "peakResidentBytes": 48037888,
+        "peakPhysicalFootprintBytes": 72008520
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 6000000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 1,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "f406788b2a13ac46d302b7222b273e64df768d1303ef5242808a191adc31748a",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1787774824,
+            "peakResidentBytes": 641204224,
+            "peakPhysicalFootprintBytes": 1813317480
+          },
+          "renderMS": 788.557000021683,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1280493416,
+            "peakResidentBytes": 641269760,
+            "peakPhysicalFootprintBytes": 1813317480
+          },
+          "renderMS": 11.338000011164695,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        1500,
+        1000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "preview",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.3079999955371022,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 71811960,
+        "peakResidentBytes": 47775744,
+        "peakPhysicalFootprintBytes": 71811960
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 6000000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 1,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "a34424ac3a79e7cefc69969675a4856a93ae95b96bf107c382f0557a5cd617b0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 208814968,
+            "peakResidentBytes": 48758784,
+            "peakPhysicalFootprintBytes": 208814968
+          },
+          "renderMS": 4.386000015074387,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 208864120,
+            "peakResidentBytes": 48807936,
+            "peakPhysicalFootprintBytes": 208864120
+          },
+          "renderMS": 0.4360000020824373,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        2800,
+        1800,
+        400,
+        400
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "roi",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.5579999783076346,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 66716536,
+        "peakResidentBytes": 42713088,
+        "peakPhysicalFootprintBytes": 66716536
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 640000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 1,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "a34424ac3a79e7cefc69969675a4856a93ae95b96bf107c382f0557a5cd617b0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 499221560,
+            "peakResidentBytes": 237879296,
+            "peakPhysicalFootprintBytes": 499221560
+          },
+          "renderMS": 258.7929999863263,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 499336248,
+            "peakResidentBytes": 237993984,
+            "peakPhysicalFootprintBytes": 499336248
+          },
+          "renderMS": 0.8099999977275729,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        2800,
+        1800,
+        400,
+        400
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "roi",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.3539999965578318,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 66503520,
+        "peakResidentBytes": 42483712,
+        "peakPhysicalFootprintBytes": 66503520
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 640000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 1,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "65f5f1be0998abc215a4f0d1fbc131e9a00df9f8b9d6db9a1d8240ebcd772511",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 871154768,
+            "peakResidentBytes": 196608000,
+            "peakPhysicalFootprintBytes": 871154768
+          },
+          "renderMS": 32.29000000283122,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 871203920,
+            "peakResidentBytes": 196608000,
+            "peakPhysicalFootprintBytes": 871203920
+          },
+          "renderMS": 13.80699998117052,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "D",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.660000027390197,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162137048,
+        "peakResidentBytes": 138067968,
+        "peakPhysicalFootprintBytes": 162137048
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "after",
+      "repetition": 1,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "2c427cc83d69936225d56693dca3b0b11d6049874b1e5ad853046ea26068f9ad",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1353795528,
+            "peakResidentBytes": 772653056,
+            "peakPhysicalFootprintBytes": 1786087368
+          },
+          "renderMS": 678.7180000101216,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1288898504,
+            "peakResidentBytes": 773455872,
+            "peakPhysicalFootprintBytes": 1786087368
+          },
+          "renderMS": 13.607999979285523,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "D",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.367000008234754,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161924008,
+        "peakResidentBytes": 137854976,
+        "peakPhysicalFootprintBytes": 161924008
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "before",
+      "repetition": 1,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "6c1d36a9393d961853da8fab4fd096831b0a36f95fe9266dd1a06988055da143",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 839763096,
+            "peakResidentBytes": 196575232,
+            "peakPhysicalFootprintBytes": 839763096
+          },
+          "renderMS": 30.32399999210611,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 839812248,
+            "peakResidentBytes": 196575232,
+            "peakPhysicalFootprintBytes": 839812248
+          },
+          "renderMS": 14.376999984961003,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "T",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.5099999911617488,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162120640,
+        "peakResidentBytes": 138035200,
+        "peakPhysicalFootprintBytes": 162120640
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "after",
+      "repetition": 1,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "c176a63e313a0d3b3a0c24f70ad010523256ec7b3bc716aa0cd4a04643c476db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1469171656,
+            "peakResidentBytes": 772882432,
+            "peakPhysicalFootprintBytes": 1756399560
+          },
+          "renderMS": 568.0189999984577,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1260275656,
+            "peakResidentBytes": 773242880,
+            "peakPhysicalFootprintBytes": 1756399560
+          },
+          "renderMS": 13.998999987961724,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "T",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.3170000058598816,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161825680,
+        "peakResidentBytes": 137773056,
+        "peakPhysicalFootprintBytes": 161825680
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "before",
+      "repetition": 1,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "df4ff7e6f56ad00e9ef0e2dcc616e57f84412350fcdf90300bdcff7a3bcc12db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258687960,
+            "peakResidentBytes": 236765184,
+            "peakPhysicalFootprintBytes": 258720728
+          },
+          "renderMS": 8.681000006617978,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258687960,
+            "peakResidentBytes": 236765184,
+            "peakPhysicalFootprintBytes": 258720728
+          },
+          "renderMS": 4.073999996762723,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "control",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 1.5779999957885593,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161907600,
+        "peakResidentBytes": 137854976,
+        "peakPhysicalFootprintBytes": 161907600
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 6984,
+      "variant": "before",
+      "repetition": 2,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "df4ff7e6f56ad00e9ef0e2dcc616e57f84412350fcdf90300bdcff7a3bcc12db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258704392,
+            "peakResidentBytes": 236748800,
+            "peakPhysicalFootprintBytes": 258737160
+          },
+          "renderMS": 9.453000006033108,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 258704392,
+            "peakResidentBytes": 236748800,
+            "peakPhysicalFootprintBytes": 258737160
+          },
+          "renderMS": 4.178999981377274,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018835784313725734,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "control",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 1.5819999971427023,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162104256,
+        "peakResidentBytes": 138018816,
+        "peakPhysicalFootprintBytes": 162104256
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 6984,
+      "variant": "after",
+      "repetition": 2,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "ec86d1559538eed98f070a50ff8c42d1668aa8d09fa48ba838b7376862728a5e",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1299318728,
+            "peakResidentBytes": 772620288,
+            "peakPhysicalFootprintBytes": 1786120136
+          },
+          "renderMS": 793.0430000124034,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1288832968,
+            "peakResidentBytes": 773324800,
+            "peakPhysicalFootprintBytes": 1786120136
+          },
+          "renderMS": 14.430999988690019,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.361999999266118,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161924008,
+        "peakResidentBytes": 137854976,
+        "peakPhysicalFootprintBytes": 161924008
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 2,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "4debb7bb6cd4c61578eaadd6ed9fa133de8d075f112ae54661dc1029ddbfa151",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870548584,
+            "peakResidentBytes": 196214784,
+            "peakPhysicalFootprintBytes": 870548584
+          },
+          "renderMS": 31.5390000178013,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 870581352,
+            "peakResidentBytes": 196214784,
+            "peakPhysicalFootprintBytes": 870581352
+          },
+          "renderMS": 13.929000007919967,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018984061041918132,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.4759999942034483,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162087848,
+        "peakResidentBytes": 138018816,
+        "peakPhysicalFootprintBytes": 162087848
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 2,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "f406788b2a13ac46d302b7222b273e64df768d1303ef5242808a191adc31748a",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1787791232,
+            "peakResidentBytes": 641220608,
+            "peakPhysicalFootprintBytes": 1813333888
+          },
+          "renderMS": 785.7760000042617,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1280509824,
+            "peakResidentBytes": 641286144,
+            "peakPhysicalFootprintBytes": 1813333888
+          },
+          "renderMS": 11.026000021956861,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        1500,
+        1000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "preview",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.322000014828518,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 71844704,
+        "peakResidentBytes": 47824896,
+        "peakPhysicalFootprintBytes": 71844704
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 6000000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 2,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "c6b3540efa5f603d5ff1469bb1374211eb90b2c9265a7b4b0f7a9568abb8d9d0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 898303128,
+            "peakResidentBytes": 70647808,
+            "peakPhysicalFootprintBytes": 898303128
+          },
+          "renderMS": 22.64200002537109,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 946242712,
+            "peakResidentBytes": 70729728,
+            "peakPhysicalFootprintBytes": 946242712
+          },
+          "renderMS": 10.746999992989004,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0019595634535271023,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        1500,
+        1000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "preview",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.439000003505498,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 71926600,
+        "peakResidentBytes": 47939584,
+        "peakPhysicalFootprintBytes": 71926600
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 6000000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 2,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "a34424ac3a79e7cefc69969675a4856a93ae95b96bf107c382f0557a5cd617b0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 499205152,
+            "peakResidentBytes": 237895680,
+            "peakPhysicalFootprintBytes": 499221536
+          },
+          "renderMS": 249.78799998643808,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 499287072,
+            "peakResidentBytes": 238010368,
+            "peakPhysicalFootprintBytes": 499319840
+          },
+          "renderMS": 0.9310000168625265,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        2800,
+        1800,
+        400,
+        400
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "roi",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.3119999968912452,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 66503520,
+        "peakResidentBytes": 42483712,
+        "peakPhysicalFootprintBytes": 66503520
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 640000,
+      "effectArchiveBytes": 7070,
+      "variant": "before",
+      "repetition": 2,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "a34424ac3a79e7cefc69969675a4856a93ae95b96bf107c382f0557a5cd617b0",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 208782224,
+            "peakResidentBytes": 48693248,
+            "peakPhysicalFootprintBytes": 208782224
+          },
+          "renderMS": 4.406000021845102,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 208814992,
+            "peakResidentBytes": 48742400,
+            "peakPhysicalFootprintBytes": 208831376
+          },
+          "renderMS": 0.4670000053010881,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.001953064066557042,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        2800,
+        1800,
+        400,
+        400
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "DT",
+      "view": "roi",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.4409999896306545,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 66634592,
+        "peakResidentBytes": 42647552,
+        "peakPhysicalFootprintBytes": 66634592
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 640000,
+      "effectArchiveBytes": 7070,
+      "variant": "after",
+      "repetition": 2,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "2c427cc83d69936225d56693dca3b0b11d6049874b1e5ad853046ea26068f9ad",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1489061832,
+            "peakResidentBytes": 772554752,
+            "peakPhysicalFootprintBytes": 1786054600
+          },
+          "renderMS": 695.8870000089519,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1287948232,
+            "peakResidentBytes": 772833280,
+            "peakPhysicalFootprintBytes": 1786054600
+          },
+          "renderMS": 13.32399999955669,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "D",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.3560000117868185,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161842088,
+        "peakResidentBytes": 137773056,
+        "peakPhysicalFootprintBytes": 161842088
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "before",
+      "repetition": 2,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "65f5f1be0998abc215a4f0d1fbc131e9a00df9f8b9d6db9a1d8240ebcd772511",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 871105616,
+            "peakResidentBytes": 196493312,
+            "peakPhysicalFootprintBytes": 871105616
+          },
+          "renderMS": 31.29000001354143,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 871105616,
+            "peakResidentBytes": 196493312,
+            "peakPhysicalFootprintBytes": 871138384
+          },
+          "renderMS": 15.70499999797903,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018619974054791266,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "D",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.486999990651384,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162071440,
+        "peakResidentBytes": 138018816,
+        "peakPhysicalFootprintBytes": 162071440
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "after",
+      "repetition": 2,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    },
+    {
+      "outputSHA256": "c176a63e313a0d3b3a0c24f70ad010523256ec7b3bc716aa0cd4a04643c476db",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1473054616,
+            "peakResidentBytes": 772767744,
+            "peakPhysicalFootprintBytes": 1756153752
+          },
+          "renderMS": 568.6829999904148,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 1259620248,
+            "peakResidentBytes": 772833280,
+            "peakPhysicalFootprintBytes": 1756153752
+          },
+          "renderMS": 14.033999992534518,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "T",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.3689999943599105,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 161858448,
+        "peakResidentBytes": 137805824,
+        "peakPhysicalFootprintBytes": 161858448
+      },
+      "compiledImplementationSHA256": "257581f593dc9a8c59b7bee38c21153b456d249dd59e989e36acf95eaf7c7712",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "before",
+      "repetition": 2,
+      "executableSHA256": "66257bd9b3b8af0b68245055b6cc7a47b7ef7e5a2abf18e9f0e557488862fd29"
+    },
+    {
+      "outputSHA256": "6c1d36a9393d961853da8fab4fd096831b0a36f95fe9266dd1a06988055da143",
+      "sourceKernelWarmedBeforeMeasurement": true,
+      "runs": [
+        {
+          "run": 0,
+          "memoryAfter": {
+            "physicalFootprintBytes": 839943152,
+            "peakResidentBytes": 196755456,
+            "peakPhysicalFootprintBytes": 839943152
+          },
+          "renderMS": 30.41599999414757,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        },
+        {
+          "run": 1,
+          "memoryAfter": {
+            "physicalFootprintBytes": 839959536,
+            "peakResidentBytes": 196755456,
+            "peakPhysicalFootprintBytes": 839992304
+          },
+          "renderMS": 14.33299999916926,
+          "nonopaquePixels": 0,
+          "maximumProbeError": 0.0018045595347698506,
+          "passed": true
+        }
+      ],
+      "benchmarkSourceSHA256": "617bdc9f39402c4caf9f48a0393fde89e91a3ee8c2f9e3fc02d50fa2f8e56eae",
+      "contextCacheIntermediates": false,
+      "passed": true,
+      "scope": "Fresh-process synthetic 24MP native archived effect benchmark, real recorded nodes in a hypothetical 6000x4000 frame. Excludes RAW decode, PXD I/O and application launch. Not optical or all-Mac acceptance.",
+      "renderBounds": [
+        0,
+        0,
+        6000,
+        4000
+      ],
+      "outputFormat": "RGBA8, no color conversion",
+      "mode": "T",
+      "view": "full",
+      "sourcePixels": [
+        6000,
+        4000
+      ],
+      "preparationMS": 2.4799999955575913,
+      "memoryBeforePreparation": {
+        "physicalFootprintBytes": 162153384,
+        "peakResidentBytes": 138067968,
+        "peakPhysicalFootprintBytes": 162153384
+      },
+      "compiledImplementationSHA256": "14b04412e9ca20d91cab54a14ff2a613c8b846b0cac5d2811d5178ccdc77656a",
+      "outputBufferBytes": 96000000,
+      "effectArchiveBytes": 7067,
+      "variant": "after",
+      "repetition": 2,
+      "executableSHA256": "a1faa4956f08463369c119d1831b953e18887517590cab923fbbeeb3530fb5e5"
+    }
+  ],
+  "failures": []
+}
