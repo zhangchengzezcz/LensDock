@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-31",
+  "scope": "Developer-only explicit-frame image primitive and regressions. No product build, added automatic profile, host update or DMG.",
+  "macOS": {
+    "version": "27.2",
+    "build": "26B123",
+    "SDK": "27.0"
+  },
+  "minimumDeploymentVersion": "26.0",
+  "tiledIntermediateAvailability": "CoreImage header NS_AVAILABLE(26_0, 26_0)",
+  "regularGroups": 33,
+  "existingNativeRenderCombinations": 192,
+  "allSelectedTestsPassed": true,
+  "regressionLogSHA256": "1ea657228ecbcbb09da8c8accc414e22c528bdf594dcaa5c53ed784cfea2c134",
+  "testRunnerSHA256": "eae2ebf12c6b71f8f732a4b6e92124c221d26d2be03868b119a6f29ea30e13e5",
+  "imageEvidence": "sony-explicit-image-verification.json",
+  "constantFactorImageRenders": 256,
+  "variableSourceTableImageRenders": 16,
+  "manufacturerFrameProven": false,
+  "productRouteEnabled": false
+}

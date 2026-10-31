@@ -1,0 +1,3562 @@
+{
+  "scope": "One public A6000 scene, Lightroom profile-off vs Adobe D100/V0 exports, both with mandatory builtin CA. Spatial agreement observation, not manufacturer frame selection, optical truth, TCA/vignette acceptance or product support.",
+  "sourceRAW": {
+    "fixture": "ILCE-6000.ARW",
+    "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89"
+  },
+  "exports": [
+    {
+      "label": "Baseline-built-in-CA",
+      "sha256": "8a1e65f39f873281ad6b5601edacd1a857a06f7d84720bc0426bbbcef50b75eb",
+      "bytes": 128245758,
+      "metadata": {
+        "PNG:ImageWidth": 6000,
+        "PNG:ImageHeight": 4000,
+        "PNG:BitDepth": 16,
+        "ICC_Profile:ProfileDescription": "sRGB IEC61966-2.1",
+        "XMP-crs:LensProfileEnable": 0,
+        "XMP-crs:AutoLateralCA": 0,
+        "XMP-crs:CropConstrainToWarp": 0,
+        "XMP-crs:HasCrop": false
+      }
+    },
+    {
+      "label": "Geometry-D100-V0",
+      "sha256": "2261cc681f58372d0aa7d1c7dffd090b74b66faca37621f4ad4709bd45d875ad",
+      "bytes": 127735786,
+      "metadata": {
+        "PNG:ImageWidth": 6000,
+        "PNG:ImageHeight": 4000,
+        "PNG:BitDepth": 16,
+        "ICC_Profile:ProfileDescription": "sRGB IEC61966-2.1",
+        "XMP-crs:LensProfileEnable": 1,
+        "XMP-crs:LensProfileName": "Adobe (Sony E 18-55mm F3.5-5.6 OSS)",
+        "XMP-crs:LensProfileDistortionScale": 100,
+        "XMP-crs:LensProfileVignettingScale": 0,
+        "XMP-crs:AutoLateralCA": 0,
+        "XMP-crs:CropConstrainToWarp": 0,
+        "XMP-crs:HasCrop": false
+      }
+    }
+  ],
+  "builtinCA": {
+    "evidence": "Lightroom builtin profile information popup observed during acquisition",
+    "camera": "Sony ILCE-6000",
+    "lens": "E 18-55mm F3.5-5.6 OSS",
+    "automaticallyApplied": true,
+    "components": [
+      "chromatic-aberration"
+    ],
+    "baselineFullyUncorrected": false
+  },
+  "registration": {
+    "observationScale": 0.5,
+    "pixelInput": "8-bit reduced luminance from original 16-bit sRGB PNG; spatial comparison only",
+    "patchPixels": 81,
+    "searchRadiusPixels": 84,
+    "minimumNCC": 0.97,
+    "minimumPeakMargin": 0.015,
+    "refinement": "Independent cubic local affine patch alignment, normalized intensities, minimum refined NCC .985",
+    "acceptedPatches": 67,
+    "trainCount": 35,
+    "holdoutCount": 32,
+    "acceptedPerQuadrant": [
+      5,
+      4,
+      32,
+      26
+    ],
+    "acceptedRadiusRangeHalfDiagonal": [
+      0.09679558159019767,
+      0.9029020732317286
+    ],
+    "sourceMinusOutputDistanceOriginalPixels": {
+      "median": 41.82637593751148,
+      "maximum": 45.354942543268436
+    },
+    "controls": [
+      {
+        "name": "identity",
+        "expectedSourceMinusOutputOriginalPixels": [
+          0.0,
+          0.0
+        ],
+        "accepted": 187,
+        "p95ErrorOriginalPixels": 1.1394895109600655e-08,
+        "passed": true
+      },
+      {
+        "name": "known-shift",
+        "expectedSourceMinusOutputOriginalPixels": [
+          10.5,
+          -7.0
+        ],
+        "accepted": 119,
+        "p95ErrorOriginalPixels": 6.516729095970048e-07,
+        "passed": true
+      }
+    ],
+    "observations": [
+      {
+        "grid": [
+          0,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          271.8127148819286,
+          264.7337248872801
+        ],
+        "ncc": 0.9303520996667055,
+        "peakMargin": 0.4122509457508341,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          622.9238990586857,
+          273.0051372701226
+        ],
+        "ncc": 0.9307268253302989,
+        "peakMargin": 0.6211489767696153,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          970.5384328479767,
+          279.54432052316713
+        ],
+        "ncc": 0.9602360341534226,
+        "peakMargin": 0.4396717510209208,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          1314.6351499927293,
+          284.3705692433243
+        ],
+        "ncc": 0.9510023434629855,
+        "peakMargin": 0.4473769994234963,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          1653.1861142194202,
+          288.4675204734528
+        ],
+        "ncc": 0.9682236463118047,
+        "peakMargin": 0.30390788316604334,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          1991.69181346497,
+          291.416360715861
+        ],
+        "ncc": 0.9363273121934174,
+        "peakMargin": 0.617061378914149,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          2328.734008259771,
+          293.289589040161
+        ],
+        "ncc": 0.9275087966642097,
+        "peakMargin": 0.5558561265249666,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          2663.485424411695,
+          294.6040164870442
+        ],
+        "ncc": 0.902925390993948,
+        "peakMargin": 0.5156121232646925,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          2999.2009625046553,
+          294.71694552374606
+        ],
+        "ncc": 0.9259166643971213,
+        "peakMargin": 0.4726430410736027,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          3335.283059190904,
+          294.39704677761114
+        ],
+        "ncc": 0.9175907672125911,
+        "peakMargin": 0.5168856463969682,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          3669.3137693281574,
+          293.27266139687663
+        ],
+        "ncc": 0.9289457131954002,
+        "peakMargin": 0.5278251285860571,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          4006.039790766073,
+          291.2077965128284
+        ],
+        "ncc": 0.9468599912455639,
+        "peakMargin": 0.3255686862575836,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          4345.15567121169,
+          288.73810117986585
+        ],
+        "ncc": 0.97323140145701,
+        "peakMargin": 0.27554538877599577,
+        "refinedNCC": 0.9992473123886513,
+        "accepted": true
+      },
+      {
+        "grid": [
+          0,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          4683.606724222064,
+          284.9277426162574
+        ],
+        "ncc": 0.9572464041070452,
+        "peakMargin": 0.5718620245815489,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          5027.284955111203,
+          280.5314027518121
+        ],
+        "ncc": 0.949220369635358,
+        "peakMargin": 0.4153258841094315,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          5375.2328453481905,
+          273.10891352076806
+        ],
+        "ncc": 0.9408786598230269,
+        "peakMargin": 0.35829652924542155,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          0,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          253.0
+        ],
+        "sourcePixelCenter": [
+          5727.225496234042,
+          265.41283781123735
+        ],
+        "ncc": 0.9348546162095254,
+        "peakMargin": 0.39851186536885075,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          280.05644676163314,
+          614.9314238149547
+        ],
+        "ncc": 0.9389211663867225,
+        "peakMargin": 0.3448330164796096,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          629.0748341866616,
+          620.7056345394379
+        ],
+        "ncc": 0.9618558843651833,
+        "peakMargin": 0.43792022042560474,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          975.5417412489928,
+          625.5292125603398
+        ],
+        "ncc": 0.9426366361867468,
+        "peakMargin": 0.5617022637202476,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          1318.2101256629885,
+          629.467115424111
+        ],
+        "ncc": 0.9578126095001127,
+        "peakMargin": 0.4001808166222425,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          1656.3068404079895,
+          632.4221567238046
+        ],
+        "ncc": 0.9278815640885317,
+        "peakMargin": 0.47193187225746736,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          1992.8947877044304,
+          635.0526424111689
+        ],
+        "ncc": 0.9674886208432533,
+        "peakMargin": 0.37665733965858317,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          2330.127118656247,
+          635.8195158099685
+        ],
+        "ncc": 0.8794868411536723,
+        "peakMargin": 0.4133628777177388,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          2664.4569257667977,
+          636.7474826277244
+        ],
+        "ncc": 0.9072109385920641,
+        "peakMargin": 0.41277625817573377,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          2999.161688817271,
+          637.0786821523707
+        ],
+        "ncc": 0.9091475052939183,
+        "peakMargin": 0.3507578579157197,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          3334.085827378039,
+          636.7365148564145
+        ],
+        "ncc": 0.917149799383648,
+        "peakMargin": 0.27884607933274774,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          3668.1719972210703,
+          635.919308253552
+        ],
+        "ncc": 0.7765881567826928,
+        "peakMargin": 0.5078977647799111,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          4004.182762665538,
+          634.250001468733
+        ],
+        "ncc": 0.8778022908406878,
+        "peakMargin": 0.457197340497525,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          4342.118374848753,
+          632.9558788209592
+        ],
+        "ncc": 0.9676319380098936,
+        "peakMargin": 0.2705492808513702,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          4680.397589876064,
+          629.7367723191653
+        ],
+        "ncc": 0.9223806127164131,
+        "peakMargin": 0.48492973866093503,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          5022.813159316504,
+          625.8639401778426
+        ],
+        "ncc": 0.9451977701989696,
+        "peakMargin": 0.41732129298846343,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          5368.309031835593,
+          620.9849705586187
+        ],
+        "ncc": 0.9625357050561112,
+        "peakMargin": 0.45383185783971536,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          1,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          601.0
+        ],
+        "sourcePixelCenter": [
+          5719.30450131254,
+          615.0319659814407
+        ],
+        "ncc": 0.9247820248555835,
+        "peakMargin": 0.43920188752964917,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          285.5688843629385,
+          963.4351349619507
+        ],
+        "ncc": 0.9438153496140862,
+        "peakMargin": 0.44217187677532355,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          633.6952765303106,
+          968.0488792819611
+        ],
+        "ncc": 0.9596525749420899,
+        "peakMargin": 0.37308318943274854,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          979.3099275400841,
+          971.4012378034683
+        ],
+        "ncc": 0.9741495129515914,
+        "peakMargin": 0.3526463063009496,
+        "refinedNCC": 0.9994733045014355,
+        "accepted": true
+      },
+      {
+        "grid": [
+          2,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          1321.156492804503,
+          974.1153748467077
+        ],
+        "ncc": 0.9551751414536654,
+        "peakMargin": 0.4178055515313802,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          1658.606312050438,
+          976.6629122976009
+        ],
+        "ncc": 0.9428885964181268,
+        "peakMargin": 0.36752816706967173,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          1995.635005981721,
+          977.9752192649959
+        ],
+        "ncc": 0.9456401161380217,
+        "peakMargin": 0.2883008144373187,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          2331.2276708796358,
+          979.3255530385409
+        ],
+        "ncc": 0.8841677081213591,
+        "peakMargin": 0.5206113923658493,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          2665.0824590805196,
+          979.3639002837956
+        ],
+        "ncc": 0.9424293818823237,
+        "peakMargin": 0.20013414885647896,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          2999.098709354108,
+          979.1549337224492
+        ],
+        "ncc": 0.8963281326995701,
+        "peakMargin": 0.31287148991872404,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          3333.92249091142,
+          979.3087505464225
+        ],
+        "ncc": 0.8427962864985971,
+        "peakMargin": 0.48766275279975113,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          3667.29775952411,
+          978.9442894121762
+        ],
+        "ncc": 0.8728103398079257,
+        "peakMargin": 0.3606583012745491,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          4002.4793850918236,
+          977.2971380533988
+        ],
+        "ncc": 0.8982817514186653,
+        "peakMargin": 0.38261423183631194,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          4340.119757268729,
+          976.4696516550941
+        ],
+        "ncc": 0.9450577683747021,
+        "peakMargin": 0.264550633800549,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          4677.12280608897,
+          974.3005105366503
+        ],
+        "ncc": 0.9705099220009706,
+        "peakMargin": 0.256569113158135,
+        "refinedNCC": 0.9993362281258541,
+        "accepted": true
+      },
+      {
+        "grid": [
+          2,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          5018.733664473137,
+          971.6070228024686
+        ],
+        "ncc": 0.9750063798009784,
+        "peakMargin": 0.37689800031602594,
+        "refinedNCC": 0.9994128903626323,
+        "accepted": true
+      },
+      {
+        "grid": [
+          2,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          5363.527085982518,
+          968.5597462355657
+        ],
+        "ncc": 0.927428707579473,
+        "peakMargin": 0.5076829883265501,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          2,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          951.0
+        ],
+        "sourcePixelCenter": [
+          5713.751360693873,
+          963.7582783695943
+        ],
+        "ncc": 0.9367359912521925,
+        "peakMargin": 0.2976797550517144,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          290.14113080889507,
+          1310.5033156870156
+        ],
+        "ncc": 0.9332235244003271,
+        "peakMargin": 0.41935479996877933,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          637.2251091444847,
+          1313.2014999914802
+        ],
+        "ncc": 0.9756789601218441,
+        "peakMargin": 0.47743935338419435,
+        "refinedNCC": 0.9990903951604972,
+        "accepted": true
+      },
+      {
+        "grid": [
+          3,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          981.8862482862617,
+          1315.4430499691487
+        ],
+        "ncc": 0.977982285186364,
+        "peakMargin": 0.2814504339274,
+        "refinedNCC": 0.9994878605184092,
+        "accepted": true
+      },
+      {
+        "grid": [
+          3,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          1322.9963298729408,
+          1317.3349465191384
+        ],
+        "ncc": 0.9539260444740485,
+        "peakMargin": 0.5670112492111005,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          1659.5975897053056,
+          1318.498664230527
+        ],
+        "ncc": 0.9154026851164203,
+        "peakMargin": 0.5606352840162645,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          1996.5555856138649,
+          1319.5015515100604
+        ],
+        "ncc": 0.9854888084825345,
+        "peakMargin": 0.04751998663886081,
+        "refinedNCC": 0.9998235999881891,
+        "accepted": true
+      },
+      {
+        "grid": [
+          3,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          2332.505860738457,
+          1320.549205550898
+        ],
+        "ncc": 0.9662393879634017,
+        "peakMargin": 0.1977822147878685,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          2665.5485130959887,
+          1320.5466542900974
+        ],
+        "ncc": 0.969001738222574,
+        "peakMargin": 0.09122792103710275,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          2999.5229533186593,
+          1320.2216891314497
+        ],
+        "ncc": 0.9350394753862705,
+        "peakMargin": 0.16112484035260222,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          3334.0551350760115,
+          1320.5849206962878
+        ],
+        "ncc": 0.8314234970919135,
+        "peakMargin": 0.4259458048250096,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          3666.953127321331,
+          1319.7124363187042
+        ],
+        "ncc": 0.9106078839282175,
+        "peakMargin": 0.4226727881572925,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          4001.8093260166875,
+          1319.462044761034
+        ],
+        "ncc": 0.8532496516053832,
+        "peakMargin": 0.4790082486320243,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          4338.54403157937,
+          1318.452418757206
+        ],
+        "ncc": 0.895868461059094,
+        "peakMargin": 0.5324470387078718,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          4675.289482288013,
+          1317.3192725063361
+        ],
+        "ncc": 0.9322792416867002,
+        "peakMargin": 0.5136280314293691,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          5016.3396340047975,
+          1315.5065187431892
+        ],
+        "ncc": 0.9168065907949873,
+        "peakMargin": 0.6575200925721852,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          3,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          5360.557833656324,
+          1313.391955302885
+        ],
+        "ncc": 0.9725240093932637,
+        "peakMargin": 0.41638223436607436,
+        "refinedNCC": 0.9991827064823228,
+        "accepted": true
+      },
+      {
+        "grid": [
+          3,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          1301.0
+        ],
+        "sourcePixelCenter": [
+          5709.350921003323,
+          1310.646319999251
+        ],
+        "ncc": 0.9249108355667175,
+        "peakMargin": 0.5853795229094652,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          292.30599726370133,
+          1654.2298854247074
+        ],
+        "ncc": 0.9629734725887485,
+        "peakMargin": 0.2998242828649814,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          639.1475594076895,
+          1655.395152151831
+        ],
+        "ncc": 0.9847808242772819,
+        "peakMargin": 0.38345214836124253,
+        "refinedNCC": 0.9995004928047472,
+        "accepted": true
+      },
+      {
+        "grid": [
+          4,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          983.2209486453417,
+          1656.6128526896607
+        ],
+        "ncc": 0.9531149098482498,
+        "peakMargin": 0.4461245245706642,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          1324.2258883103898,
+          1656.9900078773687
+        ],
+        "ncc": 0.9323383388421865,
+        "peakMargin": 0.4347485821045759,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          1660.6889051107305,
+          1658.1814885740375
+        ],
+        "ncc": 0.8872566508621875,
+        "peakMargin": 0.4406286138851385,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          1997.1979265112493,
+          1658.6069108472673
+        ],
+        "ncc": 0.830720175108188,
+        "peakMargin": 0.5873910586960088,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          2332.566923727199,
+          1658.8712197766963
+        ],
+        "ncc": 0.9288531461367899,
+        "peakMargin": 0.2087645707192729,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          2666.0229979571736,
+          1659.4298444483884
+        ],
+        "ncc": 0.9100409950354799,
+        "peakMargin": 0.2409046711806616,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          3000.32873982675,
+          1658.798226870796
+        ],
+        "ncc": 0.9215757842675969,
+        "peakMargin": 0.2016207003196191,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          3333.8613519528744,
+          1658.5300100750133
+        ],
+        "ncc": 0.9650779386392624,
+        "peakMargin": 0.05791305762052945,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          3666.479475701695,
+          1658.5246690350102
+        ],
+        "ncc": 0.9112061280227478,
+        "peakMargin": 0.3707521810706994,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          4001.6352360412498,
+          1658.3719904733052
+        ],
+        "ncc": 0.9027035315310916,
+        "peakMargin": 0.47816670622599333,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          4337.746946677631,
+          1657.3388177216636
+        ],
+        "ncc": 0.94325150960963,
+        "peakMargin": 0.3021680910937913,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          4674.081862978565,
+          1657.5015197815549
+        ],
+        "ncc": 0.8907834544554202,
+        "peakMargin": 0.5433522389556862,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          5014.763551615402,
+          1656.6061410282632
+        ],
+        "ncc": 0.9501213956630121,
+        "peakMargin": 0.5594839738788311,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          5358.710376254614,
+          1655.4867888101005
+        ],
+        "ncc": 0.9526388786854854,
+        "peakMargin": 0.515481810081723,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          4,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          1649.0
+        ],
+        "sourcePixelCenter": [
+          5706.71815095625,
+          1654.1609762228888
+        ],
+        "ncc": 0.9361642871513571,
+        "peakMargin": 0.4126208815691733,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          293.23642087210925,
+          1998.993939843796
+        ],
+        "ncc": 0.9614975149120841,
+        "peakMargin": 0.564768865587476,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          639.7981317268116,
+          1998.833128568669
+        ],
+        "ncc": 0.9565166228606863,
+        "peakMargin": 0.527474107604439,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          983.7957315933869,
+          1999.034300793047
+        ],
+        "ncc": 0.9646550080925104,
+        "peakMargin": 0.3550397552276239,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          1324.6147467755463,
+          1998.990272728649
+        ],
+        "ncc": 0.9455998967624428,
+        "peakMargin": 0.43846852746764275,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          1660.8898009755808,
+          1999.2599549765253
+        ],
+        "ncc": 0.8998352688382157,
+        "peakMargin": 0.6252534197536519,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          1997.568018853498,
+          1998.5243936106203
+        ],
+        "ncc": 0.9174584593471906,
+        "peakMargin": 0.3761941140360672,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          2332.8422652408,
+          1999.1487911098009
+        ],
+        "ncc": 0.8330320246918994,
+        "peakMargin": 0.5417740425940586,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          2665.370338911305,
+          1999.037474632121
+        ],
+        "ncc": 0.8394059435192258,
+        "peakMargin": 0.4865796501886483,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          2998.7121005624667,
+          1997.8379568895436
+        ],
+        "ncc": 0.9327639228567475,
+        "peakMargin": 0.26937967271808505,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          3333.047063605783,
+          1998.7546166823322
+        ],
+        "ncc": 0.9568891567644846,
+        "peakMargin": 0.23605441293796237,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          3665.9114464149825,
+          1999.2531182077548
+        ],
+        "ncc": 0.8656673973034054,
+        "peakMargin": 0.30257216206590876,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          4000.613706396235,
+          1998.999484118013
+        ],
+        "ncc": 0.9602878841860129,
+        "peakMargin": 0.1751362922594546,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          4338.424421060032,
+          1998.492409269355
+        ],
+        "ncc": 0.9666789440531954,
+        "peakMargin": 0.23213920265943855,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          4673.750837845226,
+          1999.3076459198903
+        ],
+        "ncc": 0.9155373282985965,
+        "peakMargin": 0.4668348515710845,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          5014.284173931269,
+          1998.884502738901
+        ],
+        "ncc": 0.9423324541920367,
+        "peakMargin": 0.544618363132156,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          5358.393194526231,
+          1999.2950988750597
+        ],
+        "ncc": 0.9605661900458663,
+        "peakMargin": 0.45107715635799084,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          5,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          1999.0
+        ],
+        "sourcePixelCenter": [
+          5706.555821045459,
+          1999.0567883125211
+        ],
+        "ncc": 0.9622248125020026,
+        "peakMargin": 0.4132506079700412,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          292.4811168980689,
+          2344.121853619764
+        ],
+        "ncc": 0.9339781092452847,
+        "peakMargin": 0.4738175388387896,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          638.9822512896656,
+          2342.464203521934
+        ],
+        "ncc": 0.9676341917732783,
+        "peakMargin": 0.5368457866813374,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          983.3961958515124,
+          2341.5039182789064
+        ],
+        "ncc": 0.975105447766194,
+        "peakMargin": 0.2173007110360201,
+        "refinedNCC": 0.9995554606493726,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          1324.2655093681346,
+          2340.6672621487937
+        ],
+        "ncc": 0.9760704162126994,
+        "peakMargin": 0.22857663028253916,
+        "refinedNCC": 0.9996758611423898,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          1660.6109605792162,
+          2340.0182054017964
+        ],
+        "ncc": 0.9745765530162603,
+        "peakMargin": 0.16186830924398732,
+        "refinedNCC": 0.9996763450378469,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          1997.1574790271231,
+          2339.5648827808964
+        ],
+        "ncc": 0.9849194570955329,
+        "peakMargin": 0.16115780066326024,
+        "refinedNCC": 0.9997833799855,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          2332.502186200665,
+          2339.2705168253215
+        ],
+        "ncc": 0.9824004408300632,
+        "peakMargin": 0.13154774199371133,
+        "refinedNCC": 0.9997084158720407,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          2664.7388679612286,
+          2339.4502517511723
+        ],
+        "ncc": 0.968835542746683,
+        "peakMargin": 0.22125867352216277,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          2999.388185277906,
+          2338.986054738046
+        ],
+        "ncc": 0.9815805210843341,
+        "peakMargin": 0.06804825649812318,
+        "refinedNCC": 0.9997975469466595,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          3333.579720516899,
+          2339.0473303336566
+        ],
+        "ncc": 0.9710779802806943,
+        "peakMargin": 0.09864115158201714,
+        "refinedNCC": 0.999772886144594,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          3665.186953492988,
+          2339.1871214720773
+        ],
+        "ncc": 0.9649250900440604,
+        "peakMargin": 0.09492806263421827,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          4000.2893530251613,
+          2339.559009362694
+        ],
+        "ncc": 0.9452260744362414,
+        "peakMargin": 0.14617911469945344,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          4338.083659643545,
+          2339.6643366238372
+        ],
+        "ncc": 0.947691129875348,
+        "peakMargin": 0.27040673957581074,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          4673.926156018272,
+          2341.2803132169947
+        ],
+        "ncc": 0.9528487607137732,
+        "peakMargin": 0.3141582683257661,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          5014.9071617833215,
+          2341.4467973483247
+        ],
+        "ncc": 0.9627657221257472,
+        "peakMargin": 0.35117511110152666,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          6,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          5358.657260125873,
+          2342.519024492745
+        ],
+        "ncc": 0.9807533876907311,
+        "peakMargin": 0.24480644878573687,
+        "refinedNCC": 0.9993710588561766,
+        "accepted": true
+      },
+      {
+        "grid": [
+          6,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          2349.0
+        ],
+        "sourcePixelCenter": [
+          5707.222987506079,
+          2343.780728586929
+        ],
+        "ncc": 0.9585947324361733,
+        "peakMargin": 0.34077918615157465,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          7,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          290.0151532643383,
+          2687.630038857295
+        ],
+        "ncc": 0.9795514997807191,
+        "peakMargin": 0.170439892423923,
+        "refinedNCC": 0.9996536473115698,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          637.2415215970158,
+          2684.79014399203
+        ],
+        "ncc": 0.9834483167730366,
+        "peakMargin": 0.4009978388739205,
+        "refinedNCC": 0.9995403002271631,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          981.9857345941818,
+          2682.7952681498327
+        ],
+        "ncc": 0.94852319100645,
+        "peakMargin": 0.46871251351794635,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          7,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          1323.2598048841107,
+          2680.801655126396
+        ],
+        "ncc": 0.9653682767318027,
+        "peakMargin": 0.3743651442945578,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          7,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          1659.7595565367797,
+          2679.496386882258
+        ],
+        "ncc": 0.9897979588897373,
+        "peakMargin": 0.13571338462787896,
+        "refinedNCC": 0.999810598599849,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          1996.7361861463876,
+          2678.6452893925334
+        ],
+        "ncc": 0.9627739366163018,
+        "peakMargin": 0.35027344250773207,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          7,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          2332.1189686812277,
+          2677.916420544958
+        ],
+        "ncc": 0.971614066782521,
+        "peakMargin": 0.22524627371516603,
+        "refinedNCC": 0.999686102143628,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          2665.2446900507534,
+          2677.544093716222
+        ],
+        "ncc": 0.9557782641207633,
+        "peakMargin": 0.19940734468411558,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          7,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          2999.362928849997,
+          2677.4275287957494
+        ],
+        "ncc": 0.9704564488687549,
+        "peakMargin": 0.23839702992190193,
+        "refinedNCC": 0.9995721895664489,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          3333.7478576519065,
+          2677.528462165166
+        ],
+        "ncc": 0.988621575409875,
+        "peakMargin": 0.05775581899422866,
+        "refinedNCC": 0.9998766493284935,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          3666.549498601307,
+          2677.8617372172594
+        ],
+        "ncc": 0.9850454778778652,
+        "peakMargin": 0.11813665956826447,
+        "refinedNCC": 0.9997801277818558,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          4001.995293453145,
+          2678.4735580153488
+        ],
+        "ncc": 0.9757964512961125,
+        "peakMargin": 0.18260435005485498,
+        "refinedNCC": 0.999832711322247,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          4338.698636654889,
+          2679.425166689268
+        ],
+        "ncc": 0.9800049085201241,
+        "peakMargin": 0.22377563369982045,
+        "refinedNCC": 0.9995623358305449,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          4675.201557959401,
+          2680.7164980128123
+        ],
+        "ncc": 0.9858160717032746,
+        "peakMargin": 0.13052347768108152,
+        "refinedNCC": 0.999738046151685,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          5015.7534412965015,
+          2682.51260724391
+        ],
+        "ncc": 0.9545068291737799,
+        "peakMargin": 0.23462028172463623,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          7,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          5360.53852040416,
+          2684.6134376081873
+        ],
+        "ncc": 0.9846571852136284,
+        "peakMargin": 0.14574872534900218,
+        "refinedNCC": 0.9993576666777165,
+        "accepted": true
+      },
+      {
+        "grid": [
+          7,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          2697.0
+        ],
+        "sourcePixelCenter": [
+          5709.400543475413,
+          2687.624572511041
+        ],
+        "ncc": 0.9612154221301104,
+        "peakMargin": 0.26518360155858633,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          8,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          285.75936644482357,
+          3034.830566757651
+        ],
+        "ncc": 0.9581987570157843,
+        "peakMargin": 0.34139777631036994,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          8,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          633.9518290442707,
+          3030.084820386967
+        ],
+        "ncc": 0.9780196007972718,
+        "peakMargin": 0.2081389317808775,
+        "refinedNCC": 0.9997177880433402,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          979.3268759059047,
+          3026.613867006812
+        ],
+        "ncc": 0.9886695848064139,
+        "peakMargin": 0.1838485216238731,
+        "refinedNCC": 0.9997414124249098,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          1321.1548991846098,
+          3023.908426962043
+        ],
+        "ncc": 0.986410514435713,
+        "peakMargin": 0.08618960139988918,
+        "refinedNCC": 0.9997763917284177,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          1658.2918008166803,
+          3021.8604719129826
+        ],
+        "ncc": 0.984116592795458,
+        "peakMargin": 0.16640142629487886,
+        "refinedNCC": 0.999756361356044,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          1995.5447940924046,
+          3020.3312515267453
+        ],
+        "ncc": 0.9758112974905442,
+        "peakMargin": 0.22601252871479438,
+        "refinedNCC": 0.9996141963694131,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          2331.454354721805,
+          3019.3053361903367
+        ],
+        "ncc": 0.9706558946075035,
+        "peakMargin": 0.2375712476164792,
+        "refinedNCC": 0.9995500955081007,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          2664.6172699363647,
+          3018.7463505497335
+        ],
+        "ncc": 0.9791112698377163,
+        "peakMargin": 0.14695433115665912,
+        "refinedNCC": 0.9997102598413063,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          2999.357915829073,
+          3018.5299479127616
+        ],
+        "ncc": 0.971453542828454,
+        "peakMargin": 0.20625898747218818,
+        "refinedNCC": 0.9996001435861605,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          3334.045282039222,
+          3018.7047407410614
+        ],
+        "ncc": 0.9801094605349627,
+        "peakMargin": 0.15269587870243828,
+        "refinedNCC": 0.9997296712274112,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          3667.439463850011,
+          3019.5089632277836
+        ],
+        "ncc": 0.9190747655399107,
+        "peakMargin": 0.32738705837016413,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          8,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          4003.0153543364286,
+          3020.2408889441076
+        ],
+        "ncc": 0.9830250707963172,
+        "peakMargin": 0.17781506917129952,
+        "refinedNCC": 0.9997814070433613,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          4340.132289479713,
+          3021.713921017851
+        ],
+        "ncc": 0.9858089287242634,
+        "peakMargin": 0.06172336587561067,
+        "refinedNCC": 0.9996137030081884,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          4677.135104776916,
+          3023.7049255620573
+        ],
+        "ncc": 0.9853618044545022,
+        "peakMargin": 0.11487567497950313,
+        "refinedNCC": 0.9996272754152993,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          5018.71133709578,
+          3026.379771328207
+        ],
+        "ncc": 0.9841359895036565,
+        "peakMargin": 0.2384183578274366,
+        "refinedNCC": 0.9991733114468476,
+        "accepted": true
+      },
+      {
+        "grid": [
+          8,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          5363.659436624458,
+          3029.79681374571
+        ],
+        "ncc": 0.9154734745472531,
+        "peakMargin": 0.4739462663575468,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          8,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          3047.0
+        ],
+        "sourcePixelCenter": [
+          5713.3714959332265,
+          3034.251102785261
+        ],
+        "ncc": 0.8633406547545305,
+        "peakMargin": 0.5120035909943923,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          9,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          279.9597068899603,
+          3383.297788540802
+        ],
+        "ncc": 0.986201246768011,
+        "peakMargin": 0.09117155834229651,
+        "refinedNCC": 0.9998029597300732,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          629.1728342783712,
+          3377.2265125381296
+        ],
+        "ncc": 0.9897044819781075,
+        "peakMargin": 0.17514055560628994,
+        "refinedNCC": 0.9996958248021826,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          975.5686335685491,
+          3372.3254080522825
+        ],
+        "ncc": 0.9771128746543447,
+        "peakMargin": 0.16562808519234584,
+        "refinedNCC": 0.9992830660416178,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          1318.24808071853,
+          3368.4735332837704
+        ],
+        "ncc": 0.9713071061329934,
+        "peakMargin": 0.2863389467822466,
+        "refinedNCC": 0.9994618838665524,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          1656.0483160853007,
+          3365.675624421797
+        ],
+        "ncc": 0.9677772968120415,
+        "peakMargin": 0.24505746336333345,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          9,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          1994.0255206937904,
+          3363.486285821015
+        ],
+        "ncc": 0.9828988882769302,
+        "peakMargin": 0.16297060351644965,
+        "refinedNCC": 0.9997159670137947,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          2330.460969244107,
+          3362.0607991284505
+        ],
+        "ncc": 0.9605231198772601,
+        "peakMargin": 0.2811541702084619,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          9,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          2663.6910373269498,
+          3361.2030831771954
+        ],
+        "ncc": 0.9637954384146572,
+        "peakMargin": 0.23958209090025473,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          9,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          2999.33527125562,
+          3360.897305937378
+        ],
+        "ncc": 0.993313089880976,
+        "peakMargin": 0.13947108596716484,
+        "refinedNCC": 0.9997955993751286,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          3334.4862365739405,
+          3361.1560042680894
+        ],
+        "ncc": 0.983286484270553,
+        "peakMargin": 0.23074425184784175,
+        "refinedNCC": 0.9996928381795905,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          3668.098924135349,
+          3361.958605951774
+        ],
+        "ncc": 0.9752953470726454,
+        "peakMargin": 0.11023249850886008,
+        "refinedNCC": 0.9996968618179592,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          4004.505168276173,
+          3363.3350291388256
+        ],
+        "ncc": 0.9931233750498868,
+        "peakMargin": 0.08520552974121609,
+        "refinedNCC": 0.9997802170558083,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          4342.2365159499495,
+          3365.4301415804543
+        ],
+        "ncc": 0.9827162210475056,
+        "peakMargin": 0.09464416769377526,
+        "refinedNCC": 0.9995405159202749,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          4679.951606362471,
+          3368.2536325979713
+        ],
+        "ncc": 0.9846005755007657,
+        "peakMargin": 0.216550863885126,
+        "refinedNCC": 0.9996887814302027,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          5022.4898268802735,
+          3371.787319135449
+        ],
+        "ncc": 0.9566014683652041,
+        "peakMargin": 0.26994998314793484,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          9,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          5368.461254380532,
+          3376.817203456246
+        ],
+        "ncc": 0.9837163910543987,
+        "peakMargin": 0.13897413250615276,
+        "refinedNCC": 0.999652942393566,
+        "accepted": true
+      },
+      {
+        "grid": [
+          9,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          3397.0
+        ],
+        "sourcePixelCenter": [
+          5719.023134522965,
+          3383.073265652274
+        ],
+        "ncc": 0.8877027439798727,
+        "peakMargin": 0.2832573480560784,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          10,
+          0
+        ],
+        "outputPixelCenter": [
+          253.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          272.0622305351496,
+          3734.354108425696
+        ],
+        "ncc": 0.9585330574387663,
+        "peakMargin": 0.17886310430002073,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          10,
+          1
+        ],
+        "outputPixelCenter": [
+          595.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          622.7211434262081,
+          3726.9483553615364
+        ],
+        "ncc": 0.9946040014758732,
+        "peakMargin": 0.05852034292092434,
+        "refinedNCC": 0.9998484490983017,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          2
+        ],
+        "outputPixelCenter": [
+          939.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          970.4613167407383,
+          3720.4522630746
+        ],
+        "ncc": 0.9844610186658377,
+        "peakMargin": 0.1822950702441556,
+        "refinedNCC": 0.9997388002353116,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          3
+        ],
+        "outputPixelCenter": [
+          1283.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          1314.2895736387222,
+          3715.357776219122
+        ],
+        "ncc": 0.9950851689854704,
+        "peakMargin": 0.03700883785141906,
+        "refinedNCC": 0.9997736846999259,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          4
+        ],
+        "outputPixelCenter": [
+          1625.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          1653.147618578752,
+          3711.4925243905577
+        ],
+        "ncc": 0.9851396482614942,
+        "peakMargin": 0.17708176227741868,
+        "refinedNCC": 0.999621861989532,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          5
+        ],
+        "outputPixelCenter": [
+          1969.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          1991.881735839753,
+          3708.6185755675965
+        ],
+        "ncc": 0.9848909762362006,
+        "peakMargin": 0.24802086654922195,
+        "refinedNCC": 0.9995584501502038,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          6
+        ],
+        "outputPixelCenter": [
+          2313.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          2329.1189269088095,
+          3706.6623589796004
+        ],
+        "ncc": 0.992662956902082,
+        "peakMargin": 0.09782160123394901,
+        "refinedNCC": 0.9997116403257387,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          7
+        ],
+        "outputPixelCenter": [
+          2655.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          2663.429451179086,
+          3705.5142563981435
+        ],
+        "ncc": 0.9790202895166481,
+        "peakMargin": 0.22902744106878903,
+        "refinedNCC": 0.9995616284266932,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          8
+        ],
+        "outputPixelCenter": [
+          2999.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          2999.4353742480594,
+          3705.323241852428
+        ],
+        "ncc": 0.9456682596550304,
+        "peakMargin": 0.24335662310378636,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          10,
+          9
+        ],
+        "outputPixelCenter": [
+          3343.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          3335.126055271519,
+          3705.4508722657356
+        ],
+        "ncc": 0.9892722920494266,
+        "peakMargin": 0.05194026297380738,
+        "refinedNCC": 0.9998062784025642,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          10
+        ],
+        "outputPixelCenter": [
+          3685.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          3669.3914084473354,
+          3706.5397524390055
+        ],
+        "ncc": 0.9820481229587361,
+        "peakMargin": 0.13216575974831457,
+        "refinedNCC": 0.9996009687240094,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          11
+        ],
+        "outputPixelCenter": [
+          4029.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          4006.5591953577928,
+          3708.422409404604
+        ],
+        "ncc": 0.9905706267901152,
+        "peakMargin": 0.08592649042951739,
+        "refinedNCC": 0.9997373018102681,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          12
+        ],
+        "outputPixelCenter": [
+          4373.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          4345.12657394899,
+          3711.220914862422
+        ],
+        "ncc": 0.9982606711165881,
+        "peakMargin": 0.05726735450509779,
+        "refinedNCC": 0.999920874806336,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          13
+        ],
+        "outputPixelCenter": [
+          4715.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          4683.859532054022,
+          3715.053896919461
+        ],
+        "ncc": 0.9921055268184296,
+        "peakMargin": 0.15057025702031046,
+        "refinedNCC": 0.9997266224871115,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          14
+        ],
+        "outputPixelCenter": [
+          5059.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          5027.409235823646,
+          3720.043004426934
+        ],
+        "ncc": 0.9845716060254117,
+        "peakMargin": 0.06432192879580356,
+        "refinedNCC": 0.9995613030591434,
+        "accepted": true
+      },
+      {
+        "grid": [
+          10,
+          15
+        ],
+        "outputPixelCenter": [
+          5403.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          5374.770961560857,
+          3726.3700413034358
+        ],
+        "ncc": 0.9655916166845395,
+        "peakMargin": 0.22036545073650127,
+        "refinedNCC": null,
+        "accepted": false
+      },
+      {
+        "grid": [
+          10,
+          16
+        ],
+        "outputPixelCenter": [
+          5747.0,
+          3747.0
+        ],
+        "sourcePixelCenter": [
+          5727.230989270515,
+          3734.3569320695906
+        ],
+        "ncc": 0.9844317442348252,
+        "peakMargin": 0.10588242750576271,
+        "refinedNCC": 0.9997628243083567,
+        "accepted": true
+      }
+    ]
+  },
+  "candidateFits": [
+    {
+      "candidate": "identity-plus-isotropic-scale",
+      "nuisanceFit": "Isotropic output zoom and x/y translation on checkerboard training patches only; coefficients not distributed or used by product",
+      "optimizerSuccess": true,
+      "trainingResidualOriginalPixels": {
+        "count": 35,
+        "rms": 9.42831130043728,
+        "median": 6.775848554326379,
+        "p95": 11.947684130628124,
+        "maximum": 36.412633304262314
+      },
+      "holdoutResidualOriginalPixels": {
+        "count": 32,
+        "rms": 9.835648418814932,
+        "median": 7.9140680231354015,
+        "p95": 18.905824506066597,
+        "maximum": 28.5418029507737
+      }
+    },
+    {
+      "candidate": "full-output-6000x4000",
+      "nuisanceFit": "Isotropic output zoom and x/y translation on checkerboard training patches only; coefficients not distributed or used by product",
+      "optimizerSuccess": true,
+      "trainingResidualOriginalPixels": {
+        "count": 35,
+        "rms": 0.7526202994487644,
+        "median": 0.5311733170721451,
+        "p95": 1.2122973964555734,
+        "maximum": 2.749723845869143
+      },
+      "holdoutResidualOriginalPixels": {
+        "count": 32,
+        "rms": 0.8683499379260664,
+        "median": 0.5590369300059067,
+        "p95": 1.9035182650017464,
+        "maximum": 2.9765522024107507
+      }
+    },
+    {
+      "candidate": "libraw-visible-6024x4024-centered",
+      "nuisanceFit": "Isotropic output zoom and x/y translation on checkerboard training patches only; coefficients not distributed or used by product",
+      "optimizerSuccess": true,
+      "trainingResidualOriginalPixels": {
+        "count": 35,
+        "rms": 0.8477028456976577,
+        "median": 0.5907891454873961,
+        "p95": 1.300502071580058,
+        "maximum": 3.1812130601147093
+      },
+      "holdoutResidualOriginalPixels": {
+        "count": 32,
+        "rms": 0.9673758093487969,
+        "median": 0.631304190702632,
+        "p95": 2.118981420050245,
+        "maximum": 3.23820193449668
+      }
+    },
+    {
+      "candidate": "storage-6048x4024-centered",
+      "nuisanceFit": "Isotropic output zoom and x/y translation on checkerboard training patches only; coefficients not distributed or used by product",
+      "optimizerSuccess": true,
+      "trainingResidualOriginalPixels": {
+        "count": 35,
+        "rms": 0.9049172935001405,
+        "median": 0.6335483533891842,
+        "p95": 1.3530632526199016,
+        "maximum": 3.4382865416945925
+      },
+      "holdoutResidualOriginalPixels": {
+        "count": 32,
+        "rms": 1.0268488552721013,
+        "median": 0.6756888381853334,
+        "p95": 2.247357865105833,
+        "maximum": 3.3941011722216192
+      }
+    }
+  ],
+  "manufacturerFrameProven": false,
+  "automaticRouteEnabled": false,
+  "limitations": [
+    "Adobe uses its own optical calibration, not necessarily the Sony embedded table.",
+    "A best fitting frame is not a manufacturer contract and must not enable product rendering.",
+    "One natural scene and local patch translation have finite accuracy; no all-camera coverage claim.",
+    "Vignetting was set to zero; ordinary AutoLateralCA=0 does not disable builtin CA."
+  ],
+  "environment": {
+    "macOS": "27.2",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "Pillow": "12.3.0"
+  },
+  "scriptSHA256": "522789d4a200570f862323852c7555bf914d939b2867ce95134339c68550311f",
+  "failures": []
+}

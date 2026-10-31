@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-31",
+  "scope": "Developer reference acquisition through normal Lightroom UI in an isolated catalog; no user-photo Develop changes or product runtime dependency.",
+  "sourceRAW": {
+    "fixture": "ILCE-6000.ARW",
+    "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+    "pinnedOriginalUnchanged": true,
+    "workingCopyUnchanged": true
+  },
+  "importMode": "Add",
+  "isolatedCatalog": "LensDock-Optical-Reference.lrcat",
+  "exportReferences": [
+    "lightroom-sony-geometry-observation-0.25.json",
+    "lightroom-sony-geometry-observation-0.5.json"
+  ],
+  "builtinCAInformationPopupObserved": true,
+  "exportPreferencesRestoredViaUI": {
+    "destination": "Desktop",
+    "subfolder": "未命名导出",
+    "fileFormat": "JPEG",
+    "quality": 70,
+    "colorSpace": "sRGB IEC61966-2.1",
+    "bitDepth": 8,
+    "finalAction": "Done, no cleanup export"
+  },
+  "originalCatalogRestoredViaUI": true,
+  "finalWindowCatalogBasename": "Lightroom Catalog.lrcat",
+  "finalWindowURLVerified": true,
+  "manufacturerFrameProven": false,
+  "automaticRouteEnabled": false,
+  "imagesCatalogsOrAdobeProfilesDistributed": false
+}
