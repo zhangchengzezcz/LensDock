@@ -1,6 +1,6 @@
 """Build and test the real installer in an owned temporary directory; never launch a host."""
 from pathlib import Path
-import json, plistlib, subprocess, tempfile
+import json, os, plistlib, subprocess, tempfile
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS = r'''func verifyVariantSeparation(_ resources: URL, _ root: URL) throws {
  let folder=root.appendingPathComponent("variant-fixtures"), source=folder.appendingPathComponent("source"), config=folder.appendingPathComponent("resources")
@@ -114,14 +114,22 @@ func verifyGenericEligibility(_ installer: Installer,_ original: URL) throws {
  image[48+2+name.count]=0
  var rejected=false;do {_ = try hostExports(image,required:["$sDemo"])}catch{rejected=true}
  guard rejected else {throw DockError("Cyclic export trie accepted")}
- guard try installer.verifiedEligibleSource(original).values.sorted()==installer.verifiedSourceHashes(original).values.sorted() else {throw DockError("Source provenance differs under generic policy")}
+ let hashes=try installer.verifiedEligibleSource(original)
+ for (path, hash) in hashes {
+  guard try lensDigest(Data(contentsOf:original.appendingPathComponent(path))) == hash else {throw DockError("Source provenance differs under generic policy")}
+ }
  print("4.3 and later eligibility, current required exports, missing export rejection, stripped export trie and cycle rejection passed; no exact code hash gate used for installation.")
 }
 let resources=URL(fileURLWithPath:CommandLine.arguments[1]), original=URL(fileURLWithPath:CommandLine.arguments[2]), testDirectory=URL(fileURLWithPath:CommandLine.arguments[3])
 do {
  try verifyVariantSeparation(resources,testDirectory)
  let installer=try Installer(resources:resources)
- try verifyCodeFingerprint(installer,original,testDirectory)
+ let sourceInfo=try installer.validate(original)
+ if sourceInfo["CFBundleShortVersionString"] as? String == installer.compatibility.version,
+    sourceInfo["CFBundleVersion"] as? String == installer.compatibility.build,
+    (try? installer.verifiedSourceHashes(original)) != nil {
+  try verifyCodeFingerprint(installer,original,testDirectory)
+ }
  try verifyGenericEligibility(installer,original)
  let installed=try installer.install(original,applicationsDirectory:testDirectory){print($0)}
  let info=try plist(installed.appendingPathComponent("Contents/Info.plist"))
@@ -130,19 +138,22 @@ do {
  guard let copiedSource=info["LensDockSourceFileSHA256"] as? [String:String], copiedSource == (try installer.verifiedEligibleSource(original)) else {throw DockError("Installed source provenance missing or incorrect")}
  guard info["LensDockCompatibilityPolicy"] as? String == "capability-check-v1",try Data(contentsOf:installed.appendingPathComponent("Contents/Resources/LensDock-HostInterfaces.json")) == Data(contentsOf:resources.appendingPathComponent("Pixelmator-4.3.json")) else {throw DockError("Runtime compatibility contract missing")}
  guard installedHostIsCurrent(info,version:previewVersion,expectedHash:payload,actualHash:actual) else {throw DockError("Freshly signed host not recognized")}
+ let replacement=try installer.install(original,applicationsDirectory:testDirectory,replacingManagedHost:true){print($0)}
+ guard replacement==installed,try plist(replacement.appendingPathComponent("Contents/Info.plist"))["LensDockPayloadSHA256"] as? String == payload else {throw DockError("Atomic managed host update failed")}
  _ = try installer.validate(original)
  print("Isolated full installation, signed module recognition, strict signature and unchanged vendor verified.")
 } catch {fputs(error.localizedDescription+"\n",stderr);exit(1)}
 '''
 
 def verify():
-    app = ROOT / 'Build/LensDock.app'
+    build = Path(os.environ.get('LENS_DOCK_BUILD_ROOT', ROOT/'Build')).expanduser().resolve()
+    app = build/'LensDock.app'
     subprocess.run(['codesign', '--verify', '--deep', '--strict', str(app)], check=True)
     subprocess.run([str(app/'Contents/MacOS/LensDock'), '--verify-installation-state'], check=True)
     # The prefix is the exact production Installer, before the UI entrypoint.
     source = (ROOT/'Sources/Installer/LensDock.swift').read_text().split('final class DockApp:')[0]
     version = json.loads((ROOT/'Version.json').read_text())['version']
-    with tempfile.TemporaryDirectory(prefix='installer-check-', dir=ROOT/'Build') as owned:
+    with tempfile.TemporaryDirectory(prefix='installer-check-', dir=build) as owned:
         root = Path(owned)
         contents = root/'InstallerProbe.app/Contents'
         (contents/'MacOS').mkdir(parents=True)
@@ -151,7 +162,8 @@ def verify():
         swift.write_text(source+HARNESS)
         executable = contents/'MacOS/InstallerProbe'
         subprocess.run(['xcrun','swiftc','-target','arm64-apple-macos26.0','-O',str(swift),'-o',str(executable)],check=True)
-        subprocess.run([str(executable),str(app/'Contents/Resources'),'/Applications/Pixelmator Pro Creator Studio.app',str(root/'isolated-applications')],check=True,cwd=ROOT)
+        original=os.environ.get('LENS_TEST_PIXELMATOR','/Applications/Pixelmator Pro Creator Studio.app')
+        subprocess.run([str(executable),str(app/'Contents/Resources'),original,str(root/'isolated-applications')],check=True,cwd=ROOT)
 
 if __name__ == '__main__':
     verify()

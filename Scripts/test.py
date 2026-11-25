@@ -7,7 +7,19 @@ for name,target in [('lib',ROOT/'Vendor/Lib'),('resources',ROOT/'Resources/LensB
  if not p.exists():p.symlink_to(target,target_is_directory=True)
 shutil.copy2(ROOT/'Resources/native-effects-template.json',out/'native-effects-template.json')
 native=ROOT/'Sources/Native'
+host=Path(os.environ.get('LENS_TEST_PIXELMATOR','/Applications/Pixelmator Pro Creator Studio.app'))
+frameworks=host/'Contents/Frameworks'
+codec=out/'LensEffectsCodec.dylib'
+subprocess.run(['xcrun','swiftc','-target','arm64-apple-macos26.0','-O','-emit-library',str(native/'LensEffectsCodec.swift'),str(ROOT/'Tests/LensEffectsCodecProbe.swift'),'-o',str(codec)],check=True)
+legacy_exports=subprocess.check_output(['xcrun','dyld_info','-arch','arm64','-exports',str(frameworks/'PTFoundation.framework/PTFoundation')],text=True)
+legacy_wrapper='$s12PTFoundation13PTEffectsObjCC7effectsAA0B0Vvg' in legacy_exports
+# These render probes call the historical wrapper's Objective-C apply method.
+# The current host's independent render check must use its real photo UI.
+legacy_render_groups={'verify-sony-geometry-effect','verify-geometry-boundaries','verify-full-resolution-boundaries','verify-fractional-preview','verify-three-corrections'}
+host_env={**os.environ,'LENS_TEST_PIXELMATOR':str(host),'DYLD_FRAMEWORK_PATH':str(frameworks),'DYLD_INSERT_LIBRARIES':str(codec)}
 groups={
+ 'verify-sony-fallback':['LensNativeProfileEngine.m','LensRecommendationPolicy.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
+ 'verify-sony-recorded-settings':['LensNativeProfileEngine.m','LensRecommendationPolicy.m'],
  'verify-sony-gpu-coordinates':['LensSonyGeometryImage.m'],
  'verify-sony-geometry-effect':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
  'verify-sony-geometry-image':['LensSonyGeometryImage.m'],
@@ -45,12 +57,16 @@ groups={
  'verify-source-binding':['LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],
 }
 for name,sources in groups.items():
+ if name in legacy_render_groups and not legacy_wrapper:
+  print(f'{name}: requires a legacy wrapper host; set LENS_TEST_PIXELMATOR to a 4.3 app to run it.',flush=True)
+  continue
  if 'LensVignettingFilter.m' in sources:sources=[*sources,'LensCalibrationImage.m','LensConstrainedCrop.m','LensSonyGeometryImage.m']
  subprocess.run(['xcrun','clang','-arch','arm64','-mmacosx-version-min=26.0','-O2','-fobjc-arc','-Wno-deprecated-declarations',*(['-Wl,-export_dynamic'] if name=='verify-effect-replacement' else []),'-I',str(native),'-framework','Cocoa','-framework','CoreImage','-framework','ImageIO',str(ROOT/'Tests'/(name+'.m')),*[str(native/s) for s in sources],'-o',str(out/name)],check=True,cwd=ROOT)
- subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,**({'DYLD_FRAMEWORK_PATH':'/Applications/Pixelmator Pro Creator Studio.app/Contents/Frameworks'} if name=='verify-host-compatibility' else {})})
- if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_GRID_TEST':'1'})
- if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_GAIN_GRID_TEST':'1'})
- if name=='verify-three-corrections':subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**os.environ,'LENS_RESIDUAL_GRID_TEST':'1'})
+ env=host_env if 'LensNativeState.m' in sources else os.environ
+ subprocess.run([str(out/name)],check=True,cwd=ROOT,env=env)
+ if name=='verify-three-corrections':
+  for variant in ['LENS_GRID_TEST','LENS_GAIN_GRID_TEST','LENS_RESIDUAL_GRID_TEST']:
+   subprocess.run([str(out/name)],check=True,cwd=ROOT,env={**env,variant:'1'})
 print('All selected tests passed. RAW-specific checks run only when Tests/PrivateRAW is supplied.')
 subprocess.run(['xcrun','swiftc','-target','arm64-apple-macos26.0','-O',str(native/'LensScriptingReference.swift'),str(ROOT/'Tests/verify-scripting-reference.swift'),'-o',str(out/'verify-scripting-reference')],check=True)
 subprocess.run([str(out/'verify-scripting-reference')],check=True)

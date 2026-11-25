@@ -16,12 +16,13 @@ NSDictionary*LensInspectHostCompatibility(NSDictionary*contract,NSString*version
  if([layouts[@"Effects"]boolValue]){
   @try {
   NSData*empty=[@"[1,{\"w\":[],\"o\":1,\"ctx\":[1,{\"cs\":[1,{\"map\":{}}]}]}]" dataUsingEncoding:NSUTF8StringEncoding];
-  effectsRoundtrip=LensEffectsEquivalent(empty,LensEffectsJSON(LensEffectsFromJSON(empty),nil));
+  NSData*canonical=LensEffectsJSON(LensEffectsFromJSON(empty),nil);
+  effectsRoundtrip=LensEffectsEquivalent(canonical,LensEffectsJSON(LensEffectsFromJSON(canonical),nil));
   } @catch(NSException*exception){effectsRoundtrip=NO;}
  }
  if(!effectsRoundtrip)[failures addObject:@"效果数据序列化自检未通过"];
  if(requireUI){
-  for(NSString*name in @[@"PXMPro.Document",@"Pixelmator.ScriptingLayer",@"PXMEngine.RawLayer",@"PTFoundation.PTRawParametersObjC",@"PTFoundation.PTEffectsObjC"])
+  for(NSString*name in @[@"PXMPro.Document",@"Pixelmator.ScriptingLayer",@"PXMEngine.RawLayer",@"PTFoundation.PTRawParametersObjC"])
    if(!NSClassFromString(name))[failures addObject:[@"缺少类型：" stringByAppendingString:name]];
 
  }

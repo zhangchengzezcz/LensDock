@@ -59,8 +59,7 @@
       "$s6PXMKit0A8DocumentC15documentContextAA0abD0Cvg"
     ],
     "Contents/Frameworks/PTFoundation.framework/PTFoundation": [
-      "$s12PTFoundation13PTEffectsObjCC7effectsAA0B0Vvg",
-      "$s12PTFoundation13PTEffectsObjCC7effectsAcA0B0V_tcfC",
+      "$s12PTFoundation9PTEffectsVN",
       "$s12PTFoundation15PTRawParametersVMa",
       "$s12PTFoundation19PTRawParametersObjCC03rawC0AcA0bC0V_tcfC",
       "$s12PTFoundation9PTEffectsVMa"

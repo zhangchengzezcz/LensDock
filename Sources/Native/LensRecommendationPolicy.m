@@ -34,6 +34,8 @@ NSDictionary *LensRecommendationPolicy(NSDictionary *plan) {
  double strength=measured?MIN(proposed,MIN(safe,trial?50:100)):0;
  BOOL automatic=measured&&!trial&&strength>0&&[assessment[@"automaticRecommendedStrengthSuitable"] boolValue];
  NSString *state=!calibrated?@"missing-calibration":!needed?@"identity":!measured?@"unmeasured":strength==0?@"highlight-limited":trial?@"trial":@"recommended";
+ BOOL candidate=[report[@"geometryProvider"]isEqual:@"sony-explicit-frame-v1"]&&[report[@"frameConvention"]isEqual:@"recorded-full-image-aligned-decoder-v1"];
  return @{@"strengths":@[@(LensGeometryCalibrationNeeded(report,@"distortion")?100:0),@(LensGeometryCalibrationNeeded(report,@"tca")?100:0),@(strength)],
+          @"distortionAutomatic":@(!candidate&&LensGeometryCalibrationNeeded(report,@"distortion")),@"tcaAutomatic":@(!candidate&&LensGeometryCalibrationNeeded(report,@"tca")),@"geometryTrial":@(candidate),
           @"vignettingAutomatic":@(automatic),@"vignettingState":state,@"vignettingMeasured":@(measured)};
 }

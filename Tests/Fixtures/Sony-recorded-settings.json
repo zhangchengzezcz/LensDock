@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "scope": "Pinned public Sony capture-menu settings. Flags alone do not establish baked RAW or decoder processing, pixel frame or an automatic correction.",
+  "files": [
+    {
+      "file": "ILCE-6000.ARW",
+      "source": "https://raw.pixls.us/getfile.php/1971/nice/Sony%20-%20ILCE-6000%20-%2012bit%2012bit%20compressed%20%283:2%29.ARW",
+      "repositoryEntry": 1971,
+      "license": "CC0-1.0",
+      "sha256": "ce8b4957281a817d52a07a691e2468567b6c78223bd0b514ffc1c65b002b8d89",
+      "expectedGroupedFields": {
+        "File:FileType": "ARW",
+        "IFD0:Make": "SONY",
+        "IFD0:Model": "ILCE-6000",
+        "SubIFD:PhotometricInterpretation": 32803,
+        "SubIFD:DistortionCorrection": 0,
+        "SubIFD:ChromaticAberrationCorrection": 0,
+        "SubIFD:VignettingCorrection": 256,
+        "Sony:VignettingCorrection": 0,
+        "Sony:DistortionCorrection": 0
+      }
+    },
+    {
+      "file": "ILCE-7RM2-1315.ARW",
+      "source": "https://raw.pixls.us/getfile.php/1315/nice/Sony%20-%20ILCE-7RM2%20-%2014bit%2014bit%20uncompressed%20%283%3A2%29.ARW",
+      "repositoryEntry": 1315,
+      "license": "CC0-1.0",
+      "sha256": "0fa6bb58daee482b1da224d2a330240d9f850cc0b263af17809ad1211cd8add9",
+      "expectedGroupedFields": {
+        "File:FileType": "ARW",
+        "IFD0:Make": "SONY",
+        "IFD0:Model": "ILCE-7RM2",
+        "SubIFD:PhotometricInterpretation": 32803,
+        "SubIFD:DistortionCorrection": 1,
+        "SubIFD:ChromaticAberrationCorrection": 1,
+        "SubIFD:VignettingCorrection": 257,
+        "Sony:VignettingCorrection": 2,
+        "Sony:DistortionCorrection": 1
+      }
+    },
+    {
+      "file": "ILCE-7RM2-1318.ARW",
+      "source": "https://raw.pixls.us/getfile.php/1318/nice/Sony%20-%20ILCE-7RM2%20-%2014bit%2014bit%20uncompressed%20%283%3A2%29.ARW",
+      "repositoryEntry": 1318,
+      "license": "CC0-1.0",
+      "sha256": "9fe9a60f1a001eadbb9770b4906ac770fb9900008f7d36246ee16adddc973c87",
+      "expectedGroupedFields": {
+        "File:FileType": "ARW",
+        "IFD0:Make": "SONY",
+        "IFD0:Model": "ILCE-7RM2",
+        "SubIFD:PhotometricInterpretation": 32803,
+        "SubIFD:DistortionCorrection": 1,
+        "SubIFD:ChromaticAberrationCorrection": 0,
+        "SubIFD:VignettingCorrection": 256,
+        "Sony:VignettingCorrection": 0,
+        "Sony:DistortionCorrection": 1
+      }
+    }
+  ]
+}

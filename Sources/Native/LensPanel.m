@@ -107,7 +107,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   NSView*marker=[[NSView alloc]initWithFrame:NSMakeRect(289,3,2,7)];marker.wantsLayer=YES;marker.layer.backgroundColor=NSColor.systemOrangeColor.CGColor;marker.hidden=YES;[row addSubview:marker];[markers addObject:marker];
   NSTextField*state=label(@"等待匹配",NSMakeRect(310,54,106,19),11,NSFontWeightRegular);state.alignment=NSTextAlignmentRight;state.textColor=NSColor.secondaryLabelColor;[row addSubview:state];[availability addObject:state];
   NSSlider*s=[NSSlider sliderWithValue:0 minValue:0 maxValue:200 target:self action:@selector(changed:)];s.frame=NSMakeRect(39,7,468,20);s.continuous=YES;s.enabled=NO;s.accessibilityLabel=[titles[i]stringByAppendingString:@"强度"];[row addSubview:s];[sliders addObject:s];
-  NSTextField*v=[[NSTextField alloc]initWithFrame:NSMakeRect(529,7,82,24)];v.stringValue=@"0";v.alignment=NSTextAlignmentRight;v.font=[NSFont monospacedDigitSystemFontOfSize:12 weight:NSFontWeightRegular];v.target=self;v.action=@selector(changed:);v.enabled=NO;v.accessibilityLabel=[titles[i]stringByAppendingString:i==0?@"短边位移百分比":i==1?@"通道位移像素":@"最大边角补偿 EV"];s.toolTip=v.toolTip=@"0% 为关闭补偿，100% 为完整镜头标定，200% 为两倍补偿。可在推荐位置上下调整。";NSNumberFormatter*f=[NSNumberFormatter new];f.minimum=@0;f.maximum=@200;f.maximumFractionDigits=3;v.formatter=f;[row addSubview:v];[values addObject:v];NSTextField*unit=label(i==0?@"%":i==1?@"px":@"EV",NSMakeRect(617,9,30,20),11,NSFontWeightRegular);[row addSubview:unit];[units addObject:unit];
+  NSTextField*v=[[NSTextField alloc]initWithFrame:NSMakeRect(529,7,82,24)];v.stringValue=@"0";v.alignment=NSTextAlignmentRight;v.font=[NSFont monospacedDigitSystemFontOfSize:12 weight:NSFontWeightRegular];v.target=self;v.action=@selector(changed:);v.cell.sendsActionOnEndEditing=YES;v.enabled=NO;v.accessibilityLabel=[titles[i]stringByAppendingString:i==0?@"短边位移百分比":i==1?@"通道位移像素":@"最大边角补偿 EV"];s.toolTip=v.toolTip=@"0% 为关闭补偿，100% 为完整镜头标定，200% 为两倍补偿。可在推荐位置上下调整。";NSNumberFormatter*f=[NSNumberFormatter new];f.minimum=@0;f.maximum=@200;f.maximumFractionDigits=3;v.formatter=f;[row addSubview:v];[values addObject:v];NSTextField*unit=label(i==0?@"%":i==1?@"px":@"EV",NSMakeRect(617,9,30,20),11,NSFontWeightRegular);[row addSubview:unit];[units addObject:unit];
  }
  self.checks=checks;self.sliders=sliders;self.percents=values;self.availability=availability;self.recommendButtons=recommendButtons;self.recommendMarkers=markers;self.hints=hints;self.unitLabels=units;
  NSView*risks=card(NSMakeRect(24,131,652,87));[root addSubview:risks];[risks addSubview:label(@"边角与高光",NSMakeRect(18,55,200,20),12,NSFontWeightMedium)];self.riskLabel=label(@"匹配后检测边角内容和补偿风险。三项校正可分别选择。",NSMakeRect(18,11,613,42),11,NSFontWeightRegular);self.riskLabel.textColor=NSColor.secondaryLabelColor;[risks addSubview:self.riskLabel];
@@ -147,6 +147,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 - (void)updateRisk{
  if(!self.plan){self.riskLabel.stringValue=self.busy?@"正在检测当前照片，完成后显示建议与高光风险。":@"请选择 RAW 图层并匹配镜头，完成后显示建议数值。";return;}NSDictionary*a=self.plan[@"cornerAssessment"];
  NSDictionary*r=self.plan[@"report"];
+ if([LensRecommendationPolicy(self.plan)[@"geometryTrial"]boolValue]){self.riskLabel.stringValue=@"找到相机内嵌畸变／色差表，画幅与解码尺寸相符，厂家坐标仍待验证。默认关闭，可分别点击“试用”后应用并检查；不增加暗角提亮。";return;}
  if([r[@"supplementalVignettingOnly"]boolValue]){
   NSString*nativeState=[self.plan[@"liveFingerprint"][@"rawParameters"][1][@"lc"]boolValue]?@"原生矫正已开启":@"原生矫正开关当前关闭，保留你的选择";
   NSString*extra=[r[@"vignettingProfileAvailable"]boolValue]&&[r[@"vignettingCorrectionNeeded"]boolValue]?@"有独立暗角标定，可手动试调；尚未测得原生处理后的残余暗角，推荐 0 EV。":@"没有可用的独立暗角补偿，推荐 0 EV。";
@@ -164,7 +165,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 }
 - (void)syncControls{
  if(self.busy){[self.activity startAnimation:nil];self.badge.stringValue=@"正在处理";self.badge.textColor=NSColor.secondaryLabelColor;}
- else{[self.activity stopAnimation:nil];if(self.plan){self.badge.stringValue=[self.plan[@"report"][@"supplementalVignettingOnly"]boolValue]?@"原生支持矫正":[self.plan[@"report"][@"manualProfileSelection"]count]?@"手选配置":@"已匹配配置";self.badge.textColor=NSColor.systemGreenColor;}}
+ else{[self.activity stopAnimation:nil];if(self.plan){BOOL trial=[LensRecommendationPolicy(self.plan)[@"geometryTrial"]boolValue];self.badge.stringValue=trial?@"内嵌候选 · 待确认":[self.plan[@"report"][@"supplementalVignettingOnly"]boolValue]?@"原生支持矫正":[self.plan[@"report"][@"manualProfileSelection"]count]?@"手选配置":@"已匹配配置";self.badge.textColor=trial?NSColor.systemOrangeColor:NSColor.systemGreenColor;}}
  self.rematchButton.enabled=!self.busy;
  self.profileButton.enabled=!self.busy&&(self.plan||self.matchContext)&&self.metadata!=nil;
  NSArray*available=[self availabilityValues],*recommended=[self recommendations];NSDictionary*r=self.plan[@"report"];
@@ -176,7 +177,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
   self.checks[i].enabled=ok&&!self.busy;self.sliders[i].enabled=ok&&!self.busy;self.percents[i].enabled=ok&&!self.busy;
   ((NSNumberFormatter*)self.percents[i].formatter).maximum=@(maximum);
   self.percents[i].doubleValue=self.sliders[i].doubleValue;self.recommendButtons[i].enabled=ok&&!self.busy;
-  NSDictionary*policy=LensRecommendationPolicy(self.plan);NSString*kind=i==2&&[policy[@"vignettingState"]isEqual:@"trial"]?@"试用":@"推荐";
+  NSDictionary*policy=LensRecommendationPolicy(self.plan);NSString*kind=(i<2&&[policy[@"geometryTrial"]boolValue])||(i==2&&[policy[@"vignettingState"]isEqual:@"trial"])?@"试用":@"推荐";
   self.recommendButtons[i].title=native&&i<2?@"自动跳过":ok?[NSString stringWithFormat:@"%@ %@",kind,amountText(suggested,i)]:self.plan?[NSString stringWithFormat:@"建议 %@",amountText(0,i)]:@"等待检测";
   self.recommendButtons[i].toolTip=@"载入这一项的最新建议量并启用。建议为零时保持关闭；不会添加没有标定依据的校正。";
   NSArray*names=@[@"画面短边的最大几何位移",@"红蓝通道相对绿色的最大位移",@"标定最暗位置的最大亮度补偿"];
@@ -205,7 +206,8 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
 - (void)presentPlan:(NSDictionary*)plan document:(NSDocument*)doc identifier:(NSString*)uuid saved:(NSDictionary*)saved{
  NSMutableDictionary*livePlan=[plan mutableCopy];if(!livePlan[@"liveFingerprint"]){NSDictionary*f=LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"));if(f)livePlan[@"liveFingerprint"]=f;}plan=livePlan;self.plan=plan;self.document=doc;self.layerIdentifier=uuid;NSDictionary*r=plan[@"report"];self.cameraLabel.stringValue=[NSString stringWithFormat:@"相机  %@",r[@"camera"]?:@"—"];self.lensLabel.stringValue=r[@"lens"]?:@"未找到匹配配置";self.parameterLabel.stringValue=[NSString stringWithFormat:@"%@ mm   ·   f/%@   ·   %@",displayNumber(r[@"focal_mm"]),displayNumber(LensPositiveCaptureNumber(r[@"aperture"])),LensFocusDistanceTextForReport(r)];self.parameterLabel.toolTip=[NSString stringWithFormat:@"标定使用完整精度：焦距 %@ mm，光圈 f/%@，距离 %@ m。",r[@"focal_mm"],LensPositiveCaptureNumber(r[@"aperture"])?:@"未记录",r[@"focus_distance_m"]];
  self.badge.stringValue=@"已匹配配置";self.badge.textColor=NSColor.systemGreenColor;
- NSArray*available=[self availabilityValues];for(int i=0;i<3;i++){BOOL ok=[available[i]boolValue],identity=[r[@[@"distortionProfileAvailable",@"tcaProfileAvailable",@"vignettingProfileAvailable"][i]]boolValue]&&!ok;self.checks[i].enabled=ok;self.availability[i].stringValue=ok?@"标定可用":i==2&&[r[@"vignettingCalibrationWarning"]length]?@"标定不可用":identity?@"建议保留原样":i==2&&!LensPositiveCaptureNumber(r[@"aperture"])?@"光圈未知":[r[@"supplementalVignettingOnly"]boolValue]&&i<2?@"原生支持":@"缺少标定";self.availability[i].textColor=ok?NSColor.systemGreenColor:NSColor.secondaryLabelColor;}
+ BOOL trial=[LensRecommendationPolicy(plan)[@"geometryTrial"]boolValue];
+ NSArray*available=[self availabilityValues];for(int i=0;i<3;i++){BOOL ok=[available[i]boolValue],identity=[r[@[@"distortionProfileAvailable",@"tcaProfileAvailable",@"vignettingProfileAvailable"][i]]boolValue]&&!ok;self.checks[i].enabled=ok;self.availability[i].stringValue=ok?(trial?@"内嵌候选":@"标定可用"):i==2&&[r[@"vignettingCalibrationWarning"]length]?@"标定不可用":identity?@"建议保留原样":i==2&&!LensPositiveCaptureNumber(r[@"aperture"])?@"光圈未知":[r[@"supplementalVignettingOnly"]boolValue]&&i<2?@"原生支持":@"缺少标定";self.availability[i].textColor=ok?(trial?NSColor.systemOrangeColor:NSColor.systemGreenColor):NSColor.secondaryLabelColor;}
  NSDictionary*assessment=plan[@"cornerAssessment"];
  self.riskLabel.stringValue=assessment?[NSString stringWithFormat:@"%@。全强度去暗角预计新增 %.2f%% 高光溢出。自动建议%@；手动选择保留。",[assessment[@"sceneContentAmbiguous"]boolValue]?@"边角内容复杂，亮度不足以认定暗角":@"检测到较一致的边角亮度下降",[assessment[@"predictedNewHighlightClippingFraction"]doubleValue]*100,[assessment[@"automaticFullStrengthSuitable"]boolValue]?@"可预览":@"关闭去暗角"]:@"没有可用的去暗角检测结果。校正依照镜头标定，不从阴影推测镜头配置。";
  if(saved[@"correctionSettings"])[self loadSettings:saved[@"correctionSettings"]];else [self automatic:nil];
@@ -213,9 +215,9 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  self.status.stringValue=saved?@"已读取文档内保存的配置，可继续调整。三项参数分别保存。":@"已载入本次建议量 · 三项独立开关，滑块可向上或向下调整。";[self syncControls];
 }
 - (void)automatic:(id)sender{
- NSDictionary*r=self.plan[@"report"];NSArray*recommended=[self recommendations];
- BOOL automatic=[LensRecommendationPolicy(self.plan)[@"vignettingAutomatic"]boolValue];
- [self loadSettings:@{@"distortionEnabled":@([r[@"distortionProfileAvailable"]boolValue]),@"tcaEnabled":@([r[@"tcaProfileAvailable"]boolValue]),@"vignettingEnabled":@(automatic),@"distortionStrength":recommended[0],@"tcaStrength":recommended[1],@"vignettingStrength":recommended[2],@"constrainCropEnabled":@YES}];
+ NSArray*recommended=[self recommendations];
+ NSDictionary*policy=LensRecommendationPolicy(self.plan);
+ [self loadSettings:@{@"distortionEnabled":policy[@"distortionAutomatic"]?:@NO,@"tcaEnabled":policy[@"tcaAutomatic"]?:@NO,@"vignettingEnabled":policy[@"vignettingAutomatic"]?:@NO,@"distortionStrength":recommended[0],@"tcaStrength":recommended[1],@"vignettingStrength":recommended[2],@"constrainCropEnabled":@YES}];
  self.userTouched=NO;if(sender)self.status.stringValue=@"已载入最新建议量，尚未应用；滑块与建议标记已同步。";
 }
 - (void)clearMatchWithMessage:(NSString*)message requiresRAW:(BOOL)requiresRAW{
@@ -294,7 +296,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  if(self.busy||!self.applyButton.enabled)return;[self.panel makeFirstResponder:nil];
  NSDocument*doc=[self activeDocument];NSString*uuid=getter(getter(doc,@"scriptingCurrentLayer"),@"scriptUniqueID");if(!self.plan||doc!=self.document||![uuid isEqual:self.layerIdentifier]){self.status.stringValue=@"请先匹配当前 RAW 图层。";return;}
  NSDictionary*live=LensLiveRAWFingerprint(doc,getter(doc,@"scriptingCurrentLayer"));if(!LensPlanAllowsLiveNativeCorrection(self.plan,live)||![live[@"width"]isEqual:self.plan[@"report"][@"width"]]||![live[@"height"]isEqual:self.plan[@"report"][@"height"]]||![live[@"workingTransfer"]isEqual:self.plan[@"report"][@"workingTransfer"]]||(self.plan[@"liveFingerprint"]&&![self.plan[@"liveFingerprint"]isEqual:live])||(self.plan[@"sourceBinding"]&&!LensCorrectionSourceMatches(self.plan[@"sourceBinding"],live))){self.status.stringValue=@"RAW 参数、尺寸或颜色空间已变化，请重新匹配。";return;}NSDictionary*settings=[self settings];NSData*before=LensEffectsJSON(LensCopyLayerEffects(rawLayer(getter(doc,@"scriptingCurrentLayer"))),nil);if(!before){self.status.stringValue=@"无法保留当前图层效果，未应用。";return;}
- BOOL needsMaps=([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue])&&![self.plan[@"normalizedGeometryMapsLZFSE"]count];
+ BOOL needsMaps=([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue])&&!LensSonyExplicitGeometryReport(self.plan[@"report"])&&![self.plan[@"normalizedGeometryMapsLZFSE"]count];
  BOOL needsCrop=[settings[@"constrainCropEnabled"]boolValue]&&([settings[@"distortionEnabled"]boolValue]||[settings[@"tcaEnabled"]boolValue]);
  if(!needsMaps&&!needsCrop){[self commitPlan:self.plan settings:settings document:doc uuid:uuid before:before];return;}
  NSDictionary*metadata=self.plan[@"metadata"]?:self.metadata;
@@ -339,6 +341,7 @@ static NSDictionary*pickerReboundPlan(NSDictionary*generated,NSDictionary*contex
  NSArray*values=LensCaptureParameterDisplayValues(context[@"metadata"]?:self.metadata),*fields=@[self.focalField,self.apertureField,self.distanceField];for(NSUInteger i=0;i<3;i++)[fields[i]setObjectValue:values[i]==NSNull.null?@"":values[i]];
  NSDictionary*effective=context[@"metadata"]?:self.metadata;for(NSUInteger i=0;i<3;i++){NSTextField*field=fields[i];BOOL fallback=i==2&&!LensPositiveCaptureNumber(effective[@"FocusDistance"])&&!LensPositiveCaptureNumber(effective[@"SubjectDistance"]);field.toolTip=fallback?LensFocusRangeFallbackNote(effective):values[i]==NSNull.null?@"原片未记录有效值；可填写已知的实际拍摄参数。未记录光圈时不会启用去暗角。":[context[@"parameterOverrides"]boolValue]?@"使用本次或文档内保存的参数覆盖；“恢复拍摄参数”重新采用原片记录。":@"自动读取自原片 EXIF 或相机 MakerNotes；无需手动输入。";}
  self.detailsNote.stringValue=[NSString stringWithFormat:@"来源：Lensfun 标定库，已加载 %@ 个配置文件。\n%@ · %@\n%@\n拍摄参数默认自动读取，可补全缺失信息或手动调整。\n不改写 RAW 元数据；重新计算后仍需点击“应用到 RAW”。",r[@"databaseFiles"]?:@0,[r[@"matchingIdentityMethod"]hasPrefix:@"normalized-exact"]?@"按数据库记录名称匹配":@"按唯一候选匹配",(@{@"LensModel":@"镜头名称",@"LensIDName":@"镜头 ID",@"Lens":@"镜头描述"}[r[@"matchingIdentitySource"]?:@""]?:@"已保存配置"),[r[@"metadataWarning"]length]?@"MakerNote 读取受限，当前使用标准 EXIF；未记录距离时采用远距离回退。":[r[@"distance_source"]isEqual:@"infinity_fallback"]?LensFocusRangeFallbackNote(effective):@"当前使用记录或手动指定的对焦距离。"];
+ if([r[@"geometryProvider"]isEqual:@"sony-explicit-frame-v1"])self.detailsNote.stringValue=@"来源：当前 RAW 的 Sony SubIFD 内嵌表。\n采用显影画幅约定；厂家坐标仍待验证。\n试用值来自节点表，不从照片内容制造畸变。\n机内自动／关闭记录不证明 RAW 已经矫正。\n不解释暗角表，不增加提亮；RAW 数据保留。";
  if(!self.plan)self.detailsNote.stringValue=@"已有拍摄参数已自动读取。只需补全缺失信息，必要时确认镜头配置。\n光圈未知可留空：畸变与色差仍可匹配，去暗角不启用。\n距离留空采用远距离标定；默认 1000 m 表示远距离回退。\n重新计算只更新建议，不改写原片 EXIF 或已保存效果。";
  [self.details showRelativeToRect:self.detailsButton.bounds ofView:self.detailsButton preferredEdge:NSRectEdgeMaxY];
 }

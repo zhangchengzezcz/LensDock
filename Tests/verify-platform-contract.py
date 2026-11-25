@@ -1,12 +1,13 @@
 """Verify built deployment metadata; does not pretend to run another macOS."""
 from pathlib import Path
 import json
+import os
 import plistlib
 import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT/'Build/LensDock.app'
+APP = Path(os.environ.get('LENS_DOCK_BUILD_ROOT', ROOT/'Build')).expanduser().resolve()/'LensDock.app'
 
 
 def output(*args):

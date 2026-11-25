@@ -16,10 +16,31 @@ typedef void* __attribute__((swiftcall))(*Create)(Effects,void* __attribute__((s
 // Test-only layer symbols emulate the verified host's native no-op comparison.
 // No PXMEngine object is created and no application document is touched.
 Effects __attribute__((swiftcall))testGet(void* __attribute__((swift_context))) __asm__("_$s9PXMEngine5LayerC7effects12PTFoundation9PTEffectsVSgvg");
-Effects __attribute__((swiftcall))testGet(void* __attribute__((swift_context))self){TestEffectLayer*layer=(__bridge id)self;Get get=dlsym(RTLD_DEFAULT,"$s12PTFoundation13PTEffectsObjCC7effectsAA0B0Vvg");return get((__bridge void*)layer.effects);}
+Effects __attribute__((swiftcall))testGet(void* __attribute__((swift_context))self){
+ TestEffectLayer *layer=(__bridge id)self;
+ Get get=dlsym(RTLD_DEFAULT,"$s12PTFoundation13PTEffectsObjCC7effectsAA0B0Vvg");
+ if(get)return get((__bridge void*)layer.effects);
+ BOOL (*decode)(const void*,Effects*)=dlsym(RTLD_DEFAULT,"LensTestDecodeOwnedEffects");
+ Effects result={0};
+ if(decode&&layer.effects)decode((__bridge const void*)layer.effects,&result);
+ return result;
+}
 void __attribute__((swiftcall))testSet(Effects,BOOL,void* __attribute__((swift_context))) __asm__("_$s9PXMEngine5LayerC10setEffects_20isIntermediateChangey12PTFoundation9PTEffectsVSg_SbtF");
 void __attribute__((swiftcall))testSet(Effects value,BOOL intermediate,void* __attribute__((swift_context))self){
  TestEffectLayer*layer=(__bridge id)self;layer.attempts++;
+ if([layer.effects isKindOfClass:NSData.class]){
+  void *(*borrow)(const Effects *)=dlsym(RTLD_DEFAULT,"LensTestEncodeBorrowedEffects");
+  if(!borrow)return;
+  NSData *incoming=CFBridgingRelease(borrow(&value));
+  if(!incoming||(layer.rejectNew&&[LensSavedCorrectionProfile(incoming)[@"metadata"][@"Model"]isEqual:@"B"]))return;
+  Effects old=testGet(self);
+  Equal equal=dlsym(RTLD_DEFAULT,"$s12PTFoundation9PTEffectsV2eeoiySbAC_ACtFZ");
+  BOOL same=equal&&equal(old,value);
+  void *(*consume)(Effects *)=dlsym(RTLD_DEFAULT,"LensBridgeEncodeOwnedEffects");
+  if(consume&&old.items){NSData *released=CFBridgingRelease(consume(&old));(void)released;}
+  if(!same)layer.effects=incoming;
+  return;
+ }
  void*(*retainBridge)(void*)=dlsym(RTLD_DEFAULT,"swift_bridgeObjectRetain");void*(*retainObject)(void*)=dlsym(RTLD_DEFAULT,"objc_retain");if(value.items)retainBridge(value.items);if(value.context)retainObject(value.context);
  Create create=dlsym(RTLD_DEFAULT,"$s12PTFoundation13PTEffectsObjCC7effectsAcA0B0V_tcfC");id incoming=CFBridgingRelease(create(value,(__bridge void*)NSClassFromString(@"PTFoundation.PTEffectsObjC")));
  if(layer.rejectNew&&[LensSavedCorrectionProfile(incoming)[@"metadata"][@"Model"]isEqual:@"B"])return;

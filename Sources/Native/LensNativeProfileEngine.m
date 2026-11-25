@@ -9,6 +9,8 @@
 #import "LensCaptureModeEvidence.h"
 #import "LensFocusDistanceEvidence.h"
 #import "LensSonyEmbeddedProfile.h"
+#import "LensSonyRecordedSettings.h"
+#import "LensSonyFallbackPlan.h"
 static void fail(NSError**error,NSString*message){if(error)*error=[NSError errorWithDomain:@"LensBridgeProfile" code:1 userInfo:@{NSLocalizedDescriptionKey:message}];}
 static double positive(id n){if(![n respondsToSelector:@selector(doubleValue)])return 0;double v=[n doubleValue];return isfinite(v)&&v>0?v:0;}
 static NSString*text(id v){return [v isKindOfClass:NSString.class]?v:@"";}
@@ -256,7 +258,7 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  // A CR3 can contain different values with the same tag name in EXIF,
  // MakerNotes and a track. Keep their groups until capture fields are selected;
  // ExifTool's unqualified duplicate winner is not necessarily standard EXIF.
- if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower",@"-FileType",@"-SubIFD:PhotometricInterpretation",@"-SubIFD:ImageWidth",@"-SubIFD:ImageHeight",@"-Sony:FullImageSize",@"-SubIFD:DistortionCorrParams",@"-SubIFD:ChromaticAberrationCorrParams",@"-SubIFD:VignettingCorrParams"]];
+ if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower",@"-FileType",@"-SubIFD:PhotometricInterpretation",@"-SubIFD:ImageWidth",@"-SubIFD:ImageHeight",@"-Sony:FullImageSize",@"-SubIFD:DistortionCorrParams",@"-SubIFD:ChromaticAberrationCorrParams",@"-SubIFD:VignettingCorrParams",@"-SubIFD:DistortionCorrection",@"-SubIFD:ChromaticAberrationCorrection",@"-SubIFD:VignettingCorrection"]];
  [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];
  NSArray*rows=runExifArguments(raw,tool,args,error);if(!numeric||!rows.count)return rows;
  NSDictionary*grouped=rows[0];NSMutableDictionary*values=[NSMutableDictionary new];
@@ -268,13 +270,14 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
   if([name isEqual:@"FocusDistance"]&&[key hasPrefix:@"Composite:"])continue;
   // Preserve source group and table validation; these are not scalar capture
   // parameters and must never compete with similarly named MakerNote copies.
-  if([name hasSuffix:@"CorrParams"]||[@[@"PhotometricInterpretation",@"ImageWidth",@"ImageHeight",@"FullImageSize",@"FileType"]containsObject:name])continue;
+  if([name hasSuffix:@"CorrParams"]||[@[@"PhotometricInterpretation",@"ImageWidth",@"ImageHeight",@"FullImageSize",@"FileType",@"DistortionCorrection",@"ChromaticAberrationCorrection",@"VignettingCorrection"]containsObject:name])continue;
   if(!values[name])values[name]=grouped[key];
  }
  NSDictionary*standard=@{@"Make":@"IFD0:Make",@"Model":@"IFD0:Model",@"LensModel":@"ExifIFD:LensModel",@"FocalLength":@"ExifIFD:FocalLength",@"FNumber":@"ExifIFD:FNumber",@"SubjectDistance":@"ExifIFD:SubjectDistance",@"ApertureValue":@"ExifIFD:ApertureValue",@"Orientation":@"IFD0:Orientation"};
  for(NSString*name in standard){id value=grouped[standard[name]];if(value)values[name]=value;}
  NSDictionary*range=LensCanonFocusDistanceRange(grouped);if(range)values[@"FocusDistanceRangeMeters"]=range;
  NSDictionary*embedded=LensSonyEmbeddedSourceEvidence(grouped);if(embedded)values[@"embeddedLensCorrectionSource"]=embedded;
+ NSDictionary*recorded=LensSonyRecordedCorrectionSettings(grouped);if(recorded)values[@"recordedLensCorrectionSettings"]=recorded;
  return @[values];
 }
 NSDictionary*LensReadRawCaptureMetadata(NSURL*raw,NSURL*tool,NSError**error){
@@ -352,13 +355,13 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
  cs=lf_db_find_camerasFn(db,text(m[@"Make"]).UTF8String,text(m[@"Model"]).UTF8String);
  const lfCamera*camera=selection[@"cameraID"]?cameraForID(lf_db_get_camerasFn(db),selection[@"cameraID"]):selectCamera(db,cs,m,lf_db_find_lenses_hdFn,lf_freeFn,&cameraMethod,&cameraEvidenceKey,&equivalentCameras);const lfLens*lens=NULL;
  if(selection[@"cameraID"]){if(!camera){selectionFailure(error,@"手动相机模式已变更或不存在，请重新选择。");goto cleanup;}cameraMethod=@"user-selected-content-profile";equivalentCameras=1;}
- if(!camera){fail(error,@"相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。");goto cleanup;}
+ if(!camera){if(error)*error=[NSError errorWithDomain:@"LensBridgeProfile" code:3 userInfo:@{NSLocalizedDescriptionKey:@"相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。"}];goto cleanup;}
  // Keep every compatible calibration; display-list uniquification would hide
  // sensor variants. Load once for all recorded identity fields and both routes.
  ls=lf_db_find_lenses_hdFn(db,camera,NULL,NULL,0);
  if(selection[@"lensID"]){lens=lensForID(ls,selection[@"lensID"]);if(!lens){selectionFailure(error,@"手动镜头校准已变更或与此相机不兼容，请重新选择。");goto cleanup;}identitySource=@"LensDockProfileSelection";identityMethod=@"user-selected-content-profile";}
  else lens=automaticLens(ls,camera,m,&identitySource,&identityMethod);
- if(!lens){fail(error,@"无法唯一匹配镜头，请选择镜头配置。");goto cleanup;}
+ if(!lens){if(error)*error=[NSError errorWithDomain:@"LensBridgeProfile" code:3 userInfo:@{NSLocalizedDescriptionKey:@"无法唯一匹配镜头，请选择镜头配置。"}];goto cleanup;}
  if(lens->MinFocal&&(focal<lens->MinFocal*.97||focal>lens->MaxFocal*1.03)){fail(error,@"实际焦距超出匹配镜头范围。");goto cleanup;}
  double distance=positive(m[@"FocusDistance"]);if(!distance)distance=positive(m[@"SubjectDistance"]);distanceSource=distance?@"metadata":@"infinity_fallback";if(!distance)distance=1000;
  lfLensCalibDistortion distortion={0};lfLensCalibTCA tca={0};lfLensCalibVignetting vig={0};
@@ -467,7 +470,12 @@ static NSDictionary*makeOrientedPlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUIntege
  if(native&&![native[@"probeSucceeded"]boolValue]){fail(error,@"暂时无法确认原生镜头矫正支持，未添加补充校正。");return nil;}
  BOOL official=[native[@"lensCorrectionSupported"]boolValue];NSError* __autoreleasing nativeProfileError=nil;
  if(!captureAligned){fail(official?&nativeProfileError:error,@"原始 RAW 的拍摄比例与当前显影尺寸不一致，暂不添加补充校正。");if(!official)return nil;}
- NSDictionary*base=captureAligned?makeNativePlan(m,db,lib,ow,oh,official?LensGeometryNone:geometry,official?&nativeProfileError:error):nil;
+ NSDictionary*base=captureAligned?makeNativePlan(m,db,lib,ow,oh,official?LensGeometryNone:geometry,&nativeProfileError):nil;
+ if(!base&&!official&&!requestedSelection.count&&[nativeProfileError.domain isEqual:@"LensBridgeProfile"]&&nativeProfileError.code==3){
+  NSDictionary*candidate=LensSonyDecodedFrameFallbackPlan(m,w,h);
+  if(candidate){if(error)*error=nil;return candidate;}
+ }
+ if(!base&&!official&&error)*error=nativeProfileError;
  if(!base&&requestedSelection.count){if(official&&error)*error=nativeProfileError;return nil;}
  if(official){
   double recordedDistance=positive(m[@"FocusDistance"])?:positive(m[@"SubjectDistance"]);
@@ -479,6 +487,7 @@ static NSDictionary*makeOrientedPlan(NSDictionary*m,NSURL*db,NSURL*lib,NSUIntege
   [p removeObjectForKey:@"normalizedGeometryMapsLZFSE"];p[@"report"]=r;base=p;
  }else if(base&&native){NSMutableDictionary*p=[base mutableCopy],*r=[base[@"report"]mutableCopy];r[@"nativeCorrectionSupport"]=native;r[@"geometryHandledByNative"]=@NO;r[@"supplementalVignettingOnly"]=@NO;p[@"report"]=r;base=p;}
  if(base&&LensRecordedFocusDistanceRange(m)){NSMutableDictionary*p=[base mutableCopy],*r=[base[@"report"]mutableCopy];r[@"FocusDistanceRangeMeters"]=LensRecordedFocusDistanceRange(m);p[@"report"]=r;base=p;}
+ if(base&&m[@"recordedLensCorrectionSettings"]){NSMutableDictionary*p=[base mutableCopy],*r=[base[@"report"]mutableCopy];r[@"recordedLensCorrectionSettings"]=m[@"recordedLensCorrectionSettings"];p[@"report"]=r;base=p;}
  if(!base||orientation==1)return base;
  NSMutableDictionary*plan=[base mutableCopy],*report=[base[@"report"]mutableCopy];report[@"width"]=@(w);report[@"height"]=@(h);report[@"sourceOrientation"]=@(orientation);report[@"calibrationWidth"]=@(ow);report[@"calibrationHeight"]=@(oh);plan[@"report"]=report;
  NSData*gain=base[@"linearGainFloat32BottomUp"];

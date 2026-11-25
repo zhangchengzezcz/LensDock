@@ -1,5 +1,6 @@
 import AppKit
 import CryptoKit
+import Darwin
 import UniformTypeIdentifiers
 
 struct DockError: LocalizedError {
@@ -301,14 +302,24 @@ struct Installer {
         #if !arch(arm64)
         throw DockError("预览版仅支持 Apple 芯片 Mac。")
         #else
-        guard ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 else { throw DockError("需要 macOS 26 或更新版本；当前只完成 macOS 27.2 实机验证。") }
+        guard ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 else { throw DockError("需要 macOS 26 或更新版本。") }
         let info = try plist(source.appendingPathComponent("Contents/Info.plist"))
         guard let identifier=info["CFBundleIdentifier"] as? String,
               (compatibility.acceptedBundleIdentifiers ?? [compatibility.vendorBundleIdentifier]).contains(identifier),
               let version=info["CFBundleShortVersionString"] as? String,
               hostVersionSupported(version,minimum:compatibility.minimumHostVersion ?? "4.3"),
               info["CFBundleExecutable"] as? String == compatibility.executable else { throw DockError("请选择 Pixelmator Pro 4.3 或更新版本。") }
-        _ = try run("/usr/bin/codesign", ["--verify", "--deep", "--strict", source.path])
+        // A valid signature from an arbitrary signer is insufficient here.
+        // Current Apple editions need Apple's own signing identity. The older
+        // Pixelmator Team bundle may also use Mac App Store distribution signing.
+        let requirement = identifier == compatibility.vendorBundleIdentifier
+            ? "anchor apple"
+            : "anchor apple or (anchor apple generic and certificate leaf[field.1.2.840.113635.100.6.1.9] exists)"
+        do {
+            _ = try run("/usr/bin/codesign", ["--verify", "--deep", "--strict", "-R=\(requirement)", source.path])
+        } catch {
+            throw DockError("所选 Pixelmator 未通过 Apple 或 Mac App Store 签名验证。请使用从 Mac App Store 安装的版本。")
+        }
         let hashes = try verifiedEligibleSource(source)
         _ = try patchedExecutable(Data(contentsOf: source.appendingPathComponent("Contents/MacOS/"+compatibility.executable)))
         return (info,hashes)
@@ -331,14 +342,29 @@ struct Installer {
         return hashes
     }
     func validate(_ source: URL) throws -> [String: Any] { try validatedSource(source).info }
-    func install(_ source: URL, applicationsDirectory: URL? = nil, progress: @escaping (String)->Void) throws -> URL {
+    func install(_ source: URL, applicationsDirectory: URL? = nil, replacingManagedHost: Bool = false, progress: @escaping (String)->Void) throws -> URL {
         progress("检查本机 Pixelmator 与兼容接口…")
         let verified = try validatedSource(source)
         var info = verified.info
         let sourceHashes = verified.hashes
         let applications = applicationsDirectory ?? fm.homeDirectoryForCurrentUser.appendingPathComponent("Applications",isDirectory:true)
         let destination = applications.appendingPathComponent(hostName,isDirectory:true)
-        guard !fm.fileExists(atPath: destination.path) else { throw DockError("预览宿主已存在。可先打开；重新安装前请将旧宿主移到废纸篓。已有文件不会被覆盖。") }
+        func managedHostIdentity() throws -> Data {
+            guard (try destination.resourceValues(forKeys: [.isSymbolicLinkKey])).isSymbolicLink == false else { throw DockError("安装位置是替身，无法更新。") }
+            let record = try Data(contentsOf: destination.appendingPathComponent("Contents/Info.plist"))
+            let values = try PropertyListSerialization.propertyList(from: record, format: nil) as? [String: Any]
+            guard values?["CFBundleIdentifier"] as? String == hostID,
+                  values?["LensDockPreviewVersion"] is String,
+                  fm.fileExists(atPath:destination.appendingPathComponent("Contents/Frameworks/LensPanel.dylib").path) else {
+                throw DockError("安装位置已有其他应用。请选择一个可用的安装位置。")
+            }
+            return record
+        }
+        let previous: Data?
+        if fm.fileExists(atPath:destination.path) {
+            guard replacingManagedHost else { throw DockError("预览宿主已存在，请使用更新功能。") }
+            previous = try managedHostIdentity()
+        } else { previous = nil }
         guard NSRunningApplication.runningApplications(withBundleIdentifier: hostID).isEmpty else { throw DockError("请先关闭 LensDock 的 Pixelmator 窗口。") }
         try fm.createDirectory(at:applications,withIntermediateDirectories:true)
         let staging = applications.appendingPathComponent(".LensDock-\(UUID().uuidString).app",isDirectory:true)
@@ -378,7 +404,18 @@ struct Installer {
         try PropertyListSerialization.data(fromPropertyList:info,format:.xml,options:0).write(to:infoURL)
         _ = try run("/usr/bin/codesign",["--force","--sign","-","--entitlements",entURL.path,staging.path])
         _ = try run("/usr/bin/codesign",["--verify","--deep","--strict",staging.path])
-        try fm.moveItem(at:staging,to:destination)
+        if let previous {
+            guard NSRunningApplication.runningApplications(withBundleIdentifier:hostID).isEmpty,
+                  try managedHostIdentity() == previous else { throw DockError("旧宿主已启动或安装位置发生变化，请退出后重试。") }
+            // The old host stays in place until the replacement is complete and
+            // verified. An atomic exchange cannot leave the live path empty.
+            let exchanged = staging.path.withCString { from in
+                destination.path.withCString { to in renameatx_np(AT_FDCWD, from, AT_FDCWD, to, UInt32(RENAME_SWAP)) }
+            }
+            guard exchanged == 0 else { throw DockError("无法交换两个宿主，现有安装仍可使用。") }
+        } else {
+            try fm.moveItem(at:staging,to:destination)
+        }
         progress("安装完成。打开后选择 RAW 图层，再进入“镜头矫正”。")
         return destination
     }
@@ -419,11 +456,15 @@ final class DockApp: NSObject, NSApplicationDelegate {
         openButton=NSButton(title:"打开 Pixelmator",target:self,action:#selector(openHost));openButton.frame=NSRect(x:350,y:30,width:198,height:34);openButton.bezelStyle = .rounded;openButton.isEnabled=false;root.addSubview(openButton)
         let existing=fm.homeDirectoryForCurrentUser.appendingPathComponent("Applications/"+hostName)
         if let info=try? plist(existing.appendingPathComponent("Contents/Info.plist")),info["CFBundleIdentifier"] as? String == hostID {
-            installed=existing;openButton.isEnabled=true;installButton.isEnabled=false
+            installed=existing;openButton.isEnabled=true
             let expected=(try? Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Payload/LensPanel.dylib"))).map { lensDigest($0) } ?? ""
             let actual=(try? Data(contentsOf:existing.appendingPathComponent("Contents/Frameworks/LensPanel.dylib"))).map { lensDigest($0) } ?? ""
+            let sourceInfo=try? plist(source.appendingPathComponent("Contents/Info.plist"))
             let current=installedHostIsCurrent(info,version:previewVersion,expectedHash:expected,actualHash:actual)
-            status.stringValue=current ? "已安装当前预览宿主，可直接打开。" : "检测到旧版或不同构建。请先退出旧宿主并将它移到废纸篓，再重新打开 LensDock 安装新版；PXD 与原片会保留。"
+                && info["CFBundleVersion"] as? String == sourceInfo?["CFBundleVersion"] as? String
+                && info["CFBundleShortVersionString"] as? String == sourceInfo?["CFBundleShortVersionString"] as? String
+            installButton.title="更新预览宿主"
+            status.stringValue=current ? "已安装当前预览宿主，可直接打开。" : "检测到新版。退出旧预览宿主后可直接更新，继续使用原来的 PXD。"
         }
         window.center();window.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true)
     }
@@ -440,10 +481,10 @@ final class DockApp: NSObject, NSApplicationDelegate {
         DispatchQueue.global(qos:.userInitiated).async {
             do {
                 let installer=try Installer(resources:resources)
-                let destination=try installer.install(original){ message in DispatchQueue.main.async {self.status.stringValue=message} }
-                DispatchQueue.main.async {self.installed=destination;self.busy=false;self.spinner.stopAnimation(nil);self.openButton.isEnabled=true;self.chooseButton.isEnabled=true}
+                let destination=try installer.install(original,replacingManagedHost:true){ message in DispatchQueue.main.async {self.status.stringValue=message} }
+                DispatchQueue.main.async {self.installed=destination;self.busy=false;self.spinner.stopAnimation(nil);self.openButton.isEnabled=true;self.chooseButton.isEnabled=true;self.installButton.isEnabled=true;self.installButton.title="更新预览宿主"}
             } catch {
-                DispatchQueue.main.async {self.busy=false;self.spinner.stopAnimation(nil);self.chooseButton.isEnabled=true;self.installButton.isEnabled=true;self.status.stringValue=error.localizedDescription}
+                DispatchQueue.main.async {self.busy=false;self.spinner.stopAnimation(nil);self.chooseButton.isEnabled=true;self.installButton.isEnabled=true;self.openButton.isEnabled=self.installed != nil;self.status.stringValue=error.localizedDescription}
             }
         }
     }

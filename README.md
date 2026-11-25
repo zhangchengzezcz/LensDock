@@ -1,6 +1,8 @@
 # LensDock · 镜头坞
 
-**保留 RAW 的 Pixelmator 镜头矫正预览版（开发源码 0.2.8 build 15；已交付预览包为 0.2.7 build 14）。** 支持目标为 Apple 芯片 Mac、macOS 26 及以上。为原生镜头矫正尚不支持的照片，补充有可靠标定依据的畸变、横向色差和暗角补偿；原生支持时自动跳过补充畸变与色差，并保留默认关闭的“额外去暗角”。
+**保留 RAW 的 Pixelmator 镜头矫正预览版（开发源码 0.2.8 build 16；已交付预览包为 0.2.7 build 14）。** 支持目标为 Apple 芯片 Mac、macOS 26 及以上。为原生镜头矫正尚不支持的照片，补充有可靠标定依据的畸变、横向色差和暗角补偿。原生支持时自动跳过补充畸变与色差，并保留默认关闭的“额外去暗角”。
+
+build 16 增加 Pixelmator 5.0 效果数据适配，并保留 4.3 的效果读写路径。两套框架的接口、数据布局、效果序列化检查通过。当前 5.0 测试来源的签名来自第三方，其独立副本无法打开照片。Apple 签名版的实际 RAW 应用、保存和重开仍待验收。新版安装器会校验原应用的签名来源，更新前先完整准备并验证新的独立宿主。匹配时同一次 RAW 快照只导出一次原片。
 
 0.2.7 build 13 开发源码修复镜头型号比较：保留代际、`*`、`+`、Unicode 名称与数字边界，允许焦距/光圈小数尾零的等价写法；不再因 Lensfun 查询只有一个候选便接受多出型号词的镜头。完整记录名称优先于省略厂家的匹配，仍有歧义时保留选择配置入口。没有新增或修改光学标定，既有 0.2.6 DMG 和草稿资产保持原样。详情见 [匹配规则](Documentation/Matching.md)。
 
@@ -18,7 +20,7 @@ build 15 开发源码增加原生 Sony 分组校正表读取、Core Image 原始
 
 ## 安装与使用
 
-1. 在 **macOS 26 或更新版本的 Apple 芯片 Mac** 上自行安装 **Pixelmator Pro 4.3 或更新版本**。Intel 不在本项目支持范围内。
+1. 在 **macOS 26 或更新版本的 Apple 芯片 Mac** 上，从 Mac App Store 安装 **Pixelmator Pro 4.3 或更新版本**。以实际版本的兼容检查和验收记录为准。
 2. 打开含内嵌矢量高清背景的 DMG，将 `LensDock.app` 拖到“应用程序”，打开 LensDock。
 3. 点击“安装预览宿主”。版本门槛、必要导出接口、签名与 arm64 加载结构全部通过才会安装；不需要管理员权限。
 4. 点击“打开 Pixelmator”，打开 RAW 并选中 RAW 图层，进入 **镜头矫正 → 打开镜头矫正…**。
@@ -95,9 +97,11 @@ python3 Scripts/package.py
 python3 Scripts/verify_dmg.py
 ```
 
-版本由 `Version.json` 统一管理。打包产物位于 `Distribution/<版本>-preview/`，已有同名资产会被拒绝覆盖；安装程序核对宿主版本、模块登记哈希与实际模块字节，旧版会提示保留文档后重新安装，不自动替换宿主。
+版本由 `Version.json` 统一管理。打包产物位于 `Distribution/<版本>-preview/`，已有同名资产会被拒绝覆盖。点击“更新预览宿主”可更新已退出的 LensDock 宿主，安装器会在签名与验收检查通过后交换应用目录。
 
-原生渲染测试需本机兼容 Pixelmator 的 PTFoundation；它不会被复制进仓库。实际 RAW 专项可在本地 `Tests/PrivateRAW/` 放置 `Canon40D.CR2`、`NikonD70.NEF`、`CanonR50V.CR3`；这些文件被 Git 忽略，默认测试不会凭空生成真实 RAW 证据。依赖源码归档有 SHA256 清单，见 `Vendor/Sources/upstream-manifest.json`。
+源码放在同步目录时，可用 `LENS_DOCK_BUILD_ROOT` 指定本地构建目录。构建、安装器验证和打包使用同一设置。
+
+原生渲染测试需本机兼容的 PTFoundation。调用旧效果封装的渲染组需要通过 `LENS_TEST_PIXELMATOR` 指定 4.3 应用路径。实际 RAW 专项可在本地 `Tests/PrivateRAW/` 放置 `Canon40D.CR2`、`NikonD70.NEF`、`CanonR50V.CR3`。原片和厂商框架均留在本机。依赖源码归档有 SHA256 清单，见 `Vendor/Sources/upstream-manifest.json`。
 
 ## 卸载与数据保留
 
