@@ -8,7 +8,10 @@ import argparse
 from collections import Counter
 import hashlib
 import json
+import math
 import re
+import subprocess
+import tempfile
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +34,46 @@ def fields(tree, wanted):
     return found
 
 
-def audit(reference, output):
+def match_request(values):
+    if {flag.lower() for flag in values['CameraRawProfile']} != {'true'}:
+        return None, 'notExplicitlyRAW'
+    if any(len(values[key]) != 1 for key in ('Make', 'Model', 'Lens')):
+        return None, 'missingOrInconsistentIdentity'
+    focal_lengths = []
+    for value in values['FocalLength']:
+        try:
+            focal = float(value)
+        except ValueError:
+            continue
+        if math.isfinite(focal) and focal > 0:
+            focal_lengths.append(focal)
+    if not focal_lengths:
+        return None, 'noFocalLengthWitness'
+    focal_lengths = sorted(set(focal_lengths))
+    return {'Make': next(iter(values['Make'])), 'Model': next(iter(values['Model'])),
+            'LensModel': next(iter(values['Lens'])), 'FocalLength': focal_lengths[len(focal_lengths)//2]}, None
+
+
+def production_matching(requests, skipped):
+    native = ROOT/'Sources/Native'
+    with tempfile.TemporaryDirectory(prefix='lensdock-reference-audit-') as work:
+        executable = Path(work)/'audit-reference-metadata'
+        subprocess.run([
+            'xcrun', 'clang', '-O2', '-fobjc-arc', '-arch', 'arm64', '-mmacosx-version-min=26.0',
+            '-I', str(native), '-framework', 'Cocoa', '-framework', 'ImageIO', '-framework', 'CoreImage',
+            str(ROOT/'Tests/audit_reference_metadata.m'), str(native/'LensNativeProfileEngine.m'),
+            '-o', str(executable),
+        ], cwd=ROOT, check=True)
+        counts = json.loads(subprocess.check_output([str(executable)], input=json.dumps(requests), text=True, cwd=ROOT))
+    return {
+        'scope': 'Production Lensfun plan using one focal length per eligible reference LCP file and its exact recorded Make, Model and Lens. No aperture, MakerNotes, Apple native probe, optical equivalence or real RAW test.',
+        'filesTested': len(requests),
+        'filesSkippedByReason': dict(skipped),
+        **counts,
+    }
+
+
+def audit(reference, output, run_matching=False):
     exact_names = set()
     database_sources, cameras, lenses = [], 0, 0
     for file in sorted((ROOT/'Resources/LensBridge/db').glob('*.xml')):
@@ -52,11 +94,15 @@ def audit(reference, output):
         raise ValueError('No LCP files found in the optional local reference directory')
     names, flags, makers, source_hashes, failures = set(), Counter(), Counter(), [], []
     with_exact_name, without_exact_name = 0, 0
+    requests, skipped = [], Counter()
+    wanted = ['Lens', 'LensPrettyName', 'Make', 'CameraRawProfile']
+    if run_matching:
+        wanted.extend(['Model', 'FocalLength'])
     for file in files:
         data = file.read_bytes()
         source_hashes.append([str(file.relative_to(reference)), hashlib.sha256(data).hexdigest()])
         try:
-            values = fields(ET.fromstring(data), ['Lens', 'LensPrettyName', 'Make', 'CameraRawProfile'])
+            values = fields(ET.fromstring(data), wanted)
         except ET.ParseError:
             failures.append(str(file.relative_to(reference)))
             continue
@@ -70,6 +116,12 @@ def audit(reference, output):
             with_exact_name += 1
         else:
             without_exact_name += 1
+        if run_matching:
+            request, reason = match_request(values)
+            if request:
+                requests.append(request)
+            else:
+                skipped[reason] += 1
     report = {
         'scope': 'Read-only local reference name/flag inventory; no calibration coefficients copied, no runtime support or optical-equivalence claim',
         'referenceLCPFiles': len(files), 'parsedFiles': len(files)-len(failures),
@@ -90,6 +142,8 @@ def audit(reference, output):
         'adobeCalibrationCoefficientsRedistributed': False,
         'productRequiresLightroom': False,
     }
+    if run_matching:
+        report['productionMatching'] = production_matching(requests, skipped)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, indent=2, ensure_ascii=False)+'\n')
     print(json.dumps(report, indent=2, ensure_ascii=False))
@@ -99,5 +153,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('reference', type=Path)
     parser.add_argument('--output', type=Path, default=ROOT/'Build/Audit/reference-name-inventory.json')
+    parser.add_argument('--production-matching', action='store_true', help='Run the production Lensfun planner on eligible recorded camera, lens and focal-length fields')
     args = parser.parse_args()
-    audit(args.reference, args.output)
+    audit(args.reference, args.output, args.production_matching)

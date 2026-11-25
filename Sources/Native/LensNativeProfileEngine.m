@@ -146,9 +146,64 @@ static const lfLens*fixedBuiltInLens(const lfLens**lenses,const lfCamera*camera,
  NSDictionary*tags=m[@"rawCaptureMetadata"];if(!LensCaptureModeEvidence(tags)||![tags[@"Panasonic:ConversionLens"]isEqual:@1])return NULL;
  return exactLensIdentity(lenses[0],@"DMC-LX3 & compatibles (Standard)")?lenses[0]:NULL;
 }
+static const lfLens *ricohBuiltInLens(const lfLens **lenses, const lfCamera *camera, NSDictionary *metadata) {
+ if (!lenses || !lenses[0] || lenses[1] || !camera->Mount || !lenses[0]->Model) return NULL;
+ NSDictionary *tags = metadata[@"ricohLensMetadata"];
+ if (![tags isKindOfClass:NSDictionary.class] || ![tags[@"File:FileType"] isEqual:@"DNG"] ||
+     ![norm(text(tags[@"IFD0:Make"])) isEqual:@"ricohimagingcompanyltd"]) return NULL;
+ NSString *model = norm(text(tags[@"IFD0:Model"]));
+ if (![model isEqual:norm(text(metadata[@"Model"]))]) return NULL;
+
+ NSString *databaseModel, *mount, *lensMarking;
+ NSUInteger equivalentFocal;
+ if ([model isEqual:@"gr"]) {
+  if (![tags[@"Ricoh:WideAdapter"] isEqual:@0] || ![tags[@"Ricoh:CropMode"] isEqual:@0]) return NULL;
+  databaseModel = @"Ricoh GR & compatibles";
+  mount = @"ricohGR";
+  lensMarking = @"18.3mm f/2.8";
+  equivalentFocal = 28;
+ } else if ([model isEqual:@"ricohgriiix"]) {
+  if (![tags[@"Pentax:LensType"] isEqual:@"31 4"]) return NULL;
+  databaseModel = @"Ricoh GR IIIx & compatibles";
+  mount = @"ricohGRIIIx";
+  lensMarking = @"26.1mm f/2.8";
+  equivalentFocal = 40;
+ } else if ([model isEqual:@"ricohgriv"]) {
+  if (![tags[@"Pentax:LensType"] isEqual:@"31 8"]) return NULL;
+  databaseModel = @"Ricoh GR IV & compatibles";
+  mount = @"ricohGRIV";
+  lensMarking = @"18.3mm f/2.8";
+  equivalentFocal = 28;
+ } else return NULL;
+
+ // The equivalent focal length distinguishes the uncropped view. The GR III
+ // GW-4 profile and the GR IIIx GT-2 attachment are never selected here.
+ if (![tags[@"ExifIFD:FocalLengthIn35mmFormat"] isEqual:@(equivalentFocal)] ||
+     ![mount isEqual:@(camera->Mount)] || ![databaseModel isEqual:@(lenses[0]->Model)]) return NULL;
+ NSString *bareKey = lensIdentityKey(lensMarking);
+ NSString *markedKey = lensIdentityKey([@"GR LENS " stringByAppendingString:lensMarking]);
+ for (NSString *field in @[@"LensModel", @"LensIDName", @"Lens"]) {
+  NSString *name = text(metadata[field]);
+  if (!name.length) continue;
+  NSString *key = lensIdentityKey(name);
+  if (![key isEqual:bareKey] && ![key isEqual:markedKey]) return NULL;
+ }
+ return lenses[0];
+}
 // Both the picker and correction plan must use this decision. A preselected
 // picker row must never turn a rejected token-only match into manual approval.
 static const lfLens*automaticLens(const lfLens**lenses,const lfCamera*camera,NSDictionary*m,NSString**source,NSString**method){
+ if (m[@"ricohLensMetadata"] && lenses && lenses[0] && !lenses[1] && camera->Mount &&
+     [@[@"ricohGR", @"ricohGRIIIx", @"ricohGRIV"] containsObject:@(camera->Mount)]) {
+  const lfLens *standard = ricohBuiltInLens(lenses, camera, m);
+  if (standard) {
+   if (source) *source = @"ricohLensMetadata";
+   if (method) *method = @"fixed-built-in-camera-lens";
+  }
+  // On these RAWs, a mislabeled standard lens must not override the
+  // accessory or crop state. A manual LensDock choice remains available.
+  return standard;
+ }
  for(NSString*key in @[@"LensModel",@"LensIDName",@"Lens"]){
   NSString*name=text(m[key]);if(!name.length)continue;NSUInteger count=0;BOOL sensor=NO;
   const lfLens*lens=selectExactLensVariant(lenses,camera,name,&count,&sensor);
@@ -281,6 +336,7 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  // MakerNotes and a track. Keep their groups until capture fields are selected;
  // ExifTool's unqualified duplicate winner is not necessarily standard EXIF.
  if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower",@"-FileType",@"-SubIFD:PhotometricInterpretation",@"-SubIFD:ImageWidth",@"-SubIFD:ImageHeight",@"-Sony:FullImageSize",@"-SubIFD:DistortionCorrParams",@"-SubIFD:ChromaticAberrationCorrParams",@"-SubIFD:VignettingCorrParams",@"-SubIFD:DistortionCorrection",@"-SubIFD:ChromaticAberrationCorrection",@"-SubIFD:VignettingCorrection"]];
+ if(numeric)[args addObjectsFromArray:@[@"-ExifIFD:FocalLengthIn35mmFormat",@"-Ricoh:WideAdapter",@"-Ricoh:CropMode",@"-Pentax:LensType"]];
  [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];
  NSArray*rows=runExifArguments(raw,tool,args,error);if(!numeric||!rows.count)return rows;
  NSDictionary*grouped=rows[0];NSMutableDictionary*values=[NSMutableDictionary new];
@@ -290,6 +346,7 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
   // not a directly recorded focus distance. It sorts before MakerNote groups
   // and must neither override them nor masquerade as a measured distance.
   if([name isEqual:@"FocusDistance"]&&[key hasPrefix:@"Composite:"])continue;
+  if([@[@"FocalLengthIn35mmFormat",@"WideAdapter",@"CropMode"]containsObject:name])continue;
   // Preserve source group and table validation; these are not scalar capture
   // parameters and must never compete with similarly named MakerNote copies.
   if([name hasSuffix:@"CorrParams"]||[@[@"PhotometricInterpretation",@"ImageWidth",@"ImageHeight",@"FullImageSize",@"FileType",@"DistortionCorrection",@"ChromaticAberrationCorrection",@"VignettingCorrection"]containsObject:name])continue;
@@ -300,6 +357,12 @@ static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  NSDictionary*range=LensCanonFocusDistanceRange(grouped);if(range)values[@"FocusDistanceRangeMeters"]=range;
  NSDictionary*embedded=LensSonyEmbeddedSourceEvidence(grouped);if(embedded)values[@"embeddedLensCorrectionSource"]=embedded;
  NSDictionary*recorded=LensSonyRecordedCorrectionSettings(grouped);if(recorded)values[@"recordedLensCorrectionSettings"]=recorded;
+ if([grouped[@"File:FileType"] isEqual:@"DNG"]&&[norm(text(grouped[@"IFD0:Make"]))isEqual:@"ricohimagingcompanyltd"]){
+  NSMutableDictionary *lensTags = [NSMutableDictionary new];
+  for(NSString *key in @[@"File:FileType",@"IFD0:Make",@"IFD0:Model",@"ExifIFD:FocalLengthIn35mmFormat",@"Ricoh:WideAdapter",@"Ricoh:CropMode",@"Pentax:LensType"])
+   lensTags[key] = grouped[key];
+  values[@"ricohLensMetadata"] = lensTags;
+ }
  return @[values];
 }
 NSDictionary*LensReadRawCaptureMetadata(NSURL*raw,NSURL*tool,NSError**error){

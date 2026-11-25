@@ -1,0 +1,210 @@
+{
+  "adobeCoefficientsRedistributed": false,
+  "catalogRegression": {
+    "ambiguous": 3,
+    "calibrationVariantDifferences": 0,
+    "matched": 1572,
+    "skipped": 5,
+    "tested": 1575
+  },
+  "converterCropConflictingBodyAndNameRejected": true,
+  "hostRegression": {
+    "pixelmator43GroupsPassed": 39,
+    "pixelmator50AppleSignedLiveRAWVerified": false,
+    "pixelmator50FrameworkGroupsPassed": 34,
+    "pixelmator50LegacyRenderGroupsSkipped": 5,
+    "platformBinaryCount": 7,
+    "platformDeploymentTarget": "26.0"
+  },
+  "newDMGReleased": false,
+  "productRequiresLightroom": false,
+  "referenceProfiles": {
+    "accepted": 125,
+    "byMake": {
+      "Apple": {
+        "accepted": 0,
+        "unresolved": 143
+      },
+      "Canon": {
+        "accepted": 104,
+        "unresolved": 110
+      },
+      "DJI": {
+        "accepted": 0,
+        "unresolved": 8
+      },
+      "FUJIFILM": {
+        "accepted": 2,
+        "unresolved": 28
+      },
+      "Fujifilm": {
+        "accepted": 0,
+        "unresolved": 6
+      },
+      "Google": {
+        "accepted": 0,
+        "unresolved": 2
+      },
+      "HMD Global": {
+        "accepted": 0,
+        "unresolved": 2
+      },
+      "HUAWEI": {
+        "accepted": 0,
+        "unresolved": 24
+      },
+      "LGE": {
+        "accepted": 0,
+        "unresolved": 3
+      },
+      "Leica Camera AG": {
+        "accepted": 0,
+        "unresolved": 2
+      },
+      "NIKON CORPORATION": {
+        "accepted": 15,
+        "unresolved": 158
+      },
+      "OMD": {
+        "accepted": 0,
+        "unresolved": 1
+      },
+      "OPPO": {
+        "accepted": 0,
+        "unresolved": 37
+      },
+      "OnePlus": {
+        "accepted": 0,
+        "unresolved": 9
+      },
+      "PARROT": {
+        "accepted": 0,
+        "unresolved": 2
+      },
+      "PENTAX": {
+        "accepted": 0,
+        "unresolved": 1
+      },
+      "Panasonic": {
+        "accepted": 0,
+        "unresolved": 2
+      },
+      "REEFLEX": {
+        "accepted": 0,
+        "unresolved": 3
+      },
+      "RICOH": {
+        "accepted": 0,
+        "unresolved": 1
+      },
+      "RICOH IMAGING COMPANY, LTD.": {
+        "accepted": 0,
+        "unresolved": 6
+      },
+      "SAMSUNG": {
+        "accepted": 0,
+        "unresolved": 5
+      },
+      "SHARP": {
+        "accepted": 0,
+        "unresolved": 1
+      },
+      "SIGMA": {
+        "accepted": 0,
+        "unresolved": 10
+      },
+      "SONY": {
+        "accepted": 4,
+        "unresolved": 39
+      },
+      "Sony": {
+        "accepted": 0,
+        "unresolved": 40
+      },
+      "Xiaomi": {
+        "accepted": 0,
+        "unresolved": 71
+      },
+      "ZEISS": {
+        "accepted": 0,
+        "unresolved": 1
+      },
+      "motorola": {
+        "accepted": 0,
+        "unresolved": 3
+      },
+      "samsung": {
+        "accepted": 0,
+        "unresolved": 123
+      }
+    },
+    "files": 3633,
+    "filesSkippedByReason": {
+      "missingOrInconsistentIdentity": 1746,
+      "noFocalLengthWitness": 172,
+      "notExplicitlyRAW": 749
+    },
+    "filesTested": 966,
+    "referenceManifestSHA256": "5bab1e411bb9722ea9d143042d8c8e09306fb440c126717b13974bf4c42f111a",
+    "scope": "Production Lensfun plan using one focal length per eligible reference LCP file and its exact recorded Make, Model and Lens. No aperture, MakerNotes, Apple native probe, optical equivalence or real RAW test.",
+    "unresolved": 841
+  },
+  "ricohGRPublicRAW": {
+    "bytes": 12129815,
+    "correctedPreviewSize": [
+      616,
+      408
+    ],
+    "effectArchiveRoundTrip": true,
+    "entry": 996,
+    "fNumber": 5.6,
+    "focalMM": 18.3,
+    "hostDocumentSaveReopenVerified": false,
+    "hostFramework": "Pixelmator 4.3 build 3.0.75",
+    "matchedMount": "ricohGR",
+    "measuredOpticalResidualVerified": false,
+    "nativeCorrectionSupported": false,
+    "noSupplementalVignettingProfile": true,
+    "nonOpaquePixels": 0,
+    "pixelsWithRGBChangeOver001": 230620,
+    "repository": "https://raw.pixls.us/",
+    "sha256": "7ceec1ea31c56b6e0414202504581b915f17818ffe018b4c8bba1393332c405e",
+    "unchangedAfterRendering": true
+  },
+  "ricohRoutes": [
+    {
+      "completeRAWTested": true,
+      "model": "Ricoh GR",
+      "standardEvidence": {
+        "Ricoh:CropMode": 0,
+        "Ricoh:WideAdapter": 0,
+        "equivalentFocalMM": 28
+      }
+    },
+    {
+      "completeRAWTested": false,
+      "controlledMetadataPassed": true,
+      "model": "Ricoh GR IIIx",
+      "publicRAWPrefixRead": true,
+      "standardEvidence": {
+        "Pentax:LensType": "31 4",
+        "equivalentFocalMM": 40
+      }
+    },
+    {
+      "completeRAWTested": false,
+      "controlledMetadataPassed": true,
+      "model": "Ricoh GR IV",
+      "standardEvidence": {
+        "Pentax:LensType": "31 8",
+        "equivalentFocalMM": 28
+      }
+    }
+  ],
+  "runtime": {
+    "architecture": "arm64",
+    "macOS": "27.3",
+    "macOSBuild": "26C5047e"
+  },
+  "version": "0.2.8-preview-build18"
+}

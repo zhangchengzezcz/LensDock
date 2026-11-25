@@ -135,3 +135,11 @@ ExifTool 的 `Composite:FocusDistance` 对部分 Sony 是 `FocusPosition × Foca
 同一次进程按 XML 原始字节缓存别名解析。每次读取仍独立加载实际 Lensfun 标定，替换同路径 XML 后立即读取新内容。相同目录、相同样本和同一台 Mac 上，两次运行的完整结果一致，墙钟耗时由 226.55 秒降至 53.53 秒，约减少 76%。计时覆盖批量匹配与插值，实际图像渲染和界面应用另计。复跑命令为 `python3 Scripts/audit_catalog.py --run`。
 
 目录衍生样本从 1,564/1,567 增至 1,572/1,575。三个既有歧义为两条 FinePix F810 和一条 DMC-LX3，另有五个无可用测试条件的条目明确跳过。按预期机身与传感器标定检查，无标定版本差异。相同 3,633 份本机 LCP 的精确默认名称重合由 570 增至 571。名称统计无法覆盖别名、内嵌标定和 Apple 原生矫正，不能据此判定实拍自动匹配率。公开 GFX 50S 的独立元数据确认 GF63mm、63 mm、f/14，完整 RAW 下载未完成。 [验收记录](../Evidence/build17-matching-verification.json)
+
+### 0.2.8 build 18 Ricoh 固定镜头与 Lightroom 字段核查
+
+Ricoh GR 的原始 DNG 需同时记录广角转接镜未安装、裁切模式关闭及 28 mm 等效焦距。GR IIIx 需记录 Pentax MakerNote 镜头类型 31 4 及 40 mm 等效焦距，GR IV 需记录 31 8 及 28 mm 等效焦距。三款都要求原片机身与 Lensfun 固定镜头卡口对应，明确记录的不同镜头、转接镜或裁切模式会阻止自动套用标准配置。GR III 的库内标定用于 GW-4，未加入此规则。使用原有 Lensfun 光学系数。 [Ricoh GR III / IIIx 规格](https://www.ricoh-imaging.co.jp/english/products/gr-3/spec/) [Ricoh GR IV 规格](https://www.ricoh-imaging.co.jp/english/products/gr-4/spec/)
+
+公开 Ricoh GR DNG（raw.pixls.us 条目 996）自动读取 18.3 mm、f/5.6。在 macOS 27.3，原生探测未报告该原片的镜头矫正支持，LensDock 自动选中畸变标定，未生成暗角补偿。4.3 效果归档后读回，实际解码的 616×408 预览经过畸变矫正与约束边缘渲染，透明像素为零，原片 SHA256 前后相同。此项使用 4.3 框架渲染，文档界面保存与重开未测。GR IIIx 条目 5818 下载前段读到了标准镜头类型，完整文件解码仍待验收。GR IV 使用受控元数据。 [公开 RAW 数据库](https://raw.pixls.us/)
+
+开发者可运行 `python3 Scripts/audit_reference_names.py <本机 LensProfiles 目录> --production-matching`。本机 3,633 份 LCP 中，966 份显式标为 RAW 且各有唯一的厂商、机身、镜头字段及有效焦距。将每份的一个焦距与这些字段交给生产引擎，125 份生成 Lensfun 配置，841 份未解析。此计数不含真实 MakerNotes、逐张 Apple 原生探测、拍摄光圈、相机内嵌标定和光学对照。它用于定位差距，包含同一镜头的多份文件。产品运行独立于 Lightroom。 [验收记录](../Evidence/build18-ricoh-matching-verification.json)
