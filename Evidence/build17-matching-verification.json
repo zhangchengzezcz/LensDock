@@ -1,0 +1,156 @@
+{
+  "version": "0.2.8-preview-build17",
+  "runtime": {
+    "architecture": "arm64",
+    "macOS": "27.3",
+    "macOSBuild": "26C5047e"
+  },
+  "catalog": {
+    "sourceCommit": "37238fcef563196fb798f6151cb9023968b26c40",
+    "previousSourceCommit": "3e14a04ba6a5c02a65fcce50d4f1987c705dc196",
+    "scope": "Database-derived identity aliases and interpolation witnesses in small native coordinates at each recorded aspect ratio; not real RAW or optical accuracy coverage",
+    "before": {
+      "cameraEntries": 1057,
+      "lensEntries": 1572,
+      "requestCount": 1567,
+      "matchedCount": 1564,
+      "failureCount": 3,
+      "calibrationVariantDifferenceCount": 0,
+      "skippedCount": 5
+    },
+    "after": {
+      "cameraEntries": 1059,
+      "lensEntries": 1580,
+      "requestCount": 1575,
+      "matchedCount": 1572,
+      "failureCount": 3,
+      "calibrationVariantDifferenceCount": 0,
+      "skippedCount": 5
+    },
+    "failures": [
+      {
+        "metadata": {
+          "FocusDistance": 1000,
+          "FocalLength": 7.2,
+          "FNumber": 8,
+          "Make": "Fujifilm",
+          "Model": "FinePix F810",
+          "LensModel": "FinePix F810 & compatibles (Standard)"
+        },
+        "id": "compact-fujifilm.xml:5",
+        "matchedLens": "",
+        "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+        "expectedLens": "FinePix F810 & compatibles (Standard)"
+      },
+      {
+        "metadata": {
+          "FocusDistance": 1000,
+          "FocalLength": 7.2,
+          "FNumber": 8,
+          "Make": "Fujifilm",
+          "Model": "FinePix F810",
+          "LensModel": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+        },
+        "id": "compact-fujifilm.xml:6",
+        "matchedLens": "",
+        "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+        "expectedLens": "FinePix F810 & compatibles, with WL-FXE01 (full wide)"
+      },
+      {
+        "metadata": {
+          "FocusDistance": 1000,
+          "FocalLength": 5.1,
+          "FNumber": 8,
+          "Make": "Panasonic",
+          "Model": "DMC-LX3",
+          "LensModel": "DMC-LX3 & compatibles (Standard)"
+        },
+        "id": "compact-panasonic.xml:1",
+        "matchedLens": "",
+        "reason": "相机候选的卡口或裁切参数无法唯一确认，请选择相机配置。",
+        "expectedLens": "DMC-LX3 & compatibles (Standard)"
+      }
+    ],
+    "skipped": [
+      {
+        "id": "generic.xml:0",
+        "reason": "no-optical-calibration-point",
+        "lens": "Rectilinear 10-1000mm f/1.0"
+      },
+      {
+        "id": "generic.xml:1",
+        "reason": "no-optical-calibration-point",
+        "lens": "Fisheye 8-20mm f/1.0"
+      },
+      {
+        "id": "generic.xml:2",
+        "reason": "no-optical-calibration-point",
+        "lens": "Panoramic 10-100mm f/1.0"
+      },
+      {
+        "id": "misc.xml:131",
+        "reason": "no-compatible-calibration-crop-camera",
+        "lens": "Pergear 7.5mm f/2.8"
+      },
+      {
+        "id": "misc.xml:132",
+        "reason": "no-compatible-calibration-crop-camera",
+        "lens": "Yongnuo 25mm f/1.7 II"
+      }
+    ],
+    "newCalibrationWitnessesPassed": 8,
+    "priorOMManualIDsVerified": 4,
+    "OMNewNamesResolveToSameCalibrations": true
+  },
+  "benchmark": {
+    "command": "native executable built by python3 Scripts/audit_catalog.py --run",
+    "inputSHA256": "defd09424afafb247ad3d8641ec18089435f1e2a1b38e74f75d42839b8ab6553",
+    "matchedAndRejectedResultsIdentical": true,
+    "wallSecondsBefore": 226.55,
+    "wallSecondsAfter": 53.53,
+    "scope": "One local pair of timed full catalog runs on identical data for repeated profile matching and interpolation; excludes GUI, pixel rendering and export",
+    "samePathXMLReplacementRecognized": true
+  },
+  "lightroomNameInventory": {
+    "referenceFiles": 3633,
+    "referenceManifestSHA256": "5bab1e411bb9722ea9d143042d8c8e09306fb440c126717b13974bf4c42f111a",
+    "beforeExactDefaultNameOverlaps": 570,
+    "afterExactDefaultNameOverlaps": 571,
+    "adobeCoefficientsCopied": false,
+    "realAutomaticCoverageEquivalenceVerified": false
+  },
+  "publicGFX50S": {
+    "repository": "https://raw.pixls.us/",
+    "entry": 1435,
+    "lens": "GF63mmF2.8 R WR",
+    "focalMM": 63,
+    "fNumber": 14,
+    "publicMetadataConfirmed": true,
+    "completeRAWVerified": false,
+    "fullRenderVerified": false
+  },
+  "hostTests": {
+    "4.3": {
+      "build": "3.0.75",
+      "selectedGroupsPassed": 38,
+      "nativeThreeCorrectionRenderCasesPassed": 192
+    },
+    "5.0": {
+      "build": "5.0.97",
+      "selectedGroupsPassed": 33,
+      "legacyRenderGroupsSkipped": 5,
+      "requiredExports": 18,
+      "effectsRoundtrip": true,
+      "replacementAndRollbackPassed": true,
+      "installedAppleSignatureVerified": false,
+      "installerRefusedThirdPartySignedSource": true,
+      "liveRAWApplySaveReopenVerified": false
+    },
+    "platformContract": {
+      "verifiedBinaries": 7,
+      "deploymentTarget": "26.0",
+      "otherOSRuntimesTested": false
+    }
+  },
+  "newDMGReleased": false
+}

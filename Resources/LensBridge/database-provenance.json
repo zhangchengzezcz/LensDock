@@ -1,21 +1,52 @@
 {
   "schema": 1,
   "repository": "https://github.com/lensfun/lensfun",
-  "sourceCommit": "3e14a04ba6a5c02a65fcce50d4f1987c705dc196",
-  "previousSourceCommit": "43f9e001ab66c4fcdd4f400463f13b72f94b2288",
+  "sourceCommit": "37238fcef563196fb798f6151cb9023968b26c40",
+  "previousSourceCommit": "3e14a04ba6a5c02a65fcce50d4f1987c705dc196",
   "databaseFormat": 1,
   "officialExportURL": "https://lensfun.github.io/db/version_1.tar.bz2",
-  "officialExportSHA256": "9ea4a38ee3c93f0eff057f0fc69ea3ea9f2587af6af0c70412b7c5d5360e5017",
+  "officialExportSHA256": "e64471a0b97c0a68928c01dff75638f4aab9ec4d90fec41b8f8f27694753c54e",
   "updatedFiles": {
-    "mil-tamron.xml": {
-      "sha256": "6bd35c35312a5fcbc8e820616d9148223923f14192cafaca6ec4141b12d8c39a",
-      "previousSHA256": "03dbdc7c59c96e9cefc55fbd4cc56af1174cec96704def68177f2acb3946ce36"
+    "compact-sony.xml": {
+      "sha256": "dd1cb8c7df747af76ef2b88c73ea81a82994ebff72755c6864209e6fd2185932",
+      "previousSHA256": "2cea5eb79ba176a26b206ff12d6cf3d755da63cb6508d0c325978520539252e1",
+      "officialExportFileSHA256": "01cf8026666f10635796ecf88b557ff5e27c30e4b35a288a4edb87c5570244f1"
+    },
+    "mil-fujifilm.xml": {
+      "sha256": "f6bcf3a83eaf0447193bb50c4d0cb96a7c6b6a95a870e9c92d508516252b1831",
+      "previousSHA256": "87b43fd8a375e6901aa83d862a977030efece9bf6efdede5b6016565891582f9",
+      "officialExportFileSHA256": "687869ad13e8ce1f848dfe931497c975a5f0b00fcb0f379c577104916bd3ea68"
+    },
+    "mil-nikon.xml": {
+      "sha256": "75fc56f83899641d9c877aa28e83739143f7b60ed1514a6eb72c1405e73cf663",
+      "previousSHA256": "27adfd1a05822fc3594fea43f310dc539ce689b2f35fe1d0a1e8b693ff1d2290",
+      "officialExportFileSHA256": "7251cf1b4872dca55b22a7ff476c07307bc9c5ff9b2cbfc5fb3b144b5b7aa621"
+    },
+    "mil-sigma.xml": {
+      "sha256": "7f355841c7f700832c74bb3eb08d04c7c009f4c8f476b6373964de7da4857c7b",
+      "previousSHA256": "15236f75e23f8b935afb8f06c6c9d5a4df687a1c1f2d5163007f18c28bf35126",
+      "officialExportFileSHA256": "77da8cb4cadade17775a4e055590deee056f5105a00052f3ea90652b7d188b7f"
+    },
+    "om-system.xml": {
+      "sha256": "fd43370f2e7b9f76482f63e566d2408c65dd77a60ddd8c173ad2113fe69edc5e",
+      "previousSHA256": "fd68dcc49894720ff7b6a93539970a89bedd404f48125e496817ec31c0aab610",
+      "officialExportFileSHA256": "fbe633c7318e0cfc4a10ec3bfc2a229f1335a38632da6ba688cb514bfe459481"
+    },
+    "slr-nikon.xml": {
+      "sha256": "1aeab652c1d7137b3d4f2b1c5499a71d5215e7da1a4d7735cdccfb5de55c5a84",
+      "previousSHA256": "e06917e75f7e9c3cf74855950682e4a2d04d801dbf1cd0037fa02aad015c0c9f",
+      "officialExportFileSHA256": "95e2581274aa0222aadf211c46f2cbfb01171038b6fc1f94dc581a3bfdee9e5f"
+    },
+    "slr-pentax.xml": {
+      "sha256": "93da3d327ffd2887835ea2055bb7ae7843857acfa6447d3cf7097f5c7205f007",
+      "previousSHA256": "8bdda25eac67e68d99feef9e61d6694c0660049f1258e8cf91a91ce5575bb351",
+      "officialExportFileSHA256": "b3e448e994086c688b21ba7061b537b0e656e3092b45762b77fcacf8a522f67d"
     }
   },
-  "otherXMLFilesKeptByteIdentical": 55,
+  "otherXMLFilesKeptByteIdentical": 49,
   "allXMLSemanticsMatchOfficialExport": true,
-  "change": "One new upstream Tamron A047Z/E lens record; five distortion and five TCA points; no vignetting data. Existing calibration records unchanged.",
-  "cameraRecords": 1057,
-  "lensRecords": 1572,
+  "change": "Eight additional lens records, two camera records, four existing OM display names and upstream calibration updates for Sigma 17–40mm and two Pentax 21mm variants. Existing compatibility and optical records elsewhere preserved.",
+  "cameraRecords": 1059,
+  "lensRecords": 1580,
   "actualOpticalValidation": false
 }

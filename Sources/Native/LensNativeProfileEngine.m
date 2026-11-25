@@ -63,12 +63,11 @@ static BOOL recordedLensIdentity(const lfLens*lens,NSString*key){
 // those explicitly recorded names as private language aliases in memory.
 // The last default, display translations and every optical value stay intact;
 // the public database on disk is never rewritten.
-static lfError loadRecordedAliases(lfDatabase*db,NSURL*url,__typeof__(&lf_db_load_file)loadFile,__typeof__(&lf_db_load_data)loadData,NSUInteger*aliasCount){
- NSData*data=[NSData dataWithContentsOfURL:url];if(!data)return LF_WRONG_FORMAT;
+static NSDictionary *prepareRecordedAliases(NSData *data) {
  NSXMLDocument*xml=[[NSXMLDocument alloc]initWithData:data options:NSXMLNodeLoadExternalEntitiesNever error:nil];
- if(!xml)return LF_WRONG_FORMAT;
+ if(!xml)return nil;
  NSArray*records=[xml nodesForXPath:@"/lensdatabase/lens[count(model[not(@lang)]) > 1]" error:nil];
- if(!records.count)return loadFile(db,url.fileSystemRepresentation);
+ if(!records.count)return @{};
  NSUInteger added=0;
  for(NSXMLElement*record in records){
   NSArray*defaults=[record nodesForXPath:@"model[not(@lang)]" error:nil];
@@ -81,8 +80,31 @@ static lfError loadRecordedAliases(lfDatabase*db,NSURL*url,__typeof__(&lf_db_loa
    [model detach];[record addChild:model];added++;
   }
  }
- NSData*normalized=xml.XMLData;lfError result=loadData(db,url.fileSystemRepresentation,normalized.bytes,normalized.length);
- if(result==LF_NO_ERROR)*aliasCount+=added;return result;
+ return @{@"data":xml.XMLData,@"aliasCount":@(added)};
+}
+static lfError loadRecordedAliases(lfDatabase *db, NSURL *url, __typeof__(&lf_db_load_data) loadData, NSUInteger *aliasCount) {
+ // Cache only prepared XML by immutable input bytes. Each request still owns
+ // its Lensfun database, and replacing an XML file at the same path takes effect.
+ static NSCache<NSData *, NSDictionary *> *cache;
+ static dispatch_once_t once;
+ dispatch_once(&once, ^{
+  cache = [NSCache new];
+  cache.countLimit = 128;
+  cache.totalCostLimit = 16 * 1024 * 1024;
+ });
+ NSData *data = [NSData dataWithContentsOfURL:url];
+ if (!data) return LF_WRONG_FORMAT;
+ NSDictionary *prepared = [cache objectForKey:data];
+ if (!prepared) {
+  prepared = prepareRecordedAliases(data);
+  if (!prepared) return LF_WRONG_FORMAT;
+  NSData *normalized = prepared[@"data"];
+  [cache setObject:prepared forKey:data cost:data.length + normalized.length];
+ }
+ NSData *input = prepared[@"data"] ?: data;
+ lfError result = loadData(db, url.fileSystemRepresentation, input.bytes, input.length);
+ if (result == LF_NO_ERROR) *aliasCount += [prepared[@"aliasCount"] unsignedIntegerValue];
+ return result;
 }
 // Select a calibration for the recorded lens identity and the known sensor
 // class. This does not search for similar focal lengths or nearby lens models.
@@ -194,19 +216,19 @@ static const lfCamera*cameraForID(const lfCamera*const*cameras,NSString*identifi
 static const lfLens*lensForID(const lfLens**lenses,NSString*identifier){
  if(lenses)for(NSUInteger i=0;lenses[i];i++)if([LensLensProfileID(lenses[i])isEqual:identifier])return lenses[i];return NULL;
 }
-static BOOL loadProfileDatabase(lfDatabase*db,NSURL*url,__typeof__(&lf_db_load_file)loadFile,__typeof__(&lf_db_load_data)loadData,NSUInteger*loaded,NSUInteger*aliases,NSError**error){
+static BOOL loadProfileDatabase(lfDatabase*db,NSURL*url,__typeof__(&lf_db_load_data)loadData,NSUInteger*loaded,NSUInteger*aliases,NSError**error){
  NSArray*files=[NSFileManager.defaultManager contentsOfDirectoryAtURL:url includingPropertiesForKeys:nil options:0 error:error];
- for(NSURL*file in [files sortedArrayUsingComparator:^NSComparisonResult(NSURL*a,NSURL*b){return [a.path compare:b.path];}])if([file.pathExtension isEqual:@"xml"]){if(loadRecordedAliases(db,file,loadFile,loadData,aliases)!=LF_NO_ERROR){fail(error,@"镜头数据库读取失败。");return NO;}(*loaded)++;}
+ for(NSURL*file in [files sortedArrayUsingComparator:^NSComparisonResult(NSURL*a,NSURL*b){return [a.path compare:b.path];}])if([file.pathExtension isEqual:@"xml"]){if(loadRecordedAliases(db,file,loadData,aliases)!=LF_NO_ERROR){fail(error,@"镜头数据库读取失败。");return NO;}(*loaded)++;}
  if(!*loaded){fail(error,@"没有可用镜头数据库。");return NO;}return YES;
 }
 NSDictionary*LensNativeProfileCandidates(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSError**error){@autoreleasepool{
  NSDictionary*selection=profileSelection(m,error);if(!selection)return nil;
  void*handle=dlopen(libURL.fileSystemRepresentation,RTLD_NOW|RTLD_LOCAL);if(!handle){fail(error,@"无法载入独立镜头计算库。");return nil;}
  #define CANDIDATE_LOAD(n) __typeof__(&n) n##Fn=dlsym(handle,#n);if(!n##Fn){fail(error,@"镜头库接口版本不兼容。");dlclose(handle);return nil;}
- CANDIDATE_LOAD(lf_db_new);CANDIDATE_LOAD(lf_db_destroy);CANDIDATE_LOAD(lf_db_load_file);CANDIDATE_LOAD(lf_db_load_data);CANDIDATE_LOAD(lf_db_get_cameras);CANDIDATE_LOAD(lf_db_find_cameras);CANDIDATE_LOAD(lf_db_find_lenses_hd);CANDIDATE_LOAD(lf_free);CANDIDATE_LOAD(lf_mlstr_get);CANDIDATE_LOAD(lf_lens_interpolate_distortion);CANDIDATE_LOAD(lf_lens_interpolate_tca);CANDIDATE_LOAD(lf_lens_interpolate_vignetting);
+ CANDIDATE_LOAD(lf_db_new);CANDIDATE_LOAD(lf_db_destroy);CANDIDATE_LOAD(lf_db_load_data);CANDIDATE_LOAD(lf_db_get_cameras);CANDIDATE_LOAD(lf_db_find_cameras);CANDIDATE_LOAD(lf_db_find_lenses_hd);CANDIDATE_LOAD(lf_free);CANDIDATE_LOAD(lf_mlstr_get);CANDIDATE_LOAD(lf_lens_interpolate_distortion);CANDIDATE_LOAD(lf_lens_interpolate_tca);CANDIDATE_LOAD(lf_lens_interpolate_vignetting);
  #undef CANDIDATE_LOAD
  lfDatabase*db=lf_db_newFn();const lfCamera**cs=NULL;const lfLens**ls=NULL;NSDictionary*result=nil;NSUInteger loaded=0,aliases=0,equivalents=0;NSString*method=nil,*evidence=nil,*automaticLensID=nil,*selectedLensID=nil;NSComparator order=nil;NSMutableArray*cameras=[NSMutableArray new],*lenses=[NSMutableArray new];
- if(!loadProfileDatabase(db,dbURL,lf_db_load_fileFn,lf_db_load_dataFn,&loaded,&aliases,error))goto done;
+ if(!loadProfileDatabase(db,dbURL,lf_db_load_dataFn,&loaded,&aliases,error))goto done;
  cs=lf_db_find_camerasFn(db,text(m[@"Make"]).UTF8String,text(m[@"Model"]).UTF8String);
  const lfCamera*automatic=selectCamera(db,cs,m,lf_db_find_lenses_hdFn,lf_freeFn,&method,&evidence,&equivalents);
  const lfCamera*camera=selection[@"cameraID"]?cameraForID(lf_db_get_camerasFn(db),selection[@"cameraID"]):automatic;
@@ -347,11 +369,11 @@ static NSDictionary*makeNativePlan(NSDictionary*m,NSURL*dbURL,NSURL*libURL,NSUIn
  if(!focal){fail(error,@"缺少拍摄焦距。");return nil;}
  void*handle=dlopen(libURL.fileSystemRepresentation,RTLD_NOW|RTLD_LOCAL);if(!handle){fail(error,@"无法载入独立镜头计算库。");return nil;}
  #define LOAD(n) __typeof__(&n) n##Fn=dlsym(handle,#n);if(!n##Fn){fail(error,@"镜头库接口版本不兼容。");dlclose(handle);return nil;}
- LOAD(lf_db_new);LOAD(lf_db_destroy);LOAD(lf_db_load_file);LOAD(lf_db_load_data);LOAD(lf_db_get_cameras);LOAD(lf_db_find_cameras);LOAD(lf_db_find_lenses_hd);LOAD(lf_free);LOAD(lf_mlstr_get);
+ LOAD(lf_db_new);LOAD(lf_db_destroy);LOAD(lf_db_load_data);LOAD(lf_db_get_cameras);LOAD(lf_db_find_cameras);LOAD(lf_db_find_lenses_hd);LOAD(lf_free);LOAD(lf_mlstr_get);
  LOAD(lf_modifier_apply_geometry_distortion);LOAD(lf_modifier_apply_subpixel_distortion);LOAD(lf_modifier_apply_subpixel_geometry_distortion);
  LOAD(lf_lens_interpolate_distortion);LOAD(lf_lens_interpolate_tca);LOAD(lf_lens_interpolate_vignetting);LOAD(lf_modifier_new);LOAD(lf_modifier_initialize);LOAD(lf_modifier_destroy);LOAD(lf_modifier_apply_color_modification);
  lfDatabase*db=lf_db_newFn();const lfCamera**cs=NULL;const lfLens**ls=NULL;lfModifier*mod=NULL;NSDictionary*result=nil;NSString*distanceSource=nil,*identitySource=nil,*identityMethod=nil,*cameraMethod=nil,*cameraEvidenceKey=nil;NSUInteger equivalentCameras=0;NSMutableDictionary*report=nil,*plan=nil,*snapshot=nil;
- NSDictionary*selection=profileSelection(m,error);NSUInteger loaded=0,recordedAliases=0;if(!selection)goto cleanup;if(!loadProfileDatabase(db,dbURL,lf_db_load_fileFn,lf_db_load_dataFn,&loaded,&recordedAliases,error))goto cleanup;
+ NSDictionary*selection=profileSelection(m,error);NSUInteger loaded=0,recordedAliases=0;if(!selection)goto cleanup;if(!loadProfileDatabase(db,dbURL,lf_db_load_dataFn,&loaded,&recordedAliases,error))goto cleanup;
  cs=lf_db_find_camerasFn(db,text(m[@"Make"]).UTF8String,text(m[@"Model"]).UTF8String);
  const lfCamera*camera=selection[@"cameraID"]?cameraForID(lf_db_get_camerasFn(db),selection[@"cameraID"]):selectCamera(db,cs,m,lf_db_find_lenses_hdFn,lf_freeFn,&cameraMethod,&cameraEvidenceKey,&equivalentCameras);const lfLens*lens=NULL;
  if(selection[@"cameraID"]){if(!camera){selectionFailure(error,@"手动相机模式已变更或不存在，请重新选择。");goto cleanup;}cameraMethod=@"user-selected-content-profile";equivalentCameras=1;}

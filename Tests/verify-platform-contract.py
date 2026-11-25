@@ -37,7 +37,7 @@ def verify():
         'runtimeOS': output('sw_vers', '-productVersion').strip(),
         'runtimeBuild': output('sw_vers', '-buildVersion').strip(),
         'sdk': output('xcrun', '--sdk', 'macosx', '--show-sdk-version').strip(),
-        'runtimeMatrix': {'macOS26': 'NOT_TESTED', 'macOS27.2': 'LOCAL_TESTS_ONLY', 'laterOS': 'NOT_TESTED'},
+        'otherOSRuntimesTested': False,
         'binaries': records,
     }
     (ROOT/'Build/Tests').mkdir(parents=True, exist_ok=True)

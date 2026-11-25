@@ -22,7 +22,14 @@ int main(){@autoreleasepool{
  m[@"LensModel"]=@"Existing 50mm f/2";NSDictionary*p=LensNativeProfilePlan(m,temp,lib,64,48,nil);
  if(![p[@"report"][@"matchedLensIdentityNames"]containsObject:@"Shared 50mm f/2"])return 6;
  if(![fixture isEqual:[NSString stringWithContentsOfURL:xml encoding:NSUTF8StringEncoding error:nil]])return 7;
+ // Replacing the same path with different bytes must invalidate prepared XML.
+ NSString*updated=[fixture stringByReplacingOccurrencesOfString:@"Existing 50mm f/2" withString:@"Replaced 50mm f/2"];
+ if(![updated writeToURL:xml atomically:YES encoding:NSUTF8StringEncoding error:nil])return 8;
+ if(LensNativeProfilePlan(m,temp,lib,64,48,nil))return 9;
+ m[@"LensModel"]=@"Replaced 50mm f/2";
+ NSDictionary*replacement=LensNativeProfilePlan(m,temp,lib,64,48,nil);
+ if(!replacement||![replacement[@"report"][@"interpolatedCalibration"]isEqual:p[@"report"][@"interpolatedCalibration"]])return 10;
  [NSFileManager.defaultManager removeItemAtURL:temp error:nil];
- NSDictionary*out=@{@"scope":@"Explicit XML identity preservation and calibration equivalence, not real RAW optical validation",@"recordedDefaultAndTranslatedNamesProduceSameCalibration":@YES,@"originalDatabaseBytesUnchanged":@YES,@"sharedAliasAmbiguityRejected":@YES,@"existingLanguageAliasPreserved":@YES,@"cases":matches};
+ NSDictionary*out=@{@"scope":@"Explicit XML identity preservation and calibration equivalence, not real RAW optical validation",@"recordedDefaultAndTranslatedNamesProduceSameCalibration":@YES,@"originalDatabaseBytesUnchanged":@YES,@"sharedAliasAmbiguityRejected":@YES,@"existingLanguageAliasPreserved":@YES,@"samePathReplacementRecognized":@YES,@"cases":matches};
  [[NSJSONSerialization dataWithJSONObject:out options:NSJSONWritingPrettyPrinted error:nil]writeToURL:[here URLByAppendingPathComponent:@"recorded-aliases-verification.json"] atomically:YES];puts("Recorded XML aliases preserve calibration and reject conflicting records.");
 }}

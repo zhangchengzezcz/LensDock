@@ -29,6 +29,25 @@ static NSArray*LensModelledPoints(NSArray*points){
 static NSString*LensCameraProfileID(const lfCamera*c){
  return LensContentID(@"camera",@[@"lensfun-0.3.4",LensIdentityNames(c->Maker),LensIdentityNames(c->Model),LensIdentityNames(c->Variant),c->Mount?@(c->Mount):@"",@(c->CropFactor)]);
 }
+static NSArray *LensStableModelNames(const lfLens *lens) {
+ NSArray *names = LensIdentityNames(lens->Model);
+ if (!lens->Model || !lens->Maker || names.count < 2) return names;
+ NSString *maker = @(lens->Maker), *model = @(lens->Model), *addedName = nil;
+ // These exact names were added in Lensfun bc5615d6 without an optical change.
+ // Keep the old saved IDs for those records. Each ID still includes every
+ // optical parameter, and matching can use the new display names normally.
+ if ([maker isEqual:@"OM Digital Solutions"]) {
+  if ([model isEqual:@"OM 12-100mm F4.0"]) addedName = @"M.Zuiko Digital ED 12-100mm F4.0 IS PRO";
+  else if ([model isEqual:@"OM 20mm F1.4"]) addedName = @"M.Zuiko Digital ED 20mm F1.4 PRO";
+  else if ([model isEqual:@"OM 12-45mm F4.0"]) addedName = @"M.Zuiko Digital ED 12-45mm F4.0 PRO";
+ } else if ([maker isEqual:@"Olympus"] && [model isEqual:@"OM 17mm F1.8 II"]) {
+  addedName = @"M.Zuiko Digital 17mm F1.8 II";
+ }
+ if (!addedName || ![names containsObject:addedName]) return names;
+ NSMutableArray *stable = [names mutableCopy];
+ [stable removeObject:addedName];
+ return stable;
+}
 static NSString*LensLensProfileID(const lfLens*l){
  NSMutableArray*mounts=[NSMutableArray new],*d=[NSMutableArray new],*t=[NSMutableArray new],*v=[NSMutableArray new],*crop=[NSMutableArray new],*fov=[NSMutableArray new],*real=[NSMutableArray new];
  if(l->Mounts)for(NSUInteger i=0;l->Mounts[i];i++)[mounts addObject:@(l->Mounts[i])];
@@ -38,7 +57,7 @@ static NSString*LensLensProfileID(const lfLens*l){
  if(l->CalibCrop)for(NSUInteger i=0;l->CalibCrop[i];i++){lfLensCalibCrop*p=l->CalibCrop[i];[crop addObject:@[@(p->CropMode),@(p->Focal),@(p->Crop[0]),@(p->Crop[1]),@(p->Crop[2]),@(p->Crop[3])]];}
  if(l->CalibFov)for(NSUInteger i=0;l->CalibFov[i];i++){lfLensCalibFov*p=l->CalibFov[i];[fov addObject:@[@(p->Focal),@(p->FieldOfView)]];}
  if(l->CalibRealFocal)for(NSUInteger i=0;l->CalibRealFocal[i];i++){lfLensCalibRealFocal*p=l->CalibRealFocal[i];[real addObject:@[@(p->Focal),@(p->RealFocal)]];}
- return LensContentID(@"lens",@[@"lensfun-0.3.4",LensIdentityNames(l->Maker),LensIdentityNames(l->Model),[mounts sortedArrayUsingSelector:@selector(compare:)],@(l->CropFactor),@(l->AspectRatio),@(l->Type),@(l->CenterX),@(l->CenterY),@(l->MinFocal),@(l->MaxFocal),@(l->MinAperture),@(l->MaxAperture),LensModelledPoints(d),LensModelledPoints(t),LensModelledPoints(v),LensSortedPoints(crop),LensSortedPoints(fov),LensSortedPoints(real)]);
+ return LensContentID(@"lens",@[@"lensfun-0.3.4",LensIdentityNames(l->Maker),LensStableModelNames(l),[mounts sortedArrayUsingSelector:@selector(compare:)],@(l->CropFactor),@(l->AspectRatio),@(l->Type),@(l->CenterX),@(l->CenterY),@(l->MinFocal),@(l->MaxFocal),@(l->MinAperture),@(l->MaxAperture),LensModelledPoints(d),LensModelledPoints(t),LensModelledPoints(v),LensSortedPoints(crop),LensSortedPoints(fov),LensSortedPoints(real)]);
 }
 static NSString*LensProjectionName(lfLensType type){
  NSArray*names=@[@"未知投影",@"直线投影",@"等距鱼眼",@"圆柱投影",@"等距圆柱",@"正交鱼眼",@"立体鱼眼",@"等面积鱼眼",@"Thoby 鱼眼"];return type>=0&&type<names.count?names[type]:names[0];

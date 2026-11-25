@@ -127,3 +127,11 @@ ExifTool 的 `-n -ExifIFD:ApertureValue` 已做 ValueConv，输出为 f 值；Im
 `Tests/verify-public-capture-metadata.m` 使用完整 CC0 RAW 和公开存档 Exiv2 文本的焦距/光圈参考；Olympus 距离按参考的两位小数精度比较。生产元数据读取与详细配置默认值均通过：A6000 为 39 mm、f/5，E-M5 为 38 mm、f/8、1.115 m（参考约 1.12 m），A200 为 80 mm、f/4.5。前两份自动生成对应镜头配置；A200 镜头不能唯一匹配，明确拒绝，不算自动校准覆盖。原片校验和前后不变。照片与完整元数据文本均不进入仓库或源码包。
 
 ExifTool 的 `Composite:FocusDistance` 对部分 Sony 是 `FocusPosition × FocalLength / 1000` 推算值。读取时在保留分组的阶段排除该字段；直接 MakerNote 距离和标准 SubjectDistance 继续使用，缺少有限距离时详细设置明确标出 1000 m 远距离回退。有限推算值的受控回归在旧实现退出 6、修复后通过；公开 A200 样本本身是 infinity，不冒充已验证有限推算值的真实照片。证据与源码哈希见 `Evidence/public-capture-metadata-verification.json`。
+
+### 0.2.8 build 17 目录更新与重复匹配
+
+同步 Lensfun v1 的七份 XML，新增 GF63mm、两款 Nikon Z、三款 OM、全画幅 Nikon F 80–400mm 和 Takumar 28mm 标定，以及两个机身条目。上游同时补充了 Sigma 17–40mm 暗角、两款 Pentax 21mm 色差和四条 OM 显示名称。四个既有 OM 手选 ID 保持有效，新名称使用相同光学标定。八条新增标定的定向回归覆盖 Nikon 全画幅与 DX 区分，以及 Z 24–70mm 一代、二代与不存在的三代。 [Lensfun 数据库来源](https://github.com/lensfun/lensfun/tree/37238fcef563196fb798f6151cb9023968b26c40/data/db)
+
+同一次进程按 XML 原始字节缓存别名解析。每次读取仍独立加载实际 Lensfun 标定，替换同路径 XML 后立即读取新内容。相同目录、相同样本和同一台 Mac 上，两次运行的完整结果一致，墙钟耗时由 226.55 秒降至 53.53 秒，约减少 76%。计时覆盖批量匹配与插值，实际图像渲染和界面应用另计。复跑命令为 `python3 Scripts/audit_catalog.py --run`。
+
+目录衍生样本从 1,564/1,567 增至 1,572/1,575。三个既有歧义为两条 FinePix F810 和一条 DMC-LX3，另有五个无可用测试条件的条目明确跳过。按预期机身与传感器标定检查，无标定版本差异。相同 3,633 份本机 LCP 的精确默认名称重合由 570 增至 571。名称统计无法覆盖别名、内嵌标定和 Apple 原生矫正，不能据此判定实拍自动匹配率。公开 GFX 50S 的独立元数据确认 GF63mm、63 mm、f/14，完整 RAW 下载未完成。 [验收记录](../Evidence/build17-matching-verification.json)
