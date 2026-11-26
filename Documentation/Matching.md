@@ -143,3 +143,11 @@ Ricoh GR 的原始 DNG 需同时记录广角转接镜未安装、裁切模式关
 公开 Ricoh GR DNG（raw.pixls.us 条目 996）自动读取 18.3 mm、f/5.6。在 macOS 27.3，原生探测未报告该原片的镜头矫正支持，LensDock 自动选中畸变标定，未生成暗角补偿。4.3 效果归档后读回，实际解码的 616×408 预览经过畸变矫正与约束边缘渲染，透明像素为零，原片 SHA256 前后相同。此项使用 4.3 框架渲染，文档界面保存与重开未测。GR IIIx 条目 5818 下载前段读到了标准镜头类型，完整文件解码仍待验收。GR IV 使用受控元数据。 [公开 RAW 数据库](https://raw.pixls.us/)
 
 开发者可运行 `python3 Scripts/audit_reference_names.py <本机 LensProfiles 目录> --production-matching`。本机 3,633 份 LCP 中，966 份显式标为 RAW 且各有唯一的厂商、机身、镜头字段及有效焦距。将每份的一个焦距与这些字段交给生产引擎，125 份生成 Lensfun 配置，841 份未解析。此计数不含真实 MakerNotes、逐张 Apple 原生探测、拍摄光圈、相机内嵌标定和光学对照。它用于定位差距，包含同一镜头的多份文件。产品运行独立于 Lightroom。 [验收记录](../Evidence/build18-ricoh-matching-verification.json)
+
+### 0.2.8 build 19 镜头版本别名与索尼编号
+
+带明确 Sigma 品牌和完整版本号的 `A019`、`C021`、`S018` 分别可按 `Art 019`、`Contemporary 021`、`Sports 018` 查找原库。仍要求型号、焦段、光圈规格、代际及卡口匹配；不会去掉额外的转接镜描述。富士 X 卡口的 `33mmF1.4XM` 对应既有唯卓 33mm F1.4 XF 标定。短名匹配与原库名称选中相同的标定 ID、插值系数和手选配置。 [适马版本号说明](https://www.sigma-global.com/en/news/2020/09/29/10944/) [唯卓标定来源](https://github.com/lensfun/lensfun/commit/dd45576)
+
+在 Sony 原始 ARW 中，E 卡口值及各份 `Sony:LensType2` 必须一致。编号 50517 对应适马 24–70mm F2.8 DG DN Art 一代，50545 对应二代。只记录 `| A` 或缺少正式型号时可据此查询。有冲突的镜头描述就拒绝新增匹配。两代均用完整公开 ARW 样片测试，只在内存中隐藏标准镜头名，验证短名和编号仍选择同一个标定。A019 的 A7 III 样片保留 Apple 原生矫正优先。A024 的 A7 V 样片使用 LensDock 畸变标定进行 4.3 框架效果归档、读回和 876×584 预览渲染，约束裁切后透明像素为零，两份原片哈希均未变。此项未测宿主文档的保存和重开。 [A019 公开样片](https://www.photographyblog.com/previews/sigma_24_70mm_f2_8_dg_dn_fe_photos) [A024 公开样片](https://raw.pixls.us/getfile.php/8847/nice/Sony%20-%20ILCE-7M5%20-%2014bit%20%283%3A2%29.ARW) [ExifTool 索尼编号](https://github.com/exiftool/exiftool/blob/13.59/lib/Image/ExifTool/Sony.pm)
+
+同一批 966 份可比较的 LCP 字段中，Lensfun 配置生成从 125 增至 126，新增一份富士 X 卡口唯卓短名。该核查没有原片的 Sony 编号字段，因此不计入上述编号匹配。1,575 个 Lensfun 目录样本仍匹配 1,572 个，标定版本差异为零。 [验收记录](../Evidence/build19-lens-edition-verification.json)

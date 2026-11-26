@@ -1,6 +1,8 @@
 # LensDock · 镜头坞
 
-**保留 RAW 的 Pixelmator 镜头矫正预览版（开发源码 0.2.8 build 18；已交付预览包为 0.2.7 build 14）。** 支持目标为 Apple 芯片 Mac、macOS 26 及以上。为原生镜头矫正尚不支持的照片，补充有可靠标定依据的畸变、横向色差和暗角补偿。原生支持时自动跳过补充畸变与色差，并保留默认关闭的“额外去暗角”。
+**保留 RAW 的 Pixelmator 镜头矫正预览版（开发源码 0.2.8 build 19；已交付预览包为 0.2.7 build 14）。** 支持目标为 Apple 芯片 Mac、macOS 26 及以上。为原生镜头矫正尚不支持的照片，补充有可靠标定依据的畸变、横向色差和暗角补偿。原生支持时自动跳过补充畸变与色差，并保留默认关闭的“额外去暗角”。
+
+build 19 补充适马 Art、Contemporary、Sports 版本号写法，以及唯卓 33mm F1.4 的富士 X 卡口 EXIF 短名。索尼 ARW 的相符 MakerNote 可区分适马 24–70mm DG DN 一代和二代，版本、转接镜和卡口冲突仍会阻止新增匹配。 [匹配规则](Documentation/Matching.md)
 
 build 18 加入 Ricoh GR、GR IIIx 和 GR IV 的内置镜头识别，要求原始 DNG 的机身、MakerNote 和等效焦距一致。完整 Ricoh GR 样片已通过 4.3 框架的效果归档、读回与裁切预览，原片摘要保持一致。GR IIIx 与 GR IV 通过受控元数据回归。开发工具可按 LCP 实际记录的字段调用 LensDock 匹配引擎，便于定位后续覆盖缺口。 [核查记录](Documentation/Matching.md#028-build-18-ricoh-固定镜头与-lightroom-字段核查)
 

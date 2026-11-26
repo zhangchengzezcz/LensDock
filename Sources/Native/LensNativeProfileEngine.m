@@ -190,6 +190,65 @@ static const lfLens *ricohBuiltInLens(const lfLens **lenses, const lfCamera *cam
  }
  return lenses[0];
 }
+// Sigma prints the product line and three-digit edition either separately or
+// as A019/C019/S019. Expand only a complete, explicitly branded edition.
+static NSString *sigmaEditionName(NSString *name) {
+ static NSRegularExpression *pattern;
+ static dispatch_once_t once;
+ dispatch_once(&once, ^{
+  pattern = [NSRegularExpression regularExpressionWithPattern:@"^(Sigma\\s+.+)\\s+([ACS])([0-9]{3})$"
+                                                      options:NSRegularExpressionCaseInsensitive error:nil];
+ });
+ NSTextCheckingResult *match = [pattern firstMatchInString:name options:0 range:NSMakeRange(0, name.length)];
+ if (!match) return nil;
+ NSString *body = [name substringWithRange:[match rangeAtIndex:1]];
+ NSString *line = [[name substringWithRange:[match rangeAtIndex:2]] uppercaseString];
+ NSString *edition = [name substringWithRange:[match rangeAtIndex:3]];
+ return [NSString stringWithFormat:@"%@ | %@ %@", body, @{@"A":@"Art", @"C":@"Contemporary", @"S":@"Sports"}[line], edition];
+}
+
+static const lfLens *alternateRecordedLens(const lfLens **lenses, const lfCamera *camera, NSString *name) {
+ NSString *canonical = sigmaEditionName(name), *maker = @"sigma";
+ // A mount-specific EXIF firmware label for the XF lens calibrated in
+ // Lensfun dd45576. Other 33 mm designs and other mounts are not aliases.
+ if (!canonical && camera->Mount && !strcmp(camera->Mount, "Fujifilm X") &&
+     [lensIdentityKey(name) isEqual:lensIdentityKey(@"33mmF1.4XM")]) {
+  canonical = @"Viltrox AF 33mm f/1.4 XF";
+  maker = @"viltrox";
+ }
+ if (!canonical) return NULL;
+ NSUInteger count = 0;
+ BOOL sensorVariant = NO;
+ const lfLens *result = selectExactLensVariant(lenses, camera, canonical, &count, &sensorVariant);
+ return result && result->Maker && [norm(@(result->Maker)) isEqual:maker] ? result : NULL;
+}
+
+static const lfLens *sonySigmaZoomFromLensType(const lfLens **lenses, const lfCamera *camera, NSDictionary *metadata) {
+ NSNumber *lensType = metadata[@"Sony:LensType2"];
+ if (![lensType isKindOfClass:NSNumber.class] || !camera->Mount || strcmp(camera->Mount, "Sony E") ||
+     ![norm(text(metadata[@"Make"])) isEqual:@"sony"]) return NULL;
+ // ExifTool Sony LensType2 assigns separate codes to both generations.
+ // The print-converted LensID may contain only “| A” and omit the edition.
+ NSString *body, *edition;
+ if ([lensType isEqual:@50517]) { body = @"24-70mm F2.8 DG DN"; edition = @"019"; }
+ else if ([lensType isEqual:@50545]) { body = @"24-70mm F2.8 DG DN II"; edition = @"024"; }
+ else return NULL;
+ NSString *canonical = [NSString stringWithFormat:@"Sigma %@ | Art %@", body, edition];
+ NSString *abbreviated = [NSString stringWithFormat:@"Sigma %@ | A", body];
+ NSString *editionKey = lensIdentityKey(canonical), *shortKey = lensIdentityKey(abbreviated);
+ NSString *bodyKey = lensIdentityKey([@"Sigma " stringByAppendingString:body]);
+ for (NSString *field in @[@"LensModel", @"LensIDName", @"Lens"]) {
+  NSString *name = text(metadata[field]);
+  if (!name.length) continue;
+  NSString *key = lensIdentityKey(sigmaEditionName(name) ?: name);
+  if (![key hasPrefix:@"sigma"]) key = [@"sigma" stringByAppendingString:key];
+  if (![key isEqual:editionKey] && ![key isEqual:shortKey] && ![key isEqual:bodyKey]) return NULL;
+ }
+ NSUInteger count = 0;
+ BOOL sensorVariant = NO;
+ const lfLens *result = selectExactLensVariant(lenses, camera, canonical, &count, &sensorVariant);
+ return result && result->Maker && [norm(@(result->Maker)) isEqual:@"sigma"] ? result : NULL;
+}
 // Both the picker and correction plan must use this decision. A preselected
 // picker row must never turn a rejected token-only match into manual approval.
 static const lfLens*automaticLens(const lfLens**lenses,const lfCamera*camera,NSDictionary*m,NSString**source,NSString**method){
@@ -208,6 +267,18 @@ static const lfLens*automaticLens(const lfLens**lenses,const lfCamera*camera,NSD
   NSString*name=text(m[key]);if(!name.length)continue;NSUInteger count=0;BOOL sensor=NO;
   const lfLens*lens=selectExactLensVariant(lenses,camera,name,&count,&sensor);
   if(lens){if(source)*source=key;if(method)*method=sensor?@"exact-lens-identity-sensor-calibration-variant":@"normalized-exact-database-alias";return lens;}
+  const lfLens *alternate = count ? NULL : alternateRecordedLens(lenses, camera, name);
+  if (alternate) {
+   if (source) *source = key;
+   if (method) *method = @"verified-recorded-name-alias";
+   return alternate;
+  }
+ }
+ const lfLens *sonyZoom = sonySigmaZoomFromLensType(lenses, camera, m);
+ if (sonyZoom) {
+  if (source) *source = @"Sony:LensType2";
+  if (method) *method = @"verified-maker-note-lens-type";
+  return sonyZoom;
  }
  const lfLens*builtin=fixedBuiltInLens(lenses,camera,m);
  if(builtin){if(source)*source=@"rawCaptureMetadata";if(method)*method=@"fixed-built-in-camera-lens";}return builtin;
@@ -248,7 +319,9 @@ static const lfCamera*selectCamera(const lfDatabase*db,const lfCamera**candidate
   const lfCamera*selected=NULL;NSUInteger compatible=0;BOOL conflict=NO;
   for(NSValue*v in exact){
    const lfCamera*c=v.pointerValue;const lfLens**lenses=findLenses(db,c,NULL,NULL,0);NSUInteger matches=0;
-   NSUInteger identities=0;BOOL variant=NO;const lfLens*matching=selectExactLensVariant(lenses,c,name,&identities,&variant);matches=matching?1:identities;
+   NSUInteger identities=0;BOOL variant=NO;const lfLens*matching=selectExactLensVariant(lenses,c,name,&identities,&variant);
+   if (!matching && !identities) matching = alternateRecordedLens(lenses, c, name);
+   matches=matching?1:identities;
    if(lenses)releaseList((void*)lenses);
    if(matches){if(matches!=1){conflict=YES;continue;}compatible++;if(!selected)selected=c;else if(!sameCameraOptics(selected,c))conflict=YES;}
   }
@@ -330,23 +403,38 @@ static NSArray*runExifArguments(NSURL*raw,NSURL*tool,NSArray*options,NSError**er
  if(t.terminationStatus){fail(error,@"MakerNote 元数据读取失败。");return nil;}
  id result=[NSJSONSerialization JSONObjectWithData:d options:0 error:error];return [result isKindOfClass:NSArray.class]?result:nil;
 }
+static NSNumber *sonyLensTypeEvidence(NSDictionary *tags) {
+ if (![tags[@"File:FileType"] isEqual:@"ARW"] || ![norm(text(tags[@"IFD0:Make"])) isEqual:@"sony"]) return nil;
+ NSMutableSet *mounts = [NSMutableSet new], *lensTypes = [NSMutableSet new];
+ for (NSString *key in tags) {
+  if (![key hasPrefix:@"Sony:"]) continue;
+  if ([key hasSuffix:@":LensMount"]) [mounts addObject:tags[key]];
+  if ([key hasSuffix:@":LensType2"]) [lensTypes addObject:tags[key]];
+ }
+ if (![mounts isEqualToSet:[NSSet setWithObject:@2]] || lensTypes.count != 1) return nil;
+ id lensType = lensTypes.anyObject;
+ return [lensType isKindOfClass:NSNumber.class] ? lensType : nil;
+}
 static NSArray*runExif(NSURL*raw,NSURL*tool,BOOL numeric,NSError**error){
  NSMutableArray*args=[NSMutableArray arrayWithObject:@"-j"];if(numeric)[args addObject:@"-n"];
  // A CR3 can contain different values with the same tag name in EXIF,
  // MakerNotes and a track. Keep their groups until capture fields are selected;
  // ExifTool's unqualified duplicate winner is not necessarily standard EXIF.
- if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower",@"-FileType",@"-SubIFD:PhotometricInterpretation",@"-SubIFD:ImageWidth",@"-SubIFD:ImageHeight",@"-Sony:FullImageSize",@"-SubIFD:DistortionCorrParams",@"-SubIFD:ChromaticAberrationCorrParams",@"-SubIFD:VignettingCorrParams",@"-SubIFD:DistortionCorrection",@"-SubIFD:ChromaticAberrationCorrection",@"-SubIFD:VignettingCorrection"]];
+ if(numeric)[args addObjectsFromArray:@[@"-G1",@"-a",@"-Canon:FocusDistanceUpper",@"-Canon:FocusDistanceLower",@"-FileType",@"-SubIFD:PhotometricInterpretation",@"-SubIFD:ImageWidth",@"-SubIFD:ImageHeight",@"-Sony:FullImageSize",@"-SubIFD:DistortionCorrParams",@"-SubIFD:ChromaticAberrationCorrParams",@"-SubIFD:VignettingCorrParams",@"-SubIFD:DistortionCorrection",@"-SubIFD:ChromaticAberrationCorrection",@"-SubIFD:VignettingCorrection",@"-Sony:LensMount",@"-Sony:LensType2"]];
  if(numeric)[args addObjectsFromArray:@[@"-ExifIFD:FocalLengthIn35mmFormat",@"-Ricoh:WideAdapter",@"-Ricoh:CropMode",@"-Pentax:LensType"]];
  [args addObjectsFromArray:@[@"-Make",@"-Model",@"-LensModel",@"-LensID",@"-LensType",@"-Lens",@"-LensInfo",@"-RFLensType",@"-FocalLength",@"-FNumber",@"-ExifIFD:ApertureValue",@"-FocusDistance",@"-SubjectDistance",@"-Orientation"]];
  NSArray*rows=runExifArguments(raw,tool,args,error);if(!numeric||!rows.count)return rows;
- NSDictionary*grouped=rows[0];NSMutableDictionary*values=[NSMutableDictionary new];
+ NSDictionary *grouped = rows[0];
+ NSMutableDictionary *values = [NSMutableDictionary new];
+ NSNumber *sonyLensType = sonyLensTypeEvidence(grouped);
+ if ([sonyLensType isEqual:@50517] || [sonyLensType isEqual:@50545]) values[@"Sony:LensType2"] = sonyLensType;
  for(NSString*key in [grouped.allKeys sortedArrayUsingSelector:@selector(compare:)]){
   NSRange separator=[key rangeOfString:@":" options:NSBackwardsSearch];NSString*name=separator.location==NSNotFound?key:[key substringFromIndex:separator.location+1];
   // Sony's Composite:FocusDistance is a FocusPosition * FocalLength estimate,
   // not a directly recorded focus distance. It sorts before MakerNote groups
   // and must neither override them nor masquerade as a measured distance.
   if([name isEqual:@"FocusDistance"]&&[key hasPrefix:@"Composite:"])continue;
-  if([@[@"FocalLengthIn35mmFormat",@"WideAdapter",@"CropMode"]containsObject:name])continue;
+  if([@[@"FocalLengthIn35mmFormat",@"WideAdapter",@"CropMode",@"LensMount",@"LensType2"]containsObject:name])continue;
   // Preserve source group and table validation; these are not scalar capture
   // parameters and must never compete with similarly named MakerNote copies.
   if([name hasSuffix:@"CorrParams"]||[@[@"PhotometricInterpretation",@"ImageWidth",@"ImageHeight",@"FullImageSize",@"FileType",@"DistortionCorrection",@"ChromaticAberrationCorrection",@"VignettingCorrection"]containsObject:name])continue;
@@ -399,8 +487,22 @@ NSDictionary*LensReadRawMetadata(NSURL*rawURL,NSURL*tool,NSError**error){
   // If a decoder supplies valid standard EXIF but ExifTool only exposes an
   // alternate copy, retain the decoder's capture value rather than a MakerNote.
   for(NSString*key in @[@"FocalLength",@"FNumber",@"SubjectDistance"]){if(positive(ex[key]))m[key]=ex[key];}
-  NSArray*b=runExif(rawURL,tool,NO,&makerError);
-  if(b.count)m[@"LensIDName"]=b[0][@"LensID"]?:b[0][@"LensType"]?:@"";
+  NSNumber *candidateLensType = m[@"Sony:LensType2"];
+  [m removeObjectForKey:@"Sony:LensType2"];
+  // For these ARWs, keep every copy of the two numeric Sony tags in the
+  // same call that reads the displayed lens name. The primary metadata call
+  // retains family-1 output because other readers depend on those group names.
+  NSArray *sonyNames = candidateLensType ? runExifArguments(rawURL, tool,
+    @[@"-j", @"-G1:4", @"-a", @"-FileType", @"-IFD0:Make", @"-Sony:LensMount#", @"-Sony:LensType2#", @"-LensID", @"-LensType"],
+    &makerError) : nil;
+  if (sonyNames.count) {
+   NSDictionary *sonyTags = sonyNames[0];
+   if ([sonyLensTypeEvidence(sonyTags) isEqual:candidateLensType]) m[@"Sony:LensType2"] = candidateLensType;
+   m[@"LensIDName"] = sonyTags[@"Composite:LensID"] ?: sonyTags[@"Sony:LensType"] ?: @"";
+  } else {
+   NSArray *b = runExif(rawURL,tool,NO,&makerError);
+   if (b.count) m[@"LensIDName"] = b[0][@"LensID"] ?: b[0][@"LensType"] ?: @"";
+  }
   m[@"metadataReader"]=@"ImageIO+ExifTool MakerNote";
  }
  // ApertureValue records the exposure aperture, unlike MaxApertureValue or

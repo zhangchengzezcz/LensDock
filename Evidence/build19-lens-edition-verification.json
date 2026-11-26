@@ -1,0 +1,101 @@
+{
+  "version": "0.2.8-preview-build19",
+  "runtime": {
+    "macOS": "27.3",
+    "macOSBuild": "26C5047e",
+    "architecture": "arm64"
+  },
+  "identityRegression": {
+    "verifiedAliases": 5,
+    "sonyZoomCodesTested": [
+      50517,
+      50545
+    ],
+    "wrongEditionMountAndConverterRejected": true,
+    "conflictingSonyCopiesRejected": true,
+    "samePickerAndPlanProfileIDs": true,
+    "priorBuildAliasTestFailed": true
+  },
+  "referenceProfiles": {
+    "fileCount": 3633,
+    "manifestSHA256": "5bab1e411bb9722ea9d143042d8c8e09306fb440c126717b13974bf4c42f111a",
+    "compared": 966,
+    "matchedBefore": 125,
+    "matchedAfter": 126,
+    "unchangedExistingMatches": 125,
+    "unresolvedAfter": 840,
+    "newWitness": {
+      "Make": "FUJIFILM",
+      "Model": "X-T3",
+      "LensModel": "33mmF1.4XM",
+      "FocalLength": 33.0
+    },
+    "scope": "Exact recorded names and one focal length, without Apple native probe, MakerNotes or optical measurements"
+  },
+  "catalogRegression": {
+    "tested": 1575,
+    "matched": 1572,
+    "ambiguous": 3,
+    "skipped": 5,
+    "calibrationVariantDifferences": 0
+  },
+  "completePublicRAW": [
+    {
+      "edition": "A019",
+      "camera": "ILCE-7M3",
+      "lensType2": 50517,
+      "focalMM": 24,
+      "fNumber": 8,
+      "nativeLensCorrectionSupported": true,
+      "source": "https://img.photographyblog.com/reviews/sigma_24_70mm_f2_8_dg_dn_fe/photos/sigma_24_70mm_f2_8_dg_dn_fe_01.arw",
+      "bytes": 49743360,
+      "sha256": "9a6cf2281f20c681a1e788982cab3f9ec033dc56c6395d27d33265a264f4a820",
+      "previewTileDecoded": true,
+      "sameCalibrationWithoutStandardLensName": true,
+      "originalBytesUnchanged": true
+    },
+    {
+      "edition": "A024",
+      "camera": "ILCE-7M5",
+      "lensType2": 50545,
+      "focalMM": 24,
+      "fNumber": 2.8,
+      "nativeLensCorrectionSupported": false,
+      "source": "https://raw.pixls.us/getfile.php/8847/nice/Sony%20-%20ILCE-7M5%20-%2014bit%20%283%3A2%29.ARW",
+      "bytes": 23314432,
+      "sha256": "46d73475dfd8f96fd7e2f4d4a721a36cbbaba3d6ea95a4851809cd9d252b2a80",
+      "previewTileDecoded": true,
+      "sameCalibrationWithoutStandardLensName": true,
+      "originalBytesUnchanged": true
+    }
+  ],
+  "a024FrameworkRender": {
+    "host": "Pixelmator 4.3 build 3.0.75",
+    "effectArchiveRoundTrip": true,
+    "size": [
+      876,
+      584
+    ],
+    "pixelsWithRGBChangeOver001": 482943,
+    "nonOpaquePixels": 0,
+    "supplementalVignettingAvailable": false,
+    "documentSaveReopenValidated": false,
+    "opticalResidualMeasured": false
+  },
+  "hostRegression": {
+    "pixelmator43": {
+      "selectedGroupsPassed": 40,
+      "legacyGroupsSkipped": 0
+    },
+    "pixelmator50": {
+      "selectedGroupsPassed": 35,
+      "legacyGroupsSkipped": 5
+    },
+    "verifiedPlatformBinaryCount": 7,
+    "minimumDeployment": "26.0",
+    "vendorSigned50LiveRAWValidated": false
+  },
+  "adobeCoefficientsRedistributed": false,
+  "photosRedistributed": false,
+  "newDMGReleased": false
+}

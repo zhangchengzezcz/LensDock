@@ -18,6 +18,7 @@ legacy_wrapper='$s12PTFoundation13PTEffectsObjCC7effectsAA0B0Vvg' in legacy_expo
 legacy_render_groups={'verify-sony-geometry-effect','verify-geometry-boundaries','verify-full-resolution-boundaries','verify-fractional-preview','verify-three-corrections'}
 host_env={**os.environ,'LENS_TEST_PIXELMATOR':str(host),'DYLD_FRAMEWORK_PATH':str(frameworks),'DYLD_INSERT_LIBRARIES':str(codec)}
 groups={
+ 'verify-recorded-editions':['LensNativeProfileEngine.m'],
  'verify-ricoh-fixed-lens':['LensNativeProfileEngine.m'],
  'verify-lensfun-202611':['LensNativeProfileEngine.m'],
  'verify-sony-fallback':['LensNativeProfileEngine.m','LensRecommendationPolicy.m','LensCorrectionSettings.m','LensNativeState.m','LensVignettingFilter.m'],

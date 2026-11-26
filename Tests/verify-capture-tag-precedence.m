@@ -41,6 +41,23 @@ int main(){@autoreleasepool{
   NSDictionary *actual=LensReadRawMetadata([directory URLByAppendingPathComponent:@"without-capture-exif.tiff"],reader,nil);
   if(!actual||(test[@"expectedDistance"]?![actual[@"FocusDistance"]isEqual:test[@"expectedDistance"]]:actual[@"FocusDistance"]!=nil)||fabs([LensCaptureParameterDisplayValues(actual)[2]doubleValue]-[test[@"expectedDisplay"]doubleValue])>1e-8)return 6;
  }
+ // Simulate a grouped MakerNote reader. All copies of the lens type and
+ // mount must agree before the normalized evidence is exposed to matching.
+ for (NSNumber *conflict in @[@0, @1, @2, @3]) {
+  NSDictionary *grouped = @{
+   @"File:FileType": conflict.integerValue == 3 ? @"DNG" : @"ARW",
+   @"IFD0:Make": @"SONY", @"IFD0:Model": @"ILCE-7M3",
+   @"Sony:LensType2": @50517, @"Sony:Copy1:LensType2": conflict.integerValue == 1 ? @50545 : @50517,
+   @"Sony:LensMount": @2, @"Sony:Copy1:LensMount": conflict.integerValue == 2 ? @1 : @2,
+  };
+  NSData *json = [NSJSONSerialization dataWithJSONObject:@[grouped] options:0 error:nil];
+  NSString *payload = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+  NSString *sonyReader = [NSString stringWithFormat:
+   @"my $primary=grep { $_ eq '-n' } @ARGV; print $primary ? '[{\"File:FileType\":\"ARW\",\"IFD0:Make\":\"SONY\",\"IFD0:Model\":\"ILCE-7M3\",\"Sony:LensType2\":50517,\"Sony:LensMount\":2}]' : '%@';\n", payload];
+  if (![sonyReader writeToURL:reader atomically:YES encoding:NSUTF8StringEncoding error:nil]) return 7;
+  NSDictionary *actual = LensReadRawMetadata([directory URLByAppendingPathComponent:@"without-capture-exif.tiff"], reader, nil);
+  if (!actual || (conflict.integerValue ? actual[@"Sony:LensType2"] != nil : ![actual[@"Sony:LensType2"] isEqual:@50517])) return 8;
+ }
  [NSFileManager.defaultManager removeItemAtURL:directory error:nil];
- puts("Standard exposure EXIF survives conflicting MakerNote/track copies; optional MakerNote distance remains available.");
+ puts("Standard exposure EXIF survives duplicate tags; Sony lens evidence requires consistent ARW MakerNotes.");
 }}

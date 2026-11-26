@@ -52,3 +52,5 @@ v6 最终代码的 34 个常规组、既有 192 组宿主渲染及 Swift 检查�
 0.2.8 build 17 的八条新增镜头标定和四个既有 OM 手选 ID 通过回归。同批 1,575 个目录样本的匹配结果保持一致，批量耗时约减少 76%。本机第三方签名的 5.0（5.0.97）通过框架测试，安装器在验证签名来源时拒绝该应用。当前 4.3 宿主继续可用。最新版本的真实 RAW 打开、应用、保存和重开仍待验收，本轮交付开发源码。 [验收记录](../Evidence/build17-matching-verification.json)
 
 0.2.8 build 18 以 MakerNote 和等效焦距识别 Ricoh GR、GR IIIx 与 GR IV 的标准内置镜头，缺少依据时仍保留手选。公开 Ricoh GR 实拍原片通过 4.3 框架的归档效果读回与有约束裁切预览。新增可复跑的 Lightroom 字段核查，966 份符合条件的 LCP 字段中 125 份生成配置，841 份未解析。现有证据仍不足以确认 Lightroom 等量自动覆盖。 [验收记录](../Evidence/build18-ricoh-matching-verification.json)
+
+0.2.8 build 19 补充适马版本编号、索尼适马两代 24–70mm 的 MakerNote 区分及唯卓富士 X 卡口短名。相同对照的 966 份 LCP 中，126 份生成配置，840 份未解析。两代完整 ARW 通过型号核对，A019 保留原生优先，A024 通过 4.3 框架的归档效果读回和约束裁切预览。Lightroom 等量覆盖和 Pixelmator 5.0 的原片文档验收仍待完成。 [验收记录](../Evidence/build19-lens-edition-verification.json)
